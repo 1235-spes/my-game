@@ -2,56 +2,54 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chanci-App | لوحة المستخدم</title>
+<title>Chanci-App | المستخدم</title>
 <style>
-body {margin:0; font-family:Arial; background:#0a0a0a; color:#fff;}
-.container {max-width:480px; margin:auto; padding:20px;}
-.logo {text-align:center; font-size:36px; color:gold; margin-bottom:20px;}
-.balance-box {display:flex; justify-content:space-between; background:#1c1c1c; padding:20px; border-radius:12px; margin-bottom:20px; box-shadow:0 0 20px rgba(255,215,0,0.3);}
-.balance-box div{text-align:center;}
-.menu {display:flex; justify-content:space-between; margin-bottom:20px;}
-.menu div{text-align:center; flex:1; margin:0 5px; background:#1c1c1c; padding:15px; border-radius:12px; cursor:pointer; box-shadow:0 0 10px rgba(255,215,0,0.4);}
-.menu div img{width:40px; margin-bottom:8px;}
-.menu div span{display:block; font-size:14px; font-weight:bold; color:gold;}
-.games-section{display:flex; overflow-x:auto; gap:15px;}
-.game-card{min-width:120px; background:#1c1c1c; border-radius:12px; padding:10px; text-align:center; box-shadow:0 0 10px rgba(255,215,0,0.3);}
-.game-card img{width:60px; margin-bottom:5px;}
-.game-card button{width:100%; padding:6px; background:gold; border:none; border-radius:6px; cursor:pointer; color:#000; font-weight:bold;}
-.logout-btn{background:red; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; margin-top:10px; width:100%;}
-#result {text-align:center; font-size:18px; color:#FFD700; margin-top:10px;}
-#modal {display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center;}
-#modal div {background:#1c1c1c; padding:20px; border-radius:12px; text-align:center; color:gold;}
+body {margin:0;font-family:Arial;background:#0a0a0a;color:#fff;}
+.container {max-width:500px;margin:auto;padding:20px;}
+.box {background:#1c1c1c;padding:15px;border-radius:12px;margin-bottom:15px;}
+button {width:100%;padding:12px;margin-top:10px;border:none;border-radius:8px;background:gold;font-weight:bold;cursor:pointer;}
+.menu {display:flex;gap:10px;margin-top:10px;}
+.menu button {flex:1;}
+h2 {color:gold;text-align:center;}
+.small {font-size:14px;color:#aaa;}
+#modal {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;}
+#modal div {background:#1c1c1c;padding:20px;border-radius:12px;text-align:center;color:gold;}
 </style>
 </head>
 <body>
+
 <div class="container">
-  <div class="logo">Chanci-App</div>
-  <div id="welcome"></div>
-  <div class="balance-box">
-    <div><h3>الرصيد</h3><p id="balance">0</p></div>
-    <div><h3>النقاط</h3><p id="points">0</p></div>
-    <div><h3>الأرباح</h3><p id="wins">0</p></div>
-  </div>
-  <div class="menu">
-    <div onclick="openBox()"><img src="https://img.icons8.com/ios-filled/50/FFD700/roulette.png"/><span>افتح الصندوق</span></div>
-    <div><img src="https://img.icons8.com/ios-filled/50/00FF00/discount.png"/><span>القسائم</span></div>
-    <div><img src="https://img.icons8.com/ios-filled/50/FFD700/roulette.png"/><span>السحوبات</span></div>
-  </div>
-  <div class="games-section">
-    <div class="game-card"><img src="https://img.icons8.com/ios-filled/50/FFD700/slot-machine.png"/><p>Lucky Slots</p><button>العب الآن</button></div>
-    <div class="game-card"><img src="https://img.icons8.com/ios-filled/50/FFD700/roulette.png"/><p>Fortune Wheel</p><button>العب الآن</button></div>
-  </div>
-  <div id="result"></div>
-  <button class="logout-btn" onclick="logout()">تسجيل خروج</button>
+
+<h2>🎮 لوحة المستخدم</h2>
+
+<div class="box">
+<p>💰 الرصيد: <span id="balance">0</span></p>
+<p class="small">🔄 الإنفاق: <span id="spent">0</span> / 100000</p>
 </div>
 
-<div id="modal"><div><span id="modalText"></span><br><button onclick="closeModal()">إغلاق</button></div></div>
+<div class="box">
+<h3>🎁 الصندوق</h3>
+<p class="small">أنفق 100000 رصيد لفتح فرصة</p>
+<button onclick="openBox()">فتح الصندوق</button>
+</div>
+
+<div class="box">
+<h3>💸 تجربة إنفاق (اختبار)</h3>
+<button onclick="spend(10000)">إنفاق 10,000</button>
+<button onclick="spend(50000)">إنفاق 50,000</button>
+</div>
+
+<button onclick="logout()">تسجيل خروج</button>
+
+</div>
+
+<!-- Modal -->
+<div id="modal"><div><p id="msg"></p><button onclick="closeModal()">إغلاق</button></div></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <script>
-// إعداد Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
@@ -59,57 +57,97 @@ const firebaseConfig = {
   projectId: "chanci-app",
   storageBucket: "chanci-app.firebasestorage.app",
   messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:12176965505080897b3df1",
-  measurementId: "G-6YXX3SS61D"
+  appId: "1:18416485348:web:12176965505080897b3df1"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// المستخدم الحالي
-const currentUser = localStorage.getItem('currentUser');
-if(!currentUser || currentUser === 'doktor') window.location.href='index.html';
-
-// ترحيب المستخدم
-document.getElementById('welcome').innerHTML = "<h2>مرحباً "+currentUser+"</h2>";
-
-// جلب بيانات المستخدم من Firebase
-db.ref('users/'+currentUser).get().then(snapshot=>{
-  if(snapshot.exists()){
-    const data = snapshot.val();
-    document.getElementById('balance').innerText = data.balance || 0;
-    document.getElementById('points').innerText = data.points || 0;
-    document.getElementById('wins').innerText = data.wins || 0;
-  }
-});
-
-// فتح الصندوق - تحديث النقاط
-function openBox(){
-  const pointsEarned = Math.floor(Math.random()*100) + 1; // نقاط عشوائية
-  const currentPoints = Number(document.getElementById('points').innerText) + pointsEarned;
-  
-  document.getElementById('points').innerText = currentPoints;
-
-  // تحديث Firebase
-  db.ref('users/'+currentUser).update({points: currentPoints});
-
-  showModal("🎉 لقد حصلت على "+pointsEarned+" نقطة!");
+const currentUser = localStorage.getItem("currentUser");
+if(!currentUser || currentUser === "doktor"){
+  window.location.href = "index.html";
 }
 
-// عرض نافذة النتائج
-function showModal(msg){
-  document.getElementById('modalText').innerText = msg;
-  document.getElementById('modal').style.display = "flex";
+let userData = {};
+
+// تحميل البيانات
+db.ref("users/"+currentUser).on("value", snap=>{
+  userData = snap.val();
+
+  document.getElementById("balance").innerText = userData.balance || 0;
+  document.getElementById("spent").innerText = userData.spentSinceLastBox || 0;
+});
+
+// 💸 إنفاق
+function spend(amount){
+  db.ref("users/"+currentUser).once("value").then(snap=>{
+    const data = snap.val();
+    let balance = data.balance || 0;
+    let spent = data.spentSinceLastBox || 0;
+    let boxAvailable = data.boxAvailable || false;
+
+    if(balance < amount){
+      show("❌ رصيد غير كافي");
+      return;
+    }
+
+    balance -= amount;
+    spent += amount;
+
+    // عند الوصول للحد
+    if(spent >= 100000){
+      boxAvailable = true;
+      spent = 0;
+    }
+
+    db.ref("users/"+currentUser).update({
+      balance: balance,
+      spentSinceLastBox: spent,
+      boxAvailable: boxAvailable
+    });
+
+    show("💸 تم خصم " + amount);
+  });
+}
+
+// 🎁 فتح الصندوق
+function openBox(){
+  db.ref("users/"+currentUser).once("value").then(snap=>{
+    const data = snap.val();
+
+    if(!data.boxAvailable){
+      show("❌ لا توجد فرصة حالياً. أنفق 100,000 أولاً");
+      return;
+    }
+
+    const reward = Math.floor(Math.random()*51);
+    const newBalance = (data.balance || 0) + reward;
+
+    db.ref("users/"+currentUser).update({
+      balance: newBalance,
+      boxAvailable: false
+    });
+
+    show("🎉 ربحت " + reward + " رصيد!");
+  });
+}
+
+// 🔔 رسالة
+function show(msg){
+  document.getElementById("msg").innerText = msg;
+  document.getElementById("modal").style.display = "flex";
 }
 
 function closeModal(){
-  document.getElementById('modal').style.display = "none";
+  document.getElementById("modal").style.display = "none";
 }
 
-// تسجيل خروج
+// خروج
 function logout(){
-  localStorage.removeItem('currentUser');
-  window.location.href='index.html';
+  localStorage.removeItem("currentUser");
+  window.location.href = "index.html";
 }
 </script>
+
 </body>
 </html>
