@@ -1,28 +1,251 @@
-<!-- الجزء 1: الهيكل العام والصفحة الرئيسية مع Login -->
-<div class="login-box" id="loginBox">
-  <div class="logo">CH<span style="color:#ffd700;">ANCI</span>-APP</div>
-  <h2 style="color:gold;">مرحباً بك</h2>
-  <input type="text" id="username" placeholder="اسم المستخدم">
-  <input type="password" id="password" placeholder="كلمة المرور">
-  <button onclick="login()" style="background: linear-gradient(90deg, #ffd700, #ffcc00); color:#000; font-weight:bold;">دخول</button>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold App</title>
+
+<style>
+
+/* =========================
+   الأساس العام
+========================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body{
+    background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* =========================
+   ألوان ذهبية و Glow
+========================= */
+:root{
+    --gold:#d4af37;
+    --gold-light:#f5d76e;
+    --dark:#0d0d0d;
+    --card:#151515;
+}
+
+/* تأثيرات جاهزة */
+.glow{
+    box-shadow: 0 0 10px var(--gold),
+                0 0 20px rgba(212,175,55,0.3);
+}
+
+.gold-text{
+    color:var(--gold);
+}
+
+/* =========================
+   تخطيط عام (Layout)
+========================= */
+.container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* =========================
+   Sidebar (القائمة الجانبية)
+========================= */
+.sidebar{
+    width:260px;
+    background:linear-gradient(180deg,#111,#0a0a0a);
+    border-right:1px solid rgba(212,175,55,0.2);
+    padding:20px;
+    position:fixed;
+    height:100%;
+}
+
+.sidebar h2{
+    color:var(--gold);
+    text-align:center;
+    margin-bottom:30px;
+    letter-spacing:2px;
+}
+
+.sidebar a{
+    display:block;
+    padding:12px;
+    margin:8px 0;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    transition:0.3s;
+}
+
+.sidebar a:hover{
+    background:rgba(212,175,55,0.15);
+    box-shadow:0 0 10px rgba(212,175,55,0.3);
+}
+
+/* =========================
+   المحتوى الرئيسي
+========================= */
+.main{
+    margin-left:260px;
+    padding:20px;
+    width:100%;
+}
+
+/* =========================
+   الهيدر
+========================= */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 20px;
+    background:rgba(20,20,20,0.8);
+    border:1px solid rgba(212,175,55,0.2);
+    border-radius:12px;
+    backdrop-filter: blur(10px);
+}
+
+.header h1{
+    font-size:20px;
+}
+
+/* =========================
+   البطاقات
+========================= */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.card{
+    background:var(--card);
+    padding:20px;
+    border-radius:15px;
+    border:1px solid rgba(212,175,55,0.15);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 20px rgba(212,175,55,0.2);
+}
+
+/* =========================
+   Login Screen (مؤقت)
+========================= */
+.login-box{
+    width:100%;
+    max-width:400px;
+    margin:100px auto;
+    background:var(--card);
+    padding:30px;
+    border-radius:15px;
+    border:1px solid rgba(212,175,55,0.2);
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    background:#111;
+    border:1px solid rgba(212,175,55,0.2);
+    color:white;
+    border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:var(--gold);
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:var(--gold-light);
+}
+
+/* =========================
+   Mobile Responsive
+========================= */
+@media(max-width:768px){
+
+    .sidebar{
+        width:70px;
+        padding:10px;
+    }
+
+    .sidebar h2{
+        font-size:14px;
+    }
+
+    .main{
+        margin-left:70px;
+    }
+
+    .sidebar a{
+        font-size:12px;
+        text-align:center;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>GOLD</h2>
+        <a href="#">🏠 الرئيسية</a>
+        <a href="#">🎮 الألعاب</a>
+        <a href="#">🎫 القسائم</a>
+        <a href="#">💰 الرصيد</a>
+        <a href="#">👑 المدير</a>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <div class="header glow">
+            <h1>مرحباً بك 👋</h1>
+            <div class="gold-text">رصيد: 0</div>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3 class="gold-text">الرصيد</h3>
+                <p>0 نقطة</p>
+            </div>
+
+            <div class="card">
+                <h3 class="gold-text">الأرباح</h3>
+                <p>0 €</p>
+            </div>
+
+            <div class="card">
+                <h3 class="gold-text">السحوبات</h3>
+                <p>0 طلب</p>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="dashboard hidden" id="dashboard">
-  <div class="header" style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:#1c1c1c; border-radius:12px; box-shadow:0 0 20px rgba(255,215,0,0.5);">
-    <div class="logo" style="color:gold; font-size:28px;">CH<span style="color:#ffd700;">ANCI</span>-APP</div>
-    <div class="user-avatar" style="width:50px; height:50px; border-radius:50%; background:gold;"></div>
-  </div>
-  <div id="welcome" style="margin:15px 0; font-size:20px; font-weight:bold; color:gold;"></div>
-
-  <!-- رصيد المستخدم -->
-  <div class="balance-box" style="display:flex; justify-content:space-between; gap:10px; margin-bottom:20px;">
-    <div style="flex:1; background:#1c1c1c; padding:15px; border-radius:12px; box-shadow:0 0 15px rgba(255,215,0,0.4); text-align:center;">
-      <h3>الرصيد</h3>
-      <p id="balance" style="font-size:24px; color:#ffd700;">0</p>
-    </div>
-    <div style="flex:1; background:#1c1c1c; padding:15px; border-radius:12px; box-shadow:0 0 15px rgba(255,215,0,0.4); text-align:center;">
-      <h3>الأرباح</h3>
-      <p id="earnings" style="font-size:24px; color:#ffd700;">0</p>
-    </div>
-  </div>
-</div>
+</body>
+</html>
