@@ -1,84 +1,206 @@
-<!DOCTYPE html><html lang="ar">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chanci-app</title><style>
+<title>Chanci App</title>
+
+<style>
+
+/* 🌌 الخلفية العامة */
 body{
     margin:0;
-    font-family:Arial,sans-serif;
+    font-family:Arial, sans-serif;
     text-align:center;
     background:url('https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=1200') center/cover;
     min-height:100vh;
+    color:white;
 }
 
+/* 🔲 طبقة شفافة */
 .overlay{
     background:rgba(0,0,0,0.65);
     min-height:100vh;
     padding:20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
+/* 📱 الكرت الرئيسي */
 .container{
-    max-width:600px;
-    margin:auto;
-    color:white;
+    width:100%;
+    max-width:420px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
 }
 
+/* 🔥 اللوجو */
 .logo{
-    font-size:36px;
+    font-size:32px;
     font-weight:bold;
-    margin-top:20px;
+    margin-bottom:20px;
 }
 
+/* 💰 كرت الرصيد */
 .balance{
-    background:rgba(255,255,255,0.15);
+    background:rgba(0, 200, 83, 0.15);
+    border:1px solid rgba(0, 200, 83, 0.4);
     padding:20px;
     border-radius:15px;
-    margin-top:20px;
+    font-size:20px;
+    margin-bottom:20px;
 }
 
-.balance h2{
-    margin:0;
-}
-
-.balance span{
-    font-size:32px;
-    color:gold;
-}
-
-.card{
-    background:rgba(255,255,255,0.15);
-    padding:15px;
-    border-radius:15px;
-    margin-top:15px;
-}
-
-button{
-    width:100%;
-    padding:15px;
+/* ✍️ الحقول */
+input{
+    width:90%;
+    padding:12px;
     margin-top:10px;
     border:none;
     border-radius:10px;
-    font-size:18px;
-    cursor:pointer;
+    outline:none;
+    font-size:15px;
 }
-</style></head><body><div class="overlay"><div class="container"><div class="logo">
-💰 Chanci-app
-</div><div class="balance">
-<h2>رصيدك</h2>
-<span id="balance">0</span>
-</div><div class="card">
-<h3>🎮 الألعاب</h3>
-<p>ألعاب بالنقاط التي يمنحها المدير.</p>
-<button>دخول الألعاب</button>
-</div><div class="card">
-<h3>🎟️ القسائم</h3>
-<p>شراء وإدارة القسائم.</p>
-<button>القسائم</button>
-</div><div class="card">
-<h3>🏆 السحوبات</h3>
-<p>عرض السحوبات والجوائز.</p>
-<button>السحوبات</button>
-</div></div></div><script>
-document.getElementById("balance").innerText = "3000";
-</script></body>
+
+/* 🔘 الأزرار */
+button{
+    width:90%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:12px;
+    font-size:15px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+/* 🟢 زر الدخول */
+.login-btn{
+    background:linear-gradient(45deg,#00c853,#00e676);
+    color:white;
+    font-weight:bold;
+}
+
+.login-btn:hover{
+    transform:scale(1.03);
+}
+
+/* 🔴 زر خروج */
+.logout-btn{
+    background:linear-gradient(45deg,#ff5252,#ff1744);
+    color:white;
+}
+
+/* 🎮 أقسام الألعاب */
+.section{
+    margin-top:20px;
+    text-align:right;
+}
+
+.section h3{
+    margin-bottom:10px;
+    font-size:16px;
+    opacity:0.9;
+}
+
+/* 🎯 أزرار الألعاب */
+.game-btn{
+    background:rgba(255,255,255,0.12);
+    color:white;
+}
+
+.game-btn:hover{
+    background:rgba(255,255,255,0.2);
+    transform:translateY(-2px);
+}
+
+/* 👇 شاشة مخفية */
+.hidden{
+    display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+
+<div class="container">
+
+    <!-- 🔥 اللوجو -->
+    <div class="logo">🎮 Chanci App</div>
+
+    <!-- 🔑 تسجيل الدخول -->
+    <div id="loginBox">
+        <input type="text" placeholder="اسم المستخدم" id="username">
+        <button class="login-btn" onclick="login()">دخول</button>
+    </div>
+
+    <!-- 📊 الداشبورد -->
+    <div id="dashboard" class="hidden">
+
+        <div class="balance">
+            💰 الرصيد: <span id="balance">0</span>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">تسجيل خروج</button>
+
+        <!-- 🎮 الألعاب -->
+        <div class="section">
+            <h3>🎮 الألعاب</h3>
+            <button class="game-btn">🎁 فتح الصندوق</button>
+            <button class="game-btn">🎰 عجلة الحظ</button>
+        </div>
+
+        <!-- 🎟️ القسائم -->
+        <div class="section">
+            <h3>🎟️ القسائم</h3>
+            <button class="game-btn">شراء قسيمة</button>
+        </div>
+
+        <!-- 🏆 السحب -->
+        <div class="section">
+            <h3>🏆 السحب اليومي</h3>
+            <button class="game-btn">دخول السحب</button>
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+// 🔓 دخول (مؤقت بدون Firebase الآن)
+function login(){
+    let username = document.getElementById("username").value;
+
+    if(!username){
+        alert("اكتب اسم المستخدم");
+        return;
+    }
+
+    document.getElementById("loginBox").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+
+    // رصيد تجريبي
+    document.getElementById("balance").innerText = 100;
+}
+
+// 🔒 خروج
+function logout(){
+    document.getElementById("loginBox").classList.remove("hidden");
+    document.getElementById("dashboard").classList.add("hidden");
+}
+
+</script>
+
+</body>
 </html>
