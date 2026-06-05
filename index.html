@@ -9,7 +9,7 @@
   body {
     margin: 0;
     font-family: 'Cairo', sans-serif;
-    background: #0e0e0e url('https://i.ibb.co/0y6x0z1/bg-dark.png') no-repeat center center/cover;
+    background: linear-gradient(180deg, #0e0e0e 0%, #1a1a1a 100%);
     color: #fff;
   }
   .login-container {
@@ -22,61 +22,61 @@
     text-align: center;
   }
   .login-container h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
+    font-size: 50px;
+    margin-bottom: 25px;
     color: gold;
-    text-shadow: 0 0 10px #ffd700;
+    text-shadow: 0 0 12px #ffd700;
   }
   .login-box {
-    background: rgba(20,20,20,0.85);
-    padding: 40px;
-    border-radius: 15px;
+    background: rgba(30,30,30,0.9);
+    padding: 45px;
+    border-radius: 20px;
     width: 100%;
-    max-width: 400px;
-    box-shadow: 0 0 30px rgba(255,215,0,0.5);
+    max-width: 450px;
+    box-shadow: 0 0 40px rgba(255,215,0,0.5);
   }
   .login-box input {
     width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 10px;
+    padding: 18px;
+    margin: 12px 0;
+    border-radius: 12px;
     border: none;
     outline: none;
-    font-size: 16px;
+    font-size: 17px;
   }
   .login-box button {
     width: 100%;
-    padding: 15px;
-    margin-top: 20px;
+    padding: 18px;
+    margin-top: 25px;
     background: gold;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     color: #000;
-    font-size: 18px;
+    font-size: 19px;
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
   }
   .login-box button:hover {
-    background: #ffea00;
-    box-shadow: 0 0 20px #ffd700;
+    background: #ffd700;
   }
   .features {
     display: flex;
     justify-content: space-around;
-    margin-top: 30px;
+    margin-top: 35px;
   }
   .feature-card {
     text-align: center;
     color: #fff;
   }
   .feature-card img {
-    width: 60px;
-    margin-bottom: 10px;
+    width: 65px;
+    margin-bottom: 12px;
   }
   .feature-card span {
     display: block;
     margin-top: 5px;
+    font-weight: bold;
   }
 </style>
 </head>
@@ -87,7 +87,7 @@
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور">
     <button onclick="login()">تسجيل الدخول</button>
-    <p id="message" style="color: red; margin-top: 10px;"></p>
+    <p id="message" style="color: red; margin-top: 12px;"></p>
   </div>
   <div class="features">
     <div class="feature-card">
@@ -112,51 +112,51 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-  // إعداد Firebase (استبدل بالبيانات الخاصة بك)
-  const firebaseConfig = {
-    apiKey: "API_KEY_HERE",
-    authDomain: "PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://PROJECT_ID-default-rtdb.firebaseio.com",
-    projectId: "PROJECT_ID",
-    storageBucket: "PROJECT_ID.appspot.com",
-    messagingSenderId: "SENDER_ID",
-    appId: "APP_ID"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
+const firebaseConfig = {
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
+  authDomain: "chanci-app.firebaseapp.com",
+  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+  projectId: "chanci-app",
+  storageBucket: "chanci-app.firebasestorage.app",
+  messagingSenderId: "18416485348",
+  appId: "1:18416485348:web:12176965505080897b3df1",
+  measurementId: "G-6YXX3SS61D"
+};
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
-  function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const messageEl = document.getElementById('message');
+function login() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const messageEl = document.getElementById('message');
 
-    if(!username || !password) {
-      messageEl.innerText = "يرجى إدخال اسم المستخدم وكلمة المرور.";
-      return;
-    }
+  if(!username || !password) {
+    messageEl.innerText = "يرجى إدخال اسم المستخدم وكلمة المرور.";
+    return;
+  }
 
-    database.ref('users/' + username).get().then((snapshot) => {
-      if(snapshot.exists()) {
-        const userData = snapshot.val();
-        if(userData.password === password) {
-          messageEl.style.color = 'lime';
-          messageEl.innerText = "تم تسجيل الدخول بنجاح!";
-          localStorage.setItem('currentUser', username);
-          setTimeout(()=> { window.location.href = 'dashboard.html'; }, 1000);
-        } else {
-          messageEl.style.color = 'red';
-          messageEl.innerText = "كلمة المرور خاطئة.";
-        }
+  database.ref('users/' + username).get().then((snapshot) => {
+    if(snapshot.exists()) {
+      const userData = snapshot.val();
+      if(String(userData.password) === String(password)) {
+        messageEl.style.color = 'lime';
+        messageEl.innerText = "تم تسجيل الدخول بنجاح!";
+        localStorage.setItem('currentUser', username);
+        setTimeout(()=> { window.location.href = 'dashboard.html'; }, 1000);
       } else {
         messageEl.style.color = 'red';
-        messageEl.innerText = "اسم المستخدم غير موجود.";
+        messageEl.innerText = "كلمة المرور خاطئة.";
       }
-    }).catch((err) => {
+    } else {
       messageEl.style.color = 'red';
-      messageEl.innerText = "حدث خطأ، حاول مرة أخرى.";
-      console.error(err);
-    });
-  }
+      messageEl.innerText = "اسم المستخدم غير موجود.";
+    }
+  }).catch((err) => {
+    messageEl.style.color = 'red';
+    messageEl.innerText = "حدث خطأ، حاول مرة أخرى.";
+    console.error(err);
+  });
+}
 </script>
 </body>
 </html>
