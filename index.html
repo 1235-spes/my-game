@@ -6,89 +6,221 @@
 <title>Gold App</title>
 
 <style>
-/* =========================
-   الأساس والألوان
-========================= */
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', sans-serif;}
-body{background: radial-gradient(circle at top, #1a1a1a, #0d0d0d); color:white; min-height:100vh;}
-:root{--gold:#d4af37; --gold2:#f5d76e; --card:#151515;}
 
 /* =========================
-   Glow + نص ذهبي
+   الأساس
 ========================= */
-.glow{box-shadow:0 0 15px rgba(212,175,55,0.3);}
-.gold{color:var(--gold);}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
+    color:white;
+    min-height:100vh;
+}
+
+:root{
+    --gold:#d4af37;
+    --gold2:#f5d76e;
+    --card:#151515;
+}
 
 /* =========================
-   Login Screen
+   Glow
 ========================= */
-.login-screen{height:100vh; display:flex; justify-content:center; align-items:center;}
-.login-box{width:350px; background:var(--card); padding:30px; border-radius:15px; border:1px solid rgba(212,175,55,0.3); text-align:center;}
-.login-box h2{margin-bottom:20px;}
-input{width:100%; padding:12px; margin:10px 0; background:#111; border:1px solid rgba(212,175,55,0.2); color:white; border-radius:8px;}
-button{width:100%; padding:12px; background:var(--gold); border:none; border-radius:8px; font-weight:bold; cursor:pointer; transition:0.3s;}
-button:hover{background:var(--gold2);}
+.glow{
+    box-shadow:0 0 15px rgba(212,175,55,0.3);
+}
+
+.gold{
+    color:var(--gold);
+}
 
 /* =========================
-   Dashboard Layout
+   LOGIN
 ========================= */
-.container{display:none;}
-.sidebar{width:240px; background:#111; position:fixed; height:100%; padding:20px; border-right:1px solid rgba(212,175,55,0.2);}
-.sidebar h2{color:var(--gold); margin-bottom:30px;}
-.sidebar a{display:block; color:white; padding:10px; margin:8px 0; text-decoration:none; border-radius:8px; transition:0.3s; cursor:pointer;}
-.sidebar a:hover{background:rgba(212,175,55,0.1);}
-.main{margin-left:240px; padding:20px;}
-.header{display:flex; justify-content:space-between; align-items:center; padding:15px; background:#141414; border-radius:12px; border:1px solid rgba(212,175,55,0.2);}
-.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px; margin-top:20px;}
-.card{background:var(--card); padding:20px; border-radius:12px; border:1px solid rgba(212,175,55,0.1);}
+.login-screen{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-box{
+    width:350px;
+    background:var(--card);
+    padding:30px;
+    border-radius:15px;
+    border:1px solid rgba(212,175,55,0.3);
+    text-align:center;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    background:#111;
+    border:1px solid rgba(212,175,55,0.2);
+    color:white;
+    border-radius:8px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:var(--gold);
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    background:var(--gold2);
+}
 
 /* =========================
-   Sections: Games, Coupons, Transactions, Admin
+   APP
+========================= */
+.container{
+    display:none;
+}
+
+.sidebar{
+    width:240px;
+    background:#111;
+    position:fixed;
+    height:100%;
+    padding:20px;
+    border-right:1px solid rgba(212,175,55,0.2);
+}
+
+.sidebar h2{
+    color:var(--gold);
+    margin-bottom:30px;
+}
+
+.sidebar a{
+    display:block;
+    color:white;
+    padding:10px;
+    margin:8px 0;
+    text-decoration:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.sidebar a:hover{
+    background:rgba(212,175,55,0.1);
+}
+
+.main{
+    margin-left:240px;
+    padding:20px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+    background:#141414;
+    border-radius:12px;
+    border:1px solid rgba(212,175,55,0.2);
+}
+
+/* =========================
+   Sections
 ========================= */
 .section{margin-top:30px;}
-.section h3{margin-bottom:15px; color:var(--gold);}
-.game-list, .coupon-list, .transactions, .user-list{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;}
-.game-card, .coupon-card, .transaction-card, .user-card{background:var(--card); padding:15px; border-radius:12px; border:1px solid rgba(212,175,55,0.1); transition:0.3s;}
-.game-card:hover, .coupon-card:hover, .user-card:hover{transform:translateY(-5px); box-shadow:0 0 15px rgba(212,175,55,0.2);}
-.transaction-card{display:flex; justify-content:space-between; align-items:center;}
-.transaction-card span{color:var(--gold); font-weight:bold;}
-.user-card{display:flex; justify-content:space-between; align-items:center;}
-.user-card button{padding:5px 10px; font-size:12px; cursor:pointer; border:none; border-radius:6px; background:var(--gold); color:#000; transition:0.3s;}
-.user-card button:hover{background:var(--gold2);}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+}
+
+.card{
+    background:var(--card);
+    padding:20px;
+    border-radius:12px;
+    border:1px solid rgba(212,175,55,0.1);
+}
+
+.game-list,.coupon-list,.transactions,.user-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+}
+
+.game-card,.coupon-card,.transaction-card,.user-card{
+    background:var(--card);
+    padding:15px;
+    border-radius:12px;
+    border:1px solid rgba(212,175,55,0.1);
+}
+
+.transaction-card{
+    display:flex;
+    justify-content:space-between;
+}
+
+.user-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.user-card button{
+    width:auto;
+    margin-left:5px;
+    padding:5px 10px;
+    font-size:12px;
+}
 
 /* =========================
-   Admin Form
+   Admin form
 ========================= */
-#adminForm input{width:calc(100% - 20px); margin-bottom:10px; padding:10px; border-radius:8px; border:1px solid rgba(212,175,55,0.2); background:#111; color:white;}
-#adminForm button{margin-top:5px;}
+#adminForm input{
+    width:100%;
+    margin:5px 0;
+    padding:10px;
+    background:#111;
+    border:1px solid rgba(212,175,55,0.2);
+    color:white;
+    border-radius:8px;
+}
 
 /* =========================
    Responsive
 ========================= */
 @media(max-width:768px){
-    .sidebar{width:70px; padding:10px;}
-    .main{margin-left:70px;}
+    .sidebar{width:70px}
+    .main{margin-left:70px}
 }
+
 </style>
+
 </head>
+
 <body>
 
-<!-- =========================
-     LOGIN
-========================= -->
+<!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
     <div class="login-box glow">
         <h2 class="gold">تسجيل الدخول</h2>
-        <input type="text" id="username" placeholder="اسم المستخدم">
+        <input id="username" placeholder="اسم المستخدم">
         <input type="password" id="password" placeholder="كلمة المرور">
         <button onclick="login()">دخول</button>
-        <p id="error" style="color:red;margin-top:10px;"></p>
+        <p id="error" style="color:red;"></p>
     </div>
 </div>
 
-<!-- =========================
-     DASHBOARD
-========================= -->
+<!-- APP -->
 <div class="container" id="app">
 
     <div class="sidebar">
@@ -96,65 +228,66 @@ button:hover{background:var(--gold2);}
         <a onclick="showSection('dashboard')">🏠 الرئيسية</a>
         <a onclick="showSection('games')">🎮 الألعاب</a>
         <a onclick="showSection('coupons')">🎫 القسائم</a>
-        <a onclick="showSection('balance')">💰 الرصيد</a>
         <a onclick="showSection('transactions')">📜 المعاملات</a>
         <a onclick="showSection('admin')">👑 المدير</a>
     </div>
 
     <div class="main">
 
-        <!-- Header -->
         <div class="header glow">
             <h3>مرحباً 👋 <span id="userDisplay"></span></h3>
             <button onclick="logout()">خروج</button>
         </div>
 
-        <!-- Sections -->
+        <!-- DASHBOARD -->
         <div id="dashboard" class="section">
             <div class="cards">
-                <div class="card"><h3 class="gold">الرصيد</h3><p>0 نقطة</p></div>
-                <div class="card"><h3 class="gold">الأرباح</h3><p>0 €</p></div>
-                <div class="card"><h3 class="gold">السحوبات</h3><p>0 طلب</p></div>
+                <div class="card"><h3 class="gold">الرصيد</h3><p>0</p></div>
+                <div class="card"><h3 class="gold">الأرباح</h3><p>0</p></div>
+                <div class="card"><h3 class="gold">السحوبات</h3><p>0</p></div>
             </div>
         </div>
 
+        <!-- GAMES -->
         <div id="games" class="section" style="display:none">
-            <h3>🎮 الألعاب</h3>
+            <h3 class="gold">🎮 الألعاب</h3>
             <div class="game-list">
-                <div class="game-card glow">لعبة 1</div>
-                <div class="game-card glow">لعبة 2</div>
-                <div class="game-card glow">لعبة 3</div>
+                <div class="game-card">لعبة 1</div>
+                <div class="game-card">لعبة 2</div>
             </div>
         </div>
 
+        <!-- COUPONS -->
         <div id="coupons" class="section" style="display:none">
-            <h3>🎫 القسائم</h3>
+            <h3 class="gold">🎫 القسائم</h3>
             <div class="coupon-list">
-                <div class="coupon-card glow">قسيمة 50 نقطة</div>
-                <div class="coupon-card glow">قسيمة 100 نقطة</div>
+                <div class="coupon-card">50 نقطة</div>
+                <div class="coupon-card">100 نقطة</div>
             </div>
         </div>
 
+        <!-- TRANSACTIONS -->
         <div id="transactions" class="section" style="display:none">
-            <h3>📜 آخر المعاملات</h3>
+            <h3 class="gold">📜 المعاملات</h3>
             <div class="transactions">
-                <div class="transaction-card"><span>+50</span> شراء قسيمة</div>
-                <div class="transaction-card"><span>-30</span> لعب لعبة</div>
+                <div class="transaction-card"><span>+50</span> شراء</div>
+                <div class="transaction-card"><span>-20</span> سحب</div>
             </div>
         </div>
 
+        <!-- ADMIN -->
         <div id="admin" class="section" style="display:none">
-            <h3>👑 لوحة المدير</h3>
 
-            <!-- Form لإنشاء المستخدم -->
-            <div id="adminForm" class="glow">
-                <input type="text" id="newUser" placeholder="اسم المستخدم">
-                <input type="number" id="newBalance" placeholder="الرصيد الابتدائي">
-                <button onclick="createUser()">إنشاء مستخدم</button>
+            <h3 class="gold">👑 لوحة التحكم</h3>
+
+            <div id="adminForm">
+                <input id="newUser" placeholder="اسم المستخدم">
+                <input id="newBalance" placeholder="الرصيد">
+                <button onclick="createUser()">إنشاء</button>
             </div>
 
-            <!-- قائمة المستخدمين -->
-            <div class="user-list" id="userList" style="margin-top:15px;"></div>
+            <div class="user-list" id="userList"></div>
+
         </div>
 
     </div>
@@ -162,8 +295,89 @@ button:hover{background:var(--gold2);}
 </div>
 
 <script>
-/* =========================
-   Login / Logout
-========================= */
+
+let users = [];
+
+/* LOGIN */
 function login(){
-    let user = document.getElementById("username").value
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if(user === "" || pass === ""){
+        document.getElementById("error").innerText = "املأ الحقول";
+        return;
+    }
+
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("userDisplay").innerText = user;
+}
+
+/* LOGOUT */
+function logout(){
+    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("app").style.display = "none";
+}
+
+/* NAV */
+function showSection(id){
+    document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+    document.getElementById(id).style.display="block";
+}
+
+/* CREATE USER */
+function createUser(){
+    let name = document.getElementById("newUser").value;
+    let balance = parseInt(document.getElementById("newBalance").value);
+
+    users.push({id:Date.now(), name, balance});
+    renderUsers();
+}
+
+/* RENDER USERS */
+function renderUsers(){
+    let list = document.getElementById("userList");
+    list.innerHTML="";
+
+    users.forEach(u=>{
+        list.innerHTML+=`
+        <div class="user-card">
+            <div>
+                <b>${u.name}</b><br>
+                💰 ${u.balance}
+            </div>
+            <div>
+                <button onclick="add(${u.id})">+</button>
+                <button onclick="remove(${u.id})">-</button>
+            </div>
+        </div>`;
+    });
+}
+
+/* ADD BALANCE */
+function add(id){
+    let amount = parseInt(prompt("المبلغ"));
+    users = users.map(u=>{
+        if(u.id===id) u.balance+=amount;
+        return u;
+    });
+    renderUsers();
+}
+
+/* REMOVE BALANCE */
+function remove(id){
+    let amount = parseInt(prompt("المبلغ"));
+    users = users.map(u=>{
+        if(u.id===id){
+            u.balance-=amount;
+            if(u.balance<0)u.balance=0;
+        }
+        return u;
+    });
+    renderUsers();
+}
+
+</script>
+
+</body>
+</html>
