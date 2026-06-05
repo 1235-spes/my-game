@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<style>
+body {margin:0;font-family:Arial;background:#0a0a0a;color:#fff;}
+.container {max-width:600px;margin:auto;padding:20px;}
+.box {background:#1c1c1c;padding:15px;border-radius:12px;margin-bottom:15px;}
+input,button {
+width:100%;padding:10px;margin:5px 0;border:none;border-radius:8px;
+}
+input {background:#2c2c2c;color:#fff;}
+button {background:gold;font-weight:bold;cursor:pointer;}
+.user {background:#111;padding:10px;margin:5px 0;border-radius:8px;}
+.red {background:red;color:#fff;}
+.green {background:green;color:#fff;}
+h2 {color:gold;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h2>👑 لوحة التحكم - doktor</h2>
+
+<!-- إضافة مستخدم -->
+<div class="box">
+<h3>➕ إضافة مستخدم</h3>
+<input id="newUser" placeholder="اسم المستخدم">
+<input id="newPass" placeholder="كلمة المرور">
+<input id="newBalance" placeholder="الرصيد" type="number">
+<button onclick="addUser()">إضافة</button>
+</div>
+
+<!-- عرض المستخدمين -->
+<div class="box">
+<h3>👥 المستخدمين</h3>
+<div id="usersList"></div>
+</div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
+  authDomain: "chanci-app.firebaseapp.com",
+  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+  projectId: "chanci-app",
+  storageBucket: "chanci-app.firebasestorage.app",
+  messagingSenderId: "18416485348",
+  appId: "1:18416485348:web:12176965505080897b3df1"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// حماية الصفحة
+const currentUser = localStorage.getItem("currentUser");
+if(currentUser !== "doktor"){
+  window.location.href = "index.html";
+}
+
+// ➕ إضافة مستخدم
+function addUser(){
+  const u = document.getElementById("newUser").value.trim();
+  const p = document.getElementById("newPass").value.trim();
+  const b = Number(document.getElementById("newBalance").value);
+
+  if(!u || !p){
+    alert("أدخل البيانات");
+    return;
+  }
+
+  db.ref("users/" + u).set({
+    password: p,
+    balance: b,
+    points: 0,
+    wins: 0
+  });
+
+  alert("تم إنشاء المستخدم: " + u);
+  loadUsers();
+}
+
+// 👀 تحميل المستخدمين
+function loadUsers(){
+  db.ref("users").on("value", snap=>{
+    const data = snap.val();
+    const list = document.getElementById("usersList");
+    list.innerHTML = "";
+
+    for(let u in data){
+      if(u === "doktor") continue;
+
+      list.innerHTML += `
+      <div class="user">
+        <b>${u}</b><br>
+        💰 ${data[u].balance || 0}
+        <br>
+        <button class="green" onclick="addBalance('${u}')">+10 رصيد</button>
+        <button class="red" onclick="deleteUser('${u}')">حذف</button>
+      </div>
+      `;
+    }
+  });
+}
+
+// 💰 زيادة رصيد
+function addBalance(user){
+  db.ref("users/" + user).once("value").then(snap=>{
+    let bal = snap.val().balance || 0;
+    db.ref("users/" + user).update({balance: bal + 10});
+  });
+}
+
+// ❌ حذف مستخدم
+function deleteUser(user){
+  db.ref("users/" + user).remove();
+}
+
+loadUsers();
+</script>
+
+</body>
+</html>
