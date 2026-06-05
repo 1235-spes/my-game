@@ -3,27 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chanci-App | لوحة التحكم</title>
+<title>Chanci-App - الموقع الكامل</title>
 <style>
 body {margin:0; font-family:Arial; background:#0a0a0a; color:#fff;}
-.container {max-width:600px; margin:auto; padding:20px;}
-.logo {text-align:center; font-size:36px; color:gold; margin-bottom:20px;}
+.container {max-width:480px; margin:auto; padding:20px;}
+.logo {text-align:center; font-size:36px; font-weight:bold; color: gold; margin-bottom: 10px;}
+.hidden {display:none;}
+/* تصميم تسجيل الدخول */
+.login-box {background:#1c1c1c; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 0 20px rgba(255,215,0,0.5); text-align:center;}
+.login-box input {width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none; background:#2c2c2c; color:#fff;}
+.login-box button {width:100%; padding:12px; background: gold; color:#000; font-weight:bold; border:none; border-radius:8px; cursor:pointer; margin-top:10px;}
+/* لوحة المستخدم */
+.balance-box {display:flex; justify-content:space-between; background:#1c1c1c; padding:20px; border-radius:12px; margin-bottom:20px; box-shadow:0 0 20px rgba(255,215,0,0.3);}
+.balance-box div{text-align:center;}
+.menu {display:flex; justify-content:space-between; margin-bottom:20px;}
+.menu div{text-align:center; flex:1; margin:0 5px; background:#1c1c1c; padding:15px; border-radius:12px; cursor:pointer; box-shadow:0 0 10px rgba(255,215,0,0.4);}
+.menu div img{width:40px; margin-bottom:8px;}
+.menu div span{display:block; font-size:14px; font-weight:bold; color:gold;}
+.games-section{display:flex; overflow-x:auto; gap:15px;}
+.game-card{min-width:120px; background:#1c1c1c; border-radius:12px; padding:10px; text-align:center; box-shadow:0 0 10px rgba(255,215,0,0.3);}
+.game-card img{width:60px; margin-bottom:5px;}
+.game-card button{width:100%; padding:6px; background:gold; border:none; border-radius:6px; cursor:pointer; color:#000; font-weight:bold;}
+.logout-btn{background:red; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; margin-top:10px; width:100%;}
+/* لوحة التحكم */
 .admin-box input, .admin-box button {width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;}
 .admin-box input {background:#2c2c2c; color:#fff;}
 .admin-box button {background:gold; color:#000; font-weight:bold; cursor:pointer;}
 .user-card {background:#1c1c1c; padding:15px; border-radius:12px; margin-bottom:10px; box-shadow:0 0 10px rgba(255,215,0,0.3);}
-.logout-btn{background:red; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; margin-top:10px; width:100%;}
 </style>
 </head>
 <body>
-<div class="container admin-box">
+<div class="container">
+
+<!-- تسجيل الدخول -->
+<div class="login-box" id="loginBox">
+  <div class="logo">Chanci-App</div>
+  <h2>مرحباً بك</h2>
+  <p>سجّل للدخول للمتابعة</p>
+  <input type="text" id="username" placeholder="اسم المستخدم">
+  <input type="password" id="password" placeholder="كلمة المرور">
+  <button onclick="login()">دخول</button>
+</div>
+
+<!-- لوحة المستخدم -->
+<div class="dashboard hidden" id="dashboard">
+  <div class="logo">Chanci-App</div>
+  <div id="welcome"></div>
+  <div class="balance-box">
+    <div><h3>الرصيد</h3><p id="balance">0</p></div>
+    <div><h3>الأرباح</h3><p id="earnings">0</p></div>
+  </div>
+  <div class="menu">
+    <div><img src="https://img.icons8.com/ios-filled/50/FFD700/game-controller.png"/><span>الألعاب</span></div>
+    <div><img src="https://img.icons8.com/ios-filled/50/00FF00/discount.png"/><span>القسائم</span></div>
+    <div><img src="https://img.icons8.com/ios-filled/50/FFD700/roulette.png"/><span>السحوبات</span></div>
+  </div>
+  <h3>الألعاب المميزة</h3>
+  <div class="games-section">
+    <div class="game-card"><img src="https://img.icons8.com/ios-filled/50/FFD700/roulette.png"/><p>Fortune Wheel</p><button>العب الآن</button></div>
+    <div class="game-card"><img src="https://img.icons8.com/ios-filled/50/FFD700/slot-machine.png"/><p>Lucky Slots</p><button>العب الآن</button></div>
+  </div>
+  <button class="logout-btn" onclick="logout()">تسجيل خروج</button>
+</div>
+
+<!-- لوحة التحكم -->
+<div class="admin-box hidden" id="adminBox">
   <div class="logo">لوحة التحكم - doktor</div>
   <h3>إنشاء مستخدم جديد</h3>
   <input type="text" id="newUser" placeholder="اسم المستخدم">
   <input type="password" id="newPass" placeholder="كلمة المرور">
   <input type="number" id="newBalance" placeholder="الرصيد الابتدائي" value="0">
   <button onclick="createUser()">إنشاء المستخدم</button>
-
   <div class="user-list" id="userList"></div>
   <button class="logout-btn" onclick="adminLogout()">تسجيل خروج</button>
 </div>
@@ -44,6 +94,54 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+// تسجيل الدخول
+function login(){
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value.trim();
+
+  if(user === "doktor" && pass === "123456"){
+    localStorage.setItem('currentUser','doktor');
+    showAdmin();
+    return;
+  }
+
+  db.ref('users/'+user).get().then(snapshot=>{
+    if(snapshot.exists() && snapshot.val().password === pass){
+      localStorage.setItem('currentUser',user);
+      showDashboard(user, snapshot.val());
+    } else {
+      alert("اسم المستخدم أو كلمة المرور خاطئة");
+    }
+  });
+}
+
+// عرض لوحة المستخدم
+function showDashboard(user,data){
+  document.getElementById('loginBox').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+  document.getElementById('welcome').innerHTML = "<h2>مرحباً "+user+"</h2>";
+  document.getElementById('balance').innerText = data.balance || 0;
+  document.getElementById('earnings').innerText = data.earnings || 0;
+}
+
+// عرض لوحة التحكم
+function showAdmin(){
+  document.getElementById('loginBox').classList.add('hidden');
+  document.getElementById('adminBox').classList.remove('hidden');
+  loadUsers();
+}
+
+// تسجيل خروج
+function logout(){
+  localStorage.removeItem('currentUser');
+  location.reload();
+}
+function adminLogout(){
+  localStorage.removeItem('currentUser');
+  location.reload();
+}
+
+// لوحة تحكم المدير
 function createUser(){
   const username = document.getElementById('newUser').value.trim();
   const password = document.getElementById('newPass').value.trim();
@@ -71,11 +169,19 @@ function loadUsers(){
   });
 }
 
-function adminLogout(){ localStorage.removeItem('currentUser'); window.location.href='index.html'; }
-
-const currentUser = localStorage.getItem('currentUser');
-if(currentUser !== "doktor") window.location.href='index.html';
-loadUsers();
+// إذا كان هناك مستخدم مسجل في LocalStorage عند تحميل الصفحة
+window.onload = function(){
+  const currentUser = localStorage.getItem('currentUser');
+  if(currentUser === "doktor"){
+    showAdmin();
+  } else if(currentUser){
+    db.ref('users/'+currentUser).get().then(snapshot=>{
+      if(snapshot.exists()){
+        showDashboard(currentUser, snapshot.val());
+      }
+    });
+  }
+}
 </script>
 </body>
 </html>
