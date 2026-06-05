@@ -3,380 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gold App</title>
-
+<title>لوحة الألعاب الاحترافية</title>
 <style>
+*{margin:0;padding:0;box-sizing:border-box;font-family: Arial, sans-serif;}
+body{background: linear-gradient(135deg,#0f172a,#1e293b);color:white;overflow-x:hidden;}
 
-/* =========================
-   الأساس
-========================= */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI', sans-serif;
+/* HEADER */
+header{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:20px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); position:sticky; top:0;
 }
+.logo{font-size:24px; font-weight:bold; color:#facc15; animation: fadeDown 1s ease;}
+.balance{background:#22c55e; padding:10px 15px; border-radius:12px; font-weight:bold; animation: pulse 2s infinite;}
 
-body{
-    background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
-    color:white;
-    min-height:100vh;
-}
-
-:root{
-    --gold:#d4af37;
-    --gold2:#f5d76e;
-    --card:#151515;
-}
-
-/* =========================
-   Glow
-========================= */
-.glow{
-    box-shadow:0 0 15px rgba(212,175,55,0.3);
-}
-
-.gold{
-    color:var(--gold);
-}
-
-/* =========================
-   LOGIN
-========================= */
-.login-screen{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.login-box{
-    width:350px;
-    background:var(--card);
-    padding:30px;
-    border-radius:15px;
-    border:1px solid rgba(212,175,55,0.3);
-    text-align:center;
-}
-
-input{
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-    background:#111;
-    border:1px solid rgba(212,175,55,0.2);
-    color:white;
-    border-radius:8px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    background:var(--gold);
-    border:none;
-    border-radius:8px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-button:hover{
-    background:var(--gold2);
-}
-
-/* =========================
-   APP
-========================= */
+/* MAIN CONTAINER */
 .container{
-    display:none;
+  padding:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-top:20px;
 }
 
-.sidebar{
-    width:240px;
-    background:#111;
-    position:fixed;
-    height:100%;
-    padding:20px;
-    border-right:1px solid rgba(212,175,55,0.2);
-}
-
-.sidebar h2{
-    color:var(--gold);
-    margin-bottom:30px;
-}
-
-.sidebar a{
-    display:block;
-    color:white;
-    padding:10px;
-    margin:8px 0;
-    text-decoration:none;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-.sidebar a:hover{
-    background:rgba(212,175,55,0.1);
-}
-
-.main{
-    margin-left:240px;
-    padding:20px;
-}
-
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px;
-    background:#141414;
-    border-radius:12px;
-    border:1px solid rgba(212,175,55,0.2);
-}
-
-/* =========================
-   Sections
-========================= */
-.section{margin-top:30px;}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:15px;
-}
-
+/* CARDS */
 .card{
-    background:var(--card);
-    padding:20px;
-    border-radius:12px;
-    border:1px solid rgba(212,175,55,0.1);
+  background: rgba(255,255,255,0.08);
+  padding:20px;
+  border-radius:15px;
+  text-align:center;
+  transition:0.3s;
+  cursor:pointer;
+  animation: fadeUp 0.8s ease;
+}
+.card:hover{
+  transform:translateY(-8px) scale(1.03);
+  background: rgba(255,255,255,0.15);
 }
 
-.game-list,.coupon-list,.transactions,.user-list{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:15px;
+/* BUTTONS */
+button{
+  margin-top:10px;
+  padding:10px 15px;
+  border:none; border-radius:10px;
+  background:#38bdf8; color:black; font-weight:bold; cursor:pointer; transition:0.3s;
 }
+button:hover{background:#0ea5e9; transform:scale(1.05);}
 
-.game-card,.coupon-card,.transaction-card,.user-card{
-    background:var(--card);
-    padding:15px;
-    border-radius:12px;
-    border:1px solid rgba(212,175,55,0.1);
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0; transform:translateY(20px);}to{opacity:1; transform:translateY(0);}}
+@keyframes fadeDown{from{opacity:0; transform:translateY(-20px);}to{opacity:1; transform:translateY(0);}}
+@keyframes pulse{0%{transform:scale(1);}50%{transform:scale(1.05);}100%{transform:scale(1);}}
+
+/* MODAL */
+.modal{
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.7);
+  display:none; justify-content:center; align-items:center;
 }
-
-.transaction-card{
-    display:flex;
-    justify-content:space-between;
+.modal-content{
+  background:#1e293b; padding:20px; border-radius:15px; width:300px; text-align:center;
+  animation: fadeUp 0.5s ease;
 }
-
-.user-card{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.user-card button{
-    width:auto;
-    margin-left:5px;
-    padding:5px 10px;
-    font-size:12px;
-}
-
-/* =========================
-   Admin form
-========================= */
-#adminForm input{
-    width:100%;
-    margin:5px 0;
-    padding:10px;
-    background:#111;
-    border:1px solid rgba(212,175,55,0.2);
-    color:white;
-    border-radius:8px;
-}
-
-/* =========================
-   Responsive
-========================= */
-@media(max-width:768px){
-    .sidebar{width:70px}
-    .main{margin-left:70px}
-}
-
 </style>
-
 </head>
-
 <body>
 
-<!-- LOGIN -->
-<div class="login-screen" id="loginScreen">
-    <div class="login-box glow">
-        <h2 class="gold">تسجيل الدخول</h2>
-        <input id="username" placeholder="اسم المستخدم">
-        <input type="password" id="password" placeholder="كلمة المرور">
-        <button onclick="login()">دخول</button>
-        <p id="error" style="color:red;"></p>
-    </div>
+<header>
+  <div class="logo">🎮 لوحة الألعاب</div>
+  <div class="balance">💰 الرصيد: 0</div>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h3>🎡 عجلة الحظ</h3>
+    <button onclick="openModal()">تشغيل</button>
+  </div>
+  <div class="card">
+    <h3>🎁 المكافآت</h3>
+    <button>استلام</button>
+  </div>
+  <div class="card">
+    <h3>👤 الحساب</h3>
+    <button>عرض</button>
+  </div>
 </div>
 
-<!-- APP -->
-<div class="container" id="app">
-
-    <div class="sidebar">
-        <h2 class="gold">GOLD</h2>
-        <a onclick="showSection('dashboard')">🏠 الرئيسية</a>
-        <a onclick="showSection('games')">🎮 الألعاب</a>
-        <a onclick="showSection('coupons')">🎫 القسائم</a>
-        <a onclick="showSection('transactions')">📜 المعاملات</a>
-        <a onclick="showSection('admin')">👑 المدير</a>
-    </div>
-
-    <div class="main">
-
-        <div class="header glow">
-            <h3>مرحباً 👋 <span id="userDisplay"></span></h3>
-            <button onclick="logout()">خروج</button>
-        </div>
-
-        <!-- DASHBOARD -->
-        <div id="dashboard" class="section">
-            <div class="cards">
-                <div class="card"><h3 class="gold">الرصيد</h3><p>0</p></div>
-                <div class="card"><h3 class="gold">الأرباح</h3><p>0</p></div>
-                <div class="card"><h3 class="gold">السحوبات</h3><p>0</p></div>
-            </div>
-        </div>
-
-        <!-- GAMES -->
-        <div id="games" class="section" style="display:none">
-            <h3 class="gold">🎮 الألعاب</h3>
-            <div class="game-list">
-                <div class="game-card">لعبة 1</div>
-                <div class="game-card">لعبة 2</div>
-            </div>
-        </div>
-
-        <!-- COUPONS -->
-        <div id="coupons" class="section" style="display:none">
-            <h3 class="gold">🎫 القسائم</h3>
-            <div class="coupon-list">
-                <div class="coupon-card">50 نقطة</div>
-                <div class="coupon-card">100 نقطة</div>
-            </div>
-        </div>
-
-        <!-- TRANSACTIONS -->
-        <div id="transactions" class="section" style="display:none">
-            <h3 class="gold">📜 المعاملات</h3>
-            <div class="transactions">
-                <div class="transaction-card"><span>+50</span> شراء</div>
-                <div class="transaction-card"><span>-20</span> سحب</div>
-            </div>
-        </div>
-
-        <!-- ADMIN -->
-        <div id="admin" class="section" style="display:none">
-
-            <h3 class="gold">👑 لوحة التحكم</h3>
-
-            <div id="adminForm">
-                <input id="newUser" placeholder="اسم المستخدم">
-                <input id="newBalance" placeholder="الرصيد">
-                <button onclick="createUser()">إنشاء</button>
-            </div>
-
-            <div class="user-list" id="userList"></div>
-
-        </div>
-
-    </div>
-
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h3>🎡 قريباً!</h3>
+    <p>سيتم إضافة عجلة الحظ</p>
+    <button onclick="closeModal()">إغلاق</button>
+  </div>
 </div>
 
 <script>
-
-let users = [];
-
-/* LOGIN */
-function login(){
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
-
-    if(user === "" || pass === ""){
-        document.getElementById("error").innerText = "املأ الحقول";
-        return;
-    }
-
-    document.getElementById("loginScreen").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    document.getElementById("userDisplay").innerText = user;
-}
-
-/* LOGOUT */
-function logout(){
-    document.getElementById("loginScreen").style.display = "flex";
-    document.getElementById("app").style.display = "none";
-}
-
-/* NAV */
-function showSection(id){
-    document.querySelectorAll(".section").forEach(s=>s.style.display="none");
-    document.getElementById(id).style.display="block";
-}
-
-/* CREATE USER */
-function createUser(){
-    let name = document.getElementById("newUser").value;
-    let balance = parseInt(document.getElementById("newBalance").value);
-
-    users.push({id:Date.now(), name, balance});
-    renderUsers();
-}
-
-/* RENDER USERS */
-function renderUsers(){
-    let list = document.getElementById("userList");
-    list.innerHTML="";
-
-    users.forEach(u=>{
-        list.innerHTML+=`
-        <div class="user-card">
-            <div>
-                <b>${u.name}</b><br>
-                💰 ${u.balance}
-            </div>
-            <div>
-                <button onclick="add(${u.id})">+</button>
-                <button onclick="remove(${u.id})">-</button>
-            </div>
-        </div>`;
-    });
-}
-
-/* ADD BALANCE */
-function add(id){
-    let amount = parseInt(prompt("المبلغ"));
-    users = users.map(u=>{
-        if(u.id===id) u.balance+=amount;
-        return u;
-    });
-    renderUsers();
-}
-
-/* REMOVE BALANCE */
-function remove(id){
-    let amount = parseInt(prompt("المبلغ"));
-    users = users.map(u=>{
-        if(u.id===id){
-            u.balance-=amount;
-            if(u.balance<0)u.balance=0;
-        }
-        return u;
-    });
-    renderUsers();
-}
-
+function openModal(){document.getElementById("modal").style.display="flex";}
+function closeModal(){document.getElementById("modal").style.display="none";}
 </script>
 
 </body>
