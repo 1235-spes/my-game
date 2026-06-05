@@ -3,297 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chanci App - Gaming Platform</title>
-
+<title>Chanci-App | تسجيل الدخول</title>
 <style>
-body{
-margin:0;
-font-family:Arial;
-background: radial-gradient(circle at top,#0f0f0f,#000);
-color:white;
-}
-
-/* TOP BAR */
-.topbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px;
-background: rgba(0,0,0,0.7);
-border-bottom:1px solid rgba(255,215,0,0.3);
-position:sticky;
-top:0;
-backdrop-filter: blur(10px);
-}
-
-.logo{
-font-size:20px;
-font-weight:bold;
-color:gold;
-letter-spacing:2px;
-text-shadow:0 0 10px gold;
-}
-
-.user-box{
-display:flex;
-gap:10px;
-align-items:center;
-}
-
-.balance{
-background: linear-gradient(45deg,gold,#ffcc00);
-color:black;
-padding:6px 12px;
-border-radius:20px;
-font-weight:bold;
-box-shadow:0 0 10px gold;
-animation:pulse 2s infinite;
-}
-
-/* HERO */
-.hero{
-padding:20px;
-text-align:center;
-}
-
-.hero h1{
-color:gold;
-font-size:22px;
-margin-bottom:5px;
-}
-
-.hero p{
-opacity:0.7;
-font-size:13px;
-}
-
-/* STATS */
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
-padding:10px 15px;
-}
-
-.stat{
-background: rgba(255,255,255,0.05);
-border:1px solid rgba(255,215,0,0.2);
-border-radius:12px;
-padding:10px;
-text-align:center;
-}
-
-.stat h3{
-color:gold;
-margin:0;
-font-size:14px;
-}
-
-/* GAMES */
-.section-title{
-padding:10px 15px;
-color:gold;
-font-weight:bold;
-}
-
-.games{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-padding:10px 15px;
-}
-
-.game{
-background: rgba(255,255,255,0.05);
-border:1px solid rgba(255,215,0,0.2);
-border-radius:15px;
-padding:15px;
-text-align:center;
-transition:0.3s;
-cursor:pointer;
-}
-
-.game:hover{
-transform:translateY(-6px) scale(1.03);
-border-color:gold;
-box-shadow:0 0 15px gold;
-}
-
-.game h4{
-color:gold;
-margin:10px 0 5px;
-}
-
-.play-btn{
-background:gold;
-border:none;
-padding:6px 12px;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
-
-.play-btn:hover{
-transform:scale(1.05);
-background:#ffcc00;
-}
-
-/* FOOTER NAV */
-.nav{
-position:fixed;
-bottom:0;
-width:100%;
-display:flex;
-justify-content:space-around;
-padding:10px;
-background: rgba(0,0,0,0.8);
-border-top:1px solid rgba(255,215,0,0.2);
-}
-
-.nav div{
-text-align:center;
-font-size:12px;
-opacity:0.8;
-}
-
-/* MODAL */
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background: rgba(0,0,0,0.8);
-display:none;
-justify-content:center;
-align-items:center;
-}
-
-.modal-box{
-background:#111;
-border:1px solid gold;
-padding:20px;
-border-radius:15px;
-text-align:center;
-width:80%;
-max-width:300px;
-animation:fade 0.3s;
-}
-
-@keyframes fade{
-from{transform:scale(0.8);opacity:0;}
-to{transform:scale(1);opacity:1;}
-}
-
-@keyframes pulse{
-0%{transform:scale(1);}
-50%{transform:scale(1.05);}
-100%{transform:scale(1);}
-}
+body {margin:0; font-family:Arial; background:#0a0a0a; color:#fff;}
+.container {max-width:480px; margin:auto; padding:20px;}
+.logo {text-align:center; font-size:36px; font-weight:bold; color: gold; margin-bottom: 10px;}
+.login-box {background:#1c1c1c; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 0 20px rgba(255,215,0,0.5); text-align:center;}
+.login-box input {width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none; background:#2c2c2c; color:#fff;}
+.login-box button {width:100%; padding:12px; background: gold; color:#000; font-weight:bold; border:none; border-radius:8px; cursor:pointer; margin-top:10px;}
 </style>
 </head>
-
 <body>
-
-<div class="topbar">
-<div class="logo">CHANCI APP</div>
-<div class="user-box">
-<div class="balance" id="balance">💰 0</div>
-</div>
-</div>
-
-<div class="hero">
-<h1>🎮 مرحبًا بك في منصة الألعاب</h1>
-<p>اربح، العب، واجمع النقاط الحقيقية</p>
+<div class="container">
+  <div class="login-box">
+    <div class="logo">Chanci-App</div>
+    <h2>مرحباً بك</h2>
+    <p>سجّل للدخول للمتابعة</p>
+    <input type="text" id="username" placeholder="اسم المستخدم">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button onclick="login()">دخول</button>
+  </div>
 </div>
 
-<div class="stats">
-<div class="stat">
-<h3 id="points">0</h3>
-<p>النقاط</p>
-</div>
-<div class="stat">
-<h3 id="wins">0</h3>
-<p>الانتصارات</p>
-</div>
-<div class="stat">
-<h3 id="level">1</h3>
-<p>المستوى</p>
-</div>
-</div>
-
-<div class="section-title">🎮 الألعاب</div>
-
-<div class="games">
-
-<div class="game">
-<h4>🎁 فتح الصندوق</h4>
-<button class="play-btn" onclick="openBox()">لعب</button>
-</div>
-
-<div class="game">
-<h4>🎡 عجلة الحظ</h4>
-<button class="play-btn" onclick="coming()">لعب</button>
-</div>
-
-<div class="game">
-<h4>🌳 Golden Tree</h4>
-<button class="play-btn" onclick="coming()">قريبًا</button>
-</div>
-
-<div class="game">
-<h4>💎 Treasure Hunt</h4>
-<button class="play-btn" onclick="coming()">قريبًا</button>
-</div>
-
-</div>
-
-<!-- NAV -->
-<div class="nav">
-<div>🏠 الرئيسية</div>
-<div>🎮 الألعاب</div>
-<div>🎟️ القسائم</div>
-<div>🏆 السحوبات</div>
-</div>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-<div class="modal-box">
-<h3>🎉 نتيجة اللعبة</h3>
-<p id="result">+0</p>
-<button class="play-btn" onclick="closeModal()">إغلاق</button>
-</div>
-</div>
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-let balance = 0;
-let points = 0;
-let wins = 0;
+const firebaseConfig = {
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
+  authDomain: "chanci-app.firebaseapp.com",
+  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+  projectId: "chanci-app",
+  storageBucket: "chanci-app.firebasestorage.app",
+  messagingSenderId: "18416485348",
+  appId: "1:18416485348:web:12176965505080897b3df1"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-function openBox(){
-let win = Math.floor(Math.random()*100)+1;
+function login(){
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value.trim();
 
-balance += win;
-points += win;
-wins++;
+  if(user === "doktor" && pass === "123456"){
+    localStorage.setItem('currentUser','doktor');
+    window.location.href = "admin.html";
+    return;
+  }
 
-document.getElementById("balance").innerText = "💰 " + balance;
-document.getElementById("points").innerText = points;
-document.getElementById("wins").innerText = wins;
-
-document.getElementById("result").innerText = "+" + win + " نقطة";
-document.getElementById("modal").style.display="flex";
-}
-
-function closeModal(){
-document.getElementById("modal").style.display="none";
-}
-
-function coming(){
-alert("🚧 هذه اللعبة ستضاف قريبًا");
+  db.ref('users/'+user).get().then(snapshot=>{
+    if(snapshot.exists() && snapshot.val().password === pass){
+      localStorage.setItem('currentUser',user);
+      window.location.href = "dashboard.html";
+    } else {
+      alert("اسم المستخدم أو كلمة المرور خاطئة");
+    }
+  });
 }
 </script>
-
 </body>
 </html>
