@@ -6,7 +6,7 @@
 <style>
 body {margin:0;font-family:Arial;background:#0a0a0a;color:#fff;}
 .container {max-width:400px;margin:auto;padding:20px;margin-top:80px;}
-.box {background:#1c1c1c;padding:20px;border-radius:12px;text-align:center;}
+.box {background:#1c1c1c;padding:20px;border-radius:12px;text-align:center;box-shadow:0 0 20px rgba(255,215,0,0.2);}
 input {width:100%;padding:12px;margin:10px 0;border:none;border-radius:8px;background:#2c2c2c;color:#fff;}
 button {width:100%;padding:12px;background:gold;border:none;border-radius:8px;font-weight:bold;cursor:pointer;}
 h1 {color:gold;}
@@ -23,12 +23,13 @@ h1 {color:gold;}
   </div>
 </div>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyBsx...",
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
   databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
   projectId: "chanci-app",
@@ -44,15 +45,20 @@ function login(){
   const user = document.getElementById("user").value.trim();
   const pass = document.getElementById("pass").value.trim();
 
-  // 🔥 دخول المدير
+  if(user === "" || pass === ""){
+    alert("أدخل اسم المستخدم وكلمة المرور");
+    return;
+  }
+
+  // 🔥 تسجيل دخول المدير
   if(user === "doktor" && pass === "123456"){
     localStorage.setItem("currentUser","doktor");
     window.location.href="admin.html";
     return;
   }
 
-  // 🔥 دخول المستخدم العادي
-  db.ref("users/" + user).get().then(snap=>{
+  // 🔥 تسجيل دخول المستخدم
+  db.ref("users/" + user).once("value").then(snap=>{
     if(snap.exists()){
       const data = snap.val();
 
@@ -62,10 +68,15 @@ function login(){
       } else {
         alert("كلمة المرور غير صحيحة");
       }
+
     } else {
-      alert("المستخدم غير موجود");
+      alert("المستخدم غير موجود في قاعدة البيانات");
     }
+  }).catch(error=>{
+    alert("خطأ في الاتصال بقاعدة البيانات");
+    console.log(error);
   });
+
 }
 </script>
 
