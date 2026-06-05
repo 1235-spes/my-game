@@ -51,6 +51,7 @@ body {margin:0; font-family:Arial; background:#0a0a0a; color:#fff;}
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
+// إعداد Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
@@ -58,4 +59,57 @@ const firebaseConfig = {
   projectId: "chanci-app",
   storageBucket: "chanci-app.firebasestorage.app",
   messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:121769
+  appId: "1:18416485348:web:12176965505080897b3df1",
+  measurementId: "G-6YXX3SS61D"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// المستخدم الحالي
+const currentUser = localStorage.getItem('currentUser');
+if(!currentUser || currentUser === 'doktor') window.location.href='index.html';
+
+// ترحيب المستخدم
+document.getElementById('welcome').innerHTML = "<h2>مرحباً "+currentUser+"</h2>";
+
+// جلب بيانات المستخدم من Firebase
+db.ref('users/'+currentUser).get().then(snapshot=>{
+  if(snapshot.exists()){
+    const data = snapshot.val();
+    document.getElementById('balance').innerText = data.balance || 0;
+    document.getElementById('points').innerText = data.points || 0;
+    document.getElementById('wins').innerText = data.wins || 0;
+  }
+});
+
+// فتح الصندوق - تحديث النقاط
+function openBox(){
+  const pointsEarned = Math.floor(Math.random()*100) + 1; // نقاط عشوائية
+  const currentPoints = Number(document.getElementById('points').innerText) + pointsEarned;
+  
+  document.getElementById('points').innerText = currentPoints;
+
+  // تحديث Firebase
+  db.ref('users/'+currentUser).update({points: currentPoints});
+
+  showModal("🎉 لقد حصلت على "+pointsEarned+" نقطة!");
+}
+
+// عرض نافذة النتائج
+function showModal(msg){
+  document.getElementById('modalText').innerText = msg;
+  document.getElementById('modal').style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById('modal').style.display = "none";
+}
+
+// تسجيل خروج
+function logout(){
+  localStorage.removeItem('currentUser');
+  window.location.href='index.html';
+}
+</script>
+</body>
+</html>
