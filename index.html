@@ -8,244 +8,159 @@
 <style>
 
 /* =========================
-   الأساس العام
+   الأساس والألوان
 ========================= */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-}
-
-body{
-    background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
-    color:white;
-    min-height:100vh;
-    overflow-x:hidden;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', sans-serif;}
+body{background: radial-gradient(circle at top, #1a1a1a, #0d0d0d); color:white; min-height:100vh;}
+:root{--gold:#d4af37; --gold2:#f5d76e; --card:#151515;}
 
 /* =========================
-   ألوان ذهبية و Glow
+   Glow + نص ذهبي
 ========================= */
-:root{
-    --gold:#d4af37;
-    --gold-light:#f5d76e;
-    --dark:#0d0d0d;
-    --card:#151515;
-}
-
-/* تأثيرات جاهزة */
-.glow{
-    box-shadow: 0 0 10px var(--gold),
-                0 0 20px rgba(212,175,55,0.3);
-}
-
-.gold-text{
-    color:var(--gold);
-}
+.glow{box-shadow:0 0 15px rgba(212,175,55,0.3);}
+.gold{color:var(--gold);}
 
 /* =========================
-   تخطيط عام (Layout)
+   Login Screen
 ========================= */
-.container{
-    display:flex;
-    min-height:100vh;
-}
+.login-screen{height:100vh; display:flex; justify-content:center; align-items:center;}
+.login-box{width:350px; background:var(--card); padding:30px; border-radius:15px; border:1px solid rgba(212,175,55,0.3); text-align:center;}
+.login-box h2{margin-bottom:20px;}
+input{width:100%; padding:12px; margin:10px 0; background:#111; border:1px solid rgba(212,175,55,0.2); color:white; border-radius:8px;}
+button{width:100%; padding:12px; background:var(--gold); border:none; border-radius:8px; font-weight:bold; cursor:pointer; transition:0.3s;}
+button:hover{background:var(--gold2);}
 
 /* =========================
-   Sidebar (القائمة الجانبية)
+   Dashboard Layout
 ========================= */
-.sidebar{
-    width:260px;
-    background:linear-gradient(180deg,#111,#0a0a0a);
-    border-right:1px solid rgba(212,175,55,0.2);
-    padding:20px;
-    position:fixed;
-    height:100%;
-}
-
-.sidebar h2{
-    color:var(--gold);
-    text-align:center;
-    margin-bottom:30px;
-    letter-spacing:2px;
-}
-
-.sidebar a{
-    display:block;
-    padding:12px;
-    margin:8px 0;
-    color:white;
-    text-decoration:none;
-    border-radius:8px;
-    transition:0.3s;
-}
-
-.sidebar a:hover{
-    background:rgba(212,175,55,0.15);
-    box-shadow:0 0 10px rgba(212,175,55,0.3);
-}
+.container{display:none;}
+.sidebar{width:240px; background:#111; position:fixed; height:100%; padding:20px; border-right:1px solid rgba(212,175,55,0.2);}
+.sidebar h2{color:var(--gold); margin-bottom:30px;}
+.sidebar a{display:block; color:white; padding:10px; margin:8px 0; text-decoration:none; border-radius:8px; transition:0.3s;}
+.sidebar a:hover{background:rgba(212,175,55,0.1);}
+.main{margin-left:240px; padding:20px;}
+.header{display:flex; justify-content:space-between; align-items:center; padding:15px; background:#141414; border-radius:12px; border:1px solid rgba(212,175,55,0.2);}
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px; margin-top:20px;}
+.card{background:var(--card); padding:20px; border-radius:12px; border:1px solid rgba(212,175,55,0.1);}
 
 /* =========================
-   المحتوى الرئيسي
+   Games + Coupons + Transactions
 ========================= */
-.main{
-    margin-left:260px;
-    padding:20px;
-    width:100%;
-}
+.section{margin-top:30px;}
+.section h3{margin-bottom:15px; color:var(--gold);}
+.game-list, .coupon-list, .transactions{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;}
+.game-card, .coupon-card, .transaction-card{background:var(--card); padding:15px; border-radius:12px; border:1px solid rgba(212,175,55,0.1); transition:0.3s;}
+.game-card:hover, .coupon-card:hover{transform:translateY(-5px); box-shadow:0 0 15px rgba(212,175,55,0.2);}
+.transaction-card{display:flex; justify-content:space-between; align-items:center;}
+.transaction-card span{color:var(--gold); font-weight:bold;}
 
 /* =========================
-   الهيدر
-========================= */
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 20px;
-    background:rgba(20,20,20,0.8);
-    border:1px solid rgba(212,175,55,0.2);
-    border-radius:12px;
-    backdrop-filter: blur(10px);
-}
-
-.header h1{
-    font-size:20px;
-}
-
-/* =========================
-   البطاقات
-========================= */
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:15px;
-    margin-top:20px;
-}
-
-.card{
-    background:var(--card);
-    padding:20px;
-    border-radius:15px;
-    border:1px solid rgba(212,175,55,0.15);
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 0 20px rgba(212,175,55,0.2);
-}
-
-/* =========================
-   Login Screen (مؤقت)
-========================= */
-.login-box{
-    width:100%;
-    max-width:400px;
-    margin:100px auto;
-    background:var(--card);
-    padding:30px;
-    border-radius:15px;
-    border:1px solid rgba(212,175,55,0.2);
-}
-
-input{
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-    background:#111;
-    border:1px solid rgba(212,175,55,0.2);
-    color:white;
-    border-radius:8px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    background:var(--gold);
-    border:none;
-    border-radius:8px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    background:var(--gold-light);
-}
-
-/* =========================
-   Mobile Responsive
+   Responsive
 ========================= */
 @media(max-width:768px){
-
-    .sidebar{
-        width:70px;
-        padding:10px;
-    }
-
-    .sidebar h2{
-        font-size:14px;
-    }
-
-    .main{
-        margin-left:70px;
-    }
-
-    .sidebar a{
-        font-size:12px;
-        text-align:center;
-    }
+    .sidebar{width:70px; padding:10px;}
+    .main{margin-left:70px;}
 }
 
 </style>
-
 </head>
-
 <body>
 
-<div class="container">
+<!-- =========================
+     LOGIN
+========================= -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-box glow">
+        <h2 class="gold">تسجيل الدخول</h2>
+        <input type="text" id="username" placeholder="اسم المستخدم">
+        <input type="password" id="password" placeholder="كلمة المرور">
+        <button onclick="login()">دخول</button>
+        <p id="error" style="color:red;margin-top:10px;"></p>
+    </div>
+</div>
 
-    <!-- Sidebar -->
+<!-- =========================
+     DASHBOARD
+========================= -->
+<div class="container" id="app">
+
     <div class="sidebar">
-        <h2>GOLD</h2>
+        <h2 class="gold">GOLD</h2>
         <a href="#">🏠 الرئيسية</a>
         <a href="#">🎮 الألعاب</a>
         <a href="#">🎫 القسائم</a>
         <a href="#">💰 الرصيد</a>
+        <a href="#">📜 المعاملات</a>
         <a href="#">👑 المدير</a>
     </div>
 
-    <!-- Main -->
     <div class="main">
 
+        <!-- Header -->
         <div class="header glow">
-            <h1>مرحباً بك 👋</h1>
-            <div class="gold-text">رصيد: 0</div>
+            <h3>مرحباً 👋 <span id="userDisplay"></span></h3>
+            <button onclick="logout()">خروج</button>
         </div>
 
+        <!-- Cards -->
         <div class="cards">
+            <div class="card"><h3 class="gold">الرصيد</h3><p>0 نقطة</p></div>
+            <div class="card"><h3 class="gold">الأرباح</h3><p>0 €</p></div>
+            <div class="card"><h3 class="gold">السحوبات</h3><p>0 طلب</p></div>
+        </div>
 
-            <div class="card">
-                <h3 class="gold-text">الرصيد</h3>
-                <p>0 نقطة</p>
+        <!-- الألعاب -->
+        <div class="section">
+            <h3>🎮 الألعاب</h3>
+            <div class="game-list">
+                <div class="game-card glow">لعبة 1</div>
+                <div class="game-card glow">لعبة 2</div>
+                <div class="game-card glow">لعبة 3</div>
             </div>
+        </div>
 
-            <div class="card">
-                <h3 class="gold-text">الأرباح</h3>
-                <p>0 €</p>
+        <!-- القسائم -->
+        <div class="section">
+            <h3>🎫 القسائم</h3>
+            <div class="coupon-list">
+                <div class="coupon-card glow">قسيمة 50 نقطة</div>
+                <div class="coupon-card glow">قسيمة 100 نقطة</div>
             </div>
+        </div>
 
-            <div class="card">
-                <h3 class="gold-text">السحوبات</h3>
-                <p>0 طلب</p>
+        <!-- آخر المعاملات -->
+        <div class="section">
+            <h3>📜 آخر المعاملات</h3>
+            <div class="transactions">
+                <div class="transaction-card"><span>+50</span> شراء قسيمة</div>
+                <div class="transaction-card"><span>-30</span> لعب لعبة</div>
             </div>
-
         </div>
 
     </div>
 
 </div>
+
+<script>
+/* =========================
+   Login / Logout
+========================= */
+function login(){
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+    let error = document.getElementById("error");
+    if(user === "" || pass === ""){ error.innerText = "يرجى ملء جميع الحقول"; return; }
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("userDisplay").innerText = user;
+}
+function logout(){
+    document.getElementById("loginScreen").style.display = "flex";
+    document.getElementById("app").style.display = "none";
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+}
+</script>
 
 </body>
 </html>
