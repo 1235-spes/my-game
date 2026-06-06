@@ -2,171 +2,101 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chanci-App | لوحة التحكم</title>
 <style>
-body {margin:0;font-family:Arial;background:#0a0a0a;color:#fff;}
-.container {max-width:600px;margin:auto;padding:20px;}
-.box {background:#1c1c1c;padding:15px;border-radius:12px;margin-bottom:15px;}
-input,button {width:100%;padding:10px;margin:5px 0;border:none;border-radius:8px;}
-input {background:#2c2c2c;color:#fff;}
-button {background:gold;font-weight:bold;cursor:pointer;}
-.user {background:#111;padding:10px;margin:5px 0;border-radius:8px;}
-.red {background:red;color:#fff;}
-.green {background:green;color:#fff;}
-.blue {background:blue;color:#fff;}
-h2 {color:gold;text-align:center;}
-small {color:#ccc;}
+body {margin:0; font-family:Arial; background:#0a0a0a; color:#fff;}
+.container {max-width:600px; margin:auto; padding:20px;}
+.logo {text-align:center; font-size:36px; color:gold; margin-bottom:20px;}
+.admin-box input, .admin-box button {width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;}
+.admin-box input {background:#2c2c2c; color:#fff;}
+.admin-box button {background:gold; color:#000; font-weight:bold; cursor:pointer;}
+.user-card {background:#1c1c1c; padding:15px; border-radius:12px; margin-bottom:10px; box-shadow:0 0 10px rgba(255,215,0,0.3);}
+.logout-btn{background:red; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; margin-top:10px; width:100%;}
 </style>
 </head>
 <body>
+<div class="container admin-box">
+  <div class="logo">لوحة التحكم - doktor</div>
+  <h3>إنشاء مستخدم جديد</h3>
+  <input type="text" id="newUser" placeholder="اسم المستخدم">
+  <input type="password" id="newPass" placeholder="كلمة المرور">
+  <input type="number" id="newBalance" placeholder="الرصيد الابتدائي" value="0">
+  <button onclick="createUser()">إنشاء المستخدم</button>
 
-<div class="container">
-
-<h2>👑 لوحة التحكم - doktor</h2>
-
-<!-- إضافة مستخدم -->
-<div class="box">
-<h3>➕ إضافة مستخدم</h3>
-<input id="newUser" placeholder="اسم المستخدم">
-<input id="newPass" placeholder="كلمة المرور">
-<input id="newBalance" placeholder="الرصيد" type="number">
-<button onclick="addUser()">إضافة</button>
-</div>
-
-<!-- عرض المستخدمين -->
-<div class="box">
-<h3>👥 المستخدمين</h3>
-<div id="usersList"></div>
-</div>
-
+  <div class="user-list" id="userList"></div>
+  <button class="logout-btn" onclick="adminLogout()">تسجيل خروج</button>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
   databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
   projectId: "chanci-app",
   storageBucket: "chanci-app.firebasestorage.app",
   messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:12176965505080897b3df1"
+  appId: "1:18416485348:web:12176965505080897b3df1",
+  measurementId: "G-6YXX3SS61D"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// حماية الصفحة
-const currentUser = localStorage.getItem("currentUser");
+// التحقق من المدير
+const currentUser = localStorage.getItem('currentUser');
 if(currentUser !== "doktor"){
   window.location.href = "index.html";
 }
 
-// ➕ إضافة مستخدم
-function addUser(){
-  const u = document.getElementById("newUser").value.trim();
-  const p = document.getElementById("newPass").value.trim();
-  const b = Number(document.getElementById("newBalance").value);
+// إنشاء مستخدم جديد
+function createUser(){
+  const username = document.getElementById('newUser').value.trim();
+  const password = document.getElementById('newPass').value.trim();
+  const balance = Number(document.getElementById('newBalance').value);
 
-  if(!u || !p || isNaN(b)){
-    alert("⚠️ أدخل جميع البيانات بشكل صحيح");
+  if(username === "" || password === ""){
+    alert("الرجاء إدخال اسم المستخدم وكلمة المرور");
     return;
   }
 
-  db.ref("users/" + u).set({
-    password: p,
-    balance: b,
-    points: 0,
-    wins: 0
-  }, (err)=>{
-    if(err) alert("❌ خطأ: " + err.message);
-    else alert("✅ تم إنشاء المستخدم: " + u);
+  db.ref('users/'+username).get().then(snapshot=>{
+    if(snapshot.exists()){
+      alert("اسم المستخدم موجود بالفعل");
+      return;
+    }
+
+    db.ref('users/'+username).set({password: password, balance: balance, earnings: 0});
+    alert("تم إنشاء المستخدم "+username);
+    loadUsers();
   });
-
-  document.getElementById("newUser").value="";
-  document.getElementById("newPass").value="";
-  document.getElementById("newBalance").value="";
-
-  loadUsers();
 }
 
-// 👀 تحميل المستخدمين
+// تحميل المستخدمين
 function loadUsers(){
-  db.ref("users").once("value").then(snap=>{
-    const data = snap.val() || {};
-    const list = document.getElementById("usersList");
-    list.innerHTML = "";
-
-    for(let u in data){
-      if(u === "doktor") continue;
-
-      list.innerHTML += `
-      <div class="user" id="user-${u}">
-        <b>${u}</b> <small>(كلمة المرور: ${data[u].password})</small><br>
-        💰 الرصيد: ${data[u].balance || 0}<br>
-        <input type="number" id="balance-${u}" placeholder="ادخل قيمة للتعديل">
-        <button class="green" onclick="updateBalance('${u}')">تعديل الرصيد</button>
-        <input type="text" id="pass-${u}" placeholder="كلمة مرور جديدة">
-        <button class="blue" onclick="updatePassword('${u}')">تعديل كلمة المرور</button>
-        <button class="red" onclick="deleteUser('${u}')">حذف</button>
-      </div>
-      `;
+  db.ref('users').get().then(snapshot=>{
+    const userList = document.getElementById('userList');
+    userList.innerHTML = "";
+    if(snapshot.exists()){
+      const users = snapshot.val();
+      Object.keys(users).forEach(u=>{
+        const div = document.createElement('div');
+        div.className="user-card";
+        div.innerHTML="<strong>"+u+"</strong> | الرصيد: "+users[u].balance+" | الأرباح: "+users[u].earnings;
+        userList.appendChild(div);
+      });
     }
   });
 }
 
-// تعديل الرصيد لأي قيمة
-function updateBalance(user){
-  const val = Number(document.getElementById("balance-"+user).value);
-  if(isNaN(val)){
-    alert("⚠️ أدخل قيمة صحيحة");
-    return;
-  }
-  db.ref("users/"+user).once("value").then(snap=>{
-    let bal = snap.val().balance || 0;
-    db.ref("users/"+user).update({balance: bal + val}, err=>{
-      if(err) alert("❌ "+err.message);
-      else {
-        alert("✅ تم تعديل الرصيد");
-        loadUsers();
-      }
-    });
-  });
+function adminLogout(){
+  localStorage.removeItem('currentUser');
+  window.location.href='index.html';
 }
 
-// تعديل كلمة المرور
-function updatePassword(user){
-  const pass = document.getElementById("pass-"+user).value.trim();
-  if(!pass){
-    alert("⚠️ أدخل كلمة مرور جديدة");
-    return;
-  }
-  db.ref("users/"+user).update({password: pass}, err=>{
-    if(err) alert("❌ "+err.message);
-    else {
-      alert("✅ تم تعديل كلمة المرور");
-      loadUsers();
-    }
-  });
-}
-
-// ❌ حذف مستخدم
-function deleteUser(user){
-  if(confirm("هل أنت متأكد من حذف المستخدم "+user+"؟")){
-    db.ref("users/"+user).remove(err=>{
-      if(err) alert("❌ "+err.message);
-      else {
-        alert("✅ تم حذف المستخدم");
-        loadUsers();
-      }
-    });
-  }
-}
-
+// تحميل المستخدمين عند فتح الصفحة
 loadUsers();
 </script>
-
 </body>
 </html>
