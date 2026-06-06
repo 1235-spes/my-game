@@ -597,6 +597,171 @@ font-size:45px;
   </button>
 
 </div>
+  /* الصندوق والقسائم */
+
+.bonus-section{
+
+display:flex;
+
+gap:20px;
+
+margin-top:25px;
+
+flex-wrap:wrap;
+
+}
+
+.bonus-card{
+
+flex:1;
+
+min-width:280px;
+
+background:#0c0c0c;
+
+border:1px solid rgba(255,190,50,.15);
+
+border-radius:25px;
+
+padding:25px;
+
+text-align:center;
+
+}
+
+.bonus-icon{
+
+font-size:60px;
+
+margin-bottom:15px;
+
+}
+
+.bonus-card h3{
+
+color:#ffd36a;
+
+margin-bottom:10px;
+
+}
+
+.bonus-card p{
+
+color:#aaa;
+
+margin-bottom:20px;
+
+}
+
+.bonus-card input{
+
+width:100%;
+
+padding:14px;
+
+border-radius:12px;
+
+background:#111;
+
+border:1px solid #333;
+
+color:white;
+
+margin-bottom:15px;
+
+}
+
+/* عجلة الحظ */
+
+.wheel-section{
+
+margin-top:25px;
+
+background:#0c0c0c;
+
+border:1px solid rgba(255,190,50,.15);
+
+border-radius:25px;
+
+padding:30px;
+
+text-align:center;
+
+}
+
+.wheel-section h2{
+
+margin-bottom:20px;
+
+color:#ffd36a;
+
+}
+
+.wheel-container{
+
+display:flex;
+
+justify-content:center;
+
+margin-bottom:20px;
+
+}
+
+#wheel{
+
+width:260px;
+
+height:260px;
+
+border-radius:50%;
+
+background:
+conic-gradient(
+#ffbf3c 0deg 60deg,
+#222 60deg 120deg,
+#ffbf3c 120deg 180deg,
+#222 180deg 240deg,
+#ffbf3c 240deg 300deg,
+#222 300deg 360deg
+);
+
+position:relative;
+
+transition:transform 4s ease-out;
+
+border:8px solid #ffbf3c;
+
+}
+
+.wheel-center{
+
+position:absolute;
+
+top:50%;
+
+left:50%;
+
+transform:translate(-50%,-50%);
+
+width:90px;
+
+height:90px;
+
+border-radius:50%;
+
+background:#111;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-weight:800;
+
+color:#ffd36a;
+
+}
 </style>
 </head>
 
