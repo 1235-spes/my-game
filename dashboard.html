@@ -983,3 +983,106 @@ Player123
   </div>
 
 </div>
+<script>
+
+let currentRotation = 0;
+
+function spinWheel(){
+
+const rewardList = [
+10,
+20,
+50,
+100,
+200,
+500
+];
+
+const reward =
+rewardList[
+Math.floor(
+Math.random() * rewardList.length
+)
+];
+
+const extraRotation =
+360 * 5 +
+Math.floor(Math.random()*360);
+
+currentRotation += extraRotation;
+
+document.getElementById("wheel").style.transform =
+`rotate(${currentRotation}deg)`;
+
+setTimeout(()=>{
+
+alert(
+"🎉 مبروك! ربحت " +
+reward +
+" نقطة"
+);
+
+},4000);
+
+}
+
+function openDailyBox(){
+
+const rewards = [
+5,
+10,
+25,
+50,
+100
+];
+
+const reward =
+rewards[
+Math.floor(
+Math.random()*rewards.length
+)
+];
+
+alert(
+"🎁 فتحت الصندوق وربحت " +
+reward +
+" نقطة"
+);
+
+}
+
+function redeemCoupon(){
+
+const code =
+document.getElementById("couponCode")
+.value
+.trim()
+.toUpperCase();
+
+const coupons = {
+
+WELCOME10:10,
+BONUS50:50,
+VIP100:100
+
+};
+
+if(coupons[code]){
+
+alert(
+"✅ تم إضافة " +
+coupons[code] +
+" نقطة إلى حسابك"
+);
+
+}else{
+
+alert(
+"❌ القسيمة غير صحيحة"
+);
+
+}
+
+}
+
+</script>
