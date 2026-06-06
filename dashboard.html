@@ -1,293 +1,150 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chanci-App | Dashboard</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-
+<title>Chanci-App | لوحة المستخدم</title>
 <style>
-  body {
-    margin:0;
-    font-family:'Cairo',sans-serif;
-    background:#0e0e0e;
-    color:#fff;
-    overflow-x:hidden;
-  }
-
-  /* زر ☰ */
-  .menu-btn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    font-size: 28px;
-    cursor: pointer;
-    z-index: 2000;
-    background:#111;
-    padding:8px 12px;
-    border-radius:8px;
-  }
-
-  /* Overlay */
-  .overlay {
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.5);
-    opacity:0;
-    visibility:hidden;
-    transition:0.3s;
-    z-index:1500;
-  }
-
-  .overlay.active {
-    opacity:1;
-    visibility:visible;
-  }
-
-  /* Sidebar */
-  .sidebar {
-    position: fixed;
-    top:0;
-    right:-260px;
-    width:250px;
-    height:100%;
-    background:#111;
-    display:flex;
-    flex-direction:column;
-    padding:20px;
-    transition:0.3s;
-    z-index:1600;
-  }
-
-  .sidebar.active {
-    right:0;
-  }
-
-  .sidebar h2 {
-    color:gold;
-    text-align:center;
-    margin-bottom:30px;
-  }
-
-  .sidebar a {
-    text-decoration:none;
-    color:#ccc;
-    margin:10px 0;
-    padding:12px;
-    border-radius:8px;
-    transition:0.3s;
-    cursor:pointer;
-  }
-
-  .sidebar a:hover {
-    background:#222;
-    color:gold;
-  }
-
-  /* MAIN */
-  .container {
-    display:flex;
-    min-height:100vh;
-  }
-
-  .main {
-    flex:1;
-    position: relative;
-    padding:30px;
-  }
-
-  /* PAGES (ANIMATION SYSTEM) */
-  .page {
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    min-height:100%;
-    padding:30px;
-    box-sizing:border-box;
-
-    opacity:0;
-    transform:translateX(50px);
-    transition:0.4s ease;
-    pointer-events:none;
-  }
-
-  .page.active {
-    opacity:1;
-    transform:translateX(0);
-    pointer-events:auto;
-  }
-
-  /* UI */
-  .user-info {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
-  }
-
-  .logout button {
-    background:gold;
-    border:none;
-    padding:10px 15px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-  }
-
-  .stats {
-    display:flex;
-    gap:20px;
-    margin-bottom:30px;
-  }
-
-  .card {
-    background:#111;
-    padding:20px;
-    border-radius:15px;
-    flex:1;
-    text-align:center;
-  }
-
-  .card h3 {
-    margin:0;
-    font-size:24px;
-    color:gold;
-  }
-
-  .card p {
-    color:#aaa;
-  }
-
+body {margin:0; font-family:Arial; background:#0a0a0a; color:#fff;}
+.container {max-width:600px; margin:auto; padding:20px;}
+.logo {text-align:center; font-size:36px; color:gold; margin-bottom:20px;}
+.user-box {background:#1c1c1c; padding:20px; border-radius:12px; margin-bottom:20px; text-align:center; box-shadow:0 0 20px rgba(255,215,0,0.3);}
+.user-box h2{margin:10px 0;}
+.logout-btn{background:red; color:#fff; padding:10px; border:none; border-radius:8px; cursor:pointer; margin-top:10px; width:100%;}
+.games, .vouchers{margin-top:20px;}
+.game-card, .voucher-card{background:#2c2c2c; padding:15px; border-radius:12px; margin-bottom:10px;}
+.game-card button, .voucher-card button{background:gold; color:#000; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;}
 </style>
 </head>
-
 <body>
-
-<!-- زر القائمة -->
-<div class="menu-btn" onclick="toggleSidebar()">☰</div>
-
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <h2>Chanci-App</h2>
-  <a onclick="showPage('homePage')">الرئيسية</a>
-  <a onclick="showPage('walletPage')">المحفظة</a>
-  <a onclick="showPage('gamesPage')">الألعاب</a>
-  <a onclick="showPage('settingsPage')">الإعدادات</a>
-</div>
-
-<!-- Overlay -->
-<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
-
 <div class="container">
-  <div class="main">
+  <div class="logo">Chanci-App</div>
+  <div class="user-box">
+    <h2 id="userName">مرحباً</h2>
+    <p>الرصيد: <span id="balance">0</span></p>
+    <p>الأرباح: <span id="earnings">0</span></p>
+    <button class="logout-btn" onclick="userLogout()">تسجيل خروج</button>
+  </div>
 
-    <!-- HOME -->
-    <div class="page active" id="homePage">
-      <div class="user-info">
-        <div>مرحباً بك، <span id="usernameDisplay">Player123</span></div>
-        <div class="logout"><button onclick="logout()">تسجيل الخروج</button></div>
-      </div>
+  <div class="games">
+    <h3>الألعاب</h3>
+    <div id="gamesList"></div>
+  </div>
 
-      <div class="stats">
-        <div class="card"><h3 id="balance">0</h3><p>الرصيد</p></div>
-        <div class="card"><h3 id="points">0</h3><p>النقاط</p></div>
-        <div class="card"><h3 id="wins">0</h3><p>الأرباح</p></div>
-      </div>
-    </div>
-
-    <!-- WALLET -->
-    <div class="page" id="walletPage">
-      <h2>💰 المحفظة</h2>
-      <p>هنا تفاصيل الرصيد والمعاملات.</p>
-    </div>
-
-    <!-- GAMES -->
-    <div class="page" id="gamesPage">
-      <h2>🎮 الألعاب</h2>
-      <p>قسم الألعاب.</p>
-    </div>
-
-    <!-- SETTINGS -->
-    <div class="page" id="settingsPage">
-      <h2>⚙️ الإعدادات</h2>
-      <p>إعدادات الحساب.</p>
-    </div>
-
+  <div class="vouchers">
+    <h3>القسائم</h3>
+    <div id="vouchersList"></div>
   </div>
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <script>
 const firebaseConfig = {
-  apiKey: "API_KEY_HERE",
-  authDomain: "PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "PROJECT_ID",
-  storageBucket: "PROJECT_ID.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
+  authDomain: "chanci-app.firebaseapp.com",
+  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+  projectId: "chanci-app",
+  storageBucket: "chanci-app.firebasestorage.app",
+  messagingSenderId: "18416485348",
+  appId: "1:18416485348:web:12176965505080897b3df1",
+  measurementId: "G-6YXX3SS61D"
 };
-
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const db = firebase.database();
 
-const currentUser = localStorage.getItem('currentUser');
-document.getElementById('usernameDisplay').innerText = currentUser;
-
-/* SIDEBAR */
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("active");
-  document.getElementById("overlay").classList.toggle("active");
+// التحقق من المستخدم
+const currentUser = localStorage.getItem("currentUser");
+if(!currentUser || currentUser === "doktor"){
+  window.location.href = "index.html";
 }
 
-function closeSidebar(){
-  document.getElementById("sidebar").classList.remove("active");
-  document.getElementById("overlay").classList.remove("active");
-}
-
-document.addEventListener("keydown", e=>{
-  if(e.key==="Escape") closeSidebar();
-});
-
-/* PAGE NAVIGATION (ANIMATED) */
-function showPage(pageId){
-  const pages = document.querySelectorAll('.page');
-
-  pages.forEach(p=>{
-    if(p.id === pageId){
-      p.classList.add('active');
-    } else {
-      p.classList.remove('active');
+// تحميل بيانات المستخدم
+function loadUserData(){
+  db.ref("users/"+currentUser).get().then(snapshot=>{
+    if(snapshot.exists()){
+      const data = snapshot.val();
+      document.getElementById("userName").innerText = "مرحباً، "+currentUser;
+      document.getElementById("balance").innerText = data.balance || 0;
+      document.getElementById("earnings").innerText = data.earnings || 0;
     }
   });
-
-  closeSidebar();
 }
 
-/* FIREBASE */
-database.ref('users/' + currentUser).get().then(snapshot => {
-  if(snapshot.exists()){
-    const data = snapshot.val();
-    document.getElementById('balance').innerText = data.balance;
-    document.getElementById('points').innerText = data.points;
-    document.getElementById('wins').innerText = data.wins;
-  }
-});
-
-/* LOGOUT */
-function logout(){
-  localStorage.removeItem('currentUser');
-  window.location.href='index.html';
+// الألعاب
+function loadGames(){
+  db.ref("games").get().then(snapshot=>{
+    const gamesList = document.getElementById("gamesList");
+    gamesList.innerHTML = "";
+    if(snapshot.exists()){
+      const games = snapshot.val();
+      Object.keys(games).forEach(g=>{
+        const div = document.createElement("div");
+        div.className = "game-card";
+        div.innerHTML = "<strong>"+games[g].name+"</strong> - <button onclick='playGame(\""+g+"\")'>اللعب</button>";
+        gamesList.appendChild(div);
+      });
+    } else {
+      gamesList.innerHTML = "<p>لا توجد ألعاب متاحة حالياً</p>";
+    }
+  });
 }
+
+// القسائم
+function loadVouchers(){
+  db.ref("vouchers").get().then(snapshot=>{
+    const vouchersList = document.getElementById("vouchersList");
+    vouchersList.innerHTML = "";
+    if(snapshot.exists()){
+      const vouchers = snapshot.val();
+      Object.keys(vouchers).forEach(v=>{
+        const div = document.createElement("div");
+        div.className = "voucher-card";
+        div.innerHTML = "<strong>"+vouchers[v].code+"</strong> - قيمة: "+vouchers[v].amount+" <button onclick='redeemVoucher(\""+v+"\")'>استخدام</button>";
+        vouchersList.appendChild(div);
+      });
+    } else {
+      vouchersList.innerHTML = "<p>لا توجد قسائم حالياً</p>";
+    }
+  });
+}
+
+// دوال الألعاب والقسائم
+function playGame(gameId){
+  alert("اللعب في اللعبة: "+gameId+" (يمكنك تعديل هذا لاحقاً لإضافة اللعبة الحقيقية)");
+}
+
+function redeemVoucher(voucherId){
+  const confirmRedeem = confirm("هل تريد استخدام القسيمة؟");
+  if(!confirmRedeem) return;
+
+  db.ref("vouchers/"+voucherId).get().then(snap=>{
+    if(snap.exists()){
+      const voucher = snap.val();
+      // إضافة الرصيد للمستخدم
+      db.ref("users/"+currentUser+"/balance").get().then(balanceSnap=>{
+        let newBalance = (balanceSnap.val() || 0) + voucher.amount;
+        db.ref("users/"+currentUser).update({balance: newBalance});
+        alert("تم إضافة "+voucher.amount+" إلى رصيدك!");
+        loadUserData();
+      });
+      // إزالة القسيمة بعد الاستخدام
+      db.ref("vouchers/"+voucherId).remove();
+      loadVouchers();
+    }
+  });
+}
+
+// تسجيل خروج
+function userLogout(){
+  localStorage.removeItem("currentUser");
+  window.location.href = "index.html";
+}
+
+// تحميل البيانات عند فتح الصفحة
+loadUserData();
+loadGames();
+loadVouchers();
 </script>
-
 </body>
 </html>
