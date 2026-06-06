@@ -192,206 +192,56 @@ body::before{
   <div class="logo-card">
     <h1>CHANCI-APP</h1>
     <p>PLAY • WIN • REDEEM</p>
-  </div><!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHANCI-APP</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* ---------- عام ---------- */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Cairo',sans-serif;
-}
+  </div><!-- بطاقة المحفظة -->
 
-body{
-  background:#050505;
-  color:white;
-  overflow-x:hidden;
-}
+<div class="wallet-card">
 
-body::before{
-  content:'';
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:
-    radial-gradient(circle at 20% 20%,rgba(255,180,0,.15),transparent 25%),
-    radial-gradient(circle at 80% 30%,rgba(255,180,0,.10),transparent 20%),
-    radial-gradient(circle at 60% 70%,rgba(255,180,0,.08),transparent 20%);
-  pointer-events:none;
-  z-index:-1;
-}
+  <div class="wallet-left">
 
-/* ---------- التطبيق ---------- */
-.app{
-  display:flex;
-  min-height:100vh;
-}
+    <div class="wallet-label">
+      رصيد المحفظة
+    </div>
 
-/* ---------- الشريط الجانبي ---------- */
-.sidebar{
-  width:290px;
-  background:#070707;
-  border-left:1px solid rgba(255,190,50,.15);
-  padding:20px;
-  position:fixed;
-  right:0;
-  top:0;
-  height:100vh;
-  overflow-y:auto;
-}
+    <div class="wallet-balance">
+      10,250.50
+      <span>$</span>
+    </div>
 
-.profile{
-  text-align:center;
-  padding:20px;
-  border-radius:24px;
-  background:#0b0b0b;
-  border:1px solid rgba(255,190,50,.15);
-  margin-bottom:20px;
-}
+    <div class="wallet-actions">
 
-.avatar{
-  width:100px;
-  height:100px;
-  margin:auto;
-  border-radius:50%;
-  border:2px solid #ffbf3c;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:45px;
-  color:#ffbf3c;
-  box-shadow:0 0 25px rgba(255,180,50,.35);
-}
+      <button class="gold-btn">
+        ⬇ إيداع
+      </button>
 
-.username{
-  margin-top:15px;
-  font-size:28px;
-  font-weight:700;
-  color:#ffcb52;
-}
+      <button class="dark-btn">
+        ⬆ سحب
+      </button>
 
-.badge{
-  margin-top:10px;
-  display:inline-block;
-  padding:8px 18px;
-  border:1px solid #ffbf3c;
-  border-radius:30px;
-  color:#ffcb52;
-}
+    </div>
 
-.menu{
-  margin-top:20px;
-}
-
-.menu-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:18px;
-  margin-bottom:12px;
-  border-radius:18px;
-  background:#0b0b0b;
-  border:1px solid rgba(255,190,50,.08);
-  cursor:pointer;
-  transition:.3s;
-}
-
-.menu-item:hover{
-  border-color:#ffbf3c;
-  box-shadow:0 0 20px rgba(255,180,0,.25);
-}
-
-.menu-item.active{
-  background:linear-gradient(90deg, rgba(255,174,0,.25), rgba(255,174,0,.08));
-  border-color:#ffbf3c;
-}
-
-.menu-icon{
-  font-size:24px;
-  color:#ffbf3c;
-}
-
-@media(max-width:900px){
-  .sidebar{
-    width:100%;
-    position:relative;
-    height:auto;
-  }
-  .main{
-    margin-right:0;
-    width:100%;
-  }
-  .app{
-    display:block;
-  }
-}
-
-/* ---------- الشعار ---------- */
-.logo-card{
-  background:linear-gradient(180deg, rgba(255,170,0,.15), rgba(0,0,0,.8));
-  border:1px solid rgba(255,180,0,.2);
-  border-radius:25px;
-  padding:25px;
-  margin-bottom:20px;
-  text-align:center;
-}
-
-.logo-card h1{
-  font-size:58px;
-  font-weight:800;
-  color:#ffcb52;
-  text-shadow:0 0 25px rgba(255,180,0,.4);
-}
-
-.logo-card p{
-  color:#cfa85c;
-  letter-spacing:2px;
-}
-</style>
-</head>
-<body>
-
-<div class="app">
-
-<!-- الشريط الجانبي -->
-<div class="sidebar">
-  <div class="profile">
-    <div class="avatar">👤</div>
-    <div style="margin-top:15px;">مرحباً بك</div>
-    <div class="username">Player123</div>
-    <div class="badge">👑 عضو ذهبي</div>
   </div>
 
-  <div class="menu">
-    <div class="menu-item active"><span>الرئيسية</span><span class="menu-icon">▦</span></div>
-    <div class="menu-item"><span>المحفظة</span><span class="menu-icon">💳</span></div>
-    <div class="menu-item"><span>الإيداع</span><span class="menu-icon">⬇</span></div>
-    <div class="menu-item"><span>السحب</span><span class="menu-icon">⬆</span></div>
-    <div class="menu-item"><span>الألعاب</span><span class="menu-icon">🎮</span></div>
-    <div class="menu-item"><span>القسائم</span><span class="menu-icon">🎫</span></div>
-    <div class="menu-item"><span>السحوبات</span><span class="menu-icon">🎡</span></div>
-  </div>
-</div>
+  <div class="wallet-right">
 
-<!-- المحتوى الرئيسي -->
-<div class="main">
-  <div class="logo-card">
-    <h1>CHANCI-APP</h1>
-    <p>PLAY • WIN • REDEEM</p>
+    <div class="profit-title">
+      إجمالي الأرباح
+    </div>
+
+    <div class="profit-value">
+      5,780.00
+    </div>
+
+    <div class="profit-week">
+      هذا الأسبوع
+    </div>
+
+    <div class="chart">
+      <div class="line"></div>
+    </div>
+
   </div>
-</div>
 
 </div>
-</body>
-</html>
 </div>
 
 </div>
