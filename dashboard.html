@@ -1,547 +1,95 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chanci-App Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    /* إعدادات أساسية */
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-    body { background-color: #0c0c0c; color: #fff; overflow-x: hidden; }
-    a { text-decoration: none; color: inherit; }
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0c0c0c;
+color:#fff;
+}
 
-    /* الهيدر */
-    header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 20px; background: #121212; border-bottom: 1px solid #333; position: relative;
-    }
-    .menu-btn { font-size: 1.5rem; cursor: pointer; background: none; border: none; color: #FFD700; }
-    .user-info { display: flex; align-items: center; gap: 10px; }
-    .user-info img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #FFD700; }
+.header{
+padding:15px;
+background:#141414;
+display:flex;
+justify-content:space-between;
+}
 
-    /* شعار Chanci-App */
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:6px;
-      font-weight:900;
-    }
-    .logo-main{
-      font-size:28px;
-      color:#ffd700;
-      text-shadow:
-      0 0 10px rgba(255,215,0,.8),
-      0 0 20px rgba(255,215,0,.4);
-    }
-    .logo-dot{
-      color:#ffb700;
-      font-size:18px;
-    }
-    .logo-sub{
-      color:#ffffff;
-      font-size:18px;
-      font-weight:700;
-      letter-spacing:2px;
-    }
+.card{
+background:#1a1a1a;
+margin:15px;
+padding:15px;
+border-radius:12px;
+border:1px solid #333;
+}
 
-    /* الشريط الجانبي */
-    .sidebar {
-      position: fixed; top: 0; right: -250px; width: 250px; height: 100%;
-      background-color: #1a1a1a; transition: right 0.3s ease; padding: 20px; z-index: 1000;
-      display: flex; flex-direction: column; gap: 15px;
-    }
-    .sidebar.active { right: 0; }
-    .sidebar .close-btn { align-self: flex-start; font-size: 1.2rem; cursor: pointer; background: none; border: none; color: #FFD700; margin-bottom: 20px; }
-    .sidebar a { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; transition: background 0.2s; }
-    .sidebar a:hover { background: #FFD70020; }
-    .sidebar a i { font-size: 1.2rem; color: #FFD700; }
-
-    .overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5); display: none; z-index: 900;
-    }
-    .overlay.active { display: block; }
-
-    .main-content { padding: 20px; transition: margin-right 0.3s ease; }
-
-    @media (min-width: 768px) { .sidebar { width: 250px; } }
-  </style>
+h2{color:#FFD700;}
+</style>
 </head>
 <body>
 
-  <!-- الهيدر -->
-  <header>
-    <button class="menu-btn" id="openSidebar">☰</button>
-    <div class="logo">
-      <span class="logo-main">CHANCI</span>
-      <span class="logo-dot">•</span>
-      <span class="logo-sub">APP</span>
-    </div>
-    <div class="user-info">
-      <span id="username">جاري التحميل...</span>
-      <img src="assets/user.png" alt="User">
-    </div>
-  </header>
-
-  <!-- الشريط الجانبي -->
-  <div class="sidebar" id="sidebar">
-    <button class="close-btn" id="closeSidebar">×</button>
-    <a href="#"><i class="fa fa-home"></i> الرئيسية</a>
-    <a href="#"><i class="fa fa-wallet"></i> المحفظة</a>
-    <a href="#"><i class="fa fa-arrow-down"></i> الإيداع</a>
-    <a href="#"><i class="fa fa-arrow-up"></i> السحب</a>
-    <a href="#"><i class="fa fa-gamepad"></i> الألعاب</a>
-    <a href="#"><i class="fa fa-ticket"></i> القسائم</a>
-    <a href="#"><i class="fa fa-gift"></i> السحوبات</a>
-    <a href="#"><i class="fa fa-history"></i> التاريخ</a>
-    <a href="#"><i class="fa fa-check-circle"></i> التوثيق</a>
-    <a href="#"><i class="fa fa-cog"></i> الإعدادات</a>
-    <a href="#"><i class="fa fa-headphones"></i> الدعم</a>
-  </div>
-
-  <!-- الطبقة الغامقة -->
-  <div class="overlay" id="overlay"></div>
-
-  <!-- محتوى الصفحة -->
-  <div class="main-content">
-    
-
-  
-</div><!-- بانر أسود ذهبي -->
-<div class="hero-banner" style="
-  background: linear-gradient(145deg, #0c0c0c, #1a1a1a);
-  border-radius: 15px;
-  padding: 20px;
-  margin: 15px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  box-shadow: 0 0 20px rgba(255,215,0,0.5);
-">
-  <!-- نص ترحيبي -->
-  <div class="hero-text" style="color:#FFD700;">
-    <h2 style="font-size:22px; font-weight:900;">أهلاً بك، <span id="heroUserName">Player</span></h2>
-    <p style="font-size:14px;">تحقق من رصيدك وابدأ اللعب الآن!</p>
-    <button style="
-      padding:8px 15px;
-      border:none;
-      background:#FFD700;
-      color:#0c0c0c;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:bold;
-    ">إيداع الآن</button>
-  </div>
-
-  <!-- صور البانر: صندوق، عملات، كأس -->
-  <div class="hero-images" style="display:flex; gap:10px;">
-    <div style="position:relative;">
-      <img src="assets/chest.png" alt="صندوق الكنز" style="height:60px; z-index:2;">
-    </div>
-    <div style="position:relative;">
-      <img src="assets/coins.png" alt="العملات" style="height:60px; z-index:2;">
-    </div>
-    <div style="position:relative;">
-      <img src="assets/trophy.png" alt="الكأس" style="height:60px; z-index:2;">
-    </div>
-  </div>
-
-  <!-- تأثير لمعان ذهبي -->
-  <div style="
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: linear-gradient(120deg, rgba(255,255,255,0.1), rgba(255,255,255,0) 70%);
-    border-radius:15px;
-    pointer-events:none;
-  "></div>
-
+<div class="header">
+<h2>Dashboard</h2>
+<button onclick="logout()">Logout</button>
 </div>
 
-  <!-- أيقونات Font Awesome -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-  <!-- Firebase JS SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-  <script>
-    // إعداد Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
-      authDomain: "chanci-app.firebaseapp.com",
-      databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
-      projectId: "chanci-app",
-      storageBucket: "chanci-app.firebasestorage.app",
-      messagingSenderId: "18416485348",
-      appId: "1:18416485348:web:12176965505080897b3df1",
-      measurementId: "G-6YXX3SS61D"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.database();
-
-    // جلب اسم المستخدم عند تسجيل الدخول
-    auth.onAuthStateChanged(user => {
-      if(user){
-        document.getElementById('username').textContent = user.displayName || user.email;
-      } else {
-        document.getElementById('username').textContent = "غير مسجل الدخول";
-      }
-    });
-
-    // التحكم بفتح وإغلاق الشريط الجانبي
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    const openBtn = document.getElementById('openSidebar');
-    const closeBtn = document.getElementById('closeSidebar');
-
-    openBtn.addEventListener('click', () => {
-      sidebar.classList.add('active');
-      overlay.classList.add('active');
-    });
-    closeBtn.addEventListener('click', () => {
-      sidebar.classList.remove('active');
-      overlay.classList.remove('active');
-    });
-    overlay.addEventListener('click', () => {
-      sidebar.classList.remove('active');
-      overlay.classList.remove('active');
-    });
-  </script>
-
-</body>
-</html><!-- الجزء الثاني: بطاقات الرصيد، الخدمات، وبانر العرض -->
-
-<div class="banner">
-  <!-- خلفية البانر -->
-  <div class="banner-bg" style="background: linear-gradient(90deg, #FFD700, #FFA500); border-radius: 15px; padding: 20px; margin-bottom:20px; display:flex; justify-content: space-between; align-items:center;">
-    <div class="banner-text">
-      <h2 style="color:#0c0c0c; font-size:20px;">أهلاً بك، <span id="userNameBanner">Player</span></h2>
-      <p style="color:#0c0c0c; font-size:14px;">تحقق من رصيدك وابدأ اللعب الآن!</p>
-      <button style="padding:8px 15px; border:none; background:#ffcc00; color:#0c0c0c; border-radius:8px; cursor:pointer;">إيداع الآن</button>
-    </div>
-    <div class="banner-image">
-      <!-- مكان للصورة (صندوق / كؤوس / عملات) -->
-      <img src="assets/banner-image.png" alt="Banner" style="height:80px;">
-    </div>
-  </div>
+<div class="card">
+<h3>Balance</h3>
+<h1 id="balance">0</h1>
 </div>
 
-<!-- بطاقات الرصيد -->
-<div class="wallet-cards" style="display:flex; flex-wrap:wrap; gap:15px; margin-bottom:20px;">
-  <div class="wallet-card" style="flex:1; min-width:150px; background:#1a1a1a; padding:15px; border-radius:10px; text-align:center;">
-    <h3>رصيد المحفظة</h3>
-    <p id="walletBalance" style="font-size:20px; font-weight:bold;">0</p>
-    <div style="margin-top:10px;">
-      <button style="padding:5px 10px; background:#FFD700; border:none; border-radius:6px; cursor:pointer;">إيداع</button>
-      <button style="padding:5px 10px; background:#FFA500; border:none; border-radius:6px; cursor:pointer;">سحب</button>
-    </div>
-  </div>
-
-  <div class="wallet-card" style="flex:1; min-width:150px; background:#1a1a1a; padding:15px; border-radius:10px; text-align:center;">
-    <h3>أرباح اليوم</h3>
-    <p id="todayProfit" style="font-size:20px; font-weight:bold;">0</p>
-  </div>
-
-  <div class="wallet-card" style="flex:1; min-width:150px; background:#1a1a1a; padding:15px; border-radius:10px; text-align:center;">
-    <h3>الأرباح الأسبوعية</h3>
-    <p id="weekProfit" style="font-size:20px; font-weight:bold;">0</p>
-  </div>
-
-  <div class="wallet-card" style="flex:1; min-width:150px; background:#1a1a1a; padding:15px; border-radius:10px; text-align:center;">
-    <h3>الأرباح الشهرية</h3>
-    <p id="monthProfit" style="font-size:20px; font-weight:bold;">0</p>
-  </div>
+<div class="card">
+<h3>Earnings</h3>
+<h1 id="earnings">0</h1>
 </div>
 
-<!-- بطاقات الخدمات -->
-<div class="services" style="display:flex; flex-wrap:wrap; gap:15px; margin-bottom:20px;">
-  <div class="service-card" style="flex:1; min-width:120px; background:#1a1a1a; padding:15px; border-radius:10px; text-align:center; cursor:pointer;">
-    <img src="assets/service1.png" alt="الرصيد" style="height:40px; margin-bottom:10px;">
-    <p>الرصيد</p>
-  </div>
-  <div class="service-card" style="flex:1; min-width:120px; background:#1a1a1a; padding:15px; border-radius:10px; text-align:center; cursor:pointer;">
-    <img src="assets/service2.png" alt="الألعاب" style="height:40px; margin-bottom:10px;">
-    <p>الألعاب</p>
-  </div>
-  <div class="service-card" style="flex:1; min-width:120px; background:#1a1a1a; padding:15px; border-radius:10px; text-align:center; cursor:pointer;">
-    <img src="assets/service3.png" alt="القسائم" style="height:40px; margin-bottom:10px;">
-    <p>القسائم</p>
-  </div>
-  <div class="service-card" style="flex:1; min-width:120px; background:#1a1a1a; padding:15px; border-radius:10px; text-align:center; cursor:pointer;">
-    <img src="assets/service4.png" alt="السحوبات" style="height:40px; margin-bottom:10px;">
-    <p>السحوبات</p>
-  </div>
+<div class="card">
+<h3>Points</h3>
+<h1 id="points">0</h1>
 </div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-  // تحديث الرصيد من Firebase (Realtime Database)
-  const userId = firebase.auth().currentUser ? firebase.auth().currentUser.uid : null;
-  if(userId){
-    const balanceRef = db.ref('users/' + userId + '/balance');
-    balanceRef.on('value', snapshot => {
-      const balance = snapshot.val() || 0;
-      document.getElementById('walletBalance').textContent = balance;
-    });
+const firebaseConfig = {
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
+  authDomain: "chanci-app.firebaseapp.com",
+  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+  projectId: "chanci-app",
+  storageBucket: "chanci-app.firebasestorage.app",
+  messagingSenderId: "18416485348",
+  appId: "1:18416485348:web:12176965505080897b3df1"
+};
 
-    // مثال لأرباح
-    const profitRef = db.ref('users/' + userId + '/profit');
-    profitRef.on('value', snapshot => {
-      const profit = snapshot.val() || { today:0, week:0, month:0 };
-      document.getElementById('todayProfit').textContent = profit.today;
-      document.getElementById('weekProfit').textContent = profit.week;
-      document.getElementById('monthProfit').textContent = profit.month;
-    });
-  }
-
-  // تحديث اسم المستخدم في البانر
-  firebase.auth().onAuthStateChanged(user => {
-    if(user){
-      document.getElementById('userNameBanner').textContent = user.displayName || user.email;
-    }
-  });
-</script><!-- الجزء الثالث: قسم الألعاب -->
-
-<div class="games-section" style="margin-bottom:20px;">
-  <h2 style="margin-bottom:10px; color:#FFD700;">الألعاب</h2>
-  <div class="games-grid" style="display:flex; flex-wrap:wrap; gap:15px;">
-
-    <!-- بطاقة لعبة -->
-    <div class="game-card" style="flex:1; min-width:120px; background:#1a1a1a; border-radius:10px; overflow:hidden; position:relative; cursor:pointer;">
-      <img src="assets/game1.png" alt="لعبة 1" style="width:100%; height:100px; object-fit:cover;">
-      <span style="position:absolute; top:8px; left:8px; background:#FFD700; color:#0c0c0c; font-size:10px; padding:2px 6px; border-radius:5px;">جديد</span>
-      <div style="padding:8px; text-align:center;">
-        <p>لعبة الذهب</p>
-        <button style="padding:5px 10px; background:#FFA500; border:none; border-radius:6px; cursor:pointer;">العب الآن</button>
-      </div>
-    </div>
-
-    <!-- بطاقة لعبة -->
-    <div class="game-card" style="flex:1; min-width:120px; background:#1a1a1a; border-radius:10px; overflow:hidden; position:relative; cursor:pointer;">
-      <img src="assets/game2.png" alt="لعبة 2" style="width:100%; height:100px; object-fit:cover;">
-      <span style="position:absolute; top:8px; left:8px; background:#FF4500; color:#fff; font-size:10px; padding:2px 6px; border-radius:5px;">سريع</span>
-      <div style="padding:8px; text-align:center;">
-        <p>لعبة السرعة</p>
-        <button style="padding:5px 10px; background:#FFD700; border:none; border-radius:6px; cursor:pointer;">العب الآن</button>
-      </div>
-    </div>
-
-    <!-- بطاقة لعبة -->
-    <div class="game-card" style="flex:1; min-width:120px; background:#1a1a1a; border-radius:10px; overflow:hidden; position:relative; cursor:pointer;">
-      <img src="assets/game3.png" alt="لعبة 3" style="width:100%; height:100px; object-fit:cover;">
-      <span style="position:absolute; top:8px; left:8px; background:#FFD700; color:#0c0c0c; font-size:10px; padding:2px 6px; border-radius:5px;">جديد</span>
-      <div style="padding:8px; text-align:center;">
-        <p>لعبة المغامرة</p>
-        <button style="padding:5px 10px; background:#FFA500; border:none; border-radius:6px; cursor:pointer;">العب الآن</button>
-      </div>
-    </div>
-
-    <!-- بطاقة لعبة -->
-    <div class="game-card" style="flex:1; min-width:120px; background:#1a1a1a; border-radius:10px; overflow:hidden; position:relative; cursor:pointer;">
-      <img src="assets/game4.png" alt="لعبة 4" style="width:100%; height:100px; object-fit:cover;">
-      <span style="position:absolute; top:8px; left:8px; background:#FF4500; color:#fff; font-size:10px; padding:2px 6px; border-radius:5px;">سريع</span>
-      <div style="padding:8px; text-align:center;">
-        <p>لعبة الحظ</p>
-        <button style="padding:5px 10px; background:#FFD700; border:none; border-radius:6px; cursor:pointer;">العب الآن</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-  // مثال لجلب بيانات الألعاب من Firebase (يمكن تعديل المسار حسب قاعدة البيانات)
-  const gamesRef = db.ref('games'); 
-  gamesRef.on('value', snapshot => {
-    const games = snapshot.val();
-    // يمكن هنا تحديث البطاقات تلقائياً عند تغيير البيانات
-    // حالياً نترك البطاقات ثابتة كما في الصورة
-  });
-</script><!-- الجزء الرابع : المعاملات والشريط السفلي -->
-
-<div class="transactions-section" style="margin-top:25px;">
-
-  <h2 style="color:#FFD700;margin-bottom:15px;">
-    آخر المعاملات
-  </h2>
-
-  <div style="
-    background:#1a1a1a;
-    border-radius:15px;
-    overflow:hidden;
-    border:1px solid rgba(255,215,0,.15);
-  ">
-
-    <table style="
-      width:100%;
-      border-collapse:collapse;
-      text-align:center;
-    ">
-
-      <thead>
-        <tr style="background:#242424;">
-          <th style="padding:12px;">النوع</th>
-          <th style="padding:12px;">المبلغ</th>
-          <th style="padding:12px;">الحالة</th>
-          <th style="padding:12px;">التاريخ</th>
-        </tr>
-      </thead>
-
-      <tbody id="transactionsTable">
-
-        <tr>
-          <td style="padding:12px;">إيداع</td>
-          <td style="padding:12px;color:#FFD700;">100$</td>
-          <td style="padding:12px;color:#00ff88;">مكتمل</td>
-          <td style="padding:12px;">اليوم</td>
-        </tr>
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-
-<!-- شريط الهاتف السفلي -->
-
-<div class="bottom-nav">
-
-  <a href="#">
-    <span>🏠</span>
-    <small>الرئيسية</small>
-  </a>
-
-  <a href="#">
-    <span>🎮</span>
-    <small>الألعاب</small>
-  </a>
-
-  <a href="#">
-    <span>💰</span>
-    <small>المحفظة</small>
-  </a>
-
-  <a href="#">
-    <span>🎁</span>
-    <small>المكافآت</small>
-  </a>
-
-  <a href="#">
-    <span>👤</span>
-    <small>حسابي</small>
-  </a>
-
-</div>
-
-
-<style>
-
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  height:70px;
-
-  background:#111;
-
-  border-top:1px solid rgba(255,215,0,.2);
-
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-
-  z-index:999;
+if(!firebase.apps.length){
+firebase.initializeApp(firebaseConfig);
 }
 
-.bottom-nav a{
-  color:#bbb;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  font-size:12px;
+const db = firebase.database();
+const uid = localStorage.getItem("uid");
+
+if(!uid){
+window.location.href="index.html";
 }
 
-.bottom-nav a:hover{
-  color:#FFD700;
-}
-
-.bottom-nav span{
-  font-size:22px;
-}
-
-@media(min-width:768px){
-
-  .bottom-nav{
-    display:none;
-  }
-
-}
-
-</style>
-
-
-<script>
-
-/* سجل العمليات من Firebase */
-
-firebase.auth().onAuthStateChanged(user=>{
-
-  if(!user) return;
-
-  const txRef = db.ref(
-    'users/' + user.uid + '/transactions'
-  );
-
-  txRef.on('value',snapshot=>{
-
-    const data = snapshot.val();
-
-    if(!data) return;
-
-    let html='';
-
-    Object.values(data).reverse().forEach(tx=>{
-
-      html += `
-      <tr>
-        <td style="padding:12px;">
-          ${tx.type || '-'}
-        </td>
-
-        <td style="padding:12px;color:#FFD700;">
-          ${tx.amount || 0}
-        </td>
-
-        <td style="padding:12px;color:#00ff88;">
-          ${tx.status || 'مكتمل'}
-        </td>
-
-        <td style="padding:12px;">
-          ${tx.date || '-'}
-        </td>
-      </tr>
-      `;
-
-    });
-
-    document.getElementById(
-      'transactionsTable'
-    ).innerHTML = html;
-
-  });
-
+db.ref("users/"+uid).on("value",snap=>{
+let d = snap.val() || {};
+document.getElementById("balance").innerText = d.balance || 0;
+document.getElementById("earnings").innerText = d.earnings || 0;
+document.getElementById("points").innerText = d.points || 0;
 });
 
+function logout(){
+localStorage.removeItem("uid");
+window.location.href="index.html";
+}
 </script>
+
+</body>
+</html>
