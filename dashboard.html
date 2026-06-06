@@ -245,3 +245,80 @@ function logout(){
 </script>
 </body>
 </html>
+<!-- ==========================
+  Section: Coupons & Transactions
+========================== -->
+<h3 style="margin-top:40px;">القسائم المتاحة</h3>
+<div class="cards" id="couponsSection">
+  <!-- سيتم ملؤها ديناميكياً من Firebase لاحقاً -->
+  <div class="card">
+    <h3>قسيمة 5$</h3>
+    <p>صلاحية: 30 يوم</p>
+  </div>
+  <div class="card">
+    <h3>قسيمة 10$</h3>
+    <p>صلاحية: 30 يوم</p>
+  </div>
+</div>
+
+<h3 style="margin-top:40px;">آخر المعاملات</h3>
+<div class="cards" id="transactionsSection">
+  <!-- بطاقة معاملة نموذجية -->
+  <div class="card">
+    <p>تمت إضافة 50 نقطة</p>
+    <p style="color:#aaa; font-size:12px;">01/06/2026</p>
+  </div>
+  <div class="card">
+    <p>تم خصم 20 رصيد</p>
+    <p style="color:#aaa; font-size:12px;">02/06/2026</p>
+  </div>
+</div>
+
+<!-- ==========================
+  Bottom Navigation
+========================== -->
+<div style="position:fixed; bottom:0; left:0; width:100%; background:#111; display:flex; justify-content:space-around; padding:10px 0; box-shadow:0 -2px 10px rgba(255,215,0,0.2); z-index:999;">
+  <div style="text-align:center; color:gold; cursor:pointer;">
+    <img src="https://img.icons8.com/ios-filled/30/FFD700/home.png"/><br>الرئيسية
+  </div>
+  <div style="text-align:center; color:gold; cursor:pointer;">
+    <img src="https://img.icons8.com/ios-filled/30/FFD700/wallet.png"/><br>المحفظة
+  </div>
+  <div style="text-align:center; color:gold; cursor:pointer;">
+    <img src="https://img.icons8.com/ios-filled/30/FFD700/game-controller.png"/><br>الألعاب
+  </div>
+  <div style="text-align:center; color:gold; cursor:pointer;">
+    <img src="https://img.icons8.com/ios-filled/30/FFD700/discount.png"/><br>القسائم
+  </div>
+  <div style="text-align:center; color:gold; cursor:pointer;">
+    <img src="https://img.icons8.com/ios-filled/30/FFD700/trophy.png"/><br>السحوبات
+  </div>
+</div>
+
+<style>
+/* ==========================
+  Animations & Hover Effects
+========================== */
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(255,215,0,0.5);
+}
+
+.games-section::-webkit-scrollbar,
+.cards::-webkit-scrollbar {
+  height:6px;
+  width:6px;
+}
+.games-section::-webkit-scrollbar-thumb,
+.cards::-webkit-scrollbar-thumb {
+  background: gold;
+  border-radius:3px;
+}
+.games-section::-webkit-scrollbar-track,
+.cards::-webkit-scrollbar-track {
+  background: #1c1c1c;
+}
+</style>
