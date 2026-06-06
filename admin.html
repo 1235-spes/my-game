@@ -1,131 +1,56 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chanci-App | لوحة التحكم</title>
-
+<title>Admin</title>
 <style>
-body {
-  margin:0;
-  font-family: Arial;
-  background:#0a0a0a;
-  color:#fff;
+body{
+margin:0;
+font-family:Arial;
+background:#0c0c0c;
+color:#fff;
 }
 
-.container {
-  max-width:800px;
-  margin:auto;
-  padding:20px;
+.box{
+padding:20px;
 }
 
-.logo {
-  text-align:center;
-  font-size:32px;
-  color:gold;
-  margin-bottom:20px;
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
 }
 
-.card {
-  background:#1c1c1c;
-  padding:15px;
-  border-radius:12px;
-  margin-bottom:15px;
-  box-shadow:0 0 10px rgba(255,215,0,0.2);
-}
-
-input, button {
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:8px;
-  border:none;
-}
-
-input {
-  background:#2c2c2c;
-  color:#fff;
-}
-
-button {
-  background:gold;
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button:hover {
-  opacity:0.9;
-}
-
-.user-card {
-  background:#111;
-  padding:12px;
-  border-radius:10px;
-  margin-top:10px;
-  border-left:3px solid gold;
-}
-
-.user-actions {
-  display:flex;
-  gap:10px;
-  margin-top:8px;
-}
-
-.small-btn {
-  flex:1;
-  padding:8px;
-  font-size:12px;
-}
-
-.delete {
-  background:red;
-  color:#fff;
-}
-
-.edit {
-  background:#4ade80;
-  color:#000;
-}
-
-.logout {
-  background:red;
-  color:#fff;
+button{
+padding:10px;
+width:100%;
+background:gold;
+border:none;
 }
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="box">
+<h2>ADMIN PANEL</h2>
 
-  <div class="logo">👑 لوحة تحكم Chanci</div>
+<input id="user" placeholder="User email">
+<input id="pass" placeholder="Password">
+<input id="balance" placeholder="Balance">
 
-  <!-- إنشاء مستخدم -->
-  <div class="card">
-    <h3>➕ إنشاء مستخدم جديد</h3>
-    <input type="text" id="newUser" placeholder="اسم المستخدم">
-    <input type="password" id="newPass" placeholder="كلمة المرور">
-    <input type="number" id="newBalance" placeholder="الرصيد">
-    <button onclick="createUser()">إنشاء</button>
-  </div>
+<button onclick="create()">Create User</button>
 
-  <!-- المستخدمين -->
-  <div class="card">
-    <h3>👤 المستخدمين</h3>
-    <div id="userList"></div>
-  </div>
-
-  <button class="logout" onclick="logout()">تسجيل خروج</button>
-
+<div id="list"></div>
 </div>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
   databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
   projectId: "chanci-app",
@@ -134,99 +59,23 @@ const firebaseConfig = {
   appId: "1:18416485348:web:12176965505080897b3df1"
 };
 
+if(!firebase.apps.length){
 firebase.initializeApp(firebaseConfig);
+}
+
 const db = firebase.database();
 
-// 🔐 حماية بسيطة
-const currentUser = localStorage.getItem('currentUser');
-if(currentUser !== "doktor"){
-  window.location.href = "index.html";
+function create(){
+let email = document.getElementById("user").value;
+let pass = document.getElementById("pass").value;
+let bal = document.getElementById("balance").value;
+
+db.ref("adminUsers").push({
+email, pass, balance:bal
+});
+
+alert("User created");
 }
-
-// ➕ إنشاء مستخدم
-function createUser(){
-  const username = document.getElementById('newUser').value.trim();
-  const password = document.getElementById('newPass').value.trim();
-  const balance = Number(document.getElementById('newBalance').value || 0);
-
-  if(!username || !password){
-    alert("أدخل البيانات");
-    return;
-  }
-
-  db.ref('users/' + username).get().then(snap => {
-    if(snap.exists()){
-      alert("المستخدم موجود");
-      return;
-    }
-
-    db.ref('users/' + username).set({
-      password: password,
-      balance: balance,
-      earnings: 0,
-      points: 0,
-      wins: 0,
-      spentSinceLastBox: 0,
-      boxAvailable: false
-    });
-
-    alert("تم إنشاء المستخدم");
-    loadUsers();
-  });
-}
-
-// 📊 تحميل المستخدمين (Realtime)
-function loadUsers(){
-  db.ref('users').on('value', snap => {
-    const list = document.getElementById('userList');
-    list.innerHTML = "";
-
-    const users = snap.val();
-    if(!users) return;
-
-    Object.keys(users).forEach(u => {
-      const data = users[u];
-
-      const div = document.createElement('div');
-      div.className = "user-card";
-
-      div.innerHTML = `
-        <strong>👤 ${u}</strong><br>
-        💰 الرصيد: ${data.balance || 0}<br>
-        🎁 النقاط: ${data.points || 0}
-
-        <div class="user-actions">
-          <button class="small-btn edit" onclick="addBalance('${u}')">+100</button>
-          <button class="small-btn delete" onclick="deleteUser('${u}')">حذف</button>
-        </div>
-      `;
-
-      list.appendChild(div);
-    });
-  });
-}
-
-// 💰 إضافة رصيد سريع
-function addBalance(user){
-  const ref = db.ref('users/' + user + '/balance');
-  ref.transaction(val => (val || 0) + 100);
-}
-
-// ❌ حذف مستخدم
-function deleteUser(user){
-  if(confirm("هل تريد حذف " + user + " ؟")){
-    db.ref('users/' + user).remove();
-  }
-}
-
-// 🚪 خروج
-function logout(){
-  localStorage.removeItem('currentUser');
-  window.location.href = "index.html";
-}
-
-// تشغيل
-loadUsers();
 </script>
 
 </body>
