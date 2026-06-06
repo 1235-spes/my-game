@@ -7,15 +7,15 @@
 body {margin:0;font-family:Arial;background:#0a0a0a;color:#fff;}
 .container {max-width:600px;margin:auto;padding:20px;}
 .box {background:#1c1c1c;padding:15px;border-radius:12px;margin-bottom:15px;}
-input,button {
-width:100%;padding:10px;margin:5px 0;border:none;border-radius:8px;
-}
+input,button {width:100%;padding:10px;margin:5px 0;border:none;border-radius:8px;}
 input {background:#2c2c2c;color:#fff;}
 button {background:gold;font-weight:bold;cursor:pointer;}
 .user {background:#111;padding:10px;margin:5px 0;border-radius:8px;}
 .red {background:red;color:#fff;}
 .green {background:green;color:#fff;}
+.blue {background:blue;color:#fff;}
 h2 {color:gold;text-align:center;}
+small {color:#ccc;}
 </style>
 </head>
 <body>
@@ -70,8 +70,8 @@ function addUser(){
   const p = document.getElementById("newPass").value.trim();
   const b = Number(document.getElementById("newBalance").value);
 
-  if(!u || !p){
-    alert("أدخل البيانات");
+  if(!u || !p || isNaN(b)){
+    alert("⚠️ أدخل جميع البيانات بشكل صحيح");
     return;
   }
 
@@ -80,16 +80,22 @@ function addUser(){
     balance: b,
     points: 0,
     wins: 0
+  }, (err)=>{
+    if(err) alert("❌ خطأ: " + err.message);
+    else alert("✅ تم إنشاء المستخدم: " + u);
   });
 
-  alert("تم إنشاء المستخدم: " + u);
+  document.getElementById("newUser").value="";
+  document.getElementById("newPass").value="";
+  document.getElementById("newBalance").value="";
+
   loadUsers();
 }
 
 // 👀 تحميل المستخدمين
 function loadUsers(){
-  db.ref("users").on("value", snap=>{
-    const data = snap.val();
+  db.ref("users").once("value").then(snap=>{
+    const data = snap.val() || {};
     const list = document.getElementById("usersList");
     list.innerHTML = "";
 
@@ -97,11 +103,13 @@ function loadUsers(){
       if(u === "doktor") continue;
 
       list.innerHTML += `
-      <div class="user">
-        <b>${u}</b><br>
-        💰 ${data[u].balance || 0}
-        <br>
-        <button class="green" onclick="addBalance('${u}')">+10 رصيد</button>
+      <div class="user" id="user-${u}">
+        <b>${u}</b> <small>(كلمة المرور: ${data[u].password})</small><br>
+        💰 الرصيد: ${data[u].balance || 0}<br>
+        <input type="number" id="balance-${u}" placeholder="ادخل قيمة للتعديل">
+        <button class="green" onclick="updateBalance('${u}')">تعديل الرصيد</button>
+        <input type="text" id="pass-${u}" placeholder="كلمة مرور جديدة">
+        <button class="blue" onclick="updatePassword('${u}')">تعديل كلمة المرور</button>
         <button class="red" onclick="deleteUser('${u}')">حذف</button>
       </div>
       `;
@@ -109,17 +117,52 @@ function loadUsers(){
   });
 }
 
-// 💰 زيادة رصيد
-function addBalance(user){
-  db.ref("users/" + user).once("value").then(snap=>{
+// تعديل الرصيد لأي قيمة
+function updateBalance(user){
+  const val = Number(document.getElementById("balance-"+user).value);
+  if(isNaN(val)){
+    alert("⚠️ أدخل قيمة صحيحة");
+    return;
+  }
+  db.ref("users/"+user).once("value").then(snap=>{
     let bal = snap.val().balance || 0;
-    db.ref("users/" + user).update({balance: bal + 10});
+    db.ref("users/"+user).update({balance: bal + val}, err=>{
+      if(err) alert("❌ "+err.message);
+      else {
+        alert("✅ تم تعديل الرصيد");
+        loadUsers();
+      }
+    });
+  });
+}
+
+// تعديل كلمة المرور
+function updatePassword(user){
+  const pass = document.getElementById("pass-"+user).value.trim();
+  if(!pass){
+    alert("⚠️ أدخل كلمة مرور جديدة");
+    return;
+  }
+  db.ref("users/"+user).update({password: pass}, err=>{
+    if(err) alert("❌ "+err.message);
+    else {
+      alert("✅ تم تعديل كلمة المرور");
+      loadUsers();
+    }
   });
 }
 
 // ❌ حذف مستخدم
 function deleteUser(user){
-  db.ref("users/" + user).remove();
+  if(confirm("هل أنت متأكد من حذف المستخدم "+user+"؟")){
+    db.ref("users/"+user).remove(err=>{
+      if(err) alert("❌ "+err.message);
+      else {
+        alert("✅ تم حذف المستخدم");
+        loadUsers();
+      }
+    });
+  }
 }
 
 loadUsers();
