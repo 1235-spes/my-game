@@ -242,6 +242,111 @@ function logout(){
   localStorage.removeItem('currentUser');
   window.location.href='index.html';
 }
+</script><!-- زر القائمة -->
+<div id="menuBtn" onclick="toggleSidebar()">
+☰
+</div>
+
+<!-- الشريط الجانبي -->
+<div id="sidebar">
+<div class="sideHeader">
+CHANCI-APP
+<span onclick="toggleSidebar()">✕</span>
+</div>
+
+<a href="#">🏠 الرئيسية</a>
+<a href="#">🎮 الألعاب</a>
+<a href="#">🎁 القسائم</a>
+<a href="#">🏆 السحوبات</a>
+<a href="#">💰 الرصيد</a>
+<a href="#" onclick="logout()">🚪 تسجيل خروج</a>
+</div>
+
+<style>
+#menuBtn{
+position:fixed;
+top:20px;
+right:20px;
+width:50px;
+height:50px;
+background:#d4af37;
+color:#000;
+font-size:28px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:12px;
+cursor:pointer;
+z-index:1001;
+box-shadow:0 0 20px rgba(212,175,55,.5);
+}
+
+#sidebar{
+position:fixed;
+top:0;
+right:-300px;
+width:280px;
+height:100%;
+background:#111;
+transition:.4s;
+z-index:1000;
+box-shadow:-5px 0 30px rgba(212,175,55,.3);
+}
+
+#sidebar.active{
+right:0;
+}
+
+.sideHeader{
+padding:25px;
+font-size:24px;
+font-weight:bold;
+color:#d4af37;
+border-bottom:1px solid rgba(212,175,55,.2);
+display:flex;
+justify-content:space-between;
+}
+
+.sideHeader span{
+cursor:pointer;
+}
+
+#sidebar a{
+display:block;
+padding:18px 25px;
+color:white;
+text-decoration:none;
+font-size:18px;
+transition:.3s;
+}
+
+#sidebar a:hover{
+background:rgba(212,175,55,.15);
+padding-right:35px;
+color:#d4af37;
+}
+
+.card{
+animation:showCard .8s ease;
+}
+
+@keyframes showCard{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+</style>
+
+<script>
+function toggleSidebar(){
+document.getElementById("sidebar")
+.classList.toggle("active");
+}
 </script>
 </body>
 </html><!-- ==========================
