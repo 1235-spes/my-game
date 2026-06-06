@@ -4,87 +4,326 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chanci-App | تسجيل الدخول</title>
+
 <style>
-body {margin:0; font-family:Arial; background:#0a0a0a; color:#fff;}
-.container {max-width:480px; margin:auto; padding:20px;}
-.logo {text-align:center; font-size:36px; font-weight:bold; color: gold; margin-bottom: 10px;}
-.login-box {background:#1c1c1c; border-radius:12px; padding:20px; margin-bottom:20px; box-shadow:0 0 20px rgba(255,215,0,0.5); text-align:center;}
-.login-box input {width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none; background:#2c2c2c; color:#fff;}
-.login-box button {width:100%; padding:12px; background: gold; color:#000; font-weight:bold; border:none; border-radius:8px; cursor:pointer; margin-top:10px;}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:
+linear-gradient(
+135deg,
+#050505,
+#111111,
+#1a1a1a
+);
+padding:20px;
+}
+
+.login-box{
+
+width:100%;
+max-width:450px;
+
+background:#141414;
+
+border:1px solid rgba(255,215,0,.25);
+
+border-radius:20px;
+
+padding:30px;
+
+box-shadow:
+0 0 30px rgba(255,215,0,.15);
+
+}
+
+.logo{
+
+text-align:center;
+
+font-size:42px;
+
+font-weight:900;
+
+color:#FFD700;
+
+margin-bottom:10px;
+
+text-shadow:
+0 0 10px rgba(255,215,0,.6);
+
+}
+
+.subtitle{
+
+text-align:center;
+
+color:#ccc;
+
+margin-bottom:25px;
+
+}
+
+input{
+
+width:100%;
+
+padding:14px;
+
+margin-bottom:15px;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
+
+background:#242424;
+
+color:#fff;
+
+font-size:15px;
+
+}
+
+input:focus{
+
+box-shadow:
+0 0 10px rgba(255,215,0,.4);
+
+}
+
+button{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:12px;
+
+background:#FFD700;
+
+color:#000;
+
+font-weight:bold;
+
+font-size:16px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+button:hover{
+
+transform:translateY(-2px);
+
+box-shadow:
+0 0 15px rgba(255,215,0,.4);
+
+}
+
+.status{
+
+margin-top:15px;
+
+text-align:center;
+
+color:#ffcc00;
+
+font-size:14px;
+
+}
+
 </style>
+
 </head>
 <body>
-<div class="container">
-  <div class="login-box">
-    <div class="logo">Chanci-App</div>
-    <h2>مرحباً بك</h2>
-    <p>سجّل للدخول للمتابعة</p>
-    <input type="text" id="username" placeholder="اسم المستخدم">
-    <input type="password" id="password" placeholder="كلمة المرور">
-    <button onclick="login()">دخول</button>
-  </div>
+
+<div class="login-box">
+
+<div class="logo">
+CHANCI APP
+</div>
+
+<div class="subtitle">
+قم بتسجيل الدخول للمتابعة
+</div>
+
+<input
+type="text"
+id="username"
+placeholder="اسم المستخدم">
+
+<input
+type="password"
+id="password"
+placeholder="كلمة المرور">
+
+<button onclick="login()">
+تسجيل الدخول
+</button>
+
+<div
+class="status"
+id="status">
+</div>
+
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <script>
-// إعداد Firebase
+
 const firebaseConfig = {
-  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
-  authDomain: "chanci-app.firebaseapp.com",
-  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
-  projectId: "chanci-app",
-  storageBucket: "chanci-app.firebasestorage.app",
-  messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:12176965505080897b3df1",
-  measurementId: "G-6YXX3SS61D"
+
+apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
+authDomain: "chanci-app.firebaseapp.com",
+databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+projectId: "chanci-app",
+storageBucket: "chanci-app.firebasestorage.app",
+messagingSenderId: "18416485348",
+appId: "1:18416485348:web:12176965505080897b3df1",
+measurementId: "G-6YXX3SS61D"
+
 };
+
 firebase.initializeApp(firebaseConfig);
+
 const db = firebase.database();
 
-// دالة تسجيل الدخول
-function login(){
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
+const currentUser =
+localStorage.getItem("currentUser");
 
-  if(username === "" || password === ""){
-    alert("الرجاء ملء اسم المستخدم وكلمة المرور");
-    return;
-  }
-
-  // التحقق من قاعدة البيانات
-  db.ref("users/"+username).get().then(snapshot => {
-    if(!snapshot.exists()){
-      alert("اسم المستخدم غير موجود");
-      return;
-    }
-
-    const data = snapshot.val();
-    if(String(data.password) === String(password)){
-      localStorage.setItem("currentUser", username);
-
-      if(username === "doktor"){
-        // المدير يذهب للوحة التحكم
-        window.location.href = "admin.html";
-      } else {
-        // المستخدم العادي يذهب للداشبورد
-        window.location.href = "dashboard.html";
-      }
-    } else {
-      alert("كلمة المرور خاطئة");
-    }
-  });
-}
-
-// إذا المستخدم مسجل بالفعل في localStorage
-const currentUser = localStorage.getItem("currentUser");
 if(currentUser){
-  if(currentUser === "doktor"){
-    window.location.href = "admin.html";
-  } else {
-    window.location.href = "dashboard.html";
-  }
+
+if(currentUser === "doktor"){
+
+window.location.href =
+"admin.html";
+
+}else{
+
+window.location.href =
+"dashboard.html";
+
 }
+
+}
+
+function login(){
+
+const username =
+document
+.getElementById("username")
+.value
+.trim();
+
+const password =
+document
+.getElementById("password")
+.value
+.trim();
+
+const status =
+document
+.getElementById("status");
+
+if(username === "" || password === ""){
+
+status.innerHTML =
+"يرجى إدخال اسم المستخدم وكلمة المرور";
+
+return;
+
+}
+
+status.innerHTML =
+"جاري تسجيل الدخول...";
+
+db
+.ref("users/" + username)
+.get()
+
+.then(snapshot=>{
+
+if(!snapshot.exists()){
+
+status.innerHTML =
+"اسم المستخدم غير موجود";
+
+return;
+
+}
+
+const user =
+snapshot.val();
+
+if(
+String(user.password)
+===
+String(password)
+){
+
+localStorage.setItem(
+"currentUser",
+username
+);
+
+status.innerHTML =
+"تم تسجيل الدخول بنجاح";
+
+setTimeout(()=>{
+
+if(username === "doktor"){
+
+window.location.href =
+"admin.html";
+
+}else{
+
+window.location.href =
+"dashboard.html";
+
+}
+
+},500);
+
+}else{
+
+status.innerHTML =
+"كلمة المرور غير صحيحة";
+
+}
+
+})
+
+.catch(error=>{
+
+status.innerHTML =
+"حدث خطأ أثناء تسجيل الدخول";
+
+console.error(error);
+
+});
+
+}
+
 </script>
+
 </body>
 </html>
