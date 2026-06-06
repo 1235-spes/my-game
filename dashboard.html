@@ -467,6 +467,74 @@ font-size:36px;
 font-size:45px;
 }
 
+}/* الألعاب المميزة */
+.featured-games{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-top:25px;
+}
+
+.featured-games .game-card{
+  flex:1;
+  min-width:220px;
+  background:linear-gradient(180deg, rgba(12,12,12,.95), rgba(5,5,5,.95));
+  border:1px solid rgba(255,190,50,.15);
+  border-radius:25px;
+  padding:20px;
+  text-align:center;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.featured-games .game-card:hover{
+  box-shadow:0 0 25px rgba(255,180,0,.25);
+  border-color:#ffbf3c;
+}
+
+.featured-games .game-card div:first-child{
+  font-size:50px;
+  margin-bottom:10px;
+  text-shadow:0 0 15px rgba(255,180,0,.3);
+}
+
+.featured-games .game-card div:nth-child(2){
+  font-weight:700;
+  font-size:22px;
+  color:#ffd36a;
+}
+
+.featured-games .game-card div:nth-child(3){
+  color:#aaa;
+  margin-top:5px;
+}
+
+.featured-games .game-btn{
+  margin-top:15px;
+  background:linear-gradient(180deg,#ffd76b,#d89b18);
+  border:none;
+  padding:12px 25px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:18px;
+  color:black;
+  transition:0.3s;
+}
+
+.featured-games .game-btn:hover{
+  box-shadow:0 0 20px #ffd76b;
+}
+
+@media(max-width:900px){
+  .featured-games{
+    flex-direction:column;
+    align-items:center;
+  }
+  .featured-games .game-card{
+    width:90%;
+    max-width:300px;
+  }
 }
 </style>
 </head>
