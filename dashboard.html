@@ -1,285 +1,314 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لوحة التحكم | My Game</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+<title>CHANCI-APP</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-  body {
-    margin: 0;
-    font-family: 'Cairo', sans-serif;
-    background-color: #f5f5f5;
-    direction: rtl;
-  }
 
-  /* الشريط الجانبي */
-  .sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #1e1e2f;
-    color: white;
-    padding-top: 20px;
-  }
-  .sidebar h2 {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  .sidebar a {
-    display: block;
-    color: white;
-    padding: 15px 20px;
-    text-decoration: none;
-    margin-bottom: 5px;
-    border-radius: 5px;
-  }
-  .sidebar a:hover {
-    background-color: #33334d;
-  }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cairo',sans-serif;
+}
 
-  /* المحتوى الرئيسي */
-  .main-content {
-    margin-right: 250px;
-    padding: 20px;
-  }
+body{
+background:#050505;
+color:white;
+overflow-x:hidden;
+}
 
-  /* البطاقات */
-  .card {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-  }
-  .card-title {
-    font-weight: bold;
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  .card-value {
-    font-size: 32px;
-    color: #4caf50;
-  }
-  .action-buttons {
-    margin-top: 15px;
-  }
-  .action-btn {
-    padding: 10px 20px;
-    margin-right: 10px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    background-color: #4caf50;
-    color: white;
-    font-weight: bold;
-  }
-  .action-btn:hover {
-    background-color: #45a049;
-  }
+/* الخلفية الذهبية */
 
-  /* الألعاب */
-  .games-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .game-card {
-    background-color: #fff;
-    width: 200px;
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    text-align: center;
-  }
-  .game-card button {
-    margin-top: 10px;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    background-color: #2196f3;
-    color: white;
-    font-weight: bold;
-  }
-  .game-card button:hover {
-    background-color: #1976d2;
-  }
+body::before{
+content:'';
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 20%,rgba(255,180,0,.15),transparent 25%),
+radial-gradient(circle at 80% 30%,rgba(255,180,0,.10),transparent 20%),
+radial-gradient(circle at 60% 70%,rgba(255,180,0,.08),transparent 20%);
+pointer-events:none;
+z-index:-1;
+}
 
-  /* صندوق الجوائز */
-  #wheel {
-    background-color:#fff;
-    border-radius:50%;
-    display:block;
-    margin: 0 auto;
-  }
+/* التطبيق */
 
-  /* القسائم */
-  #couponInput {
-    padding:8px;
-    width:60%;
-    border-radius:6px;
-    border:1px solid #ccc;
-    margin-bottom:10px;
-  }
+.app{
+display:flex;
+min-height:100vh;
+}
 
-  /* تجاوب الشاشة */
-  @media screen and (max-width: 768px){
-    .sidebar {width: 100%; height: auto; position: relative;}
-    .main-content {margin-right: 0;}
-    .games-section {justify-content: center;}
-  }
+/* القائمة الجانبية */
+
+.sidebar{
+width:290px;
+background:#070707;
+border-left:1px solid rgba(255,190,50,.15);
+padding:20px;
+position:fixed;
+right:0;
+top:0;
+height:100vh;
+overflow-y:auto;
+}
+
+.main{
+margin-right:290px;
+width:calc(100% - 290px);
+padding:20px;
+}
+
+/* الشعار */
+
+.logo-card{
+background:linear-gradient(
+180deg,
+rgba(255,170,0,.15),
+rgba(0,0,0,.8)
+);
+
+border:1px solid rgba(255,180,0,.2);
+
+border-radius:25px;
+
+padding:25px;
+
+margin-bottom:20px;
+
+text-align:center;
+}
+
+.logo-card h1{
+font-size:58px;
+font-weight:800;
+color:#ffcb52;
+text-shadow:0 0 25px rgba(255,180,0,.4);
+}
+
+.logo-card p{
+color:#cfa85c;
+letter-spacing:2px;
+}
+
+/* بطاقات */
+
+.card{
+background:linear-gradient(
+180deg,
+rgba(15,15,15,.95),
+rgba(5,5,5,.95)
+);
+
+border:1px solid rgba(255,190,50,.15);
+
+border-radius:24px;
+
+padding:20px;
+}
+
+/* المستخدم */
+
+.profile{
+text-align:center;
+padding:20px;
+border-radius:24px;
+background:#0b0b0b;
+border:1px solid rgba(255,190,50,.15);
+margin-bottom:20px;
+}
+
+.avatar{
+width:100px;
+height:100px;
+margin:auto;
+border-radius:50%;
+border:2px solid #ffbf3c;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:45px;
+color:#ffbf3c;
+box-shadow:0 0 25px rgba(255,190,50,.35);
+}
+
+.username{
+margin-top:15px;
+font-size:28px;
+font-weight:700;
+color:#ffcb52;
+}
+
+.badge{
+margin-top:10px;
+display:inline-block;
+padding:8px 18px;
+border:1px solid #ffbf3c;
+border-radius:30px;
+color:#ffcb52;
+}
+
+/* القائمة */
+
+.menu{
+margin-top:20px;
+}
+
+.menu-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:18px;
+
+margin-bottom:12px;
+
+border-radius:18px;
+
+background:#0b0b0b;
+
+border:1px solid rgba(255,190,50,.08);
+
+cursor:pointer;
+
+transition:.3s;
+}
+
+.menu-item:hover{
+border-color:#ffbf3c;
+box-shadow:0 0 20px rgba(255,180,0,.25);
+}
+
+.menu-item.active{
+background:linear-gradient(
+90deg,
+rgba(255,174,0,.25),
+rgba(255,174,0,.08)
+);
+
+border-color:#ffbf3c;
+}
+
+.menu-icon{
+font-size:24px;
+color:#ffbf3c;
+}
+
+@media(max-width:900px){
+
+.sidebar{
+width:100%;
+position:relative;
+height:auto;
+}
+
+.main{
+margin-right:0;
+width:100%;
+}
+
+.app{
+display:block;
+}
+
+}
+
 </style>
 </head>
+
 <body>
 
-<!-- الشريط الجانبي -->
+<div class="app">
+
+<!-- القائمة الجانبية -->
+
 <div class="sidebar">
-  <h2>لوحة التحكم</h2>
-  <a href="#">الرئيسية</a>
-  <a href="#">الألعاب</a>
-  <a href="#">الصندوق</a>
-  <a href="#">الإعدادات</a>
+
+<div class="profile">
+
+<div class="avatar">
+👤
+</div>
+
+<div style="margin-top:15px;">
+مرحباً بك
+</div>
+
+<div class="username">
+Player123
+</div>
+
+<div class="badge">
+👑 عضو ذهبي
+</div>
+
+</div>
+
+<div class="menu">
+
+<div class="menu-item active">
+<span>الرئيسية</span>
+<span class="menu-icon">▦</span>
+</div>
+
+<div class="menu-item">
+<span>المحفظة</span>
+<span class="menu-icon">💳</span>
+</div>
+
+<div class="menu-item">
+<span>الإيداع</span>
+<span class="menu-icon">⬇</span>
+</div>
+
+<div class="menu-item">
+<span>السحب</span>
+<span class="menu-icon">⬆</span>
+</div>
+
+<div class="menu-item">
+<span>الألعاب</span>
+<span class="menu-icon">🎮</span>
+</div>
+
+<div class="menu-item">
+<span>القسائم</span>
+<span class="menu-icon">🎫</span>
+</div>
+
+<div class="menu-item">
+<span>السحوبات</span>
+<span class="menu-icon">🎡</span>
+</div>
+
+</div>
+
 </div>
 
 <!-- المحتوى الرئيسي -->
-<div class="main-content">
 
-  <!-- بطاقة الرصيد -->
-  <div class="card">
-    <div class="card-title">الرصيد الحالي</div>
-    <div class="card-value" id="balance">0</div>
-    <div class="action-buttons">
-      <button class="action-btn" onclick="addBalance(10)">أضف 10</button>
-      <button class="action-btn" onclick="spendBalance(5)">اصرف 5</button>
-    </div>
-  </div>
+<div class="main">
 
-  <!-- الصندوق -->
-  <div class="card">
-    <div class="card-title">الصندوق</div>
-    <div class="card-value" id="box">مغلق</div>
-    <div class="action-buttons">
-      <button class="action-btn" onclick="openBox()">افتح الصندوق</button>
-    </div>
-  </div>
+<div class="logo-card">
 
-  <!-- عجلة الحظ -->
-  <div class="card">
-    <div class="card-title">عجلة الحظ</div>
-    <canvas id="wheel" width="300" height="300"></canvas>
-    <div class="action-buttons">
-      <button class="action-btn" onclick="spinWheel()">دور العجلة</button>
-    </div>
-  </div>
+<h1>CHANCI-APP</h1>
 
-  <!-- القسائم -->
-  <div class="card">
-    <div class="card-title">القسائم</div>
-    <input type="text" id="couponInput" placeholder="أدخل كود القسيمة">
-    <button class="action-btn" onclick="redeemCoupon()">تفعيل القسيمة</button>
-  </div>
-
-  <!-- الألعاب -->
-  <div class="games-section">
-    <div class="game-card">
-      <h3>لعبة 1</h3>
-      <button onclick="playGame('game1')">العب الآن</button>
-    </div>
-    <div class="game-card">
-      <h3>لعبة 2</h3>
-      <button onclick="playGame('game2')">العب الآن</button>
-    </div>
-  </div>
+<p>PLAY • WIN • REDEEM</p>
 
 </div>
 
-<script>
-  // الرصيد
-  let balance = 0;
-  const balanceDisplay = document.getElementById('balance');
+</div>
 
-  function addBalance(amount) {
-    balance += amount;
-    balanceDisplay.textContent = balance;
-  }
+</div>
 
-  function spendBalance(amount) {
-    if(balance >= amount) {
-      balance -= amount;
-      balanceDisplay.textContent = balance;
-    } else {
-      alert('الرصيد غير كافي!');
-    }
-  }
-
-  function playGame(game) {
-    alert('تشغيل ' + game);
-  }
-
-  // الصندوق
-  const boxDisplay = document.getElementById('box');
-  function openBox() {
-    const prizes = ['10 نقاط','20 نقاط','50 نقاط','لا شيء'];
-    const prize = prizes[Math.floor(Math.random()*prizes.length)];
-    boxDisplay.textContent = prize;
-    if(prize !== 'لا شيء') {
-      balance += parseInt(prize);
-      balanceDisplay.textContent = balance;
-      alert('فزت بـ ' + prize);
-    } else {
-      alert('للأسف لم تفز بشيء');
-    }
-  }
-
-  // عجلة الحظ
-  const canvas = document.getElementById('wheel');
-  const ctx = canvas.getContext('2d');
-  const segments = ['5','10','15','20','50','100'];
-  const colors = ['#f44336','#e91e63','#9c27b0','#3f51b5','#2196f3','#009688'];
-  let angle = 0;
-
-  function drawWheel() {
-    const segAngle = (2 * Math.PI) / segments.length;
-    for(let i=0;i<segments.length;i++){
-      ctx.beginPath();
-      ctx.moveTo(150,150);
-      ctx.arc(150,150,150,i*segAngle,(i+1)*segAngle);
-      ctx.fillStyle = colors[i % colors.length];
-      ctx.fill();
-      ctx.stroke();
-      ctx.save();
-      ctx.translate(150,150);
-      ctx.rotate(i*segAngle + segAngle/2);
-      ctx.textAlign = "right";
-      ctx.fillStyle = "#fff";
-      ctx.font = "16px Cairo";
-      ctx.fillText(segments[i],140,5);
-      ctx.restore();
-    }
-  }
-
-  drawWheel();
-
-  function spinWheel() {
-    const spins = Math.floor(Math.random()*360) + 720;
-    const duration = 3000;
-    let start = null;
-
-    function animate(timestamp){
-      if(!start) start = timestamp;
-      const progress = timestamp - start;
-      const currentAngle = angle + spins * (progress/duration);
-      ctx.clearRect(0,0,300,300);
-      ctx.save();
-      ctx.translate(150,150);
-      ctx.rotate(currentAngle*Math.PI/180);
-      ctx.translate(-150,-150);
-      drawWheel();
-      ctx.restore();
-      if(progress < duration) {
-        requestAnimationFrame(animate);
-      } else {
-        angle += spins
+</body>
+</html>
