@@ -535,7 +535,68 @@ font-size:45px;
     width:90%;
     max-width:300px;
   }
-}
+}<!-- الصندوق والقسائم -->
+
+<div class="bonus-section">
+
+  <div class="bonus-card">
+
+    <div class="bonus-icon">
+      🎁
+    </div>
+
+    <h3>الصندوق اليومي</h3>
+
+    <p>افتح الصندوق واحصل على مكافأة عشوائية</p>
+
+    <button class="gold-btn" onclick="openDailyBox()">
+      فتح الصندوق
+    </button>
+
+  </div>
+
+  <div class="bonus-card">
+
+    <div class="bonus-icon">
+      🎫
+    </div>
+
+    <h3>تفعيل قسيمة</h3>
+
+    <input
+      type="text"
+      id="couponCode"
+      placeholder="أدخل رمز القسيمة">
+
+    <button class="gold-btn" onclick="redeemCoupon()">
+      تفعيل
+    </button>
+
+  </div>
+
+</div>
+
+<!-- عجلة الحظ -->
+
+<div class="wheel-section">
+
+  <h2>🎡 عجلة الحظ</h2>
+
+  <div class="wheel-container">
+
+    <div id="wheel">
+      <div class="wheel-center">
+        SPIN
+      </div>
+    </div>
+
+  </div>
+
+  <button class="gold-btn" onclick="spinWheel()">
+    تدوير العجلة
+  </button>
+
+</div>
 </style>
 </head>
 
