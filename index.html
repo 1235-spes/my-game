@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chanci App - Login</title>
-
+<title>Chanci - Login</title>
 <style>
 body{
 margin:0;
@@ -26,11 +24,6 @@ border-radius:15px;
 border:1px solid #333;
 }
 
-h2{
-text-align:center;
-color:#FFD700;
-}
-
 input{
 width:100%;
 padding:12px;
@@ -44,37 +37,32 @@ color:#fff;
 button{
 width:100%;
 padding:12px;
+margin-top:10px;
 border:none;
 border-radius:10px;
 background:#FFD700;
 font-weight:bold;
 cursor:pointer;
-margin-top:10px;
 }
-
 .status{
 text-align:center;
 margin-top:10px;
 color:#ffcc00;
-font-size:14px;
 }
 </style>
-
 </head>
 <body>
 
 <div class="box">
+<h2 style="color:#FFD700;text-align:center;">Chanci Login</h2>
 
-<h2>تسجيل الدخول</h2>
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
 
-<input type="email" id="email" placeholder="الإيميل">
-<input type="password" id="password" placeholder="كلمة المرور">
-
-<button onclick="login()">دخول</button>
-<button onclick="register()">إنشاء حساب</button>
+<button onclick="login()">Login</button>
+<button onclick="register()">Register</button>
 
 <div class="status" id="status"></div>
-
 </div>
 
 <!-- Firebase -->
@@ -93,70 +81,63 @@ const firebaseConfig = {
   appId: "1:18416485348:web:12176965505080897b3df1"
 };
 
+if(!firebase.apps.length){
 firebase.initializeApp(firebaseConfig);
+}
 
 const auth = firebase.auth();
 const db = firebase.database();
 
 const status = document.getElementById("status");
 
-
 // تسجيل دخول
 function login(){
-
 let email = document.getElementById("email").value;
 let password = document.getElementById("password").value;
 
-status.innerHTML = "جاري تسجيل الدخول...";
+status.innerHTML = "Loading...";
 
-auth.signInWithEmailAndPassword(email, password)
-.then(user => {
-
+auth.signInWithEmailAndPassword(email,password)
+.then(user=>{
 localStorage.setItem("uid", user.user.uid);
 
-window.location.href = "dashboard.html";
-
-})
-.catch(err => {
-status.innerHTML = err.message;
-});
-
+if(email === "admin@gmail.com"){
+window.location.href="admin.html";
+}else{
+window.location.href="dashboard.html";
 }
 
+})
+.catch(err=>{
+status.innerHTML = err.message;
+});
+}
 
-// إنشاء حساب
+// تسجيل حساب
 function register(){
-
 let email = document.getElementById("email").value;
 let password = document.getElementById("password").value;
 
-status.innerHTML = "جاري إنشاء الحساب...";
+status.innerHTML = "Creating account...";
 
-auth.createUserWithEmailAndPassword(email, password)
-.then(user => {
-
+auth.createUserWithEmailAndPassword(email,password)
+.then(user=>{
 let uid = user.user.uid;
 
-// إنشاء ملف اللاعب في قاعدة البيانات
-db.ref("users/" + uid).set({
-balance: 0,
-earnings: 0,
-wins: 0,
-losses: 0,
-points: 0,
-createdAt: Date.now(),
-transactions: {}
+db.ref("users/"+uid).set({
+balance:0,
+earnings:0,
+points:0,
+wins:0
 });
 
-localStorage.setItem("uid", uid);
+localStorage.setItem("uid",uid);
 
-window.location.href = "dashboard.html";
-
+window.location.href="dashboard.html";
 })
-.catch(err => {
+.catch(err=>{
 status.innerHTML = err.message;
 });
-
 }
 </script>
 
