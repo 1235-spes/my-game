@@ -1,428 +1,285 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chanci-App | لوحة المستخدم</title>
+<title>لوحة التحكم | My Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ==========================
-  Reset & Fonts
-========================== */
-body, html { margin:0; padding:0; font-family: 'Cairo', sans-serif; background:#0a0a0a; color:#fff; }
-h2,h3,p { margin:0; padding:0; }
+  body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background-color: #f5f5f5;
+    direction: rtl;
+  }
 
-/* ==========================
-  Sidebar
-========================== */
-.sidebar {
-  position: fixed;
-  top:0; right:-250px;
-  width:250px;
-  height:100%;
-  background:#111;
-  padding:20px;
-  box-shadow: -2px 0 10px rgba(255,215,0,0.2);
-  transition: right 0.3s ease;
-  z-index:1000;
-}
-.sidebar.active { right:0; }
-.sidebar h2 { text-align:center; color:gold; margin-bottom:30px; }
-.sidebar a {
-  display:block;
-  padding:12px 15px;
-  margin:8px 0;
-  color:#ccc;
-  text-decoration:none;
-  border-radius:8px;
-  transition:0.3s;
-}
-.sidebar a:hover { background:#222; color:gold; }
+  /* الشريط الجانبي */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #1e1e2f;
+    color: white;
+    padding-top: 20px;
+  }
+  .sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .sidebar a {
+    display: block;
+    color: white;
+    padding: 15px 20px;
+    text-decoration: none;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
+  .sidebar a:hover {
+    background-color: #33334d;
+  }
 
-/* ==========================
-  Header + Hamburger
-========================== */
-.header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:15px 20px;
-  background:#111;
-  box-shadow:0 2px 5px rgba(255,215,0,0.1);
-}
-.hamburger {
-  font-size:28px;
-  cursor:pointer;
-  color:gold;
-  user-select:none;
-}
-.header h2 { color:gold; }
+  /* المحتوى الرئيسي */
+  .main-content {
+    margin-right: 250px;
+    padding: 20px;
+  }
 
-/* ==========================
-  Main Content
-========================== */
-.main { margin-right:0; transition: margin-right 0.3s ease; padding:20px; }
-.main.shift { margin-right:250px; }
+  /* البطاقات */
+  .card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .card-value {
+    font-size: 32px;
+    color: #4caf50;
+  }
+  .action-buttons {
+    margin-top: 15px;
+  }
+  .action-btn {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+  }
+  .action-btn:hover {
+    background-color: #45a049;
+  }
 
-.cards { display:flex; gap:20px; flex-wrap:wrap; margin-top:20px; }
-.card {
-  background:#1c1c1c;
-  flex:1 1 200px;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 0 15px rgba(255,215,0,0.2);
-  text-align:center;
-  transition: transform 0.2s;
-}
-.card:hover { transform: translateY(-5px); }
-.card h3 { font-size:24px; color:gold; margin-bottom:10px; }
-.card p { color:#ccc; font-size:14px; }
+  /* الألعاب */
+  .games-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .game-card {
+    background-color: #fff;
+    width: 200px;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  .game-card button {
+    margin-top: 10px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #2196f3;
+    color: white;
+    font-weight: bold;
+  }
+  .game-card button:hover {
+    background-color: #1976d2;
+  }
 
-/* ==========================
-  Games Section
-========================== */
-.games-section {
-  display:flex;
-  overflow-x:auto;
-  gap:15px;
-  margin-top:30px;
-}
-.game-card {
-  min-width:120px;
-  background:#1c1c1c;
-  border-radius:12px;
-  padding:10px;
-  text-align:center;
-  box-shadow:0 0 10px rgba(255,215,0,0.3);
-}
-.game-card img { width:60px; margin-bottom:5px; }
-.game-card button {
-  width:100%;
-  padding:6px;
-  background:gold;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  color:#000;
-  font-weight:bold;
-}
-.logout-btn { background:red; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; margin-top:20px; width:100%; }
+  /* صندوق الجوائز */
+  #wheel {
+    background-color:#fff;
+    border-radius:50%;
+    display:block;
+    margin: 0 auto;
+  }
 
-/* ==========================
-  Responsive
-========================== */
-@media(max-width:768px){
-  .cards { flex-direction:column; }
-  .main.shift { margin-right:0; }
-}
+  /* القسائم */
+  #couponInput {
+    padding:8px;
+    width:60%;
+    border-radius:6px;
+    border:1px solid #ccc;
+    margin-bottom:10px;
+  }
+
+  /* تجاوب الشاشة */
+  @media screen and (max-width: 768px){
+    .sidebar {width: 100%; height: auto; position: relative;}
+    .main-content {margin-right: 0;}
+    .games-section {justify-content: center;}
+  }
 </style>
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <h2>Chanci-App</h2>
+<!-- الشريط الجانبي -->
+<div class="sidebar">
+  <h2>لوحة التحكم</h2>
   <a href="#">الرئيسية</a>
-  <a href="#">المحفظة</a>
-  <a href="#">الإيداع</a>
-  <a href="#">السحب</a>
   <a href="#">الألعاب</a>
-  <a href="#">القسائم</a>
-  <a href="#">السحوبات</a>
-  <a href="#">التاريخ</a>
-  <a href="#">التوثيق</a>
+  <a href="#">الصندوق</a>
   <a href="#">الإعدادات</a>
-  <a href="#">دعم العملاء</a>
 </div>
 
-<!-- Header -->
-<div class="header">
-  <h2>لوحة المستخدم</h2>
-  <div class="hamburger" id="hamburger">☰</div>
-</div>
+<!-- المحتوى الرئيسي -->
+<div class="main-content">
 
-<!-- Main Content -->
-<div class="main" id="main">
-  <h2 id="welcome">مرحباً بك، User</h2>
-
-  <div class="cards">
-    <div class="card">
-      <h3 id="balance">0</h3>
-      <p>الرصيد</p>
-    </div>
-    <div class="card">
-      <h3 id="earnings">0</h3>
-      <p>الأرباح</p>
-    </div>
-    <div class="card">
-      <h3 id="points">0</h3>
-      <p>النقاط</p>
+  <!-- بطاقة الرصيد -->
+  <div class="card">
+    <div class="card-title">الرصيد الحالي</div>
+    <div class="card-value" id="balance">0</div>
+    <div class="action-buttons">
+      <button class="action-btn" onclick="addBalance(10)">أضف 10</button>
+      <button class="action-btn" onclick="spendBalance(5)">اصرف 5</button>
     </div>
   </div>
 
-  <h3>الألعاب المميزة</h3>
+  <!-- الصندوق -->
+  <div class="card">
+    <div class="card-title">الصندوق</div>
+    <div class="card-value" id="box">مغلق</div>
+    <div class="action-buttons">
+      <button class="action-btn" onclick="openBox()">افتح الصندوق</button>
+    </div>
+  </div>
+
+  <!-- عجلة الحظ -->
+  <div class="card">
+    <div class="card-title">عجلة الحظ</div>
+    <canvas id="wheel" width="300" height="300"></canvas>
+    <div class="action-buttons">
+      <button class="action-btn" onclick="spinWheel()">دور العجلة</button>
+    </div>
+  </div>
+
+  <!-- القسائم -->
+  <div class="card">
+    <div class="card-title">القسائم</div>
+    <input type="text" id="couponInput" placeholder="أدخل كود القسيمة">
+    <button class="action-btn" onclick="redeemCoupon()">تفعيل القسيمة</button>
+  </div>
+
+  <!-- الألعاب -->
   <div class="games-section">
     <div class="game-card">
-      <img src="https://img.icons8.com/ios-filled/50/FFD700/roulette.png"/>
-      <p>Fortune Wheel</p>
-      <button>العب الآن</button>
+      <h3>لعبة 1</h3>
+      <button onclick="playGame('game1')">العب الآن</button>
     </div>
     <div class="game-card">
-      <img src="https://img.icons8.com/ios-filled/50/FFD700/slot-machine.png"/>
-      <p>Lucky Slots</p>
-      <button>العب الآن</button>
-    </div>
-    <div class="game-card">
-      <img src="https://img.icons8.com/ios-filled/50/FFD700/coin.png"/>
-      <p>Coin Flip</p>
-      <button>العب الآن</button>
-    </div>
-    <div class="game-card">
-      <img src="https://img.icons8.com/ios-filled/50/FFD700/treasure-map.png"/>
-      <p>Treasure Hunt</p>
-      <button>العب الآن</button>
+      <h3>لعبة 2</h3>
+      <button onclick="playGame('game2')">العب الآن</button>
     </div>
   </div>
 
-  <button class="logout-btn" onclick="logout()">تسجيل خروج</button>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-// ==========================
-// Firebase Config
-// ضع القيم الخاصة بمشروعك هنا
-// ==========================
-const firebaseConfig = {
-  apiKey: "API_KEY_HERE",
-  authDomain: "PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "PROJECT_ID",
-  storageBucket: "PROJECT_ID.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+  // الرصيد
+  let balance = 0;
+  const balanceDisplay = document.getElementById('balance');
 
-// ==========================
-// Sidebar Toggle
-// ==========================
-const hamburger = document.getElementById('hamburger');
-const sidebar = document.getElementById('sidebar');
-const main = document.getElementById('main');
-
-hamburger.addEventListener('click',()=>{
-  sidebar.classList.toggle('active');
-  main.classList.toggle('shift');
-});
-
-// ==========================
-// User Info
-// ==========================
-const currentUser = localStorage.getItem('currentUser') || 'User';
-document.getElementById('welcome').innerText = "مرحباً بك، " + currentUser;
-
-// ==========================
-// Display Firebase Data (رصيد، أرباح، نقاط)
-// ==========================
-db.ref('users/' + currentUser).get().then(snapshot=>{
-  if(snapshot.exists()){
-    const data = snapshot.val();
-    document.getElementById('balance').innerText = data.balance || 0;
-    document.getElementById('earnings').innerText = data.earnings || 0;
-    document.getElementById('points').innerText = data.points || 0;
+  function addBalance(amount) {
+    balance += amount;
+    balanceDisplay.textContent = balance;
   }
-});
 
-// ==========================
-// Logout
-// ==========================
-function logout(){
-  localStorage.removeItem('currentUser');
-  window.location.href='index.html';
-}
-</script><!-- زر القائمة -->
-<div id="menuBtn" onclick="toggleSidebar()">
-☰
-</div>
+  function spendBalance(amount) {
+    if(balance >= amount) {
+      balance -= amount;
+      balanceDisplay.textContent = balance;
+    } else {
+      alert('الرصيد غير كافي!');
+    }
+  }
 
-<!-- الشريط الجانبي -->
-<div id="sidebar">
-<div class="sideHeader">
-CHANCI-APP
-<span onclick="toggleSidebar()">✕</span>
-</div>
+  function playGame(game) {
+    alert('تشغيل ' + game);
+  }
 
-<a href="#">🏠 الرئيسية</a>
-<a href="#">🎮 الألعاب</a>
-<a href="#">🎁 القسائم</a>
-<a href="#">🏆 السحوبات</a>
-<a href="#">💰 الرصيد</a>
-<a href="#" onclick="logout()">🚪 تسجيل خروج</a>
-</div>
+  // الصندوق
+  const boxDisplay = document.getElementById('box');
+  function openBox() {
+    const prizes = ['10 نقاط','20 نقاط','50 نقاط','لا شيء'];
+    const prize = prizes[Math.floor(Math.random()*prizes.length)];
+    boxDisplay.textContent = prize;
+    if(prize !== 'لا شيء') {
+      balance += parseInt(prize);
+      balanceDisplay.textContent = balance;
+      alert('فزت بـ ' + prize);
+    } else {
+      alert('للأسف لم تفز بشيء');
+    }
+  }
 
-<style>
-#menuBtn{
-position:fixed;
-top:20px;
-right:20px;
-width:50px;
-height:50px;
-background:#d4af37;
-color:#000;
-font-size:28px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:12px;
-cursor:pointer;
-z-index:1001;
-box-shadow:0 0 20px rgba(212,175,55,.5);
-}
+  // عجلة الحظ
+  const canvas = document.getElementById('wheel');
+  const ctx = canvas.getContext('2d');
+  const segments = ['5','10','15','20','50','100'];
+  const colors = ['#f44336','#e91e63','#9c27b0','#3f51b5','#2196f3','#009688'];
+  let angle = 0;
 
-#sidebar{
-position:fixed;
-top:0;
-right:-300px;
-width:280px;
-height:100%;
-background:#111;
-transition:.4s;
-z-index:1000;
-box-shadow:-5px 0 30px rgba(212,175,55,.3);
-}
+  function drawWheel() {
+    const segAngle = (2 * Math.PI) / segments.length;
+    for(let i=0;i<segments.length;i++){
+      ctx.beginPath();
+      ctx.moveTo(150,150);
+      ctx.arc(150,150,150,i*segAngle,(i+1)*segAngle);
+      ctx.fillStyle = colors[i % colors.length];
+      ctx.fill();
+      ctx.stroke();
+      ctx.save();
+      ctx.translate(150,150);
+      ctx.rotate(i*segAngle + segAngle/2);
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#fff";
+      ctx.font = "16px Cairo";
+      ctx.fillText(segments[i],140,5);
+      ctx.restore();
+    }
+  }
 
-#sidebar.active{
-right:0;
-}
+  drawWheel();
 
-.sideHeader{
-padding:25px;
-font-size:24px;
-font-weight:bold;
-color:#d4af37;
-border-bottom:1px solid rgba(212,175,55,.2);
-display:flex;
-justify-content:space-between;
-}
+  function spinWheel() {
+    const spins = Math.floor(Math.random()*360) + 720;
+    const duration = 3000;
+    let start = null;
 
-.sideHeader span{
-cursor:pointer;
-}
-
-#sidebar a{
-display:block;
-padding:18px 25px;
-color:white;
-text-decoration:none;
-font-size:18px;
-transition:.3s;
-}
-
-#sidebar a:hover{
-background:rgba(212,175,55,.15);
-padding-right:35px;
-color:#d4af37;
-}
-
-.card{
-animation:showCard .8s ease;
-}
-
-@keyframes showCard{
-from{
-opacity:0;
-transform:translateY(30px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-</style>
-
-<script>
-function toggleSidebar(){
-document.getElementById("sidebar")
-.classList.toggle("active");
-}
-</script>
-</body>
-</html><!-- ==========================
-  Section: Coupons & Transactions
-========================== -->
-<h3 style="margin-top:40px;">القسائم المتاحة</h3>
-<div class="cards" id="couponsSection">
-  <!-- سيتم ملؤها ديناميكياً من Firebase لاحقاً -->
-  <div class="card">
-    <h3>قسيمة 5$</h3>
-    <p>صلاحية: 30 يوم</p>
-  </div>
-  <div class="card">
-    <h3>قسيمة 10$</h3>
-    <p>صلاحية: 30 يوم</p>
-  </div>
-</div>
-
-<h3 style="margin-top:40px;">آخر المعاملات</h3>
-<div class="cards" id="transactionsSection">
-  <!-- بطاقة معاملة نموذجية -->
-  <div class="card">
-    <p>تمت إضافة 50 نقطة</p>
-    <p style="color:#aaa; font-size:12px;">01/06/2026</p>
-  </div>
-  <div class="card">
-    <p>تم خصم 20 رصيد</p>
-    <p style="color:#aaa; font-size:12px;">02/06/2026</p>
-  </div>
-</div>
-
-<!-- ==========================
-  Bottom Navigation
-========================== -->
-<div style="position:fixed; bottom:0; left:0; width:100%; background:#111; display:flex; justify-content:space-around; padding:10px 0; box-shadow:0 -2px 10px rgba(255,215,0,0.2); z-index:999;">
-  <div style="text-align:center; color:gold; cursor:pointer;">
-    <img src="https://img.icons8.com/ios-filled/30/FFD700/home.png"/><br>الرئيسية
-  </div>
-  <div style="text-align:center; color:gold; cursor:pointer;">
-    <img src="https://img.icons8.com/ios-filled/30/FFD700/wallet.png"/><br>المحفظة
-  </div>
-  <div style="text-align:center; color:gold; cursor:pointer;">
-    <img src="https://img.icons8.com/ios-filled/30/FFD700/game-controller.png"/><br>الألعاب
-  </div>
-  <div style="text-align:center; color:gold; cursor:pointer;">
-    <img src="https://img.icons8.com/ios-filled/30/FFD700/discount.png"/><br>القسائم
-  </div>
-  <div style="text-align:center; color:gold; cursor:pointer;">
-    <img src="https://img.icons8.com/ios-filled/30/FFD700/trophy.png"/><br>السحوبات
-  </div>
-</div>
-
-<style>
-/* ==========================
-  Animations & Hover Effects
-========================== */
-.card {
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 25px rgba(255,215,0,0.5);
-}
-
-.games-section::-webkit-scrollbar,
-.cards::-webkit-scrollbar {
-  height:6px;
-  width:6px;
-}
-.games-section::-webkit-scrollbar-thumb,
-.cards::-webkit-scrollbar-thumb {
-  background: gold;
-  border-radius:3px;
-}
-.games-section::-webkit-scrollbar-track,
-.cards::-webkit-scrollbar-track {
-  background: #1c1c1c;
-}
-</style>
+    function animate(timestamp){
+      if(!start) start = timestamp;
+      const progress = timestamp - start;
+      const currentAngle = angle + spins * (progress/duration);
+      ctx.clearRect(0,0,300,300);
+      ctx.save();
+      ctx.translate(150,150);
+      ctx.rotate(currentAngle*Math.PI/180);
+      ctx.translate(-150,-150);
+      drawWheel();
+      ctx.restore();
+      if(progress < duration) {
+        requestAnimationFrame(animate);
+      } else {
+        angle += spins
