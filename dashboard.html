@@ -105,27 +105,61 @@
 
   <!-- محتوى الصفحة -->
   <div class="main-content">
-    <h2>محتوى الصفحة هنا</h2>
-  </div><!-- بانر ذهبي -->
+    
+
+  
+</div><!-- بانر أسود ذهبي -->
 <div class="hero-banner" style="
-  background: linear-gradient(90deg, #FFD70020, #FFA50020);
+  background: linear-gradient(145deg, #0c0c0c, #1a1a1a);
   border-radius: 15px;
   padding: 20px;
   margin: 15px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  box-shadow: 0 0 20px rgba(255,215,0,0.5);
 ">
-  <div class="hero-text">
-    <h2 style="color:#0c0c0c; font-size:20px;">أهلاً بك، <span id="heroUserName">Player</span></h2>
-    <p style="color:#0c0c0c; font-size:14px;">تحقق من رصيدك وابدأ اللعب الآن!</p>
-    <button style="padding:8px 15px; border:none; background:#FFD700; color:#0c0c0c; border-radius:8px; cursor:pointer;">إيداع الآن</button>
+  <!-- نص ترحيبي -->
+  <div class="hero-text" style="color:#FFD700;">
+    <h2 style="font-size:22px; font-weight:900;">أهلاً بك، <span id="heroUserName">Player</span></h2>
+    <p style="font-size:14px;">تحقق من رصيدك وابدأ اللعب الآن!</p>
+    <button style="
+      padding:8px 15px;
+      border:none;
+      background:#FFD700;
+      color:#0c0c0c;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:bold;
+    ">إيداع الآن</button>
   </div>
+
+  <!-- صور البانر: صندوق، عملات، كأس -->
   <div class="hero-images" style="display:flex; gap:10px;">
-    <img src="assets/chest.png" alt="صندوق الكنز" style="height:60px;">
-    <img src="assets/coins.png" alt="العملات" style="height:60px;">
-    <img src="assets/trophy.png" alt="الكأس" style="height:60px;">
+    <div style="position:relative;">
+      <img src="assets/chest.png" alt="صندوق الكنز" style="height:60px; z-index:2;">
+    </div>
+    <div style="position:relative;">
+      <img src="assets/coins.png" alt="العملات" style="height:60px; z-index:2;">
+    </div>
+    <div style="position:relative;">
+      <img src="assets/trophy.png" alt="الكأس" style="height:60px; z-index:2;">
+    </div>
   </div>
+
+  <!-- تأثير لمعان ذهبي -->
+  <div style="
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.1), rgba(255,255,255,0) 70%);
+    border-radius:15px;
+    pointer-events:none;
+  "></div>
+
 </div>
 
   <!-- أيقونات Font Awesome -->
