@@ -10,7 +10,30 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
+.sidebar{
+transition:0.3s ease;
+}
 
+.sidebar.closed{
+transform: translateX(100%);
+}
+
+.top-bar{
+display:flex;
+align-items:center;
+margin-bottom:15px;
+}
+
+.menu-btn{
+background:#FFD700;
+border:none;
+padding:10px 14px;
+font-size:20px;
+border-radius:10px;
+cursor:pointer;
+color:#000;
+font-weight:bold;
+}
 *{
 margin:0;
 padding:0;
