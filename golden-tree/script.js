@@ -1,4 +1,5 @@
-const canvas = document.getElementById("gameCanvas");
+alert("script loaded");
+constt canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 // ضبط حجم الكانفاس
