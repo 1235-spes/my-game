@@ -1,3 +1,4 @@
+alert("script يعمل");
 console.log("SCRIPT LOADED OK");
 
 window.initGame = function(){
