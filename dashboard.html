@@ -193,7 +193,25 @@ border:1px solid #FFD700;
 </div>  <div class="hero">  
 <h1>CHANCI APP</h1>  
 <p>PLAY • WIN • REDEEM</p>  
-</div>  <div class="cards">  <div class="card">  
+</div> 
+  <!-- 🎮 GAME SECTION -->
+<div id="game-section" style="display:none; padding:20px;">
+
+  <h2 style="color:#FFD700; margin-bottom:10px;">🌳 GOLDEN TREE GAME</h2>
+
+  <canvas id="gameCanvas" width="900" height="250" style="background:#111;border:2px solid gold;border-radius:15px;"></canvas>
+
+  <canvas id="fxCanvas" style="position:fixed;top:0;left:0;pointer-events:none;"></canvas>
+
+  <div style="margin-top:10px;">
+    <input type="number" id="bet" placeholder="أدخل الرهان" style="padding:10px;border-radius:10px;">
+    <button id="spin" style="padding:10px 20px;background:gold;border:none;border-radius:10px;font-weight:bold;">SPIN</button>
+  </div>
+
+  <div id="result" style="margin-top:10px;color:white;"></div>
+
+</div>
+  <div class="cards">  <div class="card">  
 <div class="card-title">رصيد المحفظة</div>  
 <div class="card-value" id="balance">0</div>  <div class="actions">  
 <button class="btn deposit">إيداع</button>  
@@ -262,7 +280,6 @@ localStorage.removeItem("currentUser");
 
 window.location.href = "index.html";
 
-}
 </script>
 
 </body>  
