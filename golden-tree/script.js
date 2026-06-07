@@ -1,3 +1,10 @@
+let currentBet = 300;
+
+function selectBet(amount){
+  currentBet = amount;
+  document.getElementById("result").innerText =
+    "تم اختيار الرهان: " + currentBet;
+}
 window.initGame = function () {
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
