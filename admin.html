@@ -384,7 +384,14 @@ onclick="removeBalance('${username}')">
   
 document.getElementById("usersList")  
 .innerHTML = html;  
-  
+  document.getElementById("totalUsers").innerText =
+totalUsers;
+
+document.getElementById("totalBalance").innerText =
+totalBalance.toFixed(2);
+
+document.getElementById("totalPoints").innerText =
+totalPoints;
 });  
   
 }function addBalance(username){  
