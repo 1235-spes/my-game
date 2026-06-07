@@ -1,8 +1,8 @@
 body{
   margin:0;
   background:#050505;
-  font-family:Arial;
   color:white;
+  font-family:Arial;
   text-align:center;
   overflow:hidden;
 }
@@ -15,35 +15,20 @@ canvas{
   border-radius:15px;
 }
 
-.bet-buttons{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  justify-content:center;
-  margin-top:15px;
-}
-
-.bet-btn{
+.bets button{
+  margin:5px;
+  padding:10px;
+  border-radius:10px;
+  border:none;
   background:#222;
   color:white;
-  border:1px solid gold;
-  padding:12px 18px;
-  border-radius:12px;
   cursor:pointer;
-  font-weight:bold;
-}
-
-.bet-btn.active{
-  background:gold;
-  color:black;
 }
 
 #spin{
-  margin-top:10px;
   padding:12px 25px;
-  border:none;
-  border-radius:12px;
   background:gold;
+  border:none;
+  border-radius:10px;
   font-weight:bold;
-  cursor:pointer;
 }
