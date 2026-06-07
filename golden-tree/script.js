@@ -83,7 +83,16 @@ function draw(reelData, offset=0){
     let scale = 1 + Math.sin(Date.now()/200 + i)*0.1;
     ctx.scale(scale,scale);
 
-    ctx.fillText(symbol,0,0);
+    if(symbol === "🌳"){
+  ctx.shadowColor = "gold";
+  ctx.shadowBlur = 20;
+  ctx.font = "90px Arial";
+  ctx.fillText("🌳",0,0);
+  ctx.shadowBlur = 0;
+} else {
+  ctx.font = "70px Arial";
+  ctx.fillText(symbol,0,0);
+}
     ctx.restore();
   }
 }
