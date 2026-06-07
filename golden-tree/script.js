@@ -126,7 +126,9 @@ async function spin(){
     }
 
     draw(temp);
-
+flash();
+flash();
+spawnParticles(innerWidth/2,innerHeight/2,"gold");
     if(f % 3 === 0){
       tickSound.currentTime=0;
       tickSound.play();
