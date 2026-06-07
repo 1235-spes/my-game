@@ -1,95 +1,63 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chanci Dashboard</title>
 <style>
-body{
-margin:0;
-font-family:Arial;
-background:#0c0c0c;
-color:#fff;
-}
-
-.header{
-padding:15px;
-background:#141414;
-display:flex;
-justify-content:space-between;
-}
-
-.card{
-background:#1a1a1a;
-margin:15px;
-padding:15px;
-border-radius:12px;
-border:1px solid #333;
-}
-
-h2{color:#FFD700;}
+body{font-family:Arial,sans-serif;background:#111;color:#fff;margin:0;padding:0;}
+.header{background:#222;padding:15px;text-align:center;font-size:24px;font-weight:bold;color:#FFD700;}
+.container{padding:20px;}
+.balance-card{background:#1a1a1a;padding:20px;border-radius:15px;margin-bottom:20px;text-align:center;}
+.balance-card h2{margin-bottom:10px;color:#FFD700;}
+button{padding:12px 20px;border:none;border-radius:10px;background:#FFD700;color:#000;font-weight:bold;cursor:pointer;transition:.3s;}
+button:hover{transform:translateY(-2px);}
 </style>
 </head>
 <body>
 
-<div class="header">
-<h2>Dashboard</h2>
-<button onclick="logout()">Logout</button>
+<div class="header">لوحة المستخدم</div>
+<div class="container">
+  <div class="balance-card">
+    <h2>الرصيد الحالي</h2>
+    <div id="balance">0</div>
+    <button onclick="addPoints(100)">إضافة 100 نقطة</button>
+  </div>
 </div>
 
-<div class="card">
-<h3>Balance</h3>
-<h1 id="balance">0</h1>
-</div>
-
-<div class="card">
-<h3>Earnings</h3>
-<h1 id="earnings">0</h1>
-</div>
-
-<div class="card">
-<h3>Points</h3>
-<h1 id="points">0</h1>
-</div>
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
   databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
   projectId: "chanci-app",
   storageBucket: "chanci-app.firebasestorage.app",
   messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:12176965505080897b3df1"
+  appId: "1:18416485348:web:918a393569acb47a7b3df1",
+  measurementId: "G-S8ZCNJBFQ8"
 };
-
-if(!firebase.apps.length){
-firebase.initializeApp(firebaseConfig);
-}
-
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const uid = localStorage.getItem("uid");
 
-if(!uid){
-window.location.href="index.html";
+const currentUser = localStorage.getItem("currentUser");
+if(!currentUser) window.location.href = "index.html";
+
+function addPoints(amount){
+  const balanceRef = db.ref("users/" + currentUser + "/balance");
+  balanceRef.get().then(snapshot=>{
+    let currentBalance = snapshot.exists() ? Number(snapshot.val()) : 0;
+    balanceRef.set(currentBalance + amount);
+    document.getElementById("balance").innerText = currentBalance + amount;
+  });
 }
 
-db.ref("users/"+uid).on("value",snap=>{
-let d = snap.val() || {};
-document.getElementById("balance").innerText = d.balance || 0;
-document.getElementById("earnings").innerText = d.earnings || 0;
-document.getElementById("points").innerText = d.points || 0;
+// عرض الرصيد عند التحميل
+db.ref("users/" + currentUser + "/balance").get().then(snapshot=>{
+  document.getElementById("balance").innerText = snapshot.exists() ? snapshot.val() : 0;
 });
-
-function logout(){
-localStorage.removeItem("uid");
-window.location.href="index.html";
-}
 </script>
-
 </body>
 </html>
