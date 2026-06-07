@@ -5,38 +5,24 @@ function selectBet(amount){
   document.getElementById("result").innerText =
     "تم اختيار الرهان: " + currentBet;
 }
+
 window.initGame = function () {
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
 
-  ctx.fillStyle = "#111";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "gold";
-  ctx.font = "30px Arial";
-  ctx.textAlign = "center";
-
-  ctx.fillText(
-    "🎰 اللعبة تعمل بنجاح",
-    canvas.width / 2,
-    canvas.height / 2
-  );
-};
-window.initGame = function () {
-  const canvas = document.getElementById("gameCanvas");
-  const ctx = canvas.getContext("2d");
-
-  // تأكد من حجم الكانفاس
   canvas.width = 900;
   canvas.height = 250;
 
-  // خلفية بسيطة
   ctx.fillStyle = "#111";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // نص اختبار
   ctx.fillStyle = "gold";
   ctx.font = "40px Arial";
   ctx.textAlign = "center";
-  ctx.fillText("🎰 GAME LOADED SUCCESSFULLY", canvas.width / 2, canvas.height / 2);
+
+  ctx.fillText(
+    "🎰 GAME LOADED SUCCESSFULLY",
+    canvas.width / 2,
+    canvas.height / 2
+  );
 };
