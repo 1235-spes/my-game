@@ -1,35 +1,24 @@
-// ====== Canvas setup ======
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 const fxCanvas = document.getElementById("fxCanvas");
 const fx = fxCanvas.getContext("2d");
 
-function resizeFx(){
+function resizeFx() {
   fxCanvas.width = window.innerWidth;
   fxCanvas.height = window.innerHeight;
 }
 window.addEventListener("resize", resizeFx);
 resizeFx();
 
-// ====== الرموز ======
+// 🎰 الرموز
 const symbols = ["🍒","🍋","🍇","🍎","🍉","🌳","7"];
 const reelCount = 5;
 const reelWidth = canvas.width / reelCount;
 let spinning = false;
 
-// ====== الأصوات ======
-const spinSound = document.getElementById("spinSound");
-const tickSound = document.getElementById("tickSound");
-const winSound = document.getElementById("winSound");
-const boomSound = document.getElementById("boomSound");
-
-// ====== Firebase references ======
-const userId = localStorage.getItem("currentUser"); // المستخدم الحالي
-if(!userId) {
-    alert("لم يتم العثور على المستخدم");
-}
-
+// 🔗 Firebase
+const userId = "user_123"; // عدله حسب UID المستخدم
 const balanceRef = db.ref('users/' + userId + '/balance');
 const treeRef = db.ref('users/' + userId + '/treeLevel');
 const jackpotRef = db.ref('jackpot/amount');
@@ -38,7 +27,6 @@ let balance = 1000;
 let treeLevel = 1;
 let jackpot = 5000;
 
-// ====== قراءة البيانات من Firebase ======
 balanceRef.on('value', snap => {
   const val = snap.val();
   if(val !== null) balance = val;
@@ -55,9 +43,9 @@ jackpotRef.on('value', snap => {
   if(val !== null) jackpot = val;
 });
 
-// ====== particles ======
+// 🎆 particles
 let particles = [];
-function spawnParticles(x, y, color="gold"){
+function spawnParticles(x, y, color="gold") {
   for(let i=0;i<80;i++){
     particles.push({
       x, y,
@@ -70,7 +58,7 @@ function spawnParticles(x, y, color="gold"){
   }
 }
 
-function drawParticles(){
+function drawParticles() {
   fx.clearRect(0,0,fxCanvas.width,fxCanvas.height);
   particles.forEach((p,i)=>{
     p.x += p.vx;
@@ -94,7 +82,7 @@ function flash(){
   fx.fillRect(0,0,fxCanvas.width,fxCanvas.height);
 }
 
-// ====== رسم الرموز ======
+// 🎡 رسم الرموز
 function draw(reelData){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   for(let i=0;i<reelCount;i++){
@@ -120,7 +108,7 @@ function draw(reelData){
   }
 }
 
-// ====== RNG ذكي مع Jackpot ======
+// 🎰 RNG ذكي مع Jackpot
 function smartSymbol(){
   let r = Math.random();
   if(r < 0.01) return "7"; // Jackpot احتمال أقل
@@ -128,7 +116,7 @@ function smartSymbol(){
   return symbols[Math.floor(Math.random()*symbols.length)];
 }
 
-// ====== spin ======
+// 🏆 spin
 async function spin(){
   if(spinning) return;
   spinning = true;
@@ -141,8 +129,6 @@ async function spin(){
   document.getElementById("balance").innerText = balance;
   balanceRef.set(balance);
 
-  spinSound.play();
-
   let final=[];
   for(let i=0;i<reelCount;i++) final.push(smartSymbol());
 
@@ -152,13 +138,12 @@ async function spin(){
     for(let i=0;i<reelCount;i++) temp.push(symbols[Math.floor(Math.random()*symbols.length)]);
     draw(temp);
     flash();
-    if(f%3===0){ tickSound.currentTime=0; tickSound.play();}
     await new Promise(r=>setTimeout(r,70));
   }
 
   draw(final);
 
-  // ===== حساب النتائج =====
+  // 💥 حساب النتائج
   let win=0;
   let resultText="";
 
@@ -186,7 +171,6 @@ async function spin(){
       spawnParticles(innerWidth/2,innerHeight/2,"gold");
     } else{
       resultText="❌ خسرت";
-      boomSound.play();
       navigator.vibrate?.(200);
       jackpot += bet;
       jackpotRef.set(jackpot);
@@ -198,9 +182,8 @@ async function spin(){
   balanceRef.set(balance);
   document.getElementById("result").innerText = resultText;
 
-  if(win>0){ flash(); spawnParticles(innerWidth/2,innerHeight/2,"gold"); winSound.play();}
+  if(win>0){ flash(); spawnParticles(innerWidth/2,innerHeight/2,"gold");}
   spinning=false;
 }
 
-// ====== ربط زر SPIN ======
-document.getElementById("spin").onclick=spin;
+document.getElementById("spin").onclick = spin;
