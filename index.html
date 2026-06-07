@@ -2,144 +2,89 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Chanci - Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chanci-App | تسجيل الدخول</title>
 <style>
-body{
-margin:0;
-font-family:Arial;
-background:#0c0c0c;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-color:#fff;
-}
-
-.box{
-width:90%;
-max-width:400px;
-background:#1a1a1a;
-padding:25px;
-border-radius:15px;
-border:1px solid #333;
-}
-
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border:none;
-border-radius:10px;
-background:#2a2a2a;
-color:#fff;
-}
-
-button{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:10px;
-background:#FFD700;
-font-weight:bold;
-cursor:pointer;
-}
-.status{
-text-align:center;
-margin-top:10px;
-color:#ffcc00;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{min-height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#050505,#111,#1a1a1a);padding:20px;}
+.login-box{width:100%;max-width:450px;background:#141414;border:1px solid rgba(255,215,0,.25);border-radius:20px;padding:30px;box-shadow:0 0 30px rgba(255,215,0,.15);}
+.logo{text-align:center;font-size:42px;font-weight:900;color:#FFD700;margin-bottom:10px;text-shadow:0 0 10px rgba(255,215,0,.6);}
+.subtitle{text-align:center;color:#ccc;margin-bottom:25px;}
+input{width:100%;padding:14px;margin-bottom:15px;border:none;outline:none;border-radius:12px;background:#242424;color:#fff;font-size:15px;}
+input:focus{box-shadow:0 0 10px rgba(255,215,0,.4);}
+button{width:100%;padding:14px;border:none;border-radius:12px;background:#FFD700;color:#000;font-weight:bold;font-size:16px;cursor:pointer;transition:.3s;}
+button:hover{transform:translateY(-2px);box-shadow:0 0 15px rgba(255,215,0,.4);}
+.status{margin-top:15px;text-align:center;color:#ffcc00;font-size:14px;}
 </style>
 </head>
 <body>
 
-<div class="box">
-<h2 style="color:#FFD700;text-align:center;">Chanci Login</h2>
-
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-<button onclick="register()">Register</button>
-
-<div class="status" id="status"></div>
+<div class="login-box">
+  <div class="logo">CHANCI APP</div>
+  <div class="subtitle">قم بتسجيل الدخول للمتابعة</div>
+  <input type="text" id="username" placeholder="اسم المستخدم">
+  <input type="password" id="password" placeholder="كلمة المرور">
+  <button onclick="login()">تسجيل الدخول</button>
+  <div class="status" id="status"></div>
 </div>
 
-<!-- Firebase -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yKAhGdz1uas",
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
   databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
   projectId: "chanci-app",
   storageBucket: "chanci-app.firebasestorage.app",
   messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:12176965505080897b3df1"
+  appId: "1:18416485348:web:918a393569acb47a7b3df1",
+  measurementId: "G-S8ZCNJBFQ8"
 };
-
-if(!firebase.apps.length){
-firebase.initializeApp(firebaseConfig);
-}
-
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-const status = document.getElementById("status");
+const currentUser = localStorage.getItem("currentUser");
+if(currentUser){
+  window.location.href = currentUser === "doktor" ? "admin.html" : "dashboard.html";
+}
 
-// تسجيل دخول
 function login(){
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const status = document.getElementById("status");
 
-status.innerHTML = "Loading...";
+  if(username === "" || password === ""){
+    status.innerHTML = "يرجى إدخال اسم المستخدم وكلمة المرور";
+    return;
+  }
 
-auth.signInWithEmailAndPassword(email,password)
-.then(user=>{
-localStorage.setItem("uid", user.user.uid);
+  status.innerHTML = "جاري تسجيل الدخول...";
 
-if(email === "admin@gmail.com"){
-window.location.href="admin.html";
-}else{
-window.location.href="dashboard.html";
-}
-
-})
-.catch(err=>{
-status.innerHTML = err.message;
-});
-}
-
-// تسجيل حساب
-function register(){
-let email = document.getElementById("email").value;
-let password = document.getElementById("password").value;
-
-status.innerHTML = "Creating account...";
-
-auth.createUserWithEmailAndPassword(email,password)
-.then(user=>{
-let uid = user.user.uid;
-
-db.ref("users/"+uid).set({
-balance:0,
-earnings:0,
-points:0,
-wins:0
-});
-
-localStorage.setItem("uid",uid);
-
-window.location.href="dashboard.html";
-})
-.catch(err=>{
-status.innerHTML = err.message;
-});
+  db.ref("users/" + username).get().then(snapshot=>{
+    if(!snapshot.exists()){
+      status.innerHTML = "اسم المستخدم غير موجود";
+      return;
+    }
+    const user = snapshot.val();
+    if(String(user.password) === String(password)){
+      localStorage.setItem("currentUser", username);
+      status.innerHTML = "تم تسجيل الدخول بنجاح";
+      setTimeout(()=>{
+        window.location.href = username === "doktor" ? "admin.html" : "dashboard.html";
+      },500);
+    } else {
+      status.innerHTML = "كلمة المرور غير صحيحة";
+    }
+  }).catch(error=>{
+    status.innerHTML = "حدث خطأ أثناء تسجيل الدخول";
+    console.error(error);
+  });
 }
 </script>
-
 </body>
 </html>
