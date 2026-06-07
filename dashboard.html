@@ -273,7 +273,15 @@ document.getElementById("wins").innerText =
 user.wins || 0;
 
 });
+function openGame(){
 
+  document.querySelector(".hero").style.display = "none";
+
+  document.querySelector(".cards").style.display = "none";
+
+  document.getElementById("game-section").style.display = "block";
+
+}
 function logout(){
 
 localStorage.removeItem("currentUser");
