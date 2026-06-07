@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Golden Tree Canvas Casino</title>
 <link rel="stylesheet" href="style.css">
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 </head>
 <body>
 
@@ -23,7 +18,7 @@
   <button id="spin">SPIN</button>
 
   <div id="result"></div>
-  <div>رصيدك: <span id="balance">0</span></div>
+  <div>رصيدك: <span id="balance">1000</span></div>
 
   <audio id="spinSound" src="spin.mp3"></audio>
   <audio id="tickSound" src="tick.mp3"></audio>
@@ -32,9 +27,9 @@
 </div>
 
 <script src="script.js"></script>
-
 </body>
-</html>body{
+</html>
+body{
   margin:0;
   background:#050505;
   font-family:Arial;
@@ -48,9 +43,8 @@ body::before{
   position:fixed;
   width:100%;
   height:100%;
-  background:
-    radial-gradient(circle at 30% 20%,rgba(255,215,0,0.08),transparent 40%),
-    radial-gradient(circle at 70% 60%,rgba(255,180,0,0.05),transparent 50%);
+  background:radial-gradient(circle at 30% 20%,rgba(255,215,0,0.08),transparent 40%),
+             radial-gradient(circle at 70% 60%,rgba(255,180,0,0.05),transparent 50%);
   animation:move 10s infinite alternate;
   pointer-events:none;
 }
@@ -95,36 +89,8 @@ fxCanvas.height = window.innerHeight;
 // 🎰 الرموز
 const symbols = ["🍒","🍋","🍇","🍎","🍉","🌳","7"];
 
-// 👤 المستخدم الحالي (من Chanci)
-const currentUser = localStorage.getItem("currentUser");
-
-// 🔥 Firebase
-firebase.initializeApp({
-  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
-  authDomain: "chanci-app.firebaseapp.com",
-  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
-  projectId: "chanci-app",
-  storageBucket: "chanci-app.firebasestorage.app",
-  messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:918a393569acb47a7b3df1"
-});
-
-const db = firebase.database();
-
-// 🚨 حماية
-if(!currentUser){
-  alert("يجب تسجيل الدخول");
-  window.location.href = "../index.html";
-}
-
-// 💰 الرصيد من Firebase
-let balance = 0;
-
-db.ref("users/" + currentUser + "/balance")
-.on("value", snap=>{
-  balance = snap.val() || 0;
-  document.getElementById("balance").innerText = balance;
-});
+let balance = 1000;
+document.getElementById("balance").innerText = balance;
 
 // 🎧 الأصوات
 const spinSound = document.getElementById("spinSound");
@@ -164,12 +130,12 @@ function drawParticles(){
 }
 drawParticles();
 
-// 🎰 إعدادات
+// 🎰 إعدادات اللعبة
 const reels = 5;
 const reelWidth = canvas.width / reels;
 let spinning = false;
 
-// 🧠 RNG
+// 🧠 RNG ذكي
 function smartSymbol(){
   let r = Math.random();
   if(r < 0.02) return "7";
@@ -177,8 +143,8 @@ function smartSymbol(){
   return symbols[Math.floor(Math.random()*symbols.length)];
 }
 
-// 🎡 رسم
-function draw(reelData){
+// 🎡 رسم الكانفاس
+function draw(reelData, offset=0){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
   for(let i=0;i<reels;i++){
@@ -188,18 +154,20 @@ function draw(reelData){
     ctx.textAlign="center";
     ctx.textBaseline="middle";
 
+    let symbol = reelData[i];
+
     ctx.save();
     ctx.translate(x,canvas.height/2);
 
     let scale = 1 + Math.sin(Date.now()/200 + i)*0.1;
     ctx.scale(scale,scale);
 
-    ctx.fillText(reelData[i],0,0);
+    ctx.fillText(symbol,0,0);
     ctx.restore();
   }
 }
 
-// 🎰 spin
+// 🎡 spin animation
 async function spin(){
   if(spinning) return;
   spinning = true;
@@ -208,10 +176,8 @@ async function spin(){
   if(!bet || bet<=0) return alert("أدخل رهان");
   if(bet > balance) return alert("رصيد غير كافي");
 
-  const userRef = db.ref("users/" + currentUser + "/balance");
-
-  // خصم الرهان
-  userRef.transaction(b => (b || 0) - bet);
+  balance -= bet;
+  document.getElementById("balance").innerText = balance;
 
   spinSound.play();
 
@@ -221,8 +187,8 @@ async function spin(){
     final.push(smartSymbol());
   }
 
+  // animation
   let frames = 25;
-
   for(let f=0; f<frames; f++){
     let temp = [];
     for(let i=0;i<reels;i++){
@@ -247,14 +213,16 @@ async function spin(){
 
   if(final.every(x=>x==="7")){
     win = bet * 100;
-    resultText = "🔥 JACKPOT!";
+    resultText = "🔥 JACKPOT 7x100!";
     spawnParticles(innerWidth/2,innerHeight/2);
   }
-  else if(final[2]==="🌳"){
+
+  else if(final[2]==="🌳" && final[1]===final[3]){
     win = bet * 20;
-    resultText = "🌳 BONUS!";
+    resultText = "🌳 TREE BONUS!";
     spawnParticles(innerWidth/2,innerHeight/2);
   }
+
   else{
     let count = {};
     final.forEach(s=>count[s]=(count[s]||0)+1);
@@ -263,24 +231,19 @@ async function spin(){
       win = bet * 5;
       resultText = "✨ WIN!";
       spawnParticles(innerWidth/2,innerHeight/2);
-    } else {
+    } else{
       resultText = "❌ خسرت";
       boomSound.play();
     }
   }
 
-  if(win > 0){
-    userRef.transaction(b => (b || 0) + win);
-    winSound.play();
-  }
-
+  balance += win;
+  document.getElementById("balance").innerText = balance;
   document.getElementById("result").innerText = resultText;
+
+  if(win > 0) winSound.play();
 
   spinning = false;
 }
 
 document.getElementById("spin").onclick = spin;
-<audio id="spinSound" src="spin.mp3"></audio>
-<audio id="tickSound" src="tick.mp3"></audio>
-<audio id="winSound" src="win.mp3"></audio>
-<audio id="boomSound" src="boom.mp3"></audio>
