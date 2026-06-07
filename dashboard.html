@@ -204,8 +204,24 @@ border:1px solid #FFD700;
   <canvas id="fxCanvas" style="position:fixed;top:0;left:0;pointer-events:none;"></canvas>
 
   <div style="margin-top:10px;">
-    <input type="number" id="bet" placeholder="أدخل الرهان" style="padding:10px;border-radius:10px;">
-    <button id="spin" style="padding:10px 20px;background:gold;border:none;border-radius:10px;font-weight:bold;">SPIN</button>
+    <div class="bet-buttons" style="margin-top:10px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center;">
+
+  <button onclick="selectBet(300)">300</button>
+  <button onclick="selectBet(600)">600</button>
+  <button onclick="selectBet(900)">900</button>
+  <button onclick="selectBet(1200)">1.2K</button>
+  <button onclick="selectBet(3000)">3K</button>
+  <button onclick="selectBet(10000)">10K</button>
+  <button onclick="selectBet(50000)">50K</button>
+  <button onclick="selectBet(100000)">100K</button>
+  <button onclick="selectBet(500000)">500K</button>
+  <button onclick="selectBet(1500000)">1.5M</button>
+
+</div>
+
+<button id="spin" style="padding:10px 20px;background:gold;border:none;border-radius:10px;font-weight:bold;margin-top:10px;">
+SPIN
+</button>
   </div>
 
   <div id="result" style="margin-top:10px;color:white;"></div>
@@ -273,13 +289,16 @@ user.wins || 0;
 
 });
 function openGame(){
-
   document.querySelector(".hero").style.display = "none";
-
   document.querySelector(".cards").style.display = "none";
 
-  document.getElementById("game-section").style.display = "block";
+  const game = document.getElementById("game-section");
+  game.style.display = "block";
 
+  // أهم خطوة: نبدأ اللعبة بعد ظهور الـ game-section
+  setTimeout(() => {
+    if(window.initGame) initGame();
+  }, 200); // 200ms لتجنب أي مشاكل عرض
 }
 function logout(){
 
