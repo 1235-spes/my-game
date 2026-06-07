@@ -9,6 +9,23 @@ window.initGame = function () {
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
 
+  ctx.fillStyle = "#111";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "gold";
+  ctx.font = "30px Arial";
+  ctx.textAlign = "center";
+
+  ctx.fillText(
+    "🎰 اللعبة تعمل بنجاح",
+    canvas.width / 2,
+    canvas.height / 2
+  );
+};
+window.initGame = function () {
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+
   // تأكد من حجم الكانفاس
   canvas.width = 900;
   canvas.height = 250;
