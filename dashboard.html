@@ -182,7 +182,69 @@ background:#1d1d1d;
 color:#fff;
 border:1px solid #FFD700;
 }
+/* ===== تحسين التصميم العام ليطابق الصورة ===== */
 
+.menu-btn{
+position:fixed;
+top:15px;
+right:15px;
+z-index:1000;
+}
+
+.hero{
+background:linear-gradient(135deg,#0a0a0a,#111,#0a0a0a);
+border:1px solid rgba(255,215,0,.3);
+box-shadow:0 0 20px rgba(255,215,0,.05);
+}
+
+.card{
+background:linear-gradient(145deg,#0f0f0f,#0a0a0a);
+box-shadow:0 0 15px rgba(0,0,0,.4);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+border-color:#FFD700;
+}
+
+.btn.deposit{
+box-shadow:0 0 15px rgba(255,215,0,.2);
+}
+
+.btn.withdraw{
+transition:0.3s;
+}
+
+.btn.withdraw:hover{
+border-color:#FFD700;
+color:#FFD700;
+}
+
+/* ===== SIDEBAR MOBILE ===== */
+@media (max-width: 768px){
+
+.sidebar{
+position:fixed;
+right:0;
+top:0;
+height:100%;
+z-index:999;
+transform:translateX(100%);
+}
+
+.sidebar.closed{
+transform:translateX(100%);
+}
+
+.sidebar:not(.closed){
+transform:translateX(0);
+}
+
+.main{
+padding-top:70px;
+}
+}
 </style>
 </head>
 
