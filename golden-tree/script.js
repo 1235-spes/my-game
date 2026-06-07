@@ -1,4 +1,3 @@
-
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -11,36 +10,8 @@ fxCanvas.height = window.innerHeight;
 // 🎰 الرموز
 const symbols = ["🍒","🍋","🍇","🍎","🍉","🌳","7"];
 
-// 👤 المستخدم الحالي
-const currentUser = localStorage.getItem("currentUser");
-
-// 🔥 Firebase
-firebase.initializeApp({
-  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
-  authDomain: "chanci-app.firebaseapp.com",
-  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
-  projectId: "chanci-app",
-  storageBucket: "chanci-app.firebasestorage.app",
-  messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:918a393569acb47a7b3df1"
-});
-
-const db = firebase.database();
-
-// 🚨 حماية الدخول
-if(!currentUser){
-  alert("يجب تسجيل الدخول");
-  window.location.href = "../index.html";
-}
-
-// 💰 الرصيد من Firebase
-let balance = 0;
-
-db.ref("users/" + currentUser + "/balance")
-.on("value", snap=>{
-  balance = snap.val() || 0;
-  document.getElementById("balance").innerText = balance;
-});
+let balance = 1000;
+document.getElementById("balance").innerText = balance;
 
 // 🎧 الأصوات
 const spinSound = document.getElementById("spinSound");
@@ -94,7 +65,7 @@ function smartSymbol(){
 }
 
 // 🎡 رسم الكانفاس
-function draw(reelData){
+function draw(reelData, offset=0){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
   for(let i=0;i<reels;i++){
@@ -104,13 +75,15 @@ function draw(reelData){
     ctx.textAlign="center";
     ctx.textBaseline="middle";
 
+    let symbol = reelData[i];
+
     ctx.save();
     ctx.translate(x,canvas.height/2);
 
     let scale = 1 + Math.sin(Date.now()/200 + i)*0.1;
     ctx.scale(scale,scale);
 
-    ctx.fillText(reelData[i],0,0);
+    ctx.fillText(symbol,0,0);
     ctx.restore();
   }
 }
@@ -124,10 +97,8 @@ async function spin(){
   if(!bet || bet<=0) return alert("أدخل رهان");
   if(bet > balance) return alert("رصيد غير كافي");
 
-  const userRef = db.ref("users/" + currentUser + "/balance");
-
-  // خصم الرهان
-  userRef.transaction(b => (b || 0) - bet);
+  balance -= bet;
+  document.getElementById("balance").innerText = balance;
 
   spinSound.play();
 
@@ -137,8 +108,8 @@ async function spin(){
     final.push(smartSymbol());
   }
 
+  // animation
   let frames = 25;
-
   for(let f=0; f<frames; f++){
     let temp = [];
     for(let i=0;i<reels;i++){
@@ -163,14 +134,16 @@ async function spin(){
 
   if(final.every(x=>x==="7")){
     win = bet * 100;
-    resultText = "🔥 JACKPOT!";
+    resultText = "🔥 JACKPOT 7x100!";
     spawnParticles(innerWidth/2,innerHeight/2);
   }
-  else if(final[2]==="🌳"){
+
+  else if(final[2]==="🌳" && final[1]===final[3]){
     win = bet * 20;
-    resultText = "🌳 BONUS!";
+    resultText = "🌳 TREE BONUS!";
     spawnParticles(innerWidth/2,innerHeight/2);
   }
+
   else{
     let count = {};
     final.forEach(s=>count[s]=(count[s]||0)+1);
@@ -179,19 +152,17 @@ async function spin(){
       win = bet * 5;
       resultText = "✨ WIN!";
       spawnParticles(innerWidth/2,innerHeight/2);
-    } else {
+    } else{
       resultText = "❌ خسرت";
       boomSound.play();
     }
   }
 
-  if(win > 0){
-    userRef.transaction(b => (b || 0) + win);
-    winSound.play();
-  }
-
+  balance += win;
   document.getElementById("balance").innerText = balance;
   document.getElementById("result").innerText = resultText;
+
+  if(win > 0) winSound.play();
 
   spinning = false;
 }
