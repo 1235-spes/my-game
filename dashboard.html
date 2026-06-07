@@ -3,37 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Chanci Dashboard</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <style>
-.sidebar{
-transition:0.3s ease;
-}
 
-.sidebar.closed{
-transform: translateX(100%);
-}
-
-.top-bar{
-display:flex;
-align-items:center;
-margin-bottom:15px;
-}
-
-.menu-btn{
-background:#FFD700;
-border:none;
-padding:10px 14px;
-font-size:20px;
-border-radius:10px;
-cursor:pointer;
-color:#000;
-font-weight:bold;
-}
+/* ===== RESET ===== */
 *{
 margin:0;
 padding:0;
@@ -48,11 +25,17 @@ display:flex;
 min-height:100vh;
 }
 
+/* ===== SIDEBAR ===== */
 .sidebar{
 width:280px;
 background:#0d0d0d;
 border-left:1px solid rgba(255,215,0,.2);
 padding:20px;
+transition:0.3s;
+}
+
+.sidebar.closed{
+transform: translateX(100%);
 }
 
 .profile{
@@ -93,28 +76,33 @@ border-radius:12px;
 cursor:pointer;
 }
 
-.menu-item.active{
-background:#FFD700;
-color:#000;
-font-weight:bold;
-}
-
+/* ===== MAIN ===== */
 .main{
 flex:1;
 padding:20px;
 }
 
+.top-bar{
+display:flex;
+margin-bottom:15px;
+}
+
+.menu-btn{
+background:#FFD700;
+border:none;
+padding:10px 14px;
+font-size:20px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+/* ===== HERO ===== */
 .hero{
 height:260px;
 border-radius:25px;
 padding:30px;
-background:
-linear-gradient(
-135deg,
-#000,
-#111,
-#1a1a1a
-);
+background:linear-gradient(135deg,#000,#111,#1a1a1a);
 border:1px solid rgba(255,215,0,.2);
 display:flex;
 align-items:center;
@@ -132,6 +120,7 @@ margin-top:10px;
 letter-spacing:3px;
 }
 
+/* ===== CARDS ===== */
 .cards{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
@@ -182,374 +171,78 @@ background:#1d1d1d;
 color:#fff;
 border:1px solid #FFD700;
 }
-.withdraw{
-background:#1d1d1d;
-color:#fff;
-border:1px solid #FFD700;
-}
 
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-</style>
-</head>
-
-<body>
-
+<!-- SIDEBAR -->
 <div class="sidebar">
 
 <div class="profile">
-
 <div class="avatar"></div>
-
-<div class="username"
-id="username">
-...
+<div class="username" id="username">...</div>
+<div class="member">عضو ذهبي</div>
 </div>
 
-<div class="member">
-عضو ذهبي
-</div>
-
-</div>
-
-<div class="menu-item active">
-الرئيسية
-</div>
-
-<div class="menu-item">
-المحفظة
-</div>
-
-<div class="menu-item">
-الألعاب
-</div>
-
-<div class="menu-item">
-السحوبات
-</div>
-
-<div class="menu-item">
-الإعدادات
-</div>
-
-<div class="menu-item"
-onclick="logout()">
-تسجيل الخروج
-</div>
+<div class="menu-item active">الرئيسية</div>
+<div class="menu-item">المحفظة</div>
+<div class="menu-item">الألعاب</div>
+<div class="menu-item">السحوبات</div>
+<div class="menu-item">الإعدادات</div>
 
 </div>
 
+<!-- MAIN -->
 <div class="main">
+
 <div class="top-bar">
-  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+<button class="menu-btn" onclick="toggleSidebar()">☰</button>
 </div>
+
 <div class="hero">
-
 <h1>CHANCI APP</h1>
+<p>PLAY • WIN • REDEEM</p>
+</div>
 
-<p>
-PLAY • WIN • REDEEM
-</p>
-
-</div><div class="cards">
+<div class="cards">
 
 <div class="card">
-
-<div class="card-title">
-رصيد المحفظة
-</div>
-
-<div
-class="card-value"
-id="balance">
-0
-</div>
+<div class="card-title">رصيد المحفظة</div>
+<div class="card-value" id="balance">0</div>
 
 <div class="actions">
-
-<button
-class="btn deposit">
-إيداع
-</button>
-
-<button
-class="btn withdraw">
-سحب
-</button>
-
+<button class="btn deposit">إيداع</button>
+<button class="btn withdraw">سحب</button>
 </div>
-
 </div>
 
 <div class="card">
-
-<div class="card-title">
-إجمالي الأرباح
-</div>
-
-<div
-class="card-value"
-id="earnings">
-0
-</div>
-
+<div class="card-title">الأرباح</div>
+<div class="card-value" id="earnings">0</div>
 </div>
 
 <div class="card">
-
-<div class="card-title">
-النقاط
-</div>
-
-<div
-class="card-value"
-id="points">
-0
-</div>
-
+<div class="card-title">النقاط</div>
+<div class="card-value" id="points">0</div>
 </div>
 
 <div class="card">
-
-<div class="card-title">
-مرات الفوز
-</div>
-
-<div
-class="card-value"
-id="wins">
-0
+<div class="card-title">مرات الفوز</div>
+<div class="card-value" id="wins">0</div>
 </div>
 
 </div>
 
 </div>
-
-<div
-style="
-margin-top:25px;
-background:#111;
-padding:20px;
-border-radius:20px;
-border:1px solid rgba(255,215,0,.15);
-">
-
-<h2
-style="
-color:#FFD700;
-margin-bottom:15px;
-">
-الخدمات
-</h2>
-
-<div
-style="
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
-">
-
-<div class="card">
-<h3>الرصيد</h3>
-<p>عرض رصيدك الحالي</p>
-</div>
-
-<div class="card">
-<h3>الألعاب</h3>
-<p>العب واربح النقاط</p>
-</div>
-
-<div class="card">
-<h3>القسائم</h3>
-<p>استبدل نقاطك</p>
-</div>
-
-<div class="card">
-<h3>السحوبات</h3>
-<p>اربح جوائز مميزة</p>
-</div>
-
-</div>
-
-</div>
-
-<div
-style="
-margin-top:25px;
-background:#111;
-padding:20px;
-border-radius:20px;
-border:1px solid rgba(255,215,0,.15);
-">
-
-<h2
-style="
-color:#FFD700;
-margin-bottom:15px;
-">
-آخر المعاملات
-</h2>
-
-<div id="transactions">
-
-<div
-style="
-padding:12px;
-background:#1a1a1a;
-border-radius:10px;
-margin-bottom:10px;
-">
-لا توجد معاملات حالياً
-</div>
-
-</div>
-
-</div></div>
 
 <script>
 
-const firebaseConfig = {
-apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
-authDomain: "chanci-app.firebaseapp.com",
-databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
-projectId: "chanci-app",
-storageBucket: "chanci-app.firebasestorage.app",
-messagingSenderId: "18416485348",
-appId: "1:18416485348:web:918a393569acb47a7b3df1",
-measurementId: "G-S8ZCNJBFQ8"
-};
-
-if(!firebase.apps.length){
-firebase.initializeApp(firebaseConfig);
-}
-
-const db = firebase.database();
-
-const currentUser =
-localStorage.getItem("currentUser");
-
-if(!currentUser){
-
-window.location.href =
-"index.html";
-
-}
-
-document.getElementById("username")
-.innerText = currentUser;
-
-db.ref("users/" + currentUser)
-.on("value", snapshot=>{
-
-if(!snapshot.exists()) return;
-
-const user = snapshot.val();
-
-document.getElementById("balance")
-.innerText =
-user.balance || 0;
-
-document.getElementById("earnings")
-.innerText =
-user.earnings || 0;
-
-document.getElementById("points")
-.innerText =
-user.points || 0;
-
-document.getElementById("wins")
-.innerText =
-user.wins || 0;
-
-});
-
-db.ref(
-"users/" +
-currentUser +
-"/transactions"
-)
-.on("value", snapshot=>{
-
-const container =
-document.getElementById(
-"transactions"
-);
-
-if(!snapshot.exists()){
-
-container.innerHTML = `
-<div style="
-padding:12px;
-background:#1a1a1a;
-border-radius:10px;">
-لا توجد معاملات
-</div>
-`;
-
-return;
-
-}
-
-let html = "";
-
-snapshot.forEach(item=>{
-
-const tx = item.val();
-
-html += `
-
-<div style="
-padding:12px;
-margin-bottom:10px;
-background:#1a1a1a;
-border-radius:10px;">
-
-<div>
-${tx.type || ""}
-</div>
-
-<div>
-${tx.amount || 0}
-</div>
-
-<div style="
-font-size:12px;
-color:#999;">
-${tx.date || ""}
-</div>
-
-</div>
-
-`;
-
-});
-
-container.innerHTML = html;
-
-});
-
-function logout(){
-
-localStorage.removeItem(
-"currentUser"
-);
-
-window.location.href =
-"index.html";
-
-}
 function toggleSidebar(){
-  const sidebar = document.querySelector(".sidebar");
-  sidebar.classList.toggle("closed");
+document.querySelector(".sidebar").classList.toggle("closed");
 }
-</script>
 
-</body>
-</
 </script>
 
 </body>
