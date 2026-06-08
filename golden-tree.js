@@ -1,119 +1,99 @@
-// =====================
-// GOLDEN TREE - BASIC WORKING VERSION
-// =====================
+// ===== Golden Tree Game =====
+let canvas = document.getElementById("gameCanvas");
+let ctx = canvas.getContext("2d");
 
-let currentBet = 0;
-let isSpinning = false;
+let fxCanvas = document.getElementById("fxCanvas");
+let fxCtx = fxCanvas.getContext("2d");
+fxCanvas.width = window.innerWidth;
+fxCanvas.height = window.innerHeight;
 
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+let selectedBet = 300;
+let balance = parseInt(document.getElementById("balance").innerText);
 
-const fxCanvas = document.getElementById("fxCanvas");
-const fxCtx = fxCanvas.getContext("2d");
-
-// ضبط fxCanvas ليملأ الشاشة
-function resizeCanvas() {
-    fxCanvas.width = window.innerWidth;
-    fxCanvas.height = window.innerHeight;
+function selectBet(amount){
+    selectedBet = amount;
+    document.getElementById("result").innerText = `تم اختيار الرهان: ${selectedBet}`;
 }
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
 
-// زر SPIN
-const spinBtn = document.getElementById("spin");
-const resultBox = document.getElementById("result");
-
-// رسم شجرة بسيطة
-function drawTree() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // خلفية
-    ctx.fillStyle = "#111";
+// رسم الشجرة
+function drawTree(){
+    ctx.fillStyle = "#0a0a0a";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // جذع
-    ctx.fillStyle = "#8B4513";
-    ctx.fillRect(canvas.width / 2 - 10, canvas.height / 2, 20, 80);
+    // الجذع
+    ctx.fillStyle = "#654321";
+    ctx.fillRect(canvas.width/2 - 20, canvas.height-100, 40, 100);
 
-    // تاج الشجرة
-    ctx.fillStyle = "green";
+    // التاج
+    ctx.fillStyle = "#228B22";
     ctx.beginPath();
-    ctx.arc(canvas.width / 2, canvas.height / 2, 50, 0, Math.PI * 2);
+    ctx.moveTo(canvas.width/2, canvas.height-250);
+    ctx.lineTo(canvas.width/2 - 100, canvas.height-100);
+    ctx.lineTo(canvas.width/2 + 100, canvas.height-100);
+    ctx.closePath();
     ctx.fill();
-
-    // نص
-    ctx.fillStyle = "gold";
-    ctx.font = "22px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("🌳 GOLDEN TREE 🌳", canvas.width / 2, 30);
 }
 
-// loop للرسم مستمر
-function loop() {
-    drawTree();
-    requestAnimationFrame(loop);
+// تأثيرات الذهبية
+let particles = [];
+function spawnParticles(x, y){
+    for(let i=0;i<10;i++){
+        particles.push({
+            x: x,
+            y: y,
+            vx: (Math.random()-0.5)*4,
+            vy: -Math.random()*3,
+            alpha: 1,
+        });
+    }
 }
-loop();
 
-// اختيار الرهان
-function selectBet(amount) {
-    currentBet = amount;
-    resultBox.innerText = `💰 الرهان: ${amount}`;
+function updateParticles(){
+    fxCtx.clearRect(0,0,fxCanvas.width, fxCanvas.height);
+    for(let i=0;i<particles.length;i++){
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.02;
+        fxCtx.fillStyle = `rgba(255,215,0,${p.alpha})`;
+        fxCtx.beginPath();
+        fxCtx.arc(p.x, p.y, 4, 0, Math.PI*2);
+        fxCtx.fill();
+        if(p.alpha <= 0) particles.splice(i,1);
+    }
 }
 
-// SPIN
-spinBtn.addEventListener("click", async () => {
-
-    if (isSpinning) return;
-
-    if (currentBet <= 0) {
-        alert("اختر الرهان أولاً!");
+// عملية الدوران والربح
+document.getElementById("spin").addEventListener("click",()=>{
+    if(selectedBet > balance){
+        document.getElementById("result").innerText = "رصيدك غير كافي!";
         return;
     }
 
-    isSpinning = true;
-    spinBtn.disabled = true;
-    resultBox.innerText = "⏳ جاري اللعب...";
+    balance -= selectedBet;
+    document.getElementById("balance").innerText = balance;
 
-    const currentUser = localStorage.getItem("currentUser");
-    if(!currentUser) {
-        alert("خطأ: المستخدم غير موجود");
-        return;
-    }
-
-    const db = firebase.database();
-    const userRef = db.ref("users/" + currentUser);
-    const snap = await userRef.once("value");
-    const user = snap.val();
-    if(!user) return;
-
-    if((user.balance || 0) < currentBet){
-        resultBox.innerText = "❌ رصيد غير كافي";
-        isSpinning = false;
-        spinBtn.disabled = false;
-        return;
-    }
-
-    // تحديد الفوز
-    const win = Math.random() < 0.5;
-    let reward = 0;
-    let balance = user.balance - currentBet;
-
+    let win = Math.random() < 0.5; // 50% فوز أو خسارة
     if(win){
-        reward = currentBet * (1 + Math.random()*2);
-        balance += reward;
+        let winnings = selectedBet * 2;
+        balance += winnings;
+        document.getElementById("balance").innerText = balance;
+        document.getElementById("wins").innerText = parseInt(document.getElementById("wins").innerText)+1;
+        document.getElementById("result").innerText = `🎉 فزت بـ ${winnings} !`;
+        spawnParticles(canvas.width/2, canvas.height-150);
+    }else{
+        document.getElementById("result").innerText = "😢 خسرت! حاول مرة أخرى";
     }
-
-    await userRef.update({
-        balance: balance,
-        earnings: (user.earnings || 0) + (win ? reward : 0),
-        wins: (user.wins || 0) + (win ? 1 : 0)
-    });
-
-    resultBox.innerText = win ? `🎉 فزت ${Math.floor(reward)}` : "😢 خسرت";
-
-    setTimeout(() => {
-        isSpinning = false;
-        spinBtn.disabled = false;
-    }, 1000);
 });
+
+// تحديث الرسومات باستمرار
+function gameLoop(){
+    drawTree();
+    updateParticles();
+    requestAnimationFrame(gameLoop);
+}
+
+// تهيئة اللعبة عند فتحها
+function initGame(){
+    gameLoop();
+}
