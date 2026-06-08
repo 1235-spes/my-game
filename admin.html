@@ -154,11 +154,13 @@ color:white;
   
 .status{  
 margin-top:15px;  
-color:#FFD700;  
+color:#FFD700; 
 text-align:center;  
 }  
   
-</style>  </head>  <body>  <div class="header">  
+</style> <link rel="stylesheet" href="admin.css">
+</head>
+<body>   <div class="header">  
 لوحة تحكم Chanci  
 </div>  <div class="container">  <div class="create-user">  <h2>إنشاء مستخدم جديد</h2>  <input  
 class="input"  
@@ -292,7 +294,7 @@ document.getElementById("newBalance").value="0";
 .catch(error=>{  
   
 status.innerHTML =  
-"حدث خطأ";  
+"حدث خطأ"; 
   
 console.error(error);  
   
@@ -491,5 +493,5 @@ date:new Date().toLocaleString("ar")
   
 loadUsers();  
   
-</script>  </body>  
+</script> <script src="admin.js"></script> </body>  
 </html>  
