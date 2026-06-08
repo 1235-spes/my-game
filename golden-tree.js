@@ -1,43 +1,72 @@
-
 // ===============================
-// GOLDEN TREE GAME - CHANCI
+// GOLDEN TREE - FIX VISUAL VERSION
 // ===============================
 
 let currentBet = 0;
 let isSpinning = false;
 
-// عناصر اللعبة
 const spinBtn = document.getElementById("spin");
 const resultBox = document.getElementById("result");
 
-// Canvas (جاهز للتطوير لاحقاً)
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// fx canvas (مستقبل تأثيرات)
 const fxCanvas = document.getElementById("fxCanvas");
+const fxCtx = fxCanvas.getContext("2d");
 
-// Firebase user
 const currentUser = localStorage.getItem("currentUser");
 const db = firebase.database();
 
+// 🔥 ضبط حجم fxCanvas
+function resizeCanvas() {
+    fxCanvas.width = window.innerWidth;
+    fxCanvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
 // ===============================
-// اختيار الرهان
+// رسم الخلفية (مهم جداً)
+// ===============================
+function drawBackground() {
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // شجرة وهمية بسيطة (مؤقتاً)
+    ctx.fillStyle = "green";
+    ctx.beginPath();
+    ctx.arc(450, 120, 40, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#8B4513";
+    ctx.fillRect(440, 160, 20, 60);
+
+    ctx.fillStyle = "gold";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("🌳 GOLDEN TREE", 450, 40);
+}
+
+// loop للرسم
+function loop() {
+    drawBackground();
+    requestAnimationFrame(loop);
+}
+loop();
+
 // ===============================
 function selectBet(amount) {
     currentBet = amount;
-    resultBox.innerText = `💰 تم اختيار الرهان: ${amount}`;
+    resultBox.innerText = `💰 الرهان: ${amount}`;
 }
 
-// ===============================
-// زر SPIN
 // ===============================
 spinBtn.addEventListener("click", async () => {
 
     if (isSpinning) return;
 
     if (currentBet <= 0) {
-        alert("اختر قيمة الرهان أولاً!");
+        alert("اختر رهان أولاً!");
         return;
     }
 
@@ -46,19 +75,12 @@ spinBtn.addEventListener("click", async () => {
 
     resultBox.innerText = "⏳ جاري اللعب...";
 
-    // جلب بيانات المستخدم
     const userRef = db.ref("users/" + currentUser);
-    const snapshot = await userRef.once("value");
-    const user = snapshot.val();
+    const snap = await userRef.once("value");
+    const user = snap.val();
 
-    if (!user) {
-        alert("المستخدم غير موجود");
-        isSpinning = false;
-        spinBtn.disabled = false;
-        return;
-    }
+    if (!user) return;
 
-    // التحقق من الرصيد
     if ((user.balance || 0) < currentBet) {
         resultBox.innerText = "❌ رصيد غير كافي";
         isSpinning = false;
@@ -66,54 +88,28 @@ spinBtn.addEventListener("click", async () => {
         return;
     }
 
-    // خصم الرهان
-    let newBalance = (user.balance || 0) - currentBet;
+    let balance = user.balance - currentBet;
 
-    // نتيجة عشوائية (50% ربح)
     const win = Math.random() < 0.5;
-
     let reward = 0;
 
     if (win) {
-        reward = currentBet * (Math.random() * 2 + 1); // 1x - 3x
-        newBalance += reward;
+        reward = currentBet * (1 + Math.random() * 2);
+        balance += reward;
     }
 
-    // تحديث Firebase
     await userRef.update({
-        balance: newBalance,
+        balance: balance,
         earnings: (user.earnings || 0) + (win ? reward : 0),
         wins: (user.wins || 0) + (win ? 1 : 0)
     });
 
-    // عرض النتيجة
-    if (win) {
-        resultBox.innerText = `🎉 فزت بـ ${Math.floor(reward)}!`;
-        drawWinEffect();
-    } else {
-        resultBox.innerText = "😢 خسرت هذه الجولة";
-    }
+    resultBox.innerText = win
+        ? `🎉 فزت ${Math.floor(reward)}`
+        : "😢 خسرت";
 
-    // إعادة التفعيل
     setTimeout(() => {
         isSpinning = false;
         spinBtn.disabled = false;
-    }, 1000);
-});
-
-// ===============================
-// تأثير بسيط (مستقبلي تطوير FX)
-// ===============================
-function drawWinEffect() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "gold";
-    ctx.font = "30px Arial";
-    ctx.textAlign = "center";
-
-    ctx.fillText("🎉 WIN!", canvas.width / 2, canvas.height / 2);
-
-    setTimeout(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }, 800);
-}
+});
