@@ -25,6 +25,7 @@ async function initGame() {
 }
 
 spinBtn.addEventListener("click", async () => {
+    const userRef = window.userRef;
     let snap = await userRef.once("value");
     let user = snap.val();
     let balance = user.balance || 0;
