@@ -1,99 +1,108 @@
-// ===== Golden Tree Game =====
-let canvas = document.getElementById("gameCanvas");
-let ctx = canvas.getContext("2d");
+// ===============================
+// GOLDEN TREE - SAFE START VERSION
+// ===============================
 
-let fxCanvas = document.getElementById("fxCanvas");
-let fxCtx = fxCanvas.getContext("2d");
-fxCanvas.width = window.innerWidth;
-fxCanvas.height = window.innerHeight;
+let canvas, ctx;
+let fxCanvas, fxCtx;
+let spinBtn;
+let resultBox;
 
-let selectedBet = 300;
-let balance = parseInt(document.getElementById("balance").innerText);
+let selectedBet = 0;
+let balance = 0;
 
-function selectBet(amount){
-    selectedBet = amount;
-    document.getElementById("result").innerText = `تم اختيار الرهان: ${selectedBet}`;
-}
+// ننتظر تحميل الصفحة بالكامل
+window.addEventListener("load", () => {
 
-// رسم الشجرة
-function drawTree(){
-    ctx.fillStyle = "#0a0a0a";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    canvas = document.getElementById("gameCanvas");
+    fxCanvas = document.getElementById("fxCanvas");
+    spinBtn = document.getElementById("spin");
+    resultBox = document.getElementById("result");
 
-    // الجذع
-    ctx.fillStyle = "#654321";
-    ctx.fillRect(canvas.width/2 - 20, canvas.height-100, 40, 100);
-
-    // التاج
-    ctx.fillStyle = "#228B22";
-    ctx.beginPath();
-    ctx.moveTo(canvas.width/2, canvas.height-250);
-    ctx.lineTo(canvas.width/2 - 100, canvas.height-100);
-    ctx.lineTo(canvas.width/2 + 100, canvas.height-100);
-    ctx.closePath();
-    ctx.fill();
-}
-
-// تأثيرات الذهبية
-let particles = [];
-function spawnParticles(x, y){
-    for(let i=0;i<10;i++){
-        particles.push({
-            x: x,
-            y: y,
-            vx: (Math.random()-0.5)*4,
-            vy: -Math.random()*3,
-            alpha: 1,
-        });
-    }
-}
-
-function updateParticles(){
-    fxCtx.clearRect(0,0,fxCanvas.width, fxCanvas.height);
-    for(let i=0;i<particles.length;i++){
-        let p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.alpha -= 0.02;
-        fxCtx.fillStyle = `rgba(255,215,0,${p.alpha})`;
-        fxCtx.beginPath();
-        fxCtx.arc(p.x, p.y, 4, 0, Math.PI*2);
-        fxCtx.fill();
-        if(p.alpha <= 0) particles.splice(i,1);
-    }
-}
-
-// عملية الدوران والربح
-document.getElementById("spin").addEventListener("click",()=>{
-    if(selectedBet > balance){
-        document.getElementById("result").innerText = "رصيدك غير كافي!";
+    // تحقق أمان
+    if (!canvas || !spinBtn || !resultBox) {
+        console.log("Game elements not ready");
         return;
     }
 
-    balance -= selectedBet;
-    document.getElementById("balance").innerText = balance;
+    ctx = canvas.getContext("2d");
+    fxCtx = fxCanvas.getContext("2d");
 
-    let win = Math.random() < 0.5; // 50% فوز أو خسارة
-    if(win){
-        let winnings = selectedBet * 2;
-        balance += winnings;
-        document.getElementById("balance").innerText = balance;
-        document.getElementById("wins").innerText = parseInt(document.getElementById("wins").innerText)+1;
-        document.getElementById("result").innerText = `🎉 فزت بـ ${winnings} !`;
-        spawnParticles(canvas.width/2, canvas.height-150);
-    }else{
-        document.getElementById("result").innerText = "😢 خسرت! حاول مرة أخرى";
-    }
+    fxCanvas.width = window.innerWidth;
+    fxCanvas.height = window.innerHeight;
+
+    balance = Number(document.getElementById("balance")?.innerText || 0);
+
+    draw();
+
+    spinBtn.addEventListener("click", spinGame);
+
+    requestAnimationFrame(loop);
 });
 
-// تحديث الرسومات باستمرار
-function gameLoop(){
-    drawTree();
-    updateParticles();
-    requestAnimationFrame(gameLoop);
+// ===============================
+// اختيار الرهان
+// ===============================
+window.selectBet = function(amount){
+    selectedBet = amount;
+    document.getElementById("result").innerText =
+        "💰 الرهان: " + amount;
+};
+
+// ===============================
+// رسم بسيط جداً (للتأكد أنه يعمل)
+// ===============================
+function draw(){
+    if (!ctx) return;
+
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "green";
+    ctx.beginPath();
+    ctx.arc(canvas.width/2, canvas.height/2, 60, 0, Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle = "gold";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("GOLDEN TREE LOADED", canvas.width/2, 50);
 }
 
-// تهيئة اللعبة عند فتحها
-function initGame(){
-    gameLoop();
+// ===============================
+// SPIN
+// ===============================
+function spinGame(){
+
+    if (selectedBet <= 0) {
+        alert("اختر رهان أولاً");
+        return;
+    }
+
+    if (selectedBet > balance) {
+        document.getElementById("result").innerText = "❌ رصيد غير كافي";
+        return;
+    }
+
+    let win = Math.random() > 0.5;
+
+    if (win) {
+        let reward = selectedBet * 2;
+        balance += reward;
+        document.getElementById("result").innerText =
+            "🎉 فزت " + reward;
+    } else {
+        balance -= selectedBet;
+        document.getElementById("result").innerText =
+            "😢 خسرت";
+    }
+
+    document.getElementById("balance").innerText = balance;
+}
+
+// ===============================
+// LOOP (للتأكد أن الرسم شغال)
+// ===============================
+function loop(){
+    draw();
+    requestAnimationFrame(loop);
 }
