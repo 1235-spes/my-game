@@ -23,7 +23,7 @@ firebase.initializeApp({
 
 const db = firebase.database();
 const userRef = db.ref("users/" + currentUser);
-
+window.userRef = db.ref("users/" + currentUser);
 // ===== UPDATE DASHBOARD DATA =====
 userRef.on("value", snapshot => {
     const user = snapshot.val();
