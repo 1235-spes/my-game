@@ -3,32 +3,28 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
 body {
+  background: #050505;
+  color: white;
   display: flex;
   min-height: 100vh;
-  background: #050505;
-  color: #fff;
+  transition: background 0.3s;
 }
 
 /* ===== SIDEBAR ===== */
 .sidebar {
   width: 280px;
-  background: linear-gradient(180deg, #0d0d0d, #1a1a1a);
+  background: #0d0d0d;
   border-left: 1px solid rgba(255, 215, 0, 0.2);
   padding: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
+  transition: transform 0.3s ease, background 0.3s;
 }
 
 .sidebar.closed {
   transform: translateX(280px);
-}
-
-.sidebar:hover {
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
 }
 
 .profile {
@@ -36,60 +32,67 @@ body {
   padding: 20px;
   border: 1px solid rgba(255, 215, 0, 0.2);
   border-radius: 20px;
-  margin-bottom: 20px;
-  background: rgba(255, 215, 0, 0.05);
+  margin-bottom: 25px;
+  transition: all 0.3s;
 }
 
 .avatar {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  margin: auto 0 10px 0;
+  margin: auto 0;
   background: #FFD700;
+  margin-bottom: 12px;
+  transition: transform 0.3s;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
 }
 
 .username {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   color: #FFD700;
 }
 
 .member {
   margin-top: 10px;
-  padding: 8px 12px;
-  border-radius: 12px;
+  padding: 10px;
+  border-radius: 10px;
   border: 1px solid rgba(255, 215, 0, 0.3);
-  font-size: 14px;
+  background: rgba(255, 215, 0, 0.05);
+  transition: background 0.3s;
 }
 
 .menu-item {
-  padding: 14px 18px;
+  padding: 15px;
   margin-bottom: 10px;
+  background: #141414;
   border-radius: 12px;
   cursor: pointer;
-  transition: 0.2s;
-  background: #141414;
+  transition: background 0.3s, transform 0.2s;
 }
 
-.menu-item.active,
 .menu-item:hover {
-  background: #222;
-  color: #FFD700;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+  background: rgba(255, 215, 0, 0.15);
+  transform: translateX(5px);
 }
 
-/* ===== MAIN AREA ===== */
+.menu-item.active {
+  background: rgba(255, 215, 0, 0.25);
+}
+
+/* ===== MAIN ===== */
 .main {
   flex: 1;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
+  transition: all 0.3s;
 }
 
 .top-bar {
   display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .menu-btn {
@@ -100,7 +103,11 @@ body {
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
-  transition: 0.2s;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.menu-btn:hover {
+  background: #ffeb70;
 }
 
 .menu-btn:active {
@@ -118,58 +125,57 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 20px;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+  transition: all 0.3s;
 }
 
 .hero h1 {
   font-size: 60px;
   color: #FFD700;
-  text-shadow: 0 0 10px #FFD700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
 }
 
 .hero p {
-  margin-top: 10px;
+  margin-top: 12px;
   letter-spacing: 3px;
-  font-size: 18px;
   color: #ccc;
 }
 
 /* ===== CARDS ===== */
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
+  margin-top: 25px;
 }
 
 .card {
   background: #111;
-  padding: 20px;
+  padding: 25px;
   border-radius: 20px;
   border: 1px solid rgba(255, 215, 0, 0.15);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.25);
 }
 
 .card-title {
   color: #aaa;
-  margin-bottom: 10px;
-  font-size: 14px;
+  margin-bottom: 12px;
+  font-size: 16px;
 }
 
 .card-value {
-  font-size: 36px;
+  font-size: 40px;
   font-weight: bold;
   color: #FFD700;
 }
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: 15px;
 }
 
@@ -180,16 +186,16 @@ body {
   border-radius: 12px;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
 }
 
 .deposit {
   background: #FFD700;
   color: #000;
-}
-
-.deposit:hover {
-  background: #e6c200;
 }
 
 .withdraw {
@@ -198,84 +204,56 @@ body {
   border: 1px solid #FFD700;
 }
 
-.withdraw:hover {
-  background: #222;
-  border-color: #FFD700;
-}
-
 /* ===== GAME SECTION ===== */
 #game-section {
-  margin-bottom: 20px;
+  display: none;
+  padding: 20px;
 }
 
 #gameCanvas {
   width: 100%;
   border-radius: 15px;
-  margin-bottom: 10px;
+  border: 2px solid gold;
+  background: #111;
   display: block;
-}
-
-.bet-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
+  margin: 0 auto;
 }
 
 .bet-buttons button {
-  padding: 8px 16px;
+  padding: 10px 18px;
+  border-radius: 10px;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
   background: #FFD700;
   color: #000;
-  transition: 0.2s;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
 }
 
 .bet-buttons button:hover {
-  background: #e6c200;
+  transform: scale(1.05);
+  background: #ffeb70;
 }
 
 #spin {
-  display: block;
-  margin: 15px auto;
-  padding: 12px 25px;
-  font-weight: bold;
-  font-size: 16px;
-  background: #FFD700;
+  padding: 10px 20px;
+  background: gold;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
+  font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
+  margin-top: 15px;
+  transition: transform 0.2s, background 0.3s;
 }
 
 #spin:hover {
-  background: #e6c200;
+  transform: scale(1.05);
+  background: #ffeb70;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .sidebar {
-    position: fixed;
-    height: 100%;
-    z-index: 100;
-    transform: translateX(280px);
-  }
-  .sidebar.closed {
-    transform: translateX(280px);
-  }
-  .main {
-    padding: 15px;
-  }
-  .cards {
-    grid-template-columns: 1fr;
-  }
-  .hero h1 {
-    font-size: 40px;
-  }
-  .hero p {
-    font-size: 16px;
-  }
+#result {
+  margin-top: 10px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
 }
