@@ -303,11 +303,18 @@ align-items:center;
 }
 
 .hero-logo{
-font-size:48px;
-font-weight:bold;
-color:#FFD700;
-text-shadow:
-0 0 20px rgba(255,215,0,.6);
+width:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.hero-logo img{
+width:100%;
+max-width:700px;
+height:auto;
+border-radius:20px;
+display:block;
 }
 
 .hero-slogan{
