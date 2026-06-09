@@ -454,3 +454,14 @@ margin-bottom:10px;
 .promo-text{
 font-size:14px;
 }
+.game-image{
+width:70px;
+height:70px;
+object-fit:contain;
+margin-bottom:10px;
+z-index:2;
+}
+
+.game-card{
+height:180px;
+}
