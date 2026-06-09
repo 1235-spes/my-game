@@ -5,7 +5,10 @@
 
   <link rel="stylesheet" href="dashboard.css"> </head>  <body>  <!-- SIDEBAR -->  <div class="sidebar">  <div class="profile">
 
-<div class="avatar"></div>    
+<img
+class="avatar"
+src="https://i.imgur.com/5cLDe6X.png"
+/>    
 <div class="username" id="username">...</div>    
 <div class="member">عضو ذهبي</div>    
   <div class="menu-item" onclick="logout()">    
@@ -17,7 +20,17 @@
 <div class="menu-item">السحوبات</div>    
 <div class="menu-item">الإعدادات</div>  </div>  <!-- MAIN -->  <div class="main">  <div class="top-bar">    
 <button class="menu-btn" onclick="toggleSidebar()">☰</button>    
-</div> <div class="hero">
+</div> <div class="wallet-bar">
+
+<div>
+💰 <span id="top-balance">0</span>
+</div>
+
+<div>
+🏆 VIP GOLD
+</div>
+
+</div><div class="hero">
 
 <div class="hero-overlay"></div>
 
