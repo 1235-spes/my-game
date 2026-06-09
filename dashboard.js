@@ -1,6 +1,6 @@
 // ===== SIDEBAR & USER =====
 function toggleSidebar() {
-    document.querySelector(".sidebar").classList.toggle("closed");
+    document.querySelector(".sidebar").classList.toggle("open");
 }
 
 const currentUser = localStorage.getItem("currentUser");
