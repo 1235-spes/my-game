@@ -451,19 +451,82 @@ font-weight:bold;
 font-size:22px;
 margin-bottom:10px;
 }
-
 .promo-text{
 font-size:14px;
 }
+
 .wallet-bar{
 margin-bottom:20px;
-background:#111;
-border:1px solid rgba(255,215,0,.15);
-border-radius:18px;
 padding:15px 20px;
+
 display:flex;
 justify-content:space-between;
 align-items:center;
-font-weight:bold;
+
+background:
+linear-gradient(
+135deg,
+#111,
+#1a1a1a
+);
+
+border:1px solid rgba(255,215,0,.2);
+border-radius:20px;
+
 color:#FFD700;
+font-weight:bold;
+font-size:18px;
+
+box-shadow:
+0 0 15px rgba(255,215,0,.1);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px){
+
+.sidebar{
+position:fixed;
+top:0;
+right:0;
+height:100%;
+z-index:999;
+}
+
+.main{
+width:100%;
+padding:15px;
+}
+
+.hero{
+height:auto;
+padding:25px 15px;
+}
+
+.hero-logo{
+font-size:34px;
+}
+
+.hero-stats{
+flex-direction:column;
+align-items:center;
+}
+
+.stat-box{
+width:100%;
+max-width:220px;
+}
+
+.games-grid{
+grid-template-columns:1fr;
+}
+
+.cards{
+grid-template-columns:1fr;
+}
+
+#gameCanvas{
+height:auto;
+}
+
 }
