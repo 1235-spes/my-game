@@ -33,6 +33,8 @@ user.balance || 0;
     document.getElementById("balance").innerText = user.balance || 0;
    document.getElementById("hero-balance").innerText =
 user.balance || 0;
+    document.getElementById("hero-earnings").innerText =
+user.earnings || 0;
     document.getElementById("earnings").innerText = user.earnings || 0;
     document.getElementById("points").innerText = user.points || 0;
     document.getElementById("wins").innerText = user.wins || 0;
