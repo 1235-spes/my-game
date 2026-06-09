@@ -454,3 +454,15 @@ margin-bottom:10px;
 .promo-text{
 font-size:14px;
 }
+.wallet-bar{
+margin-bottom:20px;
+background:#111;
+border:1px solid rgba(255,215,0,.15);
+border-radius:18px;
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-weight:bold;
+color:#FFD700;
+}
