@@ -28,7 +28,8 @@ window.userRef = db.ref("users/" + currentUser);
 userRef.on("value", snapshot => {
     const user = snapshot.val();
     if (!user) return;
-
+document.getElementById("top-balance").innerText =
+user.balance || 0;
     document.getElementById("balance").innerText = user.balance || 0;
    document.getElementById("hero-balance").innerText =
 user.balance || 0;
