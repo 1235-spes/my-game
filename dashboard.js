@@ -48,14 +48,22 @@ userRef.on("value", snapshot => {
 
 // ===== GAME SECTION =====
 function openGame() {
+
     document.querySelector(".hero")?.style.setProperty("display", "none");
+    document.querySelector(".quick-menu")?.style.setProperty("display", "none");
+    document.querySelector(".games-section")?.style.setProperty("display", "none");
     document.querySelector(".cards")?.style.setProperty("display", "none");
 
     const game = document.getElementById("game-section");
-    if (game) game.style.display = "block";
+
+    if (game) {
+        game.style.display = "block";
+    }
 
     setTimeout(() => {
-        if (window.initGame) window.initGame();
+        if (window.initGame) {
+            window.initGame();
+        }
     }, 200);
 }
 
