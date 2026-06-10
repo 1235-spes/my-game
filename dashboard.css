@@ -548,3 +548,110 @@ height:180px;
     from{opacity:0; transform:translateY(20px);}
     to{opacity:1; transform:translateY(0);}
 }
+/* ===== App Header ===== */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #000, #111);
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.menu-btn {
+    font-size: 22px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #FFD700;
+    border: none;
+    cursor: pointer;
+}
+
+.header-balance-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #222;
+    padding: 8px 12px;
+    border-radius: 12px;
+}
+
+.header-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.balance-info {
+    display: flex;
+    flex-direction: column;
+    color: #FFD700;
+    font-weight: bold;
+}
+
+.balance-label {
+    font-size: 12px;
+}
+
+.balance-value {
+    font-size: 16px;
+}
+
+.notification-btn {
+    font-size: 20px;
+    background: #333;
+    border: none;
+    color: #FFD700;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+/* ===== Quick Menu ===== */
+.quick-menu{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    margin-top:20px;
+}
+
+.quick-item{
+    flex:1;
+    background:#111;
+    border:1px solid rgba(255,215,0,.15);
+    border-radius:20px;
+    padding:15px;
+    text-align:center;
+    transition:.3s;
+}
+
+.quick-item:active{
+    transform:scale(.96);
+}
+
+.quick-item img{
+    width:45px;
+    height:45px;
+    object-fit:contain;
+    margin-bottom:10px;
+}
+
+.quick-item span{
+    display:block;
+    color:#FFD700;
+    font-weight:bold;
+  }
