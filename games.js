@@ -15,7 +15,7 @@ document.getElementById("username").innerText = currentUser;
 
 // ===== FIREBASE =====
 firebase.initializeApp({
-    apiKey: "YOUR_API_KEY",
+    apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
     authDomain: "chanci-app.firebaseapp.com",
     databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
     projectId: "chanci-app",
