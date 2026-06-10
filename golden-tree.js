@@ -1,114 +1,185 @@
 let selectedBet = 300;
 
-let spinBtn;
-let resultDiv;
-let canvas;
-let ctx;
+const COLS = 5;
+const ROWS = 4;
 
-// ننتظر تحميل الصفحة بالكامل (مهم جداً للموبايل)
-window.addEventListener("load", () => {
+let canvas, ctx;
 
-    spinBtn = document.getElementById("spin");
-    resultDiv = document.getElementById("result");
-    canvas = document.getElementById("gameCanvas");
+let spinning = false;
 
-    if (!spinBtn || !resultDiv || !canvas) {
-        console.log("❌ عناصر اللعبة غير جاهزة");
-        return;
-    }
+let images = {};
+let grid = [];
 
-    ctx = canvas.getContext("2d");
+// ===== الرموز =====
+const SYMBOLS = [
+  { name: "tree", img: "images/IMG_٢٠٢٦٠٦١٠_٢٢٥٨٢٢.jpg", rarity: 0.05, reward: 50 },
+  { name: "grape", img: "images/IMG_٢٠٢٦٠٦١٠_٢٢٥٩٤٣.jpg", rarity: 0.15, reward: 5 },
+  { name: "orange", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٠١١.jpg", rarity: 0.15, reward: 5 },
+  { name: "peach", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠١٢٩.jpg", rarity: 0.15, reward: 5 },
+  { name: "seven", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٢٢٠.jpg", rarity: 0.07, reward: 100 },
+  { name: "cherry", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٥٠١.jpg", rarity: 0.15, reward: 5 },
+  { name: "bell", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٥٣٨.jpg", rarity: 0.10, reward: 20 },
+  { name: "gum", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٦٣٠.jpg", rarity: 0.13, reward: 3 },
+  { name: "dollar", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٧٥٦.jpg", rarity: 0.05, reward: 10 }
+];
 
-    // الأزرار
-    const betButtons = document.querySelectorAll(".bet-buttons button");
+// ===== تحميل الصور =====
+function loadImages(callback) {
+  let loaded = 0;
 
-    betButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-
-            let value = btn.innerText;
-
-            if (value.includes("K")) {
-                selectedBet = parseFloat(value) * 1000;
-            } else if (value.includes("M")) {
-                selectedBet = parseFloat(value) * 1000000;
-            } else {
-                selectedBet = Number(value);
-            }
-
-            resultDiv.innerText = "تم اختيار الرهان: " + selectedBet;
-        });
-    });
-
-    spinBtn.addEventListener("click", spinGame);
-
-    initGame();
-});
-
-// رسم بسيط
-function initGame() {
-    ctx.fillStyle = "#111";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "gold";
-    ctx.font = "24px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("🌳 Golden Tree جاهزة", canvas.width/2, 50);
+  SYMBOLS.forEach(s => {
+    const img = new Image();
+    img.src = s.img;
+    img.onload = () => {
+      loaded++;
+      if (loaded === SYMBOLS.length) callback();
+    };
+    images[s.name] = img;
+  });
 }
 
-// لعبة SPIN
-async function spinGame() {
+// ===== اختيار عشوائي حسب الندرة =====
+function getRandomSymbol(col, row) {
 
-    const userRef = window.userRef;
-
-    if (!userRef) {
-        resultDiv.innerText = "❌ خطأ: userRef غير موجود";
-        return;
+  // منع الشجرة في أول وآخر صف
+  let pool = SYMBOLS.filter(s => {
+    if (s.name === "tree" && (row === 0 || row === ROWS - 1)) {
+      return false;
     }
+    return true;
+  });
 
-    let snap = await userRef.once("value");
-    let user = snap.val();
+  let total = pool.reduce((a, b) => a + b.rarity, 0);
+  let rand = Math.random() * total;
 
-    if (!user) {
-        resultDiv.innerText = "❌ لا يوجد مستخدم";
-        return;
+  let sum = 0;
+  for (let s of pool) {
+    sum += s.rarity;
+    if (rand <= sum) return s;
+  }
+
+  return pool[0];
+}
+
+// ===== إنشاء الشبكة =====
+function generateGrid() {
+  grid = [];
+
+  for (let c = 0; c < COLS; c++) {
+    let col = [];
+    for (let r = 0; r < ROWS; r++) {
+      col.push(getRandomSymbol(c, r));
     }
+    grid.push(col);
+  }
+}
 
-    let balance = user.balance || 0;
+// ===== الرسم =====
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (balance < selectedBet) {
-        resultDiv.innerText = "❌ رصيدك غير كافي!";
-        return;
+  const size = 90;
+
+  for (let c = 0; c < COLS; c++) {
+    for (let r = 0; r < ROWS; r++) {
+
+      let symbol = grid[c][r];
+
+      let x = c * size + 50;
+      let y = r * size + 30;
+
+      ctx.drawImage(images[symbol.name], x, y, 70, 70);
     }
+  }
+}
 
-    // خصم الرهان
-    balance -= selectedBet;
+// ===== حساب الفوز =====
+function calculateWin() {
+  let totalWin = 0;
 
-    // نظام الفوز
-    const win = Math.random() > 0.5;
-    let winAmount = win ? selectedBet * (1 + Math.random() * 2) : 0;
+  let counts = {};
 
-    balance += winAmount;
+  for (let col of grid) {
+    for (let s of col) {
+      counts[s.name] = (counts[s.name] || 0) + 1;
+    }
+  }
+
+  for (let key in counts) {
+    if (counts[key] >= 3) {
+
+      let symbol = SYMBOLS.find(s => s.name === key);
+
+      let win = symbol.reward * selectedBet;
+
+      // الدولار x10
+      if (key === "dollar") {
+        win *= 10;
+      }
+
+      // السبعة x50
+      if (key === "seven") {
+        win *= 50;
+      }
+
+      totalWin += win;
+    }
+  }
+
+  return totalWin;
+}
+
+// ===== SPIN =====
+async function spin() {
+
+  if (spinning) return;
+  spinning = true;
+
+  const userRef = window.userRef;
+
+  if (!userRef) return;
+
+  let snap = await userRef.once("value");
+  let user = snap.val();
+
+  if (!user || user.balance < selectedBet) {
+    spinning = false;
+    return;
+  }
+
+  let balance = user.balance - selectedBet;
+
+  generateGrid();
+  draw();
+
+  setTimeout(async () => {
+
+    let win = calculateWin();
+
+    balance += win;
 
     await userRef.update({
-        balance: balance,
-        earnings: (user.earnings || 0) + winAmount,
-        points: (user.points || 0) + 10,
-        wins: (user.wins || 0) + (win ? 1 : 0)
+      balance: balance,
+      earnings: (user.earnings || 0) + win,
+      wins: (user.wins || 0) + (win > 0 ? 1 : 0)
     });
 
-    resultDiv.innerText = win
-        ? "🎉 فزت " + Math.floor(winAmount)
-        : "😢 خسرت";
+    spinning = false;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#111";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "gold";
-    ctx.font = "24px Arial";
-    ctx.fillText(
-        win ? "🎉 WIN!" : "💔 LOSE",
-        canvas.width/2,
-        120
-    );
+  }, 1200);
 }
+
+// ===== تشغيل =====
+window.addEventListener("load", () => {
+
+  canvas = document.getElementById("gameCanvas");
+  ctx = canvas.getContext("2d");
+
+  loadImages(() => {
+    generateGrid();
+    draw();
+  });
+
+  document.getElementById("spin").addEventListener("click", spin);
+
+});
