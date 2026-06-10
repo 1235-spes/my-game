@@ -1,4 +1,4 @@
-// ===== WALLET.JS =====
+// ===== WALLET.JS READ-ONLY =====
 
 // ===== USER =====
 const currentUser = localStorage.getItem("currentUser");
@@ -24,7 +24,6 @@ const userRef = db.ref("users/" + currentUser);
 const balanceEl = document.getElementById("balance");
 const earningsEl = document.getElementById("earnings");
 const pointsEl = document.getElementById("points");
-const statusEl = document.getElementById("status");
 
 userRef.on("value", snapshot => {
     const user = snapshot.val();
@@ -34,71 +33,6 @@ userRef.on("value", snapshot => {
     earningsEl.innerText = user.earnings || 0;
     pointsEl.innerText = user.points || 0;
 });
-
-// ===== ADD BALANCE =====
-function addBalance() {
-    const amountInput = document.getElementById("add-amount");
-    let amount = Number(amountInput.value || 0);
-
-    if (amount <= 0) {
-        statusEl.innerText = "❌ أدخل مبلغًا صالحًا للإضافة";
-        return;
-    }
-
-    userRef.get().then(snapshot => {
-        const user = snapshot.val();
-        const newBalance = (user.balance || 0) + amount;
-
-        userRef.update({ balance: newBalance });
-
-        // تسجيل العملية
-        db.ref("users/" + currentUser + "/transactions").push({
-            type: "إضافة رصيد",
-            amount: amount,
-            status: "مكتمل",
-            date: new Date().toLocaleString("ar")
-        });
-
-        amountInput.value = "";
-        statusEl.innerText = `✅ تمت إضافة ${amount} بنجاح`;
-    });
-}
-
-// ===== WITHDRAW BALANCE =====
-function withdrawBalance() {
-    const amountInput = document.getElementById("withdraw-amount");
-    let amount = Number(amountInput.value || 0);
-
-    if (amount <= 0) {
-        statusEl.innerText = "❌ أدخل مبلغًا صالحًا للسحب";
-        return;
-    }
-
-    userRef.get().then(snapshot => {
-        const user = snapshot.val();
-        const currentBalance = user.balance || 0;
-
-        if (amount > currentBalance) {
-            statusEl.innerText = "❌ لا يمكنك سحب أكثر من رصيدك الحالي";
-            return;
-        }
-
-        const newBalance = currentBalance - amount;
-
-        userRef.update({ balance: newBalance });
-
-        // تسجيل العملية
-        db.ref("users/" + currentUser + "/transactions").push({
-            type: "سحب رصيد",
-            amount: amount,
-            status: "مكتمل",
-            date: new Date().toLocaleString("ar")
-        });
-
-        amountInput.value = "";
-        statusEl.innerText = `✅ تم سحب ${amount} بنجاح`;
-    });
-}
 
 // ===== LOGOUT =====
 function logout() {
