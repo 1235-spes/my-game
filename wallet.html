@@ -5,11 +5,60 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chanci | المحفظة</title>
 <link rel="stylesheet" href="dashboard.css">
+
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<style>
+/* ===== WALLET SPECIFIC ===== */
+.wallet-hero{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.wallet-hero h1{
+    font-size:36px;
+    color:#FFD700;
+    text-shadow:0 0 10px rgba(255,215,0,.6);
+}
+
+.wallet-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:20px;
+}
+
+.wallet-card{
+    background: linear-gradient(135deg,#111,#1a1a1a);
+    border:1px solid rgba(255,215,0,0.2);
+    border-radius:20px;
+    padding:25px;
+    text-align:center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.wallet-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 20px rgba(255,215,0,0.25);
+}
+
+.wallet-card h2{
+    font-size:18px;
+    color:#ccc;
+    margin-bottom:12px;
+}
+
+.wallet-card p{
+    font-size:28px;
+    font-weight:bold;
+    color:#FFD700;
+}
+</style>
 </head>
 <body>
-    <!-- SIDEBAR -->
+
+<!-- SIDEBAR -->
 <div class="sidebar">
 
     <div class="profile">
@@ -29,11 +78,12 @@
     <div class="menu-item" onclick="location.href='settings.html'">الإعدادات</div>
 
 </div>
+
 <div class="main">
 
     <!-- TOP BAR -->
     <div class="top-bar">
-        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <button class="menu-btn">☰</button>
     </div>
 
     <!-- WALLET HERO -->
@@ -63,8 +113,6 @@
 
 </div>
 
-
 <script src="wallet.js"></script>
 </body>
 </html>
-
