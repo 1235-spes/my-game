@@ -302,12 +302,6 @@ align-items:center;
     position: relative;
 }
 
-.hero-logo {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .hero-logo img {
     width: 100%;
@@ -370,31 +364,6 @@ grid-template-columns:repeat(2,1fr);
 gap:15px;
 }
 
-.game-card{
-background:#111;
-border:1px solid rgba(255,215,0,.15);
-border-radius:20px;
-padding:25px 15px;
-text-align:center;
-cursor:pointer;
-transition:.25s;
-}
-
-.game-card:hover{
-transform:translateY(-5px);
-box-shadow:0 0 20px rgba(255,215,0,.25);
-}
-
-.game-icon{
-font-size:42px;
-margin-bottom:10px;
-}
-
-.game-name{
-font-size:16px;
-font-weight:bold;
-color:#FFD700;
-}
 .game-card{
 position:relative;
 overflow:hidden;
@@ -532,15 +501,6 @@ height:180px;
     background: linear-gradient(135deg, #000, #111);
     border-radius: 15px;
     margin-bottom: 20px;
-}
-
-.menu-btn {
-    font-size: 22px;
-    padding: 10px;
-    border-radius: 10px;
-    background: #FFD700;
-    border: none;
-    cursor: pointer;
 }
 
 .header-balance-card {
