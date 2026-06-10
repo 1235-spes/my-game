@@ -11,49 +11,60 @@ if (!currentUser) {
 document.getElementById("username").innerText = currentUser;
 
 // ===== FIREBASE =====
-firebase.initializeApp({
-    apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
-    authDomain: "chanci-app.firebaseapp.com",
-    databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
-    projectId: "chanci-app",
-    storageBucket: "chanci-app.firebasestorage.app",
-    messagingSenderId: "18416485348",
-    appId: "1:18416485348:web:918a393569acb47a7b3df1"
-});
+if (!firebase.apps.length) {
+    firebase.initializeApp({
+        apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
+        authDomain: "chanci-app.firebaseapp.com",
+        databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+        projectId: "chanci-app",
+        storageBucket: "chanci-app.firebasestorage.app",
+        messagingSenderId: "18416485348",
+        appId: "1:18416485348:web:918a393569acb47a7b3df1"
+    });
+}
 
 const db = firebase.database();
 const userRef = db.ref("users/" + currentUser);
-window.userRef = db.ref("users/" + currentUser);
+window.userRef = userRef;
+
 // ===== UPDATE DASHBOARD DATA =====
+const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.innerText = value;
+};
+
 userRef.on("value", snapshot => {
     const user = snapshot.val();
     if (!user) return;
-document.getElementById("top-balance").innerText =
-user.balance || 0;
-    document.getElementById("balance").innerText = user.balance || 0;
-   document.getElementById("hero-balance").innerText =
-user.balance || 0;
-    document.getElementById("hero-earnings").innerText =
-user.earnings || 0;
-    document.getElementById("earnings").innerText = user.earnings || 0;
-    document.getElementById("points").innerText = user.points || 0;
-    document.getElementById("wins").innerText = user.wins || 0;
+
+    setText("top-balance", user.balance || 0);
+    setText("balance", user.balance || 0);
+    setText("hero-balance", user.balance || 0);
+    setText("hero-earnings", user.earnings || 0);
+    setText("earnings", user.earnings || 0);
+    setText("points", user.points || 0);
+    setText("wins", user.wins || 0);
 });
 
 // ===== GAME SECTION =====
 function openGame() {
-    document.querySelector(".hero").style.display = "none";
-    document.querySelector(".cards").style.display = "none";
+    document.querySelector(".hero")?.style.setProperty("display", "none");
+    document.querySelector(".cards")?.style.setProperty("display", "none");
 
     const game = document.getElementById("game-section");
-    game.style.display = "block";
+    if (game) game.style.display = "block";
 
     setTimeout(() => {
-        if (window.initGame) initGame();
+        if (window.initGame) window.initGame();
     }, 200);
 }
 
+// ===== LOGOUT & PROFILE =====
 function logout() {
     localStorage.removeItem("currentUser");
     window.location.href = "index.html";
+}
+
+function toggleProfile() {
+    document.getElementById("profilePanel").classList.toggle("open");
 }
