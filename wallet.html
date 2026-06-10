@@ -1,13 +1,60 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>الألعاب</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chanci | المحفظة</title>
+<link rel="stylesheet" href="dashboard.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
-<h1>صفحة الألعاب</h1>
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="profile">
+        <img class="avatar" src="https://i.imgur.com/5cLDe6X.png" />
+        <div class="username" id="username">...</div>
+        <div class="member">عضو ذهبي</div>
+        <div class="menu-item logout" onclick="logout()">تسجيل خروج</div>
+    </div>
 
+    <div class="menu-item" onclick="location.href='dashboard.html'">الرئيسية</div>
+    <div class="menu-item active">المحفظة</div>
+    <div class="menu-item" onclick="location.href='games.html'">الألعاب</div>
+    <div class="menu-item" onclick="location.href='withdraw.html'">السحوبات</div>
+    <div class="menu-item" onclick="location.href='settings.html'">الإعدادات</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="top-bar">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    </div>
+
+    <h2>💰 محفظتي</h2>
+
+    <div class="wallet-container">
+        <p>الرصيد الحالي: <span id="balance">0</span></p>
+        <p>الأرباح: <span id="earnings">0</span></p>
+        <p>النقاط: <span id="points">0</span></p>
+
+        <div>
+            <input type="number" id="addAmount" placeholder="أدخل المبلغ">
+            <button onclick="addBalance()">إضافة رصيد</button>
+        </div>
+
+        <div>
+            <input type="number" id="removeAmount" placeholder="أدخل المبلغ">
+            <button onclick="removeBalance()">سحب رصيد</button>
+        </div>
+
+        <div id="walletStatus"></div>
+    </div>
+
+</div>
+
+<script src="wallet.js"></script>
 </body>
-</html>
+</html><script src="wallet.js"></script>
