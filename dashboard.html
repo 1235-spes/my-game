@@ -36,19 +36,46 @@ onclick="location.href='withdraw.html'">
 <div class="menu-item"
 onclick="location.href='settings.html'">
 الإعدادات
-</div>  </div>  <!-- MAIN -->  <div class="main"> <!-- APP HEADER -->
+</div>  </div>  <!-- MAIN -->  <div class="main"> 
+  <!-- APP HEADER -->
 <div class="app-header">
-
+    <!-- زر القائمة -->
     <button class="menu-btn" onclick="toggleSidebar()">☰</button>
 
-    <div class="header-balance">
-        NSP 💰 <span id="top-balance">0</span>
+    <!-- بطاقة الرصيد -->
+    <div class="header-balance-card">
+        <img src="images/IMG_٢٠٢٦٠٦١٠_٠٠٣٧٢١.png" alt="Chanci Logo" class="header-logo">
+        <div class="balance-info">
+            <div class="balance-label">الرصيد</div>
+            <div class="balance-value" id="top-balance">0 NSP</div>
+        </div>
+    </div>
+  <div class="quick-menu">
+
+    <div class="quick-item" onclick="location.href='wallet.html'">
+        <img src="images/IMG_٢٠٢٦٠٦١٠_٠٠٤١٢٩.png">
+        <span>المحفظة</span>
     </div>
 
+    <div class="quick-item" onclick="location.href='games.html'">
+        <img src="images/IMG_٢٠٢٦٠٦١٠_٠٠٤٢٢٣.png">
+        <span>الألعاب</span>
+    </div>
+
+    <div class="quick-item">
+        <img src="images/IMG_٢٠٢٦٠٦١١_٠١٠٢١٦.png">
+        <span>القسائم</span>
+    </div>
+
+  </div>
+    <!-- أيقونة الإشعارات -->
+    <button class="notification-btn">🔔</button>
+
+    <!-- صورة المستخدم -->
     <div class="profile-btn" onclick="toggleProfile()">
-        👤
+        <img src="https://i.imgur.com/5cLDe6X.png" alt="User Avatar" class="avatar-small">
+        <span id="username">...</span>
     </div>
-
 </div>
   <!-- PROFILE PANEL -->
 <div class="profile-panel" id="profilePanel">
@@ -92,29 +119,31 @@ onclick="location.href='settings.html'">
 
 <h2 class="section-title">
 🎮 الألعاب المميزة
-</h2>
-<div class="games-grid">
+</h2><div class="games-grid">
 
 <div class="game-card" onclick="openGame()">
     <img class="game-image" src="images/IMG_٢٠٢٦٠٦١٠_٠٠٣٩٢٤.jpg">
     <div class="game-name">Golden Tree</div>
 </div>
+
 <div class="game-card">
-    <img class="game-image" src="images/IMG_٢٠٢٦٠٦١٠_٠٠٣٩٢٤.jpg">
+    <img class="game-image" src="images/IMG_٢٠٢٦٠٦١٠_١٦٣٥٣٢.png">
     <div class="game-name">Coin Flip</div>
 </div>
 
 <div class="game-card">
-    <img class="game-image" src="images/IMG_٢٠٢٦٠٦١٠_٠٠٤١٢٩.png">
+    <img class="game-image" src="images/IMG_٢٠٢٦٠٦١٠_١٦٣٧٥٩.png">
     <div class="game-name">Fortune Wheel</div>
 </div>
 
 <div class="game-card">
-    <img class="game-image" src="images/IMG_٢٠٢٦٠٦١٠_٠٠٤٢٢٣.png">
-    <div class="game-name">Treasure Box</div>
+    <img class="game-image" src="images/IMG_٢٠٢٦٠٦١٠_١٦٣٩٢١.png">
+    <div class="game-name">Treasure Hunt</div>
 </div>
+
 </div>
-  </div>
+
+  
 
 
 </div> 
