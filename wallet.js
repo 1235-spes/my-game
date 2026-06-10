@@ -1,12 +1,10 @@
-// ===== SIDEBAR & USER =====
-function toggleSidebar() {
-    document.querySelector(".sidebar").classList.toggle("open");
-}
+// ===== WALLET.JS =====
 
+// ===== USER =====
 const currentUser = localStorage.getItem("currentUser");
-if (!currentUser) window.location.href = "index.html";
-
-document.getElementById("username").innerText = currentUser;
+if (!currentUser) {
+    window.location.href = "index.html";
+}
 
 // ===== FIREBASE =====
 firebase.initializeApp({
@@ -22,23 +20,28 @@ firebase.initializeApp({
 const db = firebase.database();
 const userRef = db.ref("users/" + currentUser);
 
-// ===== LOAD WALLET DATA =====
+// ===== DISPLAY USER INFO =====
+const balanceEl = document.getElementById("balance");
+const earningsEl = document.getElementById("earnings");
+const pointsEl = document.getElementById("points");
+const statusEl = document.getElementById("status");
+
 userRef.on("value", snapshot => {
     const user = snapshot.val();
     if (!user) return;
 
-    document.getElementById("balance").innerText = user.balance || 0;
-    document.getElementById("earnings").innerText = user.earnings || 0;
-    document.getElementById("points").innerText = user.points || 0;
+    balanceEl.innerText = user.balance || 0;
+    earningsEl.innerText = user.earnings || 0;
+    pointsEl.innerText = user.points || 0;
 });
 
-// ===== ADD / REMOVE BALANCE =====
+// ===== ADD BALANCE =====
 function addBalance() {
-    const amount = Number(document.getElementById("addAmount").value);
-    const status = document.getElementById("walletStatus");
+    const amountInput = document.getElementById("add-amount");
+    let amount = Number(amountInput.value || 0);
 
     if (amount <= 0) {
-        status.innerText = "أدخل مبلغ صحيح";
+        statusEl.innerText = "❌ أدخل مبلغًا صالحًا للإضافة";
         return;
     }
 
@@ -46,34 +49,54 @@ function addBalance() {
         const user = snapshot.val();
         const newBalance = (user.balance || 0) + amount;
 
-        userRef.update({ balance: newBalance }).then(() => {
-            status.innerText = "تم إضافة الرصيد بنجاح";
-            document.getElementById("addAmount").value = "";
+        userRef.update({ balance: newBalance });
+
+        // تسجيل العملية
+        db.ref("users/" + currentUser + "/transactions").push({
+            type: "إضافة رصيد",
+            amount: amount,
+            status: "مكتمل",
+            date: new Date().toLocaleString("ar")
         });
+
+        amountInput.value = "";
+        statusEl.innerText = `✅ تمت إضافة ${amount} بنجاح`;
     });
 }
 
-function removeBalance() {
-    const amount = Number(document.getElementById("removeAmount").value);
-    const status = document.getElementById("walletStatus");
+// ===== WITHDRAW BALANCE =====
+function withdrawBalance() {
+    const amountInput = document.getElementById("withdraw-amount");
+    let amount = Number(amountInput.value || 0);
 
     if (amount <= 0) {
-        status.innerText = "أدخل مبلغ صحيح";
+        statusEl.innerText = "❌ أدخل مبلغًا صالحًا للسحب";
         return;
     }
 
     userRef.get().then(snapshot => {
         const user = snapshot.val();
-        if ((user.balance || 0) < amount) {
-            status.innerText = "الرصيد غير كافي";
+        const currentBalance = user.balance || 0;
+
+        if (amount > currentBalance) {
+            statusEl.innerText = "❌ لا يمكنك سحب أكثر من رصيدك الحالي";
             return;
         }
 
-        const newBalance = (user.balance || 0) - amount;
-        userRef.update({ balance: newBalance }).then(() => {
-            status.innerText = "تم خصم الرصيد بنجاح";
-            document.getElementById("removeAmount").value = "";
+        const newBalance = currentBalance - amount;
+
+        userRef.update({ balance: newBalance });
+
+        // تسجيل العملية
+        db.ref("users/" + currentUser + "/transactions").push({
+            type: "سحب رصيد",
+            amount: amount,
+            status: "مكتمل",
+            date: new Date().toLocaleString("ar")
         });
+
+        amountInput.value = "";
+        statusEl.innerText = `✅ تم سحب ${amount} بنجاح`;
     });
 }
 
