@@ -38,7 +38,20 @@ const reels = [
   document.getElementById("reel4"),
   document.getElementById("reel5")
 ];
+// تعبئة البكرات لأول مرة عند فتح اللعبة
+function initializeReels() {
+  reels.forEach(reel => {
+    reel.innerHTML = "";
+    for (let i = 0; i < 3; i++) {
+      const img = document.createElement("img");
+      img.src = "../images/" + SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.appendChild(img);
+    }
+  });
+}
 
+// استدعاء الدالة
+initializeReels();
 // اختيار الرهان
 document.querySelectorAll(".bet-buttons button").forEach(btn=>{
   btn.addEventListener("click", ()=>{
@@ -57,19 +70,30 @@ document.getElementById("spin").onclick = () => {
   spin();
 };
 
-function spin(){
+function spin() {
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
-  
-  // لكل بكرة نملأها 3 رموز عشوائية
-  reels.forEach(reel=>{
-    reel.innerHTML = "";
-    for(let i=0;i<3;i++){
-      const img = document.createElement("img");
-      img.src = "../images/" + SYMBOLS[Math.floor(Math.random()*SYMBOLS.length)];
-      reel.appendChild(img);
-    }
+
+  reels.forEach((reel, index) => {
+    reel.classList.add("spinning");
+
+    setTimeout(() => {
+      reel.innerHTML = "";
+      for (let i = 0; i < 3; i++) {
+        const img = document.createElement("img");
+        img.src = "../images/" + SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+        reel.appendChild(img);
+      }
+
+      reel.classList.remove("spinning");
+
+      // بعد توقف آخر بكرة، تحقق من الفوز
+      if (index === reels.length - 1) {
+        checkWin();
+      }
+    }, 500 + (index * 300)); // كل بكرة تتأخر قليلاً عن الأخرى
   });
+}
 
   // تحقق من الفوز (مثال: كل الرموز في الصف الأول متساوية)
   checkWin();
