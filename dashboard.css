@@ -362,6 +362,7 @@ font-size:22px;
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:15px;
+margin-bottom:25px;
 }
 
 .game-card{
@@ -590,3 +591,21 @@ height:180px;
     color:#FFD700;
     font-weight:bold;
   }
+.promo-banner{
+    margin-top:20px;
+    padding:20px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#FFD700,#ffb700);
+    color:#000;
+    font-weight:bold;
+    box-shadow:0 0 20px rgba(255,215,0,.3);
+}
+
+.promo-title{
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.promo-text{
+    font-size:14px;
+}
