@@ -80,6 +80,10 @@ function drawGrid() {
 
 function spin() {
   if (spinning) return;
+  if (balance < selectedBet) {
+    alert("رصيدك غير كافٍ!");
+    return;
+  }
   spinning = true;
   let spins = 20;
   let interval = setInterval(() => {
