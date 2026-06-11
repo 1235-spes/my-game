@@ -109,7 +109,7 @@ document.getElementById("balance").innerText = balance;
 // تحديث الرصيد في Firebase
 firebase.database().ref("users/" + currentUser).update({ balance })
   .catch(err => console.error(err));
-
+}
 document.getElementById("spinBtn").addEventListener("click", spin);
 
 loadImages(() => {
