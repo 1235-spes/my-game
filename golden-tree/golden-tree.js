@@ -9,7 +9,8 @@ let spinning = false;
 
 let images = {};
 let grid = [];
-
+let balanceBox;
+let resultBox;
 // ===== الرموز =====
 const SYMBOLS = [
   { name: "tree", img: "images/IMG_٢٠٢٦٠٦١٠_٢٢٥٨٢٢.jpg", rarity: 0.05, reward: 50 },
@@ -128,7 +129,11 @@ function calculateWin() {
 
   return totalWin;
 }
-
+function updateBalanceUI(balance) {
+  if (balanceBox) {
+    balanceBox.innerText = "الرصيد: " + balance;
+  }
+}
 // ===== SPIN =====
 async function spin() {
 
@@ -147,7 +152,9 @@ async function spin() {
     return;
   }
 
-  let balance = user.balance - selectedBet;
+ let balance = user.balance - selectedBet;
+
+updateBalanceUI(balance); 
 
   generateGrid();
   draw();
