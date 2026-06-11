@@ -1,6 +1,26 @@
 let selectedBet = 300;
-let balance = 1000;
+let balance = 0; // سيتم جلبه من Firebase
 
+const currentUser = localStorage.getItem("currentUser");
+if (!currentUser) {
+  alert("يرجى تسجيل الدخول أولاً!");
+  window.location.href = "../index.html"; // أو صفحة تسجيل الدخول
+}
+
+// جلب الرصيد من Firebase
+firebase.database().ref("users/" + currentUser + "/balance").get()
+  .then(snapshot => {
+    if(snapshot.exists()){
+      balance = snapshot.val();
+      document.getElementById("balance").innerText = balance;
+    } else {
+      // إذا لم يكن لدى المستخدم رصيد، أنشئ رصيد ابتدائي
+      balance = 1000;
+      firebase.database().ref("users/" + currentUser).update({ balance });
+      document.getElementById("balance").innerText = balance;
+    }
+  })
+  .catch(err => console.error(err));
 const COLS = 5;
 const ROWS = 4;
 
@@ -77,13 +97,18 @@ function spin() {
 function checkWin() {
   // مثال بسيط: زيادة الرصيد إذا كانت كل الرموز في الصف الأول متشابهة
   if (new Set(grid[0]).size === 1) {
-    balance += selectedBet * 2;
-    alert("مبروك! فزت!");
-  } else {
-    balance -= selectedBet;
-  }
-  document.getElementById("balance").innerText = balance;
+  balance += selectedBet * 2;
+  alert("مبروك! فزت!");
+} else {
+  balance -= selectedBet;
 }
+
+// تحديث الرصيد في الصفحة
+document.getElementById("balance").innerText = balance;
+
+// تحديث الرصيد في Firebase
+firebase.database().ref("users/" + currentUser).update({ balance })
+  .catch(err => console.error(err));
 
 document.getElementById("spinBtn").addEventListener("click", spin);
 
