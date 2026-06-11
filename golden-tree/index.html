@@ -7,36 +7,36 @@
   <link rel="stylesheet" href="golden-tree.css">
 </head>
 <body>
-  <div class="game-container">
-<div id="game-section">
-<canvas id="gameCanvas"></canvas>
-  <div class="slot-machine">
-    <div class="reel"></div>
-    <div class="reel"></div>
-    <div class="reel"></div>
-    <div class="reel"></div>
-    <div class="reel"></div>
-  </div>
+<div class="game-container">
+  <div id="game-section">
+    <div class="reels">
+      <div class="reel" id="reel1"></div>
+      <div class="reel" id="reel2"></div>
+      <div class="reel" id="reel3"></div>
+      <div class="reel" id="reel4"></div>
+      <div class="reel" id="reel5"></div>
+    </div>
 
-  <div class="bet-buttons">
-    <button>300</button>
-    <button>500</button>
-    <button>1000</button>
-    <button>5000</button>
-    <button>8000</button>
-  </div>
+    <div class="bet-buttons">
+      <button data-bet="300">300</button>
+      <button data-bet="500">500</button>
+      <button data-bet="1000">1000</button>
+      <button data-bet="5000">5000</button>
+      <button data-bet="8000">8000</button>
+    </div>
 
-  <div class="controls">
-    <button id="spin">ابدأ اللعب</button>
-  </div>
+    <div class="controls">
+      <button id="spin">ابدأ اللعب</button>
+    </div>
 
-  <div class="info">
-    الرهان: <span id="bet">300</span>
-    الرصيد: <span id="balance">200</span>
+    <div class="info">
+      الرهان: <span id="bet">300</span>
+      الرصيد: <span id="balance">0</span>
+    </div>
   </div>
-
 </div>
- <!-- Firebase SDK -->
+
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
