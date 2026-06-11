@@ -619,3 +619,37 @@ height:180px;
 
     box-sizing: border-box;
 }
+/* ===== MOBILE FIX ===== */
+@media (max-width: 480px) {
+
+    .hero-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .stat-box {
+        width: 100%;
+    }
+
+    .games-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-menu {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .quick-item {
+        width: 100%;
+    }
+
+    .app-header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .header-balance-card {
+        flex: 1;
+    }
+}
