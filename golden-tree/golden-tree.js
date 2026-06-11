@@ -33,7 +33,7 @@ canvas.height = 400;
 let spinning = false;
 let grid = [];
 
-// استخدام أسماء الصور الموجودة لديك
+// أسماء الصور
 const SYMBOLS = [
   { name: "tree", img: "../images/tree1.jpg" },
   { name: "coin", img: "../images/خوخ.jpg" },
@@ -47,6 +47,7 @@ const SYMBOLS = [
 
 let loadedImages = {};
 
+// تحميل الصور
 function loadImages(callback) {
   let count = 0;
   SYMBOLS.forEach(sym => {
@@ -56,10 +57,12 @@ function loadImages(callback) {
       loadedImages[sym.name] = img;
       count++;
       if (count === SYMBOLS.length) callback();
-    }
+    };
+    img.onerror = () => console.error("فشل تحميل الصورة:", sym.img);
   });
 }
 
+// تهيئة الشبكة
 function initGrid() {
   grid = [];
   for (let r = 0; r < ROWS; r++) {
@@ -71,6 +74,7 @@ function initGrid() {
   }
 }
 
+// رسم الشبكة
 function drawGrid() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   let cellWidth = canvas.width / COLS;
@@ -78,11 +82,12 @@ function drawGrid() {
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
       let sym = grid[r][c];
-      ctx.drawImage(loadedImages[sym], c*cellWidth, r*cellHeight, cellWidth, cellHeight);
+      ctx.drawImage(loadedImages[sym], c * cellWidth, r * cellHeight, cellWidth, cellHeight);
     }
   }
 }
 
+// دوران اللعبة
 function spin() {
   if (spinning) return;
   if (balance < selectedBet) {
@@ -103,8 +108,8 @@ function spin() {
   }, 100);
 }
 
+// التحقق من الفوز
 function checkWin() {
-  // مثال: الفوز إذا كانت كل الرموز في الصف الأول متشابهة
   if (new Set(grid[0]).size === 1) {
     balance += selectedBet * 2;
     alert("مبروك! فزت!");
@@ -112,18 +117,19 @@ function checkWin() {
     balance -= selectedBet;
   }
 
-  // تحديث الرصيد في الصفحة
   document.getElementById("balance").innerText = balance;
 
-  // تحديث الرصيد في Firebase
   firebase.database().ref("users/" + currentUser).update({ balance })
     .catch(err => console.error(err));
-});
+}
+
+// تحميل الصور ثم بدء اللعبة
 loadImages(() => {
   initGrid();
   drawGrid();
 });
 
+// ربط زر الدوران
 document.getElementById("spin").onclick = () => {
   alert("Spin Started 🎰");
   spin();
