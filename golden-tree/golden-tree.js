@@ -1,194 +1,93 @@
 let selectedBet = 300;
+let balance = 1000;
 
 const COLS = 5;
 const ROWS = 4;
 
-let canvas, ctx;
-let spinning = false;
-let images = {};
-let grid = [];
-let balanceBox;
+let canvas = document.getElementById("gameCanvas");
+let ctx = canvas.getContext("2d");
+canvas.width = 500;
+canvas.height = 400;
 
-// ===== الرموز =====
+let spinning = false;
+let grid = [];
+
 const SYMBOLS = [
-  { name: "tree", img: "images/IMG_٢٠٢٦٠٦١٠_٢٢٥٨٢٢.jpg", rarity: 0.05, reward: 50 },
-  { name: "grape", img: "images/IMG_٢٠٢٦٠٦١٠_٢٢٥٩٤٣.jpg", rarity: 0.15, reward: 5 },
-  { name: "orange", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٠١١.jpg", rarity: 0.15, reward: 5 },
-  { name: "peach", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠١٢٩.jpg", rarity: 0.15, reward: 5 },
-  { name: "seven", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٢٢٠.jpg", rarity: 0.07, reward: 100 },
-  { name: "cherry", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٥٠١.jpg", rarity: 0.15, reward: 5 },
-  { name: "bell", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٥٣٨.jpg", rarity: 0.10, reward: 20 },
-  { name: "gum", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٦٣٠.jpg", rarity: 0.13, reward: 3 },
-  { name: "dollar", img: "images/IMG_٢٠٢٦٠٦١٠_٢٣٠٧٥٦.jpg", rarity: 0.05, reward: 10 }
+  { name: "tree", img: "images/tree.png" },
+  { name: "coin", img: "images/coin.png" },
+  { name: "star", img: "images/star.png" },
+  { name: "chest", img: "images/chest.png" },
+  { name: "gold", img: "images/gold.png" }
 ];
 
-// ===== تحميل الصور =====
+let loadedImages = {};
+
 function loadImages(callback) {
-  let loaded = 0;
-  SYMBOLS.forEach(s => {
-    const img = new Image();
-    img.src = s.img;
+  let count = 0;
+  SYMBOLS.forEach(sym => {
+    let img = new Image();
+    img.src = sym.img;
     img.onload = () => {
-      loaded++;
-      if (loaded === SYMBOLS.length) callback();
-    };
-    images[s.name] = img;
+      loadedImages[sym.name] = img;
+      count++;
+      if (count === SYMBOLS.length) callback();
+    }
   });
 }
 
-// ===== اختيار عشوائي حسب الندرة =====
-function getRandomSymbol(col, row) {
-  let pool = SYMBOLS.filter(s => {
-    if (s.name === "tree" && (row === 0 || row === ROWS - 1)) return false;
-    return true;
-  });
-
-  let total = pool.reduce((a, b) => a + b.rarity, 0);
-  let rand = Math.random() * total;
-  let sum = 0;
-
-  for (let s of pool) {
-    sum += s.rarity;
-    if (rand <= sum) return s;
-  }
-
-  return pool[0];
-}
-
-// ===== إنشاء الشبكة =====
-function generateGrid() {
+function initGrid() {
   grid = [];
-  for (let c = 0; c < COLS; c++) {
-    let col = [];
-    for (let r = 0; r < ROWS; r++) {
-      col.push(getRandomSymbol(c, r));
+  for (let r = 0; r < ROWS; r++) {
+    let row = [];
+    for (let c = 0; c < COLS; c++) {
+      row.push(SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)].name);
     }
-    grid.push(col);
+    grid.push(row);
   }
 }
 
-// ===== الرسم =====
-function draw() {
+function drawGrid() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const size = 90;
-  for (let c = 0; c < COLS; c++) {
-    for (let r = 0; r < ROWS; r++) {
-      let symbol = grid[c][r];
-      let x = c * size + 50;
-      let y = r * size + 30;
-      ctx.drawImage(images[symbol.name], x, y, 70, 70);
+  let cellWidth = canvas.width / COLS;
+  let cellHeight = canvas.height / ROWS;
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      let sym = grid[r][c];
+      ctx.drawImage(loadedImages[sym], c*cellWidth, r*cellHeight, cellWidth, cellHeight);
     }
   }
 }
 
-// ===== حساب الفوز =====
-function calculateWin() {
-  let totalWin = 0;
-  let counts = {};
-  for (let col of grid) {
-    for (let s of col) counts[s.name] = (counts[s.name] || 0) + 1;
-  }
-
-  for (let key in counts) {
-    if (counts[key] >= 3) {
-      let symbol = SYMBOLS.find(s => s.name === key);
-      let win = symbol.reward * selectedBet;
-
-      if (key === "dollar") win *= 10;
-      if (key === "seven") win *= 50;
-
-      totalWin += win;
-    }
-  }
-  return totalWin;
-}
-
-// ===== تحديث الرصيد في واجهة المستخدم =====
-function updateBalanceUI(balance) {
-  if (balanceBox) balanceBox.innerText = "الرصيد: " + balance;
-}
-
-// ===== SPIN =====
-async function spin() {
+function spin() {
   if (spinning) return;
   spinning = true;
-
-  const userRef = window.userRef;
-  if (!userRef) return;
-
-  let snap = await userRef.once("value");
-  let user = snap.val();
-
-  if (!user || user.balance < selectedBet) {
-    alert("رصيدك غير كافي!");
-    spinning = false;
-    return;
-  }
-
-  let balance = user.balance - selectedBet;
-  updateBalanceUI(balance);
-
-  generateGrid();
-  draw();
-
-  setTimeout(async () => {
-    let win = calculateWin();
-    balance += win;
-
-    await userRef.update({
-      balance: balance,
-      earnings: (user.earnings || 0) + win,
-      wins: (user.wins || 0) + (win > 0 ? 1 : 0)
-    });
-
-    spinning = false;
-  }, 1200);
+  let spins = 20;
+  let interval = setInterval(() => {
+    initGrid();
+    drawGrid();
+    spins--;
+    if (spins <= 0) {
+      clearInterval(interval);
+      spinning = false;
+      checkWin();
+    }
+  }, 100);
 }
 
-// ===== Firebase Initialization =====
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-const userId = "user_1"; // مؤقت، لاحقًا تسجيل دخول المستخدم
-window.userRef = database.ref("users/" + userId);
-
-// إنشاء المستخدم إذا لم يكن موجودًا
-userRef.once("value").then(snap => {
-  if (!snap.exists()) {
-    userRef.set({
-      balance: 1000,
-      earnings: 0,
-      wins: 0
-    });
+function checkWin() {
+  // مثال بسيط: زيادة الرصيد إذا كانت كل الرموز في الصف الأول متشابهة
+  if (new Set(grid[0]).size === 1) {
+    balance += selectedBet * 2;
+    alert("مبروك! فزت!");
+  } else {
+    balance -= selectedBet;
   }
-});
+  document.getElementById("balance").innerText = balance;
+}
 
-// تحديث الرصيد مباشرة عند التغير في Firebase
-userRef.on("value", snap => {
-  const user = snap.val();
-  if (user) updateBalanceUI(user.balance);
-});
+document.getElementById("spinBtn").addEventListener("click", spin);
 
-// ===== تشغيل =====
-window.addEventListener("load", () => {
-  canvas = document.getElementById("gameCanvas");
-  ctx = canvas.getContext("2d");
-
-  balanceBox = document.getElementById("balance"); // عنصر عرض الرصيد
-
-  loadImages(() => {
-    generateGrid();
-    draw();
-  });
-
-  document.getElementById("spin").addEventListener("click", spin);
+loadImages(() => {
+  initGrid();
+  drawGrid();
 });
