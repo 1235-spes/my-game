@@ -1,136 +1,86 @@
 let selectedBet = 300;
-let balance = 0; // سيتم جلبه من Firebase
+let balance = 0;
 
 const currentUser = localStorage.getItem("currentUser");
 if (!currentUser) {
   alert("يرجى تسجيل الدخول أولاً!");
-  window.location.href = "../index.html"; // أو صفحة تسجيل الدخول
+  window.location.href = "../index.html";
 }
 
 // جلب الرصيد من Firebase
 firebase.database().ref("users/" + currentUser + "/balance").get()
   .then(snapshot => {
-    if(snapshot.exists()){
-      balance = snapshot.val();
-      document.getElementById("balance").innerText = balance;
-    } else {
-      // إذا لم يكن لدى المستخدم رصيد، أنشئ رصيد ابتدائي
-      balance = 1000;
+    balance = snapshot.exists() ? snapshot.val() : 1000;
+    if(!snapshot.exists()){
       firebase.database().ref("users/" + currentUser).update({ balance });
-      document.getElementById("balance").innerText = balance;
     }
+    document.getElementById("balance").innerText = balance;
   })
   .catch(err => console.error(err));
 
-const COLS = 5;
-const ROWS = 4;
-
-let canvas = document.getElementById("gameCanvas");
-let ctx = canvas.getContext("2d");
-canvas.width = 500;
-canvas.height = 400;
-
-let spinning = false;
-let grid = [];
-
-// أسماء الصور
+// الرموز
 const SYMBOLS = [
-  { name: "tree", img: "../images/tree1.jpg" },
-  { name: "coin", img: "../images/خوخ.jpg" },
-  { name: "star", img: "../images/كرز.jpg" },
-  { name: "chest", img: "../images/جرس.jpg" },
-  { name: "gold", img: "../images/اخضر.jpg" },
-  { name: "orange", img: "../images/ornj.jpg" },
-  { name: "anb", img: "../images/Anb.jpg" },
-  { name: "777", img: "../images/777.jpg" }
+  "tree1.jpg",
+  "خوخ.jpg",
+  "كرز.jpg",
+  "جرس.jpg",
+  "اخضر.jpg",
+  "ornj.jpg",
+  "Anb.jpg",
+  "777.jpg"
 ];
 
-let loadedImages = {};
+// البكرات
+const reels = [
+  document.getElementById("reel1"),
+  document.getElementById("reel2"),
+  document.getElementById("reel3"),
+  document.getElementById("reel4"),
+  document.getElementById("reel5")
+];
 
-// تحميل الصور
-function loadImages(callback) {
-  let count = 0;
-  SYMBOLS.forEach(sym => {
-    let img = new Image();
-    img.src = sym.img;
-    img.onload = () => {
-      loadedImages[sym.name] = img;
-      count++;
-      if (count === SYMBOLS.length) callback();
-    };
-    img.onerror = () => console.error("فشل تحميل الصورة:", sym.img);
+// اختيار الرهان
+document.querySelectorAll(".bet-buttons button").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    selectedBet = parseInt(btn.dataset.bet);
+    document.getElementById("bet").innerText = selectedBet;
   });
-}
+});
 
-// تهيئة الشبكة
-function initGrid() {
-  grid = [];
-  for (let r = 0; r < ROWS; r++) {
-    let row = [];
-    for (let c = 0; c < COLS; c++) {
-      row.push(SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)].name);
-    }
-    grid.push(row);
-  }
-}
-
-// رسم الشبكة
-function drawGrid() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  let cellWidth = canvas.width / COLS;
-  let cellHeight = canvas.height / ROWS;
-  for (let r = 0; r < ROWS; r++) {
-    for (let c = 0; c < COLS; c++) {
-      let sym = grid[r][c];
-      ctx.drawImage(loadedImages[sym], c * cellWidth, r * cellHeight, cellWidth, cellHeight);
-    }
-  }
-}
-
-// دوران اللعبة
-function spin() {
-  if (spinning) return;
-  if (balance < selectedBet) {
+// دوران البكرات
+document.getElementById("spin").onclick = () => {
+  if(balance < selectedBet){
     alert("رصيدك غير كافٍ!");
     return;
   }
-  spinning = true;
-  let spins = 20;
-  let interval = setInterval(() => {
-    initGrid();
-    drawGrid();
-    spins--;
-    if (spins <= 0) {
-      clearInterval(interval);
-      spinning = false;
-      checkWin();
-    }
-  }, 100);
-}
-
-// التحقق من الفوز
-function checkWin() {
-  if (new Set(grid[0]).size === 1) {
-    balance += selectedBet * 2;
-    alert("مبروك! فزت!");
-  } else {
-    balance -= selectedBet;
-  }
-
-  document.getElementById("balance").innerText = balance;
-
-  firebase.database().ref("users/" + currentUser).update({ balance })
-    .catch(err => console.error(err));
-}
-
-// تحميل الصور ثم بدء اللعبة
-loadImages(() => {
-  initGrid();
-  drawGrid();
-});
-
-// ربط زر الدوران
-document.getElementById("spin").onclick = () => {
   alert("Spin Started 🎰");
   spin();
 };
+
+function spin(){
+  balance -= selectedBet;
+  document.getElementById("balance").innerText = balance;
+  
+  // لكل بكرة نملأها 3 رموز عشوائية
+  reels.forEach(reel=>{
+    reel.innerHTML = "";
+    for(let i=0;i<3;i++){
+      const img = document.createElement("img");
+      img.src = "../images/" + SYMBOLS[Math.floor(Math.random()*SYMBOLS.length)];
+      reel.appendChild(img);
+    }
+  });
+
+  // تحقق من الفوز (مثال: كل الرموز في الصف الأول متساوية)
+  checkWin();
+}
+
+function checkWin(){
+  const firstRow = reels.map(r=>r.children[0].src);
+  if(new Set(firstRow).size === 1){
+    balance += selectedBet*2;
+    alert("مبروك! فزت!");
+  }
+  document.getElementById("balance").innerText = balance;
+  firebase.database().ref("users/" + currentUser).update({ balance });
+}
