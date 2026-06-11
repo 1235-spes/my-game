@@ -43,3 +43,59 @@ button {
 button:active {
   transform: scale(0.95);
 }
+/* ===== GOLDEN TREE SLOT ===== */
+
+.slot-machine{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin:20px auto;
+  background:#111;
+  padding:15px;
+  border-radius:20px;
+  border:2px solid gold;
+}
+
+.reel{
+  width:60px;
+  height:160px;
+  background:#000;
+  border-radius:12px;
+  border:1px solid rgba(255,215,0,0.3);
+}
+
+.bet-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  margin-top:15px;
+}
+
+.bet-buttons button{
+  padding:8px 12px;
+  border-radius:10px;
+  border:none;
+  background:gold;
+  font-weight:bold;
+}
+
+.controls{
+  display:flex;
+  justify-content:center;
+  margin-top:15px;
+}
+
+#spin{
+  padding:12px 40px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#FFD700,#ffb700);
+  border:none;
+  font-weight:bold;
+}
+
+.info{
+  text-align:center;
+  margin-top:10px;
+  color:gold;
+}
