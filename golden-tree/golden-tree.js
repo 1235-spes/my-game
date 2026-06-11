@@ -126,3 +126,6 @@ loadImages(() => {
   initGrid();
   drawGrid();
 });
+document.getElementById("spin").onclick = () => {
+  alert("Spin Started 🎰");
+};
