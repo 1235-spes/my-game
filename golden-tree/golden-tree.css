@@ -1,52 +1,75 @@
-.game-container{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  height:100vh;
-  background:#050505;
-  color:white;
+/* ===== GOLDEN TREE SLOT - جديد ===== */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #050505;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.reels{
-  display:flex;
-  gap:10px;
-  margin-bottom:20px;
+.game-container {
+  text-align: center;
 }
 
-.reel{
-  width:80px;
-  height:240px;
-  border:2px solid gold;
-  border-radius:10px;
-  background:#111;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  align-items:center;
-  padding:5px;
+.reels {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.reel img{
-  width:60px;
-  height:60px;
+.reel {
+  width: 80px;
+  height: 240px;
+  border: 2px solid gold;
+  border-radius: 10px;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  overflow: hidden;
+  position: relative;
 }
 
-.bet-buttons{
-  display:flex;
-  gap:10px;
-  margin-bottom:15px;
+.reel img {
+  width: 60px;
+  height: 60px;
+  user-select: none;
 }
 
-.bet-buttons button, #spin{
-  padding:10px 20px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  background:gold;
-  cursor:pointer;
+.bet-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 15px;
 }
 
-.info{
-  margin-top:10px;
+.bet-buttons button, #spin {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  background: gold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.bet-buttons button:hover, #spin:hover {
+  transform: scale(1.05);
+}
+
+#spin {
+  margin-top: 10px;
+}
+
+.info {
+  margin-top: 10px;
+  font-size: 16px;
+  color: gold;
 }
