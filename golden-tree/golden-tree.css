@@ -37,7 +37,13 @@ body {
   position: relative;
 }
 
-
+/* حجم الصور داخل البكرات */
+.reel img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
 .bet-buttons {
   display: flex;
   gap: 10px;
