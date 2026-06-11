@@ -250,24 +250,9 @@ body {
   font-size: 18px;
   font-weight: bold;
 }
-/* HERO PRO */
+/* HERO HERO */
 
-.hero{
-position:relative;
-overflow:hidden;
-height:320px;
-border-radius:30px;
-background:
-linear-gradient(
-135deg,
-#000,
-#111,
-#1a1a1a
-);
-border:1px solid rgba(255,215,0,.2);
-box-shadow:
-0 0 30px rgba(255,215,0,.15);
-}
+
 .hero::before {
     content: "";
     position: absolute;
@@ -599,4 +584,18 @@ height:180px;
 
 .promo-text{
     font-size:14px;
+}
+/* ===== HERO BANNER ===== */
+.hero-banner {
+    width: 100%;
+    max-width: 1000px; /* يمكنك تعديلها حسب العرض */
+    height: auto;
+    display: block;
+    border-radius: 20px;
+    box-shadow:
+        0 0 20px rgba(255,215,0,0.6),
+        0 0 40px rgba(255,215,0,0.3),
+        0 0 60px rgba(255,215,0,0.2);
+    border: 2px solid rgba(255,215,0,0.3);
+    margin: 0 auto;
 }
