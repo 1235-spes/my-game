@@ -118,11 +118,12 @@ function checkWin() {
   // تحديث الرصيد في Firebase
   firebase.database().ref("users/" + currentUser).update({ balance })
     .catch(err => console.error(err));
-}
-
-document.getElementById("spinBtn").addEventListener("click", spin);
+});
+document.getElementById("spin").onclick = () => {
+  alert("Spin Started 🎰");
+};
 
 loadImages(() => {
   initGrid();
   drawGrid();
-});
+
