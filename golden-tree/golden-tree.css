@@ -54,6 +54,3 @@
   margin-top:10px;
   color:gold;
 }
-button:active {
-  transform: scale(0.95);
-}
