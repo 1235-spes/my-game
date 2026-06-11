@@ -94,17 +94,17 @@ function spin() {
     }, 500 + (index * 300)); // كل بكرة تتأخر قليلاً عن الأخرى
   });
 }
-
-  // تحقق من الفوز (مثال: كل الرموز في الصف الأول متساوية)
-  checkWin();
-}
-
 function checkWin(){
-  const firstRow = reels.map(r=>r.children[0].src);
+  const firstRow = reels.map(r => r.children[0].src);
+
   if(new Set(firstRow).size === 1){
-    balance += selectedBet*2;
+    balance += selectedBet * 2;
     alert("مبروك! فزت!");
   }
+
   document.getElementById("balance").innerText = balance;
-  firebase.database().ref("users/" + currentUser).update({ balance });
+
+  firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
 }
