@@ -73,3 +73,17 @@ body {
   font-size: 16px;
   color: gold;
 }
+/* تأثير دوران البكرات */
+.reel.spinning {
+    opacity: 0.5;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+/* حجم الصور داخل البكرات */
+.reel img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 8px;
+}
