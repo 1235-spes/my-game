@@ -21,6 +21,7 @@ firebase.database().ref("users/" + currentUser + "/balance").get()
     }
   })
   .catch(err => console.error(err));
+
 const COLS = 5;
 const ROWS = 4;
 
@@ -32,12 +33,16 @@ canvas.height = 400;
 let spinning = false;
 let grid = [];
 
+// استخدام أسماء الصور الموجودة لديك
 const SYMBOLS = [
-  { name: "tree", img: "images/tree.png" },
-  { name: "coin", img: "images/coin.png" },
-  { name: "star", img: "images/star.png" },
-  { name: "chest", img: "images/chest.png" },
-  { name: "gold", img: "images/gold.png" }
+  { name: "tree", img: "../images/tree1.jpg" },
+  { name: "coin", img: "../images/خوخ.jpg" },
+  { name: "star", img: "../images/كرز.jpg" },
+  { name: "chest", img: "../images/جرس.jpg" },
+  { name: "gold", img: "../images/اخضر.jpg" },
+  { name: "orange", img: "../images/ornj.jpg" },
+  { name: "anb", img: "../images/Anb.jpg" },
+  { name: "777", img: "../images/777.jpg" }
 ];
 
 let loadedImages = {};
@@ -99,21 +104,22 @@ function spin() {
 }
 
 function checkWin() {
-  // مثال بسيط: زيادة الرصيد إذا كانت كل الرموز في الصف الأول متشابهة
+  // مثال: الفوز إذا كانت كل الرموز في الصف الأول متشابهة
   if (new Set(grid[0]).size === 1) {
-  balance += selectedBet * 2;
-  alert("مبروك! فزت!");
-} else {
-  balance -= selectedBet;
+    balance += selectedBet * 2;
+    alert("مبروك! فزت!");
+  } else {
+    balance -= selectedBet;
+  }
+
+  // تحديث الرصيد في الصفحة
+  document.getElementById("balance").innerText = balance;
+
+  // تحديث الرصيد في Firebase
+  firebase.database().ref("users/" + currentUser).update({ balance })
+    .catch(err => console.error(err));
 }
 
-// تحديث الرصيد في الصفحة
-document.getElementById("balance").innerText = balance;
-
-// تحديث الرصيد في Firebase
-firebase.database().ref("users/" + currentUser).update({ balance })
-  .catch(err => console.error(err));
-}
 document.getElementById("spinBtn").addEventListener("click", spin);
 
 loadImages(() => {
