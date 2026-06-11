@@ -1,18 +1,43 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golden Tree</title>
-    <link rel="stylesheet" href="golden-tree.css"> <!-- سننشئه بعد قليل -->
-</head>
-<body>
-    <h1>🎮 لعبة Golden Tree</h1>
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Tree</title>
 
-    <script src="golden-tree.js"></script>
+  <link rel="stylesheet" href="golden-tree.css">
+</head>
+
+<body>
+
+  <!-- رأس اللعبة -->
+  <div class="top-bar">
+    <button onclick="goBack()">⬅ رجوع</button>
+    <h2>🎰 Golden Tree</h2>
+    <div id="balanceBox">الرصيد: 0</div>
+  </div>
+
+  <!-- الكانفس -->
+  <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+  <!-- أزرار الرهان -->
+  <div class="controls">
+    <button onclick="setBet(300)">300</button>
+    <button onclick="setBet(600)">600</button>
+    <button onclick="setBet(1000)">1000</button>
+  </div>
+
+  <!-- زر التشغيل -->
+  <button id="spin">SPIN 🎲</button>
+
+  <!-- النتيجة -->
+  <div id="result"></div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script src="golden-tree.js"></script>
+
 </body>
 </html>
-<script src="golden-tree.js"></script>
-إنشاء صفحة HTML للعبة Golden html
