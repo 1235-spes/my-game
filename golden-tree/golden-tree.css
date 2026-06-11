@@ -1,4 +1,4 @@
-/* ===== GOLDEN TREE SLOT - جديد ===== */
+gap===== GOLDEN TREE SLOT - جديد ===== */
 body {
   margin: 0;
   padding: 0;
@@ -47,7 +47,7 @@ body {
 
 .bet-buttons {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   justify-content: center;
   margin-bottom: 15px;
 }
