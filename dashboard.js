@@ -7,8 +7,17 @@ const currentUser = localStorage.getItem("currentUser");
 if (!currentUser) {
     window.location.href = "index.html";
 }
-
 document.getElementById("username").innerText = currentUser;
+
+const headerUser = document.getElementById("header-username");
+if(headerUser){
+    headerUser.innerText = currentUser;
+}
+
+const profileName = document.getElementById("profileName");
+if(profileName){
+    profileName.innerText = currentUser;
+}
 
 // ===== FIREBASE =====
 if (!firebase.apps.length) {
