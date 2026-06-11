@@ -1,8 +1,4 @@
 
-  
-button:active {
-  transform: scale(0.95);
-}
 /* ===== GOLDEN TREE SLOT ===== */
 .slot-machine{
   display:flex;
@@ -57,4 +53,7 @@ button:active {
   text-align:center;
   margin-top:10px;
   color:gold;
+}
+button:active {
+  transform: scale(0.95);
 }
