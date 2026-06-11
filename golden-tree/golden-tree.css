@@ -1,101 +1,52 @@
-
-/* ===== GOLDEN TREE SLOT ===== */
-.slot-machine{
+.game-container{
   display:flex;
   justify-content:center;
-  gap:8px;
-  margin:20px auto;
-  background:#111;
-  padding:15px;
-  border-radius:20px;
-  border:2px solid gold;
+  align-items:center;
+  flex-direction:column;
+  height:100vh;
+  background:#050505;
+  color:white;
+}
+
+.reels{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
 }
 
 .reel{
+  width:80px;
+  height:240px;
+  border:2px solid gold;
+  border-radius:10px;
+  background:#111;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:center;
+  padding:5px;
+}
+
+.reel img{
   width:60px;
-  height:160px;
-  background:#000;
-  border-radius:12px;
-  border:1px solid rgba(255,215,0,0.3);
+  height:60px;
 }
 
 .bet-buttons{
   display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
   gap:10px;
-  margin-top:15px;
+  margin-bottom:15px;
 }
 
-.bet-buttons button{
-  padding:8px 12px;
+.bet-buttons button, #spin{
+  padding:10px 20px;
+  border:none;
   border-radius:10px;
-  border:none;
+  font-weight:bold;
   background:gold;
-  font-weight:bold;
-}
-
-.controls{
-  display:flex;
-  justify-content:center;
-  margin-top:15px;
-}
-
-#spin{
-  padding:12px 40px;
-  border-radius:15px;
-  background:linear-gradient(135deg,#FFD700,#ffb700);
-  border:none;
-  font-weight:bold;
+  cursor:pointer;
 }
 
 .info{
-  text-align:center;
   margin-top:10px;
-  color:gold;
-}
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #050505;
-  color: white;
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.game-container {
-  text-align: center;
-}
-
-canvas {
-  background-color: #222;
-  display: block;
-  margin: 0 auto 20px auto;
-  border: 3px solid gold;
-  border-radius: 15px;
-}
-
-.controls {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  font-size: 18px;
-}
-
-button {
-  background-color: gold;
-  border: none;
-  padding: 10px 20px;
-  font-size: 18px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
-}
-
-button:active {
-  transform: scale(0.95);
 }
