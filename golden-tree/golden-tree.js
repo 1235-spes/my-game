@@ -119,11 +119,12 @@ function checkWin() {
   firebase.database().ref("users/" + currentUser).update({ balance })
     .catch(err => console.error(err));
 });
-document.getElementById("spin").onclick = () => {
-  alert("Spin Started 🎰");
-};
-
 loadImages(() => {
   initGrid();
   drawGrid();
+});
 
+document.getElementById("spin").onclick = () => {
+  alert("Spin Started 🎰");
+  spin();
+};
