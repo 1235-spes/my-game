@@ -96,9 +96,7 @@ body {
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
 }
 /* ===== خلفية اللعبة ===== */
-body {
-  background: url("../images/background.jpg") center center / cover no-repeat fixed;
-}
+
 /* ===== الشعار ===== */
 .game-title {
   text-align: center;
