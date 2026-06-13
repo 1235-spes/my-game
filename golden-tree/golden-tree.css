@@ -1,5 +1,7 @@
-gap===== GOLDEN TREE SLOT - جديد ===== */
-
+bodyy===== GOLDEN TREE SLOT - جديد ===== */
+* {
+    outline: 3px solid red !important;
+}
 body {
   margin: 0;
   padding: 20px 10px;
