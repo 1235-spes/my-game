@@ -649,3 +649,56 @@ z-index:2;
         flex: 1;
     }
 }
+.top-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 15px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,215,0,0.2);
+  border-radius:15px;
+  margin-bottom:20px;
+  backdrop-filter: blur(10px);
+}
+
+.top-wallet{
+  background:#111;
+  padding:8px 12px;
+  border-radius:12px;
+  color:#FFD700;
+  font-weight:bold;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.top-actions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.notif{
+  background:#111;
+  border:none;
+  color:#FFD700;
+  padding:8px 10px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.user-mini{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#111;
+  padding:6px 10px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.user-mini img{
+  width:28px;
+  height:28px;
+  border-radius:50%;
+}
