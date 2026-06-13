@@ -1,18 +1,20 @@
 gap===== GOLDEN TREE SLOT - جديد ===== */
+
 body {
   margin: 0;
-  padding: 0;
-  background-color: #050505;
+  padding: 20px 10px;
+  background: linear-gradient(to bottom, #050505, #1a1200);
   color: white;
   font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .game-container {
   text-align: center;
+  width: 100%;
+  max-width: 480px;
 }
 
 .reels {
@@ -23,27 +25,34 @@ body {
 }
 
 .reel {
-  width: 80px;
-  height: 240px;
-  border: 2px solid gold;
-  border-radius: 10px;
-  background: #111;
+  width: 75px;
+  height: 250px;
+  border: 3px solid #ffd700;
+  border-radius: 18px;
+  background: linear-gradient(to bottom, #000000, #111111);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  padding: 5px;
+  padding: 8px 0;
   overflow: hidden;
-  position: relative;
+  box-shadow:
+      0 0 10px rgba(255, 215, 0, 0.5),
+      inset 0 0 10px rgba(255, 215, 0, 0.2);
 }
 
 /* حجم الصور داخل البكرات */
 .reel img {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
-    border-radius: 8px;
-  }
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+}
+
+.reel img:hover {
+    transform: scale(1.08);
+}
 .bet-buttons {
   display: flex;
   gap: 10px;
