@@ -97,3 +97,8 @@ body {
     object-fit: cover;
     border-radius: 8px;
 }
+.game-title {
+    color: gold;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+}
