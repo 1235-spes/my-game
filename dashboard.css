@@ -768,3 +768,22 @@ z-index:2;
     font-weight: bold;
     color: #FFD700;
 }
+/* ===== MAIN HERO LOGO (TOP) ===== */
+.hero-logo-top{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.hero-logo-top img{
+    width: 180px;
+    max-width: 70%;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(255,215,0,0.6));
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(-6px); }
+}
