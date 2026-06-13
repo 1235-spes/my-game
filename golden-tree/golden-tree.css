@@ -3,7 +3,7 @@ gap===== GOLDEN TREE SLOT - جديد ===== */
 body {
   margin: 0;
   padding: 20px 10px;
-  background: linear-gradient(to bottom, #050505, #1a1200);
+  background: red;
   color: white;
   font-family: Arial, sans-serif;
   display: flex;
