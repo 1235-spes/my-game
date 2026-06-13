@@ -5,12 +5,13 @@ bodyy===== GOLDEN TREE SLOT - جديد ===== */
 body {
   margin: 0;
   padding: 20px 10px;
-  background: blue;
+  background-image: url("images/IMG_٢٠٢٦٠٦١٣_١٧٥١٢٦.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: white;
   font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  min-height: 100vh;
 }
 
 .game-container {
