@@ -90,13 +90,6 @@ body {
     transition: all 0.3s ease;
 }
 
-/* حجم الصور داخل البكرات */
-.reel img {
-    width: 55px;
-    height: 55px;
-    object-fit: cover;
-    border-radius: 8px;
-}
 .game-title {
     color: gold;
     margin-bottom: 20px;
