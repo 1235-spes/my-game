@@ -31,13 +31,13 @@ body {
 
 /* ===== SIDEBAR ===== */
 .sidebar {
-  position: fixed !important;
+  position: fixed;
   top: 0;
   right: 0;
   height: 100vh;
   width: 280px;
 
-  background: rgba(10, 12, 20, 0.75) !important;
+  background: rgba(10, 12, 20, 0.65);
   backdrop-filter: blur(18px);
 
   padding: 20px;
@@ -47,8 +47,9 @@ body {
   transition: transform 0.35s ease;
 
   border-left: 1px solid rgba(255,255,255,0.08);
-  box-shadow: -20px 0 60px rgba(0,0,0,0.7);
+  box-shadow: -25px 0 70px rgba(0,0,0,0.75);
 }
+
 
 .sidebar.open {
   transform: translateX(0);
