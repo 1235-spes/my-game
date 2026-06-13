@@ -31,23 +31,23 @@ body {
 
 /* ===== SIDEBAR ===== */
 .sidebar {
-  position: fixed;
+  position: fixed !important;
   top: 0;
   right: 0;
   height: 100vh;
   width: 280px;
 
-  background: rgba(10, 12, 20, 0.75);
-  backdrop-filter: blur(16px);
+  background: rgba(10, 12, 20, 0.75) !important;
+  backdrop-filter: blur(18px);
 
   padding: 20px;
-  z-index: 1000;
+  z-index: 9999;
 
   transform: translateX(100%);
   transition: transform 0.35s ease;
 
   border-left: 1px solid rgba(255,255,255,0.08);
-  box-shadow: -20px 0 60px rgba(0,0,0,0.6);
+  box-shadow: -20px 0 60px rgba(0,0,0,0.7);
 }
 
 .sidebar.open {
