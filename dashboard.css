@@ -369,7 +369,7 @@ margin-bottom:25px;
 }
 
 .game-card{
-game-card:relative;
+position: relative;
 overflow:hidden;
 height:140px;
 border-radius:20px;
