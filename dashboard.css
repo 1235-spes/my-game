@@ -66,7 +66,7 @@ body {
 
 .avatar {
   width: 90px;
-  sidebarr: 90px;
+  height: 90px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #FFD700;
@@ -369,7 +369,7 @@ margin-bottom:25px;
 }
 
 .game-card{
-position:relative;
+game-card:relative;
 overflow:hidden;
 height:140px;
 border-radius:20px;
@@ -417,19 +417,7 @@ font-weight:bold;
 color:#FFD700;
 z-index:2;
 }
-.promo-banner{
-margin-top:20px;
-padding:20px;
-border-radius:20px;
-background:
-linear-gradient(
-135deg,
-#FFD700,
-#ffb700
-);
-color:#000;
-font-weight:bold;
-}
+
 
 .promo-title{
 font-size:22px;
@@ -446,9 +434,6 @@ margin-bottom:10px;
 z-index:2;
 }
 
-.game-card{
-height:180px;
-}
 /* ===== WALLET PAGE ===== */
 .wallet-hero{
     text-align:center;
