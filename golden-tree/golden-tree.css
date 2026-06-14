@@ -1,14 +1,15 @@
 gap===== GOLDEN TREE SLOT - جديد ===== */
 
 body {
-margin: 0;
-padding: 20px 10px;
-background: url("../images/background.jpg") center center / cover no-repeat fixed;
-color: white;
-font-family: Arial, sans-serif;
-display: flex;
-justify-content: center;
-min-height: 100vh;
+  margin: 0;
+  padding: 20px 10px;
+  background:
+    url("../images/background.jpg") center center / cover no-repeat fixed;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .game-container {
