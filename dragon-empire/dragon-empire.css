@@ -1,1 +1,39 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: radial-gradient(#2a0000, #000);
+  color: gold;
+  text-align: center;
+}
 
+.reels {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.reel {
+  width: 75px;
+  height: 230px;
+  background: #111;
+  border: 2px solid gold;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.reel img {
+  width: 65px;
+  height: 65px;
+  margin: 5px auto;
+  display: block;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  background: gold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
