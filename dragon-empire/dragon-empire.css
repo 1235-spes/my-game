@@ -1,11 +1,18 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: radial-gradient(#2a0000, #000);
+  background: radial-gradient(circle at top, #2a0000, #000);
   color: gold;
   text-align: center;
 }
 
+h1 {
+  margin-top: 20px;
+  text-shadow: 0 0 15px gold;
+  font-size: 28px;
+}
+
+/* 🎰 البكرات */
 .reels {
   display: flex;
   justify-content: center;
@@ -14,26 +21,51 @@ body {
 }
 
 .reel {
-  width: 75px;
-  height: 230px;
-  background: #111;
+  width: 80px;
+  height: 240px;
+  background: linear-gradient(#111, #000);
   border: 2px solid gold;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  position: relative;
 }
 
+/* ✨ الصور */
 .reel img {
-  width: 65px;
-  height: 65px;
+  width: 70px;
+  height: 70px;
   margin: 5px auto;
   display: block;
+  border-radius: 10px;
+  transition: transform 0.2s;
 }
 
+.reel img:hover {
+  transform: scale(1.1);
+}
+
+/* 🎮 زر اللعب */
 button {
-  margin-top: 20px;
-  padding: 10px 25px;
+  margin-top: 25px;
+  padding: 12px 30px;
+  font-size: 18px;
   background: gold;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  box-shadow: 0 0 10px gold;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: #ffcc00;
+}
+
+/* 💰 المعلومات */
+.info {
+  margin-top: 15px;
+  font-size: 18px;
+  color: gold;
 }
