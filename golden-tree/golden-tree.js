@@ -121,7 +121,7 @@ function checkWin() {
 
   let max = Math.max(...Object.values(counts));
 
-  const maxAllowedPayout = dailyIncome * MAX_RTP;
+  dailyIncome += selectedBet;
 
   if (max === 3) {
     let winAmount = selectedBet * 5;
