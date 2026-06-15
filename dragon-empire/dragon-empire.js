@@ -1,6 +1,6 @@
-let selectedBet = 300;
-let balance = 1000;
-
+let bet = 100;
+let balance = 0;
+let userId = "player1";
 /* 🐉 الصور مع ../ لأن الملف JS داخل مجلد */
 let symbols = [
   "../images/Messenger_creation_F6703251-9446-437D-A421-BEBF0552D499.png",
