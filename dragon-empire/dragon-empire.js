@@ -33,13 +33,22 @@ function fillReel(reel) {
 }
 
 function spin() {
+  reels.forEach((reel) => {
+    reel.style.opacity = "0.5";
+  });
+
   reels.forEach((reel, i) => {
-    setTimeout(() => fillReel(reel), i * 200);
+    setTimeout(() => {
+      fillReel(reel);
+    }, i * 400);
   });
 
   setTimeout(() => {
+    reels.forEach((reel) => {
+      reel.style.opacity = "1";
+    });
     checkWin();
-  }, 1200);
+  }, 1600);
 }
 
 document.getElementById("spin").onclick = spin;
