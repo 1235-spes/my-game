@@ -1,4 +1,6 @@
-let symbols = [
+let selectedBet = 300;
+let balance = 0;
+lett symbols = [
   "../images/Messenger_creation_F6703251-9446-437D-A421-BEBF0552D499.png",
   "../images/Messenger_creation_DDC8E6FA-90CC-4535-A2AB-C1EA3DD83F7A.png",
   "../images/Messenger_creation_9383B2DC-3E76-46F0-90F1-37C6382437E3.png",
@@ -54,17 +56,9 @@ function checkWin() {
 
   const maxCount = Math.max(...Object.values(counts));
 
-  if (maxCount === 3 && firstRow[0].includes("dragon")) {
-    balance += selectedBet * 25;
-    alert("🐉 JACKPOT x25!");
-  }
-  else if (maxCount === 3 && firstRow[0].includes("fire")) {
-    balance += selectedBet * 7;
-    alert("🔥 WIN x7!");
-  }
-  else if (maxCount === 3) {
-    balance += selectedBet * 3;
-    alert("⚔️ WIN x3!");
+  if (maxCount === 3) {
+    balance += selectedBet * 5;
+    alert("🔥 WIN x5!");
   }
 
   document.getElementById("balance").innerText = balance;
