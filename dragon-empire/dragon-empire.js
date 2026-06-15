@@ -1,6 +1,6 @@
 let selectedBet = 300;
 let balance = 0;
-lett symbols = [
+let symbols = [
   "../images/Messenger_creation_F6703251-9446-437D-A421-BEBF0552D499.png",
   "../images/Messenger_creation_DDC8E6FA-90CC-4535-A2AB-C1EA3DD83F7A.png",
   "../images/Messenger_creation_9383B2DC-3E76-46F0-90F1-37C6382437E3.png",
