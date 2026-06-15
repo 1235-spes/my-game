@@ -1,5 +1,7 @@
 let selectedBet = 300;
-let balance = 0;
+let balance = 1000;
+
+/* 🐉 الصور مع ../ لأن الملف JS داخل مجلد */
 let symbols = [
   "../images/Messenger_creation_F6703251-9446-437D-A421-BEBF0552D499.png",
   "../images/Messenger_creation_DDC8E6FA-90CC-4535-A2AB-C1EA3DD83F7A.png",
@@ -9,7 +11,6 @@ let symbols = [
   "../images/Messenger_creation_28A4EE31-42D5-47A6-82D9-6317605FCE02.png",
   "../images/Messenger_creation_0A0631E3-FAB6-4341-BA29-A020A4C4793C.png"
 ];
-
 
 let reels = [
   document.getElementById("r1"),
@@ -33,78 +34,34 @@ function fillReel(reel) {
 }
 
 function spin() {
-  reels.forEach((reel) => {
-    reel.style.transform = "scale(0.95)";
-    reel.style.opacity = "0.6";
-  });
+  balance -= selectedBet;
 
   reels.forEach((reel, i) => {
-    setTimeout(() => {
-      fillReel(reel);
-    }, i * 350);
+    setTimeout(() => fillReel(reel), i * 200);
   });
 
-  setTimeout(() => {
-    reels.forEach((reel) => {
-      reel.style.transform = "scale(1)";
-      reel.style.opacity = "1";
-    });
+  setTimeout(checkWin, 1200);
 
-    checkWin();
-  }, 1600);
-             }
-
-  setTimeout(() => {
-    reels.forEach((reel) => {
-      reel.style.opacity = "1";
-    });
-    checkWin();
-  }, 1600);
+  document.getElementById("balance").innerText = balance;
 }
-
-document.getElementById("spin").onclick = spin;
 
 function checkWin() {
   const firstRow = reels.map(r => r.children[0].src);
 
-  let dragonCount = 0;
-
-  firstRow.forEach(src => {
-    if (src.includes("F6703251") || src.includes("dragon")) {
-      dragonCount++;
-    }
-  });
-
-  const counts = {};
+  let counts = {};
   firstRow.forEach(src => {
     counts[src] = (counts[src] || 0) + 1;
   });
 
-  const maxCount = Math.max(...Object.values(counts));
+  let max = Math.max(...Object.values(counts));
 
-  // 🐉 DRAGON MODE (JACKPOT)
-  if (dragonCount === 3) {
-    balance += selectedBet * 25;
-
-    document.body.style.background = "radial-gradient(circle, #3b0000, #000)";
-
-    alert("🐉 DRAGON EMPIRE JACKPOT x25!");
-
-    setTimeout(() => {
-      document.body.style.background =
-        "radial-gradient(circle at top, #2a0000, #000)";
-    }, 1500);
-  }
-
-  // 🔥 عادي
-  else if (maxCount === 3) {
+  if (max === 3) {
     balance += selectedBet * 5;
     alert("🔥 WIN x5!");
   }
 
   document.getElementById("balance").innerText = balance;
-
-  firebase.database()
-    .ref("users/" + currentUser)
-    .update({ balance });
 }
+
+reels.forEach(fillReel);
+document.getElementById("spin").onclick = spin;
