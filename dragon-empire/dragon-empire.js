@@ -1,6 +1,6 @@
-let bet = 100;
-let balance = 0;
-let userId = "player1";
+let selectedBet = 300;
+let balance = 1000;
+
 /* 🐉 الصور مع ../ لأن الملف JS داخل مجلد */
 let symbols = [
   "../images/Messenger_creation_F6703251-9446-437D-A421-BEBF0552D499.png",
@@ -34,7 +34,7 @@ function fillReel(reel) {
 }
 
 function spin() {
-  balance -= bet;
+  balance -= selectedBet;
 
   reels.forEach((reel, i) => {
     setTimeout(() => fillReel(reel), i * 200);
@@ -56,7 +56,7 @@ function checkWin() {
   let max = Math.max(...Object.values(counts));
 
   if (max === 3) {
-    balance += bet * 5;
+    balance += selectedBet * 5;
     alert("🔥 WIN x5!");
   }
 
