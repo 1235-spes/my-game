@@ -34,7 +34,7 @@ function fillReel(reel) {
 }
 
 function spin() {
-  balance -= selectedBet;
+  balance -= bet;
 
   reels.forEach((reel, i) => {
     setTimeout(() => fillReel(reel), i * 200);
@@ -56,7 +56,7 @@ function checkWin() {
   let max = Math.max(...Object.values(counts));
 
   if (max === 3) {
-    balance += selectedBet * 5;
+    balance += bet * 5;
     alert("🔥 WIN x5!");
   }
 
