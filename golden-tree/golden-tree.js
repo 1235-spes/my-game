@@ -110,3 +110,42 @@ async function spin() {
 
   spinning = false;
 }
+function checkWin() {
+  const firstRow = reels.map(r => r.children[0].src);
+
+  let counts = {};
+  firstRow.forEach(src => {
+    counts[src] = (counts[src] || 0) + 1;
+  });
+
+  let max = Math.max(...Object.values(counts));
+
+  if (max === 3) {
+    let winAmount = selectedBet * 5;
+
+    balance += winAmount;
+
+    // بدون alert (احترافي)
+    showWin(winAmount);
+  }
+}
+
+function showWin(amount) {
+  let div = document.createElement("div");
+  div.innerText = `🔥 WIN +${amount}`;
+  div.style.position = "fixed";
+  div.style.top = "20px";
+  div.style.left = "50%";
+  div.style.transform = "translateX(-50%)";
+  div.style.background = "gold";
+  div.style.padding = "10px 20px";
+  div.style.borderRadius = "10px";
+  div.style.fontWeight = "bold";
+  div.style.zIndex = "9999";
+
+  document.body.appendChild(div);
+
+  setTimeout(() => {
+    div.remove();
+  }, 2000);
+}
