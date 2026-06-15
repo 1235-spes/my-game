@@ -61,50 +61,52 @@ document.querySelectorAll(".bet-buttons button").forEach(btn=>{
 });
 
 // دوران البكرات
-document.getElementById("spin").onclick = () => {
-  if(balance < selectedBet){
+let spinning = false;
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function spin() {
+  if (spinning) return;
+  spinning = true;
+
+  if (balance < selectedBet) {
     alert("رصيدك غير كافٍ!");
+    spinning = false;
     return;
   }
-  alert("Spin Started 🎰");
-  spin();
-};
 
-function spin() {
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
-  reels.forEach((reel, index) => {
-    reel.classList.add("spinning");
-
-    setTimeout(() => {
-      reel.innerHTML = "";
-      for (let i = 0; i < 3; i++) {
-        const img = document.createElement("img");
-        img.src = "../images/" + SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-        reel.appendChild(img);
-      }
-
-      reel.classList.remove("spinning");
-
-      // بعد توقف آخر بكرة، تحقق من الفوز
-      if (index === reels.length - 1) {
-        checkWin();
-      }
-    }, 500 + (index * 300)); // كل بكرة تتأخر قليلاً عن الأخرى
-  });
-}
-function checkWin(){
-  const firstRow = reels.map(r => r.children[0].src);
-
-  if(new Set(firstRow).size === 1){
-    balance += selectedBet * 2;
-    alert("مبروك! فزت!");
+  // تشغيل دوران لكل reel تدريجياً
+  for (let i = 0; i < reels.length; i++) {
+    reels[i].classList.add("spinning");
   }
 
+  // تغيير الرموز بسرعة (إحساس دوران)
+  let interval = setInterval(() => {
+    reels.forEach(reel => {
+      reel.innerHTML = "";
+      for (let i = 0; i < 3; i++) {
+        let img = document.createElement("img");
+        img.src = randomSymbol();
+        reel.appendChild(img);
+      }
+    });
+  }, 100);
+
+  // توقف تدريجي لكل reel
+  for (let i = 0; i < reels.length; i++) {
+    await sleep(700 + i * 300);
+    reels[i].classList.remove("spinning");
+  }
+
+  clearInterval(interval);
+
+  checkWin();
   document.getElementById("balance").innerText = balance;
 
-  firebase.database()
-    .ref("users/" + currentUser)
-    .update({ balance });
+  spinning = false;
 }
