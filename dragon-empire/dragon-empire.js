@@ -64,10 +64,16 @@ function spin() {
 
 document.getElementById("spin").onclick = spin;
 
-// تشغيل أولي
-reels.forEach(fillReel);
 function checkWin() {
   const firstRow = reels.map(r => r.children[0].src);
+
+  let dragonCount = 0;
+
+  firstRow.forEach(src => {
+    if (src.includes("F6703251") || src.includes("dragon")) {
+      dragonCount++;
+    }
+  });
 
   const counts = {};
   firstRow.forEach(src => {
@@ -76,10 +82,29 @@ function checkWin() {
 
   const maxCount = Math.max(...Object.values(counts));
 
-  if (maxCount === 3) {
+  // 🐉 DRAGON MODE (JACKPOT)
+  if (dragonCount === 3) {
+    balance += selectedBet * 25;
+
+    document.body.style.background = "radial-gradient(circle, #3b0000, #000)";
+
+    alert("🐉 DRAGON EMPIRE JACKPOT x25!");
+
+    setTimeout(() => {
+      document.body.style.background =
+        "radial-gradient(circle at top, #2a0000, #000)";
+    }, 1500);
+  }
+
+  // 🔥 عادي
+  else if (maxCount === 3) {
     balance += selectedBet * 5;
     alert("🔥 WIN x5!");
   }
 
   document.getElementById("balance").innerText = balance;
+
+  firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
 }
