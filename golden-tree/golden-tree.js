@@ -56,7 +56,9 @@ reels.forEach(reel => {
 reel.innerHTML = "";
 for (let i = 0; i < 3; i++) {
 const img = document.createElement("img");
-img.src = "../images/" + SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+const sym = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+img.src = "../images/" + sym.img;
+img.dataset.symbol = sym.img;
 reel.appendChild(img);
 }
 });
@@ -88,7 +90,7 @@ alert("رصيدك غير كافٍ!");
 spinning = false;
 return;
 }
-
+dailyIncome += selectedBet;
 balance -= selectedBet;
 document.getElementById("balance").innerText = balance;
 
@@ -103,7 +105,9 @@ reels.forEach(reel => {
 reel.innerHTML = "";
 for (let i = 0; i < 3; i++) {
 let img = document.createElement("img");
-img.src = randomSymbol();
+const sym = weightedRandomSymbol();
+img.src = "../images/" + sym.img;
+img.dataset.symbol = sym.img;
 reel.appendChild(img);
 }
 });
@@ -124,6 +128,7 @@ spinning = false;
 }
 
 function checkWin() {
+  let maxAllowedPayout = dailyIncome * MAX_RTP;
   const firstRow = reels.map(r => r.children[0]);
 
   let counts = {};
@@ -136,9 +141,7 @@ function checkWin() {
   let symbol = firstRow[0].dataset.symbol;
   let symbolData = SYMBOLS.find(s => s.img === symbol);
 
-  dailyIncome += selectedBet;
 
-  maxAllowedPayout = dailyIncome * MAX_RTP;
 
   if (counts[symbol] === 3) {
 
