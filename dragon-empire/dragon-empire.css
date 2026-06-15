@@ -1,66 +1,78 @@
+/* =========================
+   DRAGON EMPIRE - CLEAN UI
+   ========================= */
+
 html, body {
-  height: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
   overflow-x: hidden;
 }
+
 body {
-  margin: 0;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: radial-gradient(circle at top, #2a0000, #000);
   color: gold;
   text-align: center;
-}
-body {
-  overflow-x: hidden;
-}
-h1 {
-  margin-top: 20px;
-  text-shadow: 0 0 15px gold;
-  font-size: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* 🎰 البكرات */
+/* 🐉 العنوان */
+h1 {
+  margin: 15px 0;
+  font-size: 28px;
+  text-shadow: 0 0 15px gold;
+}
+
+/* 🎰 منطقة البكرات */
 .reels {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 30px;
+  gap: 12px;
+  margin: 10px 0 20px;
 }
 
+/* 🎰 البكرات */
 .reel {
-  width: 80px;
+  width: 82px;
   height: 240px;
-  background: linear-gradient(#111, #000);
+  background: linear-gradient(180deg, #111, #000);
   border: 2px solid gold;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-  position: relative;
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* ✨ الصور */
+/* 🖼️ الصور */
 .reel img {
-  width: 70px;
-  height: 70px;
-  margin: 5px auto;
-  display: block;
+  width: 68px;
+  height: 68px;
+  margin: 6px auto;
   border-radius: 10px;
-  transition: transform 0.2s;
+  object-fit: cover;
+  transition: transform 0.2s ease;
 }
 
 .reel img:hover {
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
-/* 🎮 زر اللعب */
+/* 🎮 الزر */
 button {
-  margin-top: 25px;
-  padding: 12px 30px;
+  margin: 10px 0;
+  padding: 12px 34px;
   font-size: 18px;
+  font-weight: bold;
   background: gold;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 0 10px gold;
+  box-shadow: 0 0 12px gold;
   transition: 0.2s;
 }
 
@@ -71,40 +83,20 @@ button:hover {
 
 /* 💰 المعلومات */
 .info {
-  margin-top: 15px;
+  margin: 10px 0 20px;
   font-size: 18px;
   color: gold;
 }
-.reels {
-  margin-top: 10px;
-}
-body {
-  border: 3px solid red;
-}
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-h1 {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 
-.reels {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
+/* 📱 تحسين الموبايل */
+@media (max-width: 600px) {
+  .reel {
+    width: 65px;
+    height: 200px;
+  }
 
-button {
-  margin-top: 15px;
-}
-
-.info {
-  margin-top: 10px;
-}
-* {
-  outline: 1px solid red;
+  .reel img {
+    width: 55px;
+    height: 55px;
+  }
 }
