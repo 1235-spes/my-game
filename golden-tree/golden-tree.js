@@ -66,47 +66,37 @@ if(balance < selectedBet){
 alert("رصيدك غير كافٍ!");
 return;
 }
-alert("Spin Started 🎰");
-spin();
-};
+
+let spinning = false;
 
 function spin() {
-balance -= selectedBet;
-document.getElementById("balance").innerText = balance;
+  if (spinning) return; // منع الضغط المتكرر
+  spinning = true;
 
-reels.forEach((reel, index) => {
-reel.classList.add("spinning");
+  balance -= selectedBet;
+  document.getElementById("balance").innerText = balance;
 
-setTimeout(() => {  
-  reel.innerHTML = "";  
-  for (let i = 0; i < 3; i++) {  
-    const img = document.createElement("img");  
-    img.src = "../images/" + SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];  
-    reel.appendChild(img);  
-  }  
+  reels.forEach((reel, index) => {
+    reel.classList.add("spinning");
 
-  reel.classList.remove("spinning");  
+    let interval = setInterval(() => {
+      reel.innerHTML = "";
 
-  // بعد توقف آخر بكرة، تحقق من الفوز  
-  if (index === reels.length - 1) {  
-    checkWin();  
-  }  
-}, 500 + (index * 300)); // كل بكرة تتأخر قليلاً عن الأخرى  
+      for (let i = 0; i < 3; i++) {
+        const img = document.createElement("img");
+        img.src = randomSymbol();
+        reel.appendChild(img);
+      }
+    }, 80);
 
+    setTimeout(() => {
+      clearInterval(interval);
+      reel.classList.remove("spinning");
+    }, 1000 + index * 300);
+  });
 
-});
-}
-function checkWin(){
-const firstRow = reels.map(r => r.children[0].src);
-
-if(new Set(firstRow).size === 1){
-balance += selectedBet * 2;
-alert("مبروك! فزت!");
-}
-
-document.getElementById("balance").innerText = balance;
-
-firebase.database()
-.ref("users/" + currentUser)
-.update({ balance });
+  setTimeout(() => {
+    checkWin();
+    spinning = false;
+  }, 1600);
 }
