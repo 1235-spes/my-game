@@ -34,14 +34,25 @@ function fillReel(reel) {
 
 function spin() {
   reels.forEach((reel) => {
-    reel.style.opacity = "0.5";
+    reel.style.transform = "scale(0.95)";
+    reel.style.opacity = "0.6";
   });
 
   reels.forEach((reel, i) => {
     setTimeout(() => {
       fillReel(reel);
-    }, i * 400);
+    }, i * 350);
   });
+
+  setTimeout(() => {
+    reels.forEach((reel) => {
+      reel.style.transform = "scale(1)";
+      reel.style.opacity = "1";
+    });
+
+    checkWin();
+  }, 1600);
+             }
 
   setTimeout(() => {
     reels.forEach((reel) => {
