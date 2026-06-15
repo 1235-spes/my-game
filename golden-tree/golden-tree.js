@@ -1,6 +1,6 @@
-let selectedBet = 300;
-let balance = 0;
-
+let dailyIncome = 0;
+let dailyPayout = 0;
+const MAX_RTP = 0.10;
 const currentUser = localStorage.getItem("currentUser");
 if (!currentUser) {
   alert("يرجى تسجيل الدخول أولاً!");
@@ -110,6 +110,7 @@ async function spin() {
 
   spinning = false;
 }
+
 function checkWin() {
   const firstRow = reels.map(r => r.children[0].src);
 
@@ -120,32 +121,19 @@ function checkWin() {
 
   let max = Math.max(...Object.values(counts));
 
+  const maxAllowedPayout = dailyIncome * MAX_RTP;
+
   if (max === 3) {
     let winAmount = selectedBet * 5;
 
-    balance += winAmount;
+    if (dailyPayout + winAmount > maxAllowedPayout) {
+      console.log("🚫 تم منع الربح بسبب حد 10%");
+      return;
+    }
 
-    // بدون alert (احترافي)
+    balance += winAmount;
+    dailyPayout += winAmount;
+
     showWin(winAmount);
   }
-}
-
-function showWin(amount) {
-  let div = document.createElement("div");
-  div.innerText = `🔥 WIN +${amount}`;
-  div.style.position = "fixed";
-  div.style.top = "20px";
-  div.style.left = "50%";
-  div.style.transform = "translateX(-50%)";
-  div.style.background = "gold";
-  div.style.padding = "10px 20px";
-  div.style.borderRadius = "10px";
-  div.style.fontWeight = "bold";
-  div.style.zIndex = "9999";
-
-  document.body.appendChild(div);
-
-  setTimeout(() => {
-    div.remove();
-  }, 2000);
 }
