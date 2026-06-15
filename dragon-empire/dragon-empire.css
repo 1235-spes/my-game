@@ -1,102 +1,57 @@
-/* =========================
-   DRAGON EMPIRE - CLEAN UI
-   ========================= */
-
-html, body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
 body {
-  font-family: Arial, sans-serif;
+  margin: 0;
+  font-family: Arial;
   background: radial-gradient(circle at top, #2a0000, #000);
   color: gold;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-/* 🐉 العنوان */
 h1 {
-  margin: 15px 0;
-  font-size: 28px;
+  margin-top: 20px;
   text-shadow: 0 0 15px gold;
 }
 
-/* 🎰 منطقة البكرات */
 .reels {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin: 10px 0 20px;
+  gap: 10px;
+  margin-top: 30px;
 }
 
-/* 🎰 البكرات */
 .reel {
-  width: 82px;
+  width: 80px;
   height: 240px;
-  background: linear-gradient(180deg, #111, #000);
+  background: linear-gradient(#111, #000);
   border: 2px solid gold;
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 18px rgba(255, 215, 0, 0.35);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  box-shadow: 0 0 15px rgba(255,215,0,0.4);
 }
 
-/* 🖼️ الصور */
 .reel img {
-  width: 68px;
-  height: 68px;
-  margin: 6px auto;
+  width: 70px;
+  height: 70px;
+  margin: 5px auto;
+  display: block;
   border-radius: 10px;
-  object-fit: cover;
-  transition: transform 0.2s ease;
 }
 
-.reel img:hover {
-  transform: scale(1.08);
-}
-
-/* 🎮 الزر */
 button {
-  margin: 10px 0;
-  padding: 12px 34px;
+  margin-top: 25px;
+  padding: 12px 30px;
   font-size: 18px;
-  font-weight: bold;
   background: gold;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
-  box-shadow: 0 0 12px gold;
-  transition: 0.2s;
 }
 
 button:hover {
-  transform: scale(1.05);
   background: #ffcc00;
+  transform: scale(1.05);
 }
 
-/* 💰 المعلومات */
 .info {
-  margin: 10px 0 20px;
+  margin-top: 15px;
   font-size: 18px;
-  color: gold;
-}
-
-/* 📱 تحسين الموبايل */
-@media (max-width: 600px) {
-  .reel {
-    width: 65px;
-    height: 200px;
-  }
-
-  .reel img {
-    width: 55px;
-    height: 55px;
-  }
 }
