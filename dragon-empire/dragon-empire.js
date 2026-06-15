@@ -34,9 +34,38 @@ function spin() {
   reels.forEach((reel, i) => {
     setTimeout(() => fillReel(reel), i * 200);
   });
+
+  setTimeout(() => {
+    checkWin();
+  }, 1200);
 }
 
 document.getElementById("spin").onclick = spin;
 
 // تشغيل أولي
 reels.forEach(fillReel);
+function checkWin() {
+  const firstRow = reels.map(r => r.children[0].src);
+
+  const counts = {};
+  firstRow.forEach(src => {
+    counts[src] = (counts[src] || 0) + 1;
+  });
+
+  const maxCount = Math.max(...Object.values(counts));
+
+  if (maxCount === 3 && firstRow[0].includes("dragon")) {
+    balance += selectedBet * 25;
+    alert("🐉 JACKPOT x25!");
+  }
+  else if (maxCount === 3 && firstRow[0].includes("fire")) {
+    balance += selectedBet * 7;
+    alert("🔥 WIN x7!");
+  }
+  else if (maxCount === 3) {
+    balance += selectedBet * 3;
+    alert("⚔️ WIN x3!");
+  }
+
+  document.getElementById("balance").innerText = balance;
+}
