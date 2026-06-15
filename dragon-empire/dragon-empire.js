@@ -1,12 +1,12 @@
 
 let symbols = [
-  "images/Messenger_creation_F6703251-9446-437D-A421-BEBF0552D499.png",
-  "images/Messenger_creation_DDC8E6FA-90CC-4535-A2AB-C1EA3DD83F7A.png",
-  "images/Messenger_creation_9383B2DC-3E76-46F0-90F1-37C6382437E3.png",
-  "images/Messenger_creation_6A447BA5-6E15-498B-8F5E-1F8DD2EBEFDD.png",
-  "images/Messenger_creation_6A0A96CD-7269-40C5-893D-3725CC6942FF.png",
-  "images/Messenger_creation_28A4EE31-42D5-47A6-82D9-6317605FCE02.png",
-  "images/Messenger_creation_0A0631E3-FAB6-4341-BA29-A020A4C4793C.png"
+  "images/Messenger_creation_F6703251-9446-437D-A421-BEBF0552D499.png..",
+  "images/Messenger_creation_DDC8E6FA-90CC-4535-A2AB-C1EA3DD83F7A.png..",
+  "images/Messenger_creation_9383B2DC-3E76-46F0-90F1-37C6382437E3.png..",
+  "images/Messenger_creation_6A447BA5-6E15-498B-8F5E-1F8DD2EBEFDD.png..",
+  "images/Messenger_creation_6A0A96CD-7269-40C5-893D-3725CC6942FF.png..",
+  "images/Messenger_creation_28A4EE31-42D5-47A6-82D9-6317605FCE02.png..",
+  "images/Messenger_creation_0A0631E3-FAB6-4341-BA29-A020A4C4793C.png.."
 ];
 
 let reels = [
