@@ -1,1 +1,42 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mega Symbols Clash</title>
+  <link rel="stylesheet" href="mega-clash.css">
+</head>
+<body>
+
+<h1>⚡ Mega Symbols Clash ⚡</h1>
+
+<div class="reels">
+  <div class="reel" id="r1"></div>
+  <div class="reel" id="r2"></div>
+  <div class="reel" id="r3"></div>
+  <div class="reel" id="r4"></div>
+  <div class="reel" id="r5"></div>
+</div>
+
+<div class="buttons">
+  <button data-bet="300">300</button>
+  <button data-bet="500">500</button>
+  <button data-bet="1000">1000</button>
+</div>
+
+<button id="spin">SPIN ⚡</button>
+
+<div class="info">
+  الرصيد: <span id="balance">0</span> |
+  الرهان: <span id="bet">300</span>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script src="mega-clash.js"></script>
+
+</body>
+</html>
