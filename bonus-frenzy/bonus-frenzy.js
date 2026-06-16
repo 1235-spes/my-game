@@ -1,3 +1,7 @@
+const spinSound = new Audio("../sounds/spin.mp3");
+const winSound = new Audio("../sounds/win.mp3");
+const jackpotSound = new Audio("../sounds/jackpot.mp3");
+const clickSound = new Audio("../sounds/click.mp3");
 let selectedBet = 300;
 let balance = 0;
 
@@ -103,6 +107,27 @@ img.dataset.symbol = symbol.img;
 
 });
 }
+document.getElementById("spin").onclick = () => {
+
+  spinSound.play(); // 🔥 صوت دوران
+
+  if (balance < selectedBet) {
+    alert("❌ لا يوجد رصيد");
+    return;
+  }
+
+  balance -= selectedBet;
+  updateBalance();
+  sync();
+
+  let cells = document.querySelectorAll(".cell");
+
+  cells.forEach(cell => {
+    cell.innerHTML = `<img src="../images/tree1.jpg" width="60">`;
+  });
+
+  checkWin();
+};
 function checkWin() {
 
     const rows = [
