@@ -1,20 +1,23 @@
 let selectedBet = 300;
-let balance = 0;
-
-const currentUser = localStorage.getItem("currentUser");
+let balance = null; // مهم جدًا
+let currentUser = localStorage.getItem("currentUser");
 
 if (!currentUser) {
   alert("يرجى تسجيل الدخول أولاً!");
   window.location.href = "../index.html";
 }
-
 // Firebase balance
 firebase.database()
   .ref("users/" + currentUser + "/balance")
   .get()
-  .then(snap => {
-    balance = snap.val() || 1000;
+  .then(snapshot => {
+
+    balance = snapshot.val() || 1000;
+
     document.getElementById("balance").innerText = balance;
+
+    // ✅ تشغيل اللعبة بعد تحميل الرصيد
+    initGame();
   });
 
 const SYMBOLS = [
