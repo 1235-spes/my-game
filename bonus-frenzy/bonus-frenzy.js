@@ -1,4 +1,4 @@
-let selectedBet = 300;
+ifselectedBet = 300;
 let balance = 0;
 
 const currentUser = localStorage.getItem("currentUser");
@@ -153,10 +153,12 @@ if (symbolData && symbolData.payouts[matchCount]) {
 
     if (totalWin > 0) {
 
-        balance += totalWin;
+    balance += totalWin;
 
-        alert("🎉 مبروك! ربحت " + totalWin);
+    updateBalance();   // 👈 تحديث الشاشة (إذا عندك دالة عرض)
+    sync();            // 👈 حفظ في Firebase
 
+    alert("🎉 JACKPOT +" + totalWin);
     }
 
     document.getElementById("balance").innerText = balance;
