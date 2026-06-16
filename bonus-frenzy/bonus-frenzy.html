@@ -2,50 +2,66 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Bonus Frenzy Slots</title>
-  <link rel="stylesheet" href="bonus-frenzy.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonus Frenzy Slots</title>
+  <link rel="stylesheet" href="golden-tree.css">
 </head>
 <body>
+<div class="game-container">
+  <div id="game-section">
+    <h1 class="game-title">
+  <img src="../images/gogo.jpg" alt="Golden Tree Logo" class="game-logo">
+</h1>
+    <div class="reels">
+      <div class="reel" id="reel1"></div>
+      <div class="reel" id="reel2"></div>
+      <div class="reel" id="reel3"></div>
+      <div class="reel" id="reel4"></div>
+      <div class="reel" id="reel5"></div>
+    </div>
 
-<h1>⚡ Bonus Frenzy Slots ⚡</h1>
+    <div class="bet-buttons">
+      <button data-bet="300">300</button>
+      <button data-bet="500">500</button>
+      <button data-bet="1000">1000</button>
+      <button data-bet="5000">5000</button>
+      <button data-bet="8000">8000</button>
+    </div>
 
-<div class="reels">
-  <div class="reel" id="r1"></div>
-  <div class="reel" id="r2"></div>
-  <div class="reel" id="r3"></div>
-  <div class="reel" id="r4"></div>
-  <div class="reel" id="r5"></div>
+    <div class="controls">
+  <button id="spin" class="spin-btn">
+   <img src="../images/Zr.jpg" alt="Spin"> 
+  </button>
 </div>
 
-<div class="buttons">
-  <button data-bet="300">300</button>
-  <button data-bet="500">500</button>
-  <button data-bet="1000">1000</button>
+    <div class="info">
+      الرهان: <span id="bet">300</span>
+      الرصيد: <span id="balance">0</span>
+    </div>
+  </div>
 </div>
 
-<button id="spin">SPIN 🎰</button>
-
-<div class="info">
-  الرصيد: <span id="balance">0</span> |
-  الرهان: <span id="bet">300</span>
-</div>
-
-<!-- Firebase -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "XXX",
-  authDomain: "XXX",
-  databaseURL: "XXX",
-  projectId: "XXX"
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
+  authDomain: "chanci-app.firebaseapp.com",
+  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+  projectId: "chanci-app",
+  storageBucket: "chanci-app.firebasestorage.app",
+  messagingSenderId: "18416485348",
+  appId: "1:18416485348:web:918a393569acb47a7b3df1",
+  measurementId: "G-S8ZCNJBFQ8"
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 </script>
 
 <script src="bonus-frenzy.js"></script>
-
 </body>
 </html>
