@@ -72,16 +72,17 @@ document.getElementById("bet").innerText = selectedBet;
 // دوران البكرات
 document.getElementById("spin").onclick = () => {
 
-  spinSound.play(); // 🔥 فقط إضافة صوت (لا نغير شيء آخر)
-  
-  if(balance < selectedBet){
-alert("رصيدك غير كافٍ!");
-return;
-}
-alert("Spin Started 🎰");
-spin();
-};
+  spinSound.currentTime = 0; // 🔥 إعادة الصوت من البداية
+  spinSound.play();          // 🔊 تشغيل الصوت
 
+  if(balance < selectedBet){
+    alert("رصيدك غير كافٍ!");
+    return;
+  }
+
+  alert("Spin Started 🎰");
+  spin();
+};
 function spin() {
 balance -= selectedBet;
 document.getElementById("balance").innerText = balance;
