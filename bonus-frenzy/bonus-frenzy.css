@@ -132,3 +132,12 @@ display: block;
   display: block;
   transition: transform 0.08s linear;
 }
+.reel {
+  overflow: hidden;
+}
+
+.reel img {
+  display: block;
+  width: 60px;
+  height: 60px;
+}
