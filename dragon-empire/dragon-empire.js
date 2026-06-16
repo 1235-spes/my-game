@@ -59,6 +59,13 @@ function fillReel(reel) {
 function spin() {
   balance -= selectedBet;
 
+document.getElementById("balance").innerText = balance;
+
+// حفظ الرصيد في Firebase (هذا المهم)
+firebase.database()
+  .ref("users/" + currentUser)
+  .update({ balance });
+
   reels.forEach((reel, i) => {
     setTimeout(() => fillReel(reel), i * 200);
   });
