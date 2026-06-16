@@ -20,7 +20,6 @@ document.getElementById("balance").innerText = balance;
 
 // الرموز
 const SYMBOLS = [
-const SYMBOLS = [
   { img: "tree1.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
   { img: "خوخ.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
   { img: "كرز.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
