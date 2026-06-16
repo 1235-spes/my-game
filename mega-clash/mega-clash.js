@@ -1,11 +1,12 @@
 let selectedBet = 300;
-let balance = null; // مهم جدًا
+let balance = null;
 let currentUser = localStorage.getItem("currentUser");
 
 if (!currentUser) {
   alert("يرجى تسجيل الدخول أولاً!");
   window.location.href = "../index.html";
 }
+
 // Firebase balance
 firebase.database()
   .ref("users/" + currentUser + "/balance")
@@ -16,10 +17,15 @@ firebase.database()
 
     document.getElementById("balance").innerText = balance;
 
-    // ✅ تشغيل اللعبة بعد تحميل الرصيد
-    initGame();
+    initGame(); // ✅ تشغيل بعد تحميل الرصيد
   });
+function initGame() {
 
+  reels.forEach(fillReel);
+
+  document.getElementById("spin").onclick = spin;
+
+}
 const SYMBOLS = [
   "tree1.jpg",
   "خوخ.jpg",
