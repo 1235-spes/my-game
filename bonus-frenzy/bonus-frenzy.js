@@ -117,7 +117,7 @@ function spin() {
   reels.forEach((reel, index) => {
     reel.classList.add("spinning");
 
-    let speed = 50;
+    let speed = 40;
 
     // 🎰 دوران عمودي حقيقي (تحريك الصور داخل البكرة)
     let interval = setInterval(() => {
