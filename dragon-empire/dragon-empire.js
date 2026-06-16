@@ -62,7 +62,10 @@ function spin() {
 document.getElementById("balance").innerText = balance;
 
 // حفظ الرصيد في Firebase (هذا المهم)
-
+firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
+      
 
   reels.forEach((reel, i) => {
     setTimeout(() => fillReel(reel), i * 200);
@@ -90,9 +93,10 @@ function checkWin() {
                 }
 
   document.getElementById("balance").innerText = balance;
-}
+
 firebase.database()
   .ref("users/" + currentUser)
   .update({ balance });
+}
 reels.forEach(fillReel);
 document.getElementById("spin").onclick = spin;
