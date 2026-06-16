@@ -2,22 +2,50 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Bonus Reel Frenzy</title>
+  <title>Bonus Frenzy Slots</title>
   <link rel="stylesheet" href="bonus-frenzy.css">
 </head>
 <body>
 
-<h1>⚡ Bonus Reel Frenzy ⚡</h1>
+<h1>⚡ Bonus Frenzy Slots ⚡</h1>
 
-<div class="grid" id="grid"></div>
+<div class="reels">
+  <div class="reel" id="r1"></div>
+  <div class="reel" id="r2"></div>
+  <div class="reel" id="r3"></div>
+  <div class="reel" id="r4"></div>
+  <div class="reel" id="r5"></div>
+</div>
 
-<div class="info">
-  💰 الرصيد: <span id="balance">0</span>
+<div class="buttons">
+  <button data-bet="300">300</button>
+  <button data-bet="500">500</button>
+  <button data-bet="1000">1000</button>
 </div>
 
 <button id="spin">SPIN 🎰</button>
-<button id="bonus">BUY BONUS 🔥</button>
+
+<div class="info">
+  الرصيد: <span id="balance">0</span> |
+  الرهان: <span id="bet">300</span>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "XXX",
+  authDomain: "XXX",
+  databaseURL: "XXX",
+  projectId: "XXX"
+};
+
+firebase.initializeApp(firebaseConfig);
+</script>
 
 <script src="bonus-frenzy.js"></script>
+
 </body>
 </html>
