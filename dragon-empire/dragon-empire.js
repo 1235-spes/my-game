@@ -1,6 +1,29 @@
 let selectedBet = 300;
-let balance = 1000;
+let balance = 0;
 
+const currentUser = localStorage.getItem("currentUser");
+
+if (!currentUser) {
+    alert("يرجى تسجيل الدخول أولاً!");
+    window.location.href = "../index.html";
+}
+firebase.database()
+    .ref("users/" + currentUser + "/balance")
+    .get()
+    .then(snapshot => {
+
+        balance = snapshot.exists() ? snapshot.val() : 1000;
+
+        if (!snapshot.exists()) {
+            firebase.database()
+                .ref("users/" + currentUser)
+                .update({ balance });
+        }
+
+        document.getElementById("balance").innerText = balance;
+
+    })
+    .catch(err => console.error(err));
 /* 🐉 الصور مع ../ لأن الملف JS داخل مجلد */
 let symbols = [
   "../images/Messenger_creation_F6703251-9446-437D-A421-BEBF0552D499.png",
