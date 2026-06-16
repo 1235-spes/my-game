@@ -19,7 +19,7 @@ const symbols = [
 
 const grid = document.getElementById("grid");
 
-/* 🔥 تحميل GameEngine */
+/* 🔥 تشغيل GameEngine */
 GameEngine.init(currentUser).then(() => {
   createGrid();
   updateBalanceUI();
@@ -30,7 +30,7 @@ function updateBalanceUI() {
   document.getElementById("balance").innerText = GameEngine.balance;
 }
 
-/* إنشاء الشبكة */
+/* 🎯 إنشاء الشبكة */
 function createGrid() {
   grid.innerHTML = "";
   for (let i = 0; i < 20; i++) {
@@ -40,15 +40,16 @@ function createGrid() {
   }
 }
 
-/* 🎲 رمز */
+/* 🎲 رمز عشوائي */
 function randomSymbol() {
   let pool = bonusMode ? [...symbols, "777.jpg"] : symbols;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-/* 🎰 spin */
+/* 🎰 SPIN */
 document.getElementById("spin").onclick = () => {
 
+  // ❌ منع اللعب بدون رصيد
   if (!GameEngine.spendBet()) return;
 
   let cells = document.querySelectorAll(".cell");
@@ -57,13 +58,14 @@ document.getElementById("spin").onclick = () => {
     cell.innerHTML = `<img src="../images/${randomSymbol()}" width="60">`;
   });
 
-  updateBalanceUI();
   checkWin();
+  updateBalanceUI();
 };
 
-/* 🔥 شراء بونص */
+/* 🔥 BUY BONUS */
 document.getElementById("bonus").onclick = () => {
 
+  // ❌ شرط الرصيد
   if (GameEngine.balance < 500) {
     alert("❌ لا يوجد رصيد للبونص");
     return;
@@ -79,7 +81,7 @@ document.getElementById("bonus").onclick = () => {
   alert("🔥 BONUS ACTIVATED!");
 };
 
-/* 🏆 الفوز */
+/* 🏆 CHECK WIN */
 function checkWin() {
 
   let cells = document.querySelectorAll(".cell");
@@ -87,7 +89,10 @@ function checkWin() {
   let counts = {};
 
   cells.forEach(cell => {
-    let src = cell.querySelector("img").src;
+    let img = cell.querySelector("img");
+    if (!img) return;
+
+    let src = img.src;
     counts[src] = (counts[src] || 0) + 1;
   });
 
@@ -105,6 +110,4 @@ function checkWin() {
     GameEngine.addWin(win);
     alert("🔥 WIN +" + win);
   }
-
-  updateBalanceUI();
 }
