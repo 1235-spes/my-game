@@ -1,6 +1,12 @@
 let selectedBet = 300;
 let balance = 0;
+const spinSound = new Audio("../sounds/spin.mp3");
+spinSound.loop = true;
+spinSound.volume = 0.4;
 
+const stopSound = new Audio("../sounds/stop.mp3");
+const winSound = new Audio("../sounds/win.mp3");
+const jackpotSound = new Audio("../sounds/jackpot.mp3");
 const currentUser = localStorage.getItem("currentUser");
 if (!currentUser) {
 alert("يرجى تسجيل الدخول أولاً!");
@@ -105,8 +111,10 @@ function spin() {
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
-  reels.forEach((reel, index) => {
+  spinSound.currentTime = 0;
+  spinSound.play(); // 🔊 يبدأ صوت الدوران
 
+  reels.forEach((reel, index) => {
     reel.classList.add("spinning");
 
     let speed = 50;
