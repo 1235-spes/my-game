@@ -1,25 +1,33 @@
 body {
   margin: 0;
   font-family: Arial;
-  background: radial-gradient(circle, #111, #000);
+  background: radial-gradient(circle at top, #1a1a1a, #000);
   color: gold;
   text-align: center;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(5, 70px);
-  grid-template-rows: repeat(4, 70px);
-  gap: 5px;
+.reels {
+  display: flex;
   justify-content: center;
+  gap: 10px;
   margin-top: 20px;
 }
 
-.cell {
+.reel {
   width: 70px;
-  height: 70px;
-  background: #222;
-  border: 1px solid gold;
+  height: 220px;
+  border: 2px solid gold;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background: #111;
+}
+
+.reel img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
 }
 
 button {
