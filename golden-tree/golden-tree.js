@@ -108,39 +108,45 @@ function checkWin() {
 
     rows.forEach(row => {
 
-        const counts = {};
+        let firstSymbol = row[0];
+        let matchCount = 1;
 
-        row.forEach(symbol => {
-            counts[symbol] = (counts[symbol] || 0) + 1;
-        });
+        for (let i = 1; i < row.length; i++) {
 
-        Object.values(counts).forEach(count => {
-
-            if (count === 3) {
-                totalWin += selectedBet * 2;
+            if (row[i] === firstSymbol) {
+                matchCount++;
+            } else {
+                break;
             }
 
-            if (count === 4) {
-                totalWin += selectedBet * 5;
-            }
+        }
 
-            if (count === 5) {
-                totalWin += selectedBet * 10;
-            }
+        if (matchCount === 3) {
+            totalWin += selectedBet * 2;
+        }
 
-        });
+        if (matchCount === 4) {
+            totalWin += selectedBet * 5;
+        }
+
+        if (matchCount === 5) {
+            totalWin += selectedBet * 10;
+        }
 
     });
 
     if (totalWin > 0) {
+
         balance += totalWin;
+
         alert("🎉 مبروك! ربحت " + totalWin);
+
+        firebase.database()
+            .ref("users/" + currentUser)
+            .update({ balance });
+
     }
 
     document.getElementById("balance").innerText = balance;
 
-    firebase.database()
-        .ref("users/" + currentUser)
-        .update({ balance });
-
-}
+          }
