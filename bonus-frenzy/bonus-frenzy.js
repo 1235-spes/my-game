@@ -1,122 +1,154 @@
-let balance = 0;
 let selectedBet = 300;
+let balance = 0;
 
-let currentUser = localStorage.getItem("currentUser");
-
+const currentUser = localStorage.getItem("currentUser");
 if (!currentUser) {
-  alert("يرجى تسجيل الدخول أولاً!");
-  window.location.href = "../index.html";
+alert("يرجى تسجيل الدخول أولاً!");
+window.location.href = "../index.html";
 }
 
-/* 🔥 Firebase Load */
-firebase.database()
-  .ref("users/" + currentUser + "/balance")
-  .get()
-  .then(snap => {
-    balance = snap.val() || 1000;
-    updateUI();
-    initGame();
-  });
+// جلب الرصيد من Firebase
+firebase.database().ref("users/" + currentUser + "/balance").get()
+.then(snapshot => {
+balance = snapshot.exists() ? snapshot.val() : 1000;
+if(!snapshot.exists()){
+firebase.database().ref("users/" + currentUser).update({ balance });
+}
+document.getElementById("balance").innerText = balance;
+})
+.catch(err => console.error(err));
 
+// الرموز
 const SYMBOLS = [
-  "tree1.jpg",
-  "خوخ.jpg",
-  "كرز.jpg",
-  "جرس.jpg",
-  "777.jpg"
+  { img: "tree1.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
+  { img: "خوخ.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
+  { img: "كرز.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
+  { img: "جرس.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
+  { img: "اخضر.jpg", payouts: { 3: 8, 4: 16, 5: 32 } },
+  { img: "ornj.jpg", payouts: { 3: 12, 4: 24, 5: 48 } },
+  { img: "Anb.jpg", payouts: { 3: 20, 4: 40, 5: 80 } },
+  { img: "777.jpg", payouts: { 3: 25, 4: 50, 5: 100 } }
 ];
 
+// البكرات
 const reels = [
-  document.getElementById("r1"),
-  document.getElementById("r2"),
-  document.getElementById("r3"),
-  document.getElementById("r4"),
-  document.getElementById("r5")
+document.getElementById("reel1"),
+document.getElementById("reel2"),
+document.getElementById("reel3"),
+document.getElementById("reel4"),
+document.getElementById("reel5")
 ];
+// تعبئة البكرات لأول مرة عند فتح اللعبة
+function initializeReels() {
+reels.forEach(reel => {
+reel.innerHTML = "";
+for (let i = 0; i < 3; i++) {
+const img = document.createElement("img");
 
-function updateUI() {
-  document.getElementById("balance").innerText = balance;
-  document.getElementById("bet").innerText = selectedBet;
+const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+img.src = "../images/" + symbol.img;
+img.dataset.symbol = symbol.img;
+
+reel.appendChild(img);
+}
+});
 }
 
-function randomSymbol() {
-  return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+// استدعاء الدالة
+initializeReels();
+// اختيار الرهان
+document.querySelectorAll(".bet-buttons button").forEach(btn=>{
+btn.addEventListener("click", ()=>{
+selectedBet = parseInt(btn.dataset.bet);
+document.getElementById("bet").innerText = selectedBet;
+});
+});
+
+// دوران البكرات
+document.getElementById("spin").onclick = () => {
+if(balance < selectedBet){
+alert("رصيدك غير كافٍ!");
+return;
 }
+alert("Spin Started 🎰");
+spin();
+};
 
-function fillReel(reel) {
-  reel.innerHTML = "";
-  for (let i = 0; i < 3; i++) {
-    let img = document.createElement("img");
-    img.src = "../images/" + randomSymbol();
-    reel.appendChild(img);
-  }
-}
-
-function initGame() {
-  reels.forEach(fillReel);
-
-  document.getElementById("spin").onclick = spin;
-
-  document.querySelectorAll("button[data-bet]").forEach(btn => {
-    btn.onclick = () => {
-      selectedBet = +btn.dataset.bet;
-      updateUI();
-    };
-  });
-}
-
-/* 🎰 SPIN */
 function spin() {
+balance -= selectedBet;
+document.getElementById("balance").innerText = balance;
+reels.forEach((reel, index) => {
+reel.classList.add("spinning");
 
-  if (balance < selectedBet) {
-    alert("❌ لا يوجد رصيد");
-    return;
-  }
+setTimeout(() => {  
+  reel.innerHTML = "";  
+  for (let i = 0; i < 3; i++) {  
+    const img = document.createElement("img");  
+    const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
-  balance -= selectedBet;
-  updateUI();
-  sync();
+img.src = "../images/" + symbol.img;
+img.dataset.symbol = symbol.img;  
+    reel.appendChild(img);  
+  }  
 
-  reels.forEach((r, i) => {
-    setTimeout(() => fillReel(r), i * 200);
-  });
+  reel.classList.remove("spinning");  
 
-  setTimeout(checkWin, 1200);
+  // بعد توقف آخر بكرة، تحقق من الفوز  
+  if (index === reels.length - 1) {  
+    checkWin();  
+  }  
+}, 500 + (index * 300)); // كل بكرة تتأخر قليلاً عن الأخرى  
+
+
+});
 }
-
-/* 🏆 WIN */
 function checkWin() {
 
-  const firstRow = reels.map(r => r.children[0].src);
+    const rows = [
+        reels.map(r => r.children[0].src),
+        reels.map(r => r.children[1].src),
+        reels.map(r => r.children[2].src)
+    ];
 
-  let counts = {};
-  firstRow.forEach(src => {
-    counts[src] = (counts[src] || 0) + 1;
-  });
+    let totalWin = 0;
 
-  let max = Math.max(...Object.values(counts));
+    rows.forEach(row => {
 
-  let win = 0;
+        let firstSymbol = row[0];
+        let matchCount = 1;
 
-  if (max === 3) win = selectedBet * 2;
-  if (max === 4) win = selectedBet * 5;
-  if (max === 5) win = selectedBet * 10;
+        for (let i = 1; i < row.length; i++) {
 
-  if (firstRow.includes("777.jpg")) {
-    win += selectedBet * 3;
-  }
+            if (row[i] === firstSymbol) {
+                matchCount++;
+            } else {
+                break;
+            }
 
-  if (win > 0) {
-    balance += win;
-    updateUI();
-    sync();
-    alert("🔥 WIN +" + win);
-  }
+        }
+
+        const symbolName = firstSymbol.split("/").pop();
+
+const symbolData = SYMBOLS.find(s => s.img === symbolName);
+
+if (symbolData && symbolData.payouts[matchCount]) {
+    totalWin += selectedBet * symbolData.payouts[matchCount];
 }
+    });
 
-/* 🔄 Firebase Sync */
-function sync() {
-  firebase.database()
-    .ref("users/" + currentUser)
-    .update({ balance });
+    if (totalWin > 0) {
+
+        balance += totalWin;
+
+        alert("🎉 مبروك! ربحت " + totalWin);
+
+    }
+
+    document.getElementById("balance").innerText = balance;
+
+    firebase.database()
+        .ref("users/" + currentUser)
+        .update({ balance });
+
 }
