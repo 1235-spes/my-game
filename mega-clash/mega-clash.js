@@ -1,3 +1,4 @@
+let GameEngine = window.GameEngine;
 let selectedBet = 300;
 let currentUser = localStorage.getItem("currentUser");
 
