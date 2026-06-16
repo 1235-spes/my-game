@@ -110,7 +110,7 @@ img.dataset.symbol = symbol.img;
 
 });
 }
-document.getElementById("spin").onclick = () => {
+
 
 function checkWin() {
 
