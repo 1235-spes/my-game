@@ -47,7 +47,7 @@ function initializeReels() {
 reels.forEach(reel => {
 reel.innerHTML = "";
 for (let i = 0; i < 3; i++) {
-const img = document.createElement("img");
+ifg = document.createElement("img");
 
 const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
@@ -71,7 +71,10 @@ document.getElementById("bet").innerText = selectedBet;
 
 // دوران البكرات
 document.getElementById("spin").onclick = () => {
-if(balance < selectedBet){
+
+  spinSound.play(); // 🔥 فقط إضافة صوت (لا نغير شيء آخر)
+  
+  if(balance < selectedBet){
 alert("رصيدك غير كافٍ!");
 return;
 }
@@ -109,25 +112,6 @@ img.dataset.symbol = symbol.img;
 }
 document.getElementById("spin").onclick = () => {
 
-  spinSound.play(); // 🔥 صوت دوران
-
-  if (balance < selectedBet) {
-    alert("❌ لا يوجد رصيد");
-    return;
-  }
-
-  balance -= selectedBet;
-  updateBalance();
-  sync();
-
-  let cells = document.querySelectorAll(".cell");
-
-  cells.forEach(cell => {
-    cell.innerHTML = `<img src="../images/tree1.jpg" width="60">`;
-  });
-
-  checkWin();
-};
 function checkWin() {
 
     const rows = [
