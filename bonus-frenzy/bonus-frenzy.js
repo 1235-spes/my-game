@@ -151,7 +151,11 @@ function spin() {
 
       // 🎉 آخر بكرة = فحص الفوز
       if (index === reels.length - 1) {
-        checkWin();
+
+  spinSound.pause();
+  spinSound.currentTime = 0;
+
+  checkWin();
       }
 
     }, 1200 + index * 400);
