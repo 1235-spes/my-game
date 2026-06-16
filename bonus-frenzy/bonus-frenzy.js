@@ -1,7 +1,3 @@
-const spinSound = new Audio("../sounds/spin.mp3");
-const winSound = new Audio("../sounds/win.mp3");
-const jackpotSound = new Audio("../sounds/jackpot.mp3");
-const clickSound = new Audio("../sounds/click.mp3");
 let selectedBet = 300;
 let balance = 0;
 
@@ -47,7 +43,7 @@ function initializeReels() {
 reels.forEach(reel => {
 reel.innerHTML = "";
 for (let i = 0; i < 3; i++) {
-ifg = document.createElement("img");
+const img = document.createElement("img");
 
 const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
@@ -71,18 +67,14 @@ document.getElementById("bet").innerText = selectedBet;
 
 // دوران البكرات
 document.getElementById("spin").onclick = () => {
-
-  spinSound.currentTime = 0; // 🔥 إعادة الصوت من البداية
-  spinSound.play();          // 🔊 تشغيل الصوت
-
-  if(balance < selectedBet){
-    alert("رصيدك غير كافٍ!");
-    return;
-  }
-
-  alert("Spin Started 🎰");
-  spin();
+if(balance < selectedBet){
+alert("رصيدك غير كافٍ!");
+return;
+}
+alert("Spin Started 🎰");
+spin();
 };
+
 function spin() {
 balance -= selectedBet;
 document.getElementById("balance").innerText = balance;
@@ -111,8 +103,6 @@ img.dataset.symbol = symbol.img;
 
 });
 }
-
-
 function checkWin() {
 
     const rows = [
