@@ -105,58 +105,48 @@ function spin() {
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
-  let results = [];
-
-  // 🎰 1. تشغيل كل البكرات في نفس الوقت
   reels.forEach((reel, index) => {
 
     reel.classList.add("spinning");
 
-    let interval = setInterval(() => {
+    let speed = 50;
 
-      reel.innerHTML = "";
+    // 🎰 دوران عمودي حقيقي (تحريك الصور داخل البكرة)
+    const interval = setInterval(() => {
 
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < reel.children.length; i++) {
+
         const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
-        const img = document.createElement("img");
-        img.src = "../images/" + symbol.img;
+        // تغيير الصورة فقط (إحساس دوران عمودي)
+        reel.children[i].src = "../images/" + symbol.img;
 
-        reel.appendChild(img);
       }
 
-    }, 80);
+    }, speed);
 
-    // 🎯 توقف تدريجي لكل بكرة
+    // ⛔ توقف تدريجي (واحدة تلو الأخرى)
     setTimeout(() => {
 
       clearInterval(interval);
 
-      reel.innerHTML = "";
+      // 🎯 نتيجة نهائية
+      for (let i = 0; i < reel.children.length; i++) {
 
-      let finalSymbols = [];
-
-      for (let i = 0; i < 3; i++) {
         const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
-        const img = document.createElement("img");
-        img.src = "../images/" + symbol.img;
+        reel.children[i].src = "../images/" + symbol.img;
 
-        reel.appendChild(img);
-
-        finalSymbols.push(symbol.img);
       }
-
-      results[index] = finalSymbols;
 
       reel.classList.remove("spinning");
 
-      // 🎯 عند توقف آخر بكرة
+      // 🎉 آخر بكرة = فحص الفوز
       if (index === reels.length - 1) {
         checkWin();
       }
 
-    }, 1200 + index * 400); // 👈 هذا يعطي توقف واحد تلو الآخر
+    }, 1200 + index * 400);
 
   });
 }
