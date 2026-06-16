@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: radial-gradient(circle, #111, #000);
+  color: gold;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 70px);
+  grid-template-rows: repeat(4, 70px);
+  gap: 5px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.cell {
+  width: 70px;
+  height: 70px;
+  background: #222;
+  border: 1px solid gold;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  background: gold;
+  border: none;
+  cursor: pointer;
+}
