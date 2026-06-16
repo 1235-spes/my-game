@@ -155,9 +155,6 @@ if (symbolData && symbolData.payouts[matchCount]) {
 
     balance += totalWin;
 
-    updateBalance();   // 👈 تحديث الشاشة (إذا عندك دالة عرض)
-    sync();            // 👈 حفظ في Firebase
-
     alert("🎉 JACKPOT +" + totalWin);
     }
 
