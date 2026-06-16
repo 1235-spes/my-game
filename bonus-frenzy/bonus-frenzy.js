@@ -74,35 +74,54 @@ return;
 alert("Spin Started 🎰");
 spin();
 };
-
 function spin() {
-balance -= selectedBet;
-document.getElementById("balance").innerText = balance;
-reels.forEach((reel, index) => {
-reel.classList.add("spinning");
+  balance -= selectedBet;
+  document.getElementById("balance").innerText = balance;
 
-setTimeout(() => {  
-  reel.innerHTML = "";  
-  for (let i = 0; i < 3; i++) {  
-    const img = document.createElement("img");  
-    const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+  reels.forEach((reel, index) => {
+    reel.classList.add("spinning");
 
-img.src = "../images/" + symbol.img;
-img.dataset.symbol = symbol.img;  
-    reel.appendChild(img);  
-  }  
+    let speed = 50; // بداية سريعة
 
-  reel.classList.remove("spinning");  
+    const interval = setInterval(() => {
 
-  // بعد توقف آخر بكرة، تحقق من الفوز  
-  if (index === reels.length - 1) {  
-    checkWin();  
-  }  
-}, 500 + (index * 300)); // كل بكرة تتأخر قليلاً عن الأخرى  
+      reel.innerHTML = "";
 
+      for (let i = 0; i < 3; i++) {
+        const img = document.createElement("img");
+        const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
-});
+        img.src = "../images/" + symbol.img;
+        reel.appendChild(img);
+      }
+
+    }, speed);
+
+    // 🎯 تبطيء تدريجي لكل بكرة
+    setTimeout(() => {
+      clearInterval(interval);
+
+      reel.innerHTML = "";
+
+      for (let i = 0; i < 3; i++) {
+        const img = document.createElement("img");
+        const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+        img.src = "../images/" + symbol.img;
+        reel.appendChild(img);
+      }
+
+      reel.classList.remove("spinning");
+
+      // آخر بكرة = تحقق فوز
+      if (index === reels.length - 1) {
+        checkWin();
+      }
+
+    }, 1200 + index * 300); // كل reel أبطأ من الثاني
+  });
 }
+
 function checkWin() {
 
     const rows = [
