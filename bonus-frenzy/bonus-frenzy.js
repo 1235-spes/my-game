@@ -38,6 +38,32 @@ document.getElementById("reel3"),
 document.getElementById("reel4"),
 document.getElementById("reel5")
 ];
+function spinReel(reel, delay, onStop) {
+
+  let speed = 30;
+
+  const interval = setInterval(() => {
+
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
+
+  }, speed);
+
+  setTimeout(() => {
+    clearInterval(interval);
+
+    // توقف نهائي
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
+
+    onStop();
+
+  }, delay);
+}
 // تعبئة البكرات لأول مرة عند فتح اللعبة
 function initializeReels() {
 reels.forEach(reel => {
@@ -85,8 +111,7 @@ function spin() {
 
     const interval = setInterval(() => {
 
-      reel.innerHTML = "";
-
+      reel.style.filter = "blur(2px)";
       for (let i = 0; i < 3; i++) {
         const img = document.createElement("img");
         const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
@@ -101,8 +126,7 @@ function spin() {
     setTimeout(() => {
       clearInterval(interval);
 
-      reel.innerHTML = "";
-
+      reel.style.filter = "blur(0px)";
       for (let i = 0; i < 3; i++) {
         const img = document.createElement("img");
         const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
