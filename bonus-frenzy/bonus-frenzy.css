@@ -124,3 +124,11 @@ width: 120px;
 max-width: 100%;
 height: auto;
 display: block;
+.reel {
+  overflow: hidden;
+}
+
+.reel img {
+  display: block;
+  transition: transform 0.08s linear;
+}
