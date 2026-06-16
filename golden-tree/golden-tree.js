@@ -20,14 +20,15 @@ document.getElementById("balance").innerText = balance;
 
 // الرموز
 const SYMBOLS = [
-"tree1.jpg",
-"خوخ.jpg",
-"كرز.jpg",
-"جرس.jpg",
-"اخضر.jpg",
-"ornj.jpg",
-"Anb.jpg",
-"777.jpg"
+const SYMBOLS = [
+  { img: "tree1.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
+  { img: "خوخ.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
+  { img: "كرز.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
+  { img: "جرس.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
+  { img: "اخضر.jpg", payouts: { 3: 8, 4: 16, 5: 32 } },
+  { img: "ornj.jpg", payouts: { 3: 12, 4: 24, 5: 48 } },
+  { img: "Anb.jpg", payouts: { 3: 20, 4: 40, 5: 80 } },
+  { img: "777.jpg", payouts: { 3: 25, 4: 50, 5: 100 } }
 ];
 
 // البكرات
@@ -44,7 +45,12 @@ reels.forEach(reel => {
 reel.innerHTML = "";
 for (let i = 0; i < 3; i++) {
 const img = document.createElement("img");
-img.src = "../images/" + SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+img.src = "../images/" + symbol.img;
+img.dataset.symbol = symbol.img;
+
 reel.appendChild(img);
 }
 });
@@ -80,7 +86,10 @@ setTimeout(() => {
   reel.innerHTML = "";  
   for (let i = 0; i < 3; i++) {  
     const img = document.createElement("img");  
-    img.src = "../images/" + SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];  
+    const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+img.src = "../images/" + symbol.img;
+img.dataset.symbol = symbol.img;  
     reel.appendChild(img);  
   }  
 
