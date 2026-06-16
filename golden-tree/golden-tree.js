@@ -72,12 +72,7 @@ spin();
 
 function spin() {
 balance -= selectedBet;
-
 document.getElementById("balance").innerText = balance;
-
-firebase.database()
-  .ref("users/" + currentUser)
-  .update({ balance });
 reels.forEach((reel, index) => {
 reel.classList.add("spinning");
 
@@ -103,9 +98,9 @@ setTimeout(() => {
 function checkWin() {
 
     const rows = [
-        reels.map(r => r.children[0].src), // الصف العلوي
-        reels.map(r => r.children[1].src), // الصف الأوسط
-        reels.map(r => r.children[2].src)  // الصف السفلي
+        reels.map(r => r.children[0].src),
+        reels.map(r => r.children[1].src),
+        reels.map(r => r.children[2].src)
     ];
 
     let totalWin = 0;
@@ -145,12 +140,12 @@ function checkWin() {
 
         alert("🎉 مبروك! ربحت " + totalWin);
 
-        firebase.database()
-            .ref("users/" + currentUser)
-            .update({ balance });
-
     }
 
     document.getElementById("balance").innerText = balance;
 
-          }
+    firebase.database()
+        .ref("users/" + currentUser)
+        .update({ balance });
+
+}
