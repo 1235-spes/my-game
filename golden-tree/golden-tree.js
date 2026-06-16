@@ -72,8 +72,12 @@ spin();
 
 function spin() {
 balance -= selectedBet;
+
 document.getElementById("balance").innerText = balance;
 
+firebase.database()
+  .ref("users/" + currentUser)
+  .update({ balance });
 reels.forEach((reel, index) => {
 reel.classList.add("spinning");
 
