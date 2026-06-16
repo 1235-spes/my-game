@@ -101,51 +101,65 @@ alert("Spin Started 🎰");
 spin();
 };
 function spin() {
+
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
+  let results = [];
+
+  // 🎰 1. تشغيل كل البكرات في نفس الوقت
   reels.forEach((reel, index) => {
+
     reel.classList.add("spinning");
 
-    let speed = 50; // بداية سريعة
+    let interval = setInterval(() => {
 
-    const interval = setInterval(() => {
+      reel.innerHTML = "";
 
-      reel.style.filter = "blur(2px)";
       for (let i = 0; i < 3; i++) {
-        const img = document.createElement("img");
         const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
+        const img = document.createElement("img");
         img.src = "../images/" + symbol.img;
+
         reel.appendChild(img);
       }
 
-    }, speed);
+    }, 80);
 
-    // 🎯 تبطيء تدريجي لكل بكرة
+    // 🎯 توقف تدريجي لكل بكرة
     setTimeout(() => {
+
       clearInterval(interval);
 
-      reel.style.filter = "blur(0px)";
+      reel.innerHTML = "";
+
+      let finalSymbols = [];
+
       for (let i = 0; i < 3; i++) {
-        const img = document.createElement("img");
         const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
+        const img = document.createElement("img");
         img.src = "../images/" + symbol.img;
+
         reel.appendChild(img);
+
+        finalSymbols.push(symbol.img);
       }
+
+      results[index] = finalSymbols;
 
       reel.classList.remove("spinning");
 
-      // آخر بكرة = تحقق فوز
+      // 🎯 عند توقف آخر بكرة
       if (index === reels.length - 1) {
         checkWin();
       }
 
-    }, 1200 + index * 300); // كل reel أبطأ من الثاني
+    }, 1200 + index * 400); // 👈 هذا يعطي توقف واحد تلو الآخر
+
   });
 }
-
 function checkWin() {
 
     const rows = [
