@@ -96,17 +96,51 @@ setTimeout(() => {
 
 });
 }
-function checkWin(){
-const firstRow = reels.map(r => r.children[0].src);
+function checkWin() {
 
-if(new Set(firstRow).size === 1){
-balance += selectedBet * 2;
-alert("مبروك! فزت!");
-}
+    const rows = [
+        reels.map(r => r.children[0].src), // الصف العلوي
+        reels.map(r => r.children[1].src), // الصف الأوسط
+        reels.map(r => r.children[2].src)  // الصف السفلي
+    ];
 
-document.getElementById("balance").innerText = balance;
+    let totalWin = 0;
 
-firebase.database()
-.ref("users/" + currentUser)
-.update({ balance });
+    rows.forEach(row => {
+
+        const counts = {};
+
+        row.forEach(symbol => {
+            counts[symbol] = (counts[symbol] || 0) + 1;
+        });
+
+        Object.values(counts).forEach(count => {
+
+            if (count === 3) {
+                totalWin += selectedBet * 2;
+            }
+
+            if (count === 4) {
+                totalWin += selectedBet * 5;
+            }
+
+            if (count === 5) {
+                totalWin += selectedBet * 10;
+            }
+
+        });
+
+    });
+
+    if (totalWin > 0) {
+        balance += totalWin;
+        alert("🎉 مبروك! ربحت " + totalWin);
+    }
+
+    document.getElementById("balance").innerText = balance;
+
+    firebase.database()
+        .ref("users/" + currentUser)
+        .update({ balance });
+
 }
