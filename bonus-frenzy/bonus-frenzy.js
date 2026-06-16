@@ -71,38 +71,52 @@ if(balance < selectedBet){
 alert("رصيدك غير كافٍ!");
 return;
 }
-alert("Spin Started 🎰");
+
 spin();
 };
-
 function spin() {
-balance -= selectedBet;
-document.getElementById("balance").innerText = balance;
-reels.forEach((reel, index) => {
-reel.classList.add("spinning");
 
-setTimeout(() => {  
-  reel.innerHTML = "";  
-  for (let i = 0; i < 3; i++) {  
-    const img = document.createElement("img");  
-    const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+  if (balance < selectedBet) {
+    alert("❌ لا يوجد رصيد");
+    return;
+  }
 
-img.src = "../images/" + symbol.img;
-img.dataset.symbol = symbol.img;  
-    reel.appendChild(img);  
-  }  
+  balance -= selectedBet;
+  updateBalance();
+  sync();
 
-  reel.classList.remove("spinning");  
+  // 🔥 تأثير دوران احترافي
+  reels.forEach((r) => {
+    r.style.opacity = "0.5";
+    r.style.transform = "scale(0.95)";
+  });
 
-  // بعد توقف آخر بكرة، تحقق من الفوز  
-  if (index === reels.length - 1) {  
-    checkWin();  
-  }  
-}, 500 + (index * 300)); // كل بكرة تتأخر قليلاً عن الأخرى  
+  let spins = 10;
+  let count = 0;
 
+  let interval = setInterval(() => {
 
-});
+    reels.forEach(r => fillReel(r));
+
+    count++;
+
+    if (count >= spins) {
+      clearInterval(interval);
+
+      reels.forEach((r, i) => {
+        setTimeout(() => {
+          fillReel(r);
+          r.style.opacity = "1";
+          r.style.transform = "scale(1)";
+        }, i * 200);
+      });
+
+      setTimeout(checkWin, 1000);
+    }
+
+  }, 80);
 }
+
 function checkWin() {
 
     const rows = [
