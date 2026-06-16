@@ -1,4 +1,4 @@
-ifselectedBet = 300;
+let selectedBet = 300;
 let balance = 0;
 
 const currentUser = localStorage.getItem("currentUser");
@@ -71,52 +71,38 @@ if(balance < selectedBet){
 alert("رصيدك غير كافٍ!");
 return;
 }
-
+alert("Spin Started 🎰");
 spin();
 };
+
 function spin() {
+balance -= selectedBet;
+document.getElementById("balance").innerText = balance;
+reels.forEach((reel, index) => {
+reel.classList.add("spinning");
 
-  if (balance < selectedBet) {
-    alert("❌ لا يوجد رصيد");
-    return;
-  }
+setTimeout(() => {  
+  reel.innerHTML = "";  
+  for (let i = 0; i < 3; i++) {  
+    const img = document.createElement("img");  
+    const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
-  balance -= selectedBet;
-  updateBalance();
-  sync();
+img.src = "../images/" + symbol.img;
+img.dataset.symbol = symbol.img;  
+    reel.appendChild(img);  
+  }  
 
-  // 🔥 تأثير دوران احترافي
-  reels.forEach((r) => {
-    r.style.opacity = "0.5";
-    r.style.transform = "scale(0.95)";
-  });
+  reel.classList.remove("spinning");  
 
-  let spins = 10;
-  let count = 0;
+  // بعد توقف آخر بكرة، تحقق من الفوز  
+  if (index === reels.length - 1) {  
+    checkWin();  
+  }  
+}, 500 + (index * 300)); // كل بكرة تتأخر قليلاً عن الأخرى  
 
-  let interval = setInterval(() => {
 
-    reels.forEach(r => fillReel(r));
-
-    count++;
-
-    if (count >= spins) {
-      clearInterval(interval);
-
-      reels.forEach((r, i) => {
-        setTimeout(() => {
-          fillReel(r);
-          r.style.opacity = "1";
-          r.style.transform = "scale(1)";
-        }, i * 200);
-      });
-
-      setTimeout(checkWin, 1000);
-    }
-
-  }, 80);
+});
 }
-
 function checkWin() {
 
     const rows = [
@@ -153,9 +139,10 @@ if (symbolData && symbolData.payouts[matchCount]) {
 
     if (totalWin > 0) {
 
-    balance += totalWin;
+        balance += totalWin;
 
-    alert("🎉 JACKPOT +" + totalWin);
+        alert("🎉 مبروك! ربحت " + totalWin);
+
     }
 
     document.getElementById("balance").innerText = balance;
