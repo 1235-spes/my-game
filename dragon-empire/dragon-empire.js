@@ -86,12 +86,15 @@ function checkWin() {
   let max = Math.max(...Object.values(counts));
 
   if (max === 3) {
-    balance += selectedBet * 5;
-    alert("🔥 WIN x5!");
-  }
+  let win = selectedBet * 5;
+  balance += win;
+  alert("🔥 WIN x5! +" + win);
+                }
 
   document.getElementById("balance").innerText = balance;
 }
-
+firebase.database()
+  .ref("users/" + currentUser)
+  .update({ balance });
 reels.forEach(fillReel);
 document.getElementById("spin").onclick = spin;
