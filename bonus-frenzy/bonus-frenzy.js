@@ -1,7 +1,14 @@
-let balance = 1000;
 let selectedBet = 300;
 let bonusMode = false;
 
+const currentUser = localStorage.getItem("currentUser");
+
+if (!currentUser) {
+  alert("يرجى تسجيل الدخول أولاً!");
+  window.location.href = "../index.html";
+}
+
+/* 🎰 الرموز */
 const symbols = [
   "tree1.jpg",
   "خوخ.jpg",
@@ -12,7 +19,18 @@ const symbols = [
 
 const grid = document.getElementById("grid");
 
-// إنشاء الشبكة 5×4
+/* 🔥 تحميل GameEngine */
+GameEngine.init(currentUser).then(() => {
+  createGrid();
+  updateBalanceUI();
+});
+
+/* 💰 تحديث الرصيد */
+function updateBalanceUI() {
+  document.getElementById("balance").innerText = GameEngine.balance;
+}
+
+/* إنشاء الشبكة */
 function createGrid() {
   grid.innerHTML = "";
   for (let i = 0; i < 20; i++) {
@@ -22,27 +40,16 @@ function createGrid() {
   }
 }
 
-// توليد رمز
+/* 🎲 رمز */
 function randomSymbol() {
-  let pool = symbols;
-
-  // 🔥 إذا Bonus Mode يزيد الحظ
-  if (bonusMode) {
-    pool = [...symbols, "777.jpg"];
-  }
-
+  let pool = bonusMode ? [...symbols, "777.jpg"] : symbols;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-// spin
+/* 🎰 spin */
 document.getElementById("spin").onclick = () => {
 
-  if (balance < selectedBet) {
-    alert("❌ لا يوجد رصيد");
-    return;
-  }
-
-  balance -= selectedBet;
+  if (!GameEngine.spendBet()) return;
 
   let cells = document.querySelectorAll(".cell");
 
@@ -50,26 +57,31 @@ document.getElementById("spin").onclick = () => {
     cell.innerHTML = `<img src="../images/${randomSymbol()}" width="60">`;
   });
 
-  document.getElementById("balance").innerText = balance;
-
+  updateBalanceUI();
   checkWin();
 };
 
-// bonus buy
+/* 🔥 شراء بونص */
 document.getElementById("bonus").onclick = () => {
 
-  if (balance < 500) {
+  if (GameEngine.balance < 500) {
     alert("❌ لا يوجد رصيد للبونص");
     return;
   }
 
-  balance -= 500;
+  GameEngine.balance -= 500;
+  GameEngine.sync();
+
   bonusMode = true;
+
+  updateBalanceUI();
 
   alert("🔥 BONUS ACTIVATED!");
 };
 
+/* 🏆 الفوز */
 function checkWin() {
+
   let cells = document.querySelectorAll(".cell");
 
   let counts = {};
@@ -90,11 +102,9 @@ function checkWin() {
   if (bonusMode) win *= 2;
 
   if (win > 0) {
-    balance += win;
+    GameEngine.addWin(win);
     alert("🔥 WIN +" + win);
   }
 
-  document.getElementById("balance").innerText = balance;
-};
-
-createGrid();
+  updateBalanceUI();
+}
