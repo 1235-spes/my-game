@@ -48,9 +48,8 @@ const GameEngine = {
     this.updateUI();
   },
 
-  sync() {
-    firebase.database()
-      .ref("users/" + this.currentUser)
-      .set({ balance: this.balance });
-  }
-};
+  .sync() {
+  firebase.database()
+    .ref("users/" + this.currentUser)
+    .update({ balance: this.balance });
+}
