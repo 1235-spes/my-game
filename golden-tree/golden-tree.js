@@ -129,18 +129,13 @@ function checkWin() {
 
         }
 
-        if (matchCount === 3) {
-            totalWin += selectedBet * 2;
-        }
+        const symbolName = firstSymbol.split("/").pop();
 
-        if (matchCount === 4) {
-            totalWin += selectedBet * 5;
-        }
+const symbolData = SYMBOLS.find(s => s.img === symbolName);
 
-        if (matchCount === 5) {
-            totalWin += selectedBet * 10;
-        }
-
+if (symbolData && symbolData.payouts[matchCount]) {
+    totalWin += selectedBet * symbolData.payouts[matchCount];
+}
     });
 
     if (totalWin > 0) {
