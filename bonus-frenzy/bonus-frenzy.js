@@ -127,8 +127,6 @@ function spin() {
 
     const strip = reel.querySelector(".reel-strip");
 
-const strip = reel.querySelector(".reel-strip");
-
 strip.style.transition = "none";
 
 // حركة دوران ثابتة (سريعة)
