@@ -117,40 +117,38 @@ function spin() {
   reels.forEach((reel, index) => {
     reel.classList.add("spinning");
 
-    let speed = 40;
+    let speed = 50;
 
     // 🎰 دوران عمودي حقيقي (تحريك الصور داخل البكرة)
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
 
-  reel.style.transform = `translateY(${Math.random() * 4 - 2}px)`;
+      for (let i = 0; i < reel.children.length; i++) {
 
-  for (let i = 0; i < reel.children.length; i++) {
+        const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
-    const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-    reel.children[i].src = "../images/" + symbol.img;
+        // تغيير الصورة فقط (إحساس دوران عمودي)
+        reel.children[i].src = "../images/" + symbol.img;
 
-  }
+      }
 
-}, 40);
+    }, speed);
 
+    // ⛔ توقف تدريجي (واحدة تلو الأخرى)
+    setTimeout(() => {
 
-setTimeout(() => {
+      clearInterval(interval);
 
-  clearInterval(interval);
+      // 🎯 نتيجة نهائية
+      for (let i = 0; i < reel.children.length; i++) {
 
-  reel.style.transform = "translateY(0px)";
-  reel.style.transition = "all 0.2s ease-out";
+        const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
-  for (let i = 0; i < reel.children.length; i++) {
+        reel.children[i].src = "../images/" + symbol.img;
 
-    const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-    reel.children[i].src = "../images/" + symbol.img;
+      }
 
-  }
+      reel.classList.remove("spinning");
 
-  reel.classList.remove("spinning");
-
-}, delay);
       // 🎉 آخر بكرة = فحص الفوز
       if (index === reels.length - 1) {
 
