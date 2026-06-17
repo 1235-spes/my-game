@@ -133,7 +133,7 @@ strip.style.transition = "none";
 let position = 0;
 
 const interval = setInterval(() => {
-  position += 20; // سرعة النزول
+  position += 60; // سرعة النزول
   strip.style.transform = `translateY(-${position}px)`;
 }, 16);
 
