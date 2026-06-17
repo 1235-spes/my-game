@@ -112,53 +112,60 @@ function spin() {
   document.getElementById("balance").innerText = balance;
 
   spinSound.currentTime = 0;
-  spinSound.play(); // 🔊 يبدأ صوت الدوران
+  spinSound.play();
 
   reels.forEach((reel, index) => {
+
     reel.classList.add("spinning");
 
-    let speed = 50;
+    let speed = 25; // بداية سريعة جدًا
 
-    // 🎰 دوران عمودي حقيقي (تحريك الصور داخل البكرة)
     const interval = setInterval(() => {
+
+      // 🎰 إحساس "scroll" بدل تبديل عشوائي فقط
+      reel.style.transform = `translateY(${Math.random() * 6 - 3}px)`;
 
       for (let i = 0; i < reel.children.length; i++) {
 
         const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-
-        // تغيير الصورة فقط (إحساس دوران عمودي)
         reel.children[i].src = "../images/" + symbol.img;
 
       }
 
     }, speed);
 
-    // ⛔ توقف تدريجي (واحدة تلو الأخرى)
+    // ⛔ توقف تدريجي أقوى (إحساس فيديو)
     setTimeout(() => {
 
       clearInterval(interval);
 
-      // 🎯 نتيجة نهائية
+      // 🎯 توقف ناعم
+      reel.style.transition = "transform 0.5s cubic-bezier(0.17, 0.67, 0.21, 1)";
+      reel.style.transform = "translateY(0px)";
+
       for (let i = 0; i < reel.children.length; i++) {
 
         const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-
         reel.children[i].src = "../images/" + symbol.img;
 
       }
 
       reel.classList.remove("spinning");
 
+      // 🔊 صوت التوقف لكل بكرة
+      stopSound.currentTime = 0;
+      stopSound.play();
+
       // 🎉 آخر بكرة = فحص الفوز
       if (index === reels.length - 1) {
 
-  spinSound.pause();
-  spinSound.currentTime = 0;
+        spinSound.pause();
+        spinSound.currentTime = 0;
 
-  checkWin();
+        checkWin();
       }
 
-    }, 1200 + index * 400);
+    }, 1200 + index * 500);
 
   });
 }
