@@ -177,11 +177,12 @@ display: block;
 .reel-strip {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
-.reel-strip img {
+
+  .reel-strip img {
   height: 60px;
   width: 60px;
   display: block;
+  object-fit: cover;
 }
-  
