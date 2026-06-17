@@ -1,6 +1,6 @@
 let selectedBet = 300;
 let balance = 0;
-const spinSound = new Audio("../sounds/صوت دوران البكرات.m4a");
+const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
 
