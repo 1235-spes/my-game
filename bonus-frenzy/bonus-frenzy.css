@@ -160,3 +160,14 @@ display: block;
   height: 60px;
   margin: 5px auto;
 }
+.reel {
+  overflow: hidden;
+  height: 250px;
+  position: relative;
+}
+
+.reel-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 1s cubic-bezier(0.17, 0.67, 0.21, 1);
+}
