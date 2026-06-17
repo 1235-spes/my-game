@@ -127,32 +127,42 @@ function spin() {
 
     const strip = reel.querySelector(".reel-strip");
 
-    let position = 0;
+const strip = reel.querySelector(".reel-strip");
 
-    const interval = setInterval(() => {
-      position += 20;
-      strip.style.transform = `translateY(-${position}px)`;
-    }, 16);
+strip.style.transition = "none";
 
-    setTimeout(() => {
+// حركة دوران ثابتة (سريعة)
+let position = 0;
 
-      clearInterval(interval);
+const interval = setInterval(() => {
+  position += 20; // سرعة النزول
+  strip.style.transform = `translateY(-${position}px)`;
+}, 16);
 
-      const STEP = 60; // نفس ارتفاع الصورة
+// التوقف
+setTimeout(() => {
 
-const final = Math.floor(Math.random() * 10) * STEP;
-      strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
-      strip.style.transform = `translateY(-${final}px)`;
+  clearInterval(interval);
 
-      stopSound.play();
+  const STEP = 60; // لازم يطابق ارتفاع الصورة
 
-      if (index === reels.length - 1) {
-        spinSound.pause();
-        checkWin();
-      }
+  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
+  const final = finalIndex * STEP;
 
-    }, 1200 + index * 400);
+  strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
+  strip.style.transform = `translateY(-${final}px)`;
 
+  stopSound.currentTime = 0;
+  stopSound.play();
+
+  if (index === reels.length - 1) {
+    spinSound.pause();
+    checkWin();
+  }
+
+}, 1200 + index * 400);
+
+      
   });
 }
 function checkWin() {
