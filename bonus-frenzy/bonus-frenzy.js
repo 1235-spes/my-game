@@ -138,8 +138,9 @@ function spin() {
 
       clearInterval(interval);
 
-      const final = Math.floor(Math.random() * 10) * 80;
+      const STEP = 60; // نفس ارتفاع الصورة
 
+const final = Math.floor(Math.random() * 10) * STEP;
       strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
       strip.style.transform = `translateY(-${final}px)`;
 
