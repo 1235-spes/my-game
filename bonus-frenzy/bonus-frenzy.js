@@ -74,21 +74,15 @@ function spinReel(reel, delay, onStop) {
 function initializeReels() {
 reels.forEach(reel => {
 reel.innerHTML = "";
+for (let i = 0; i < 3; i++) {
+const img = document.createElement("img");
 
-const inner = document.createElement("div");
-inner.classList.add("reel-inner");
+const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
-for (let i = 0; i < 10; i++) {
-  const img = document.createElement("img");
+img.src = "../images/" + symbol.img;
+img.dataset.symbol = symbol.img;
 
-  const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-
-  img.src = "../images/" + symbol.img;
-
-  inner.appendChild(img);
-}
-
-reel.appendChild(inner);
+reel.appendChild(img);
 }
 });
 }
@@ -149,34 +143,30 @@ function spin() {
       reel.style.transition = "transform 0.5s cubic-bezier(0.17, 0.67, 0.21, 1)";
       reel.style.transform = "translateY(0px)";
 
-      const inner = reel.querySelector(".reel-inner");
+      for (let i = 0; i < reel.children.length; i++) {
 
-let position = 0;
+        const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+        reel.children[i].src = "../images/" + symbol.img;
 
-const interval = setInterval(() => {
+      }
 
-  position += 25;
+      reel.classList.remove("spinning");
 
-  inner.style.transform = `translateY(-${position}px)`;
+      // 🔊 صوت التوقف لكل بكرة
+      stopSound.currentTime = 0;
+      stopSound.play();
 
-}, 16);
+      // 🎉 آخر بكرة = فحص الفوز
+      if (index === reels.length - 1) {
 
+        spinSound.pause();
+        spinSound.currentTime = 0;
 
-// ⛔ التوقف
-setTimeout(() => {
+        checkWin();
+      }
 
-  clearInterval(interval);
+    }, 1200 + index * 500);
 
-  const finalOffset = Math.floor(Math.random() * 5) * 60;
-
-  inner.style.transition = "transform 0.6s cubic-bezier(0.17, 0.67, 0.21, 1)";
-  inner.style.transform = `translateY(-${finalOffset}px)`;
-
-  if (index === reels.length - 1) {
-    checkWin();
-  }
-
-}, 1200 + index * 400);
   });
 }
 function checkWin() {
