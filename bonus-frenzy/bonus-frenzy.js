@@ -71,20 +71,25 @@ function spinReel(reel, delay, onStop) {
   }, delay);
 }
 // تعبئة البكرات لأول مرة عند فتح اللعبة
+
 function initializeReels() {
-reels.forEach(reel => {
-reel.innerHTML = "";
-for (let i = 0; i < 3; i++) {
-const img = document.createElement("img");
+  reels.forEach(reel => {
 
-const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+    const strip = reel.querySelector(".reel-strip");
+    strip.innerHTML = "";
 
-img.src = "../images/" + symbol.img;
-img.dataset.symbol = symbol.img;
+    // نملأ الشريط بصور كثيرة (هذا سر الاحتراف)
+    for (let i = 0; i < 25; i++) {
 
-reel.appendChild(img);
-}
-});
+      const img = document.createElement("img");
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+      img.src = "../images/" + symbol.img;
+
+      strip.appendChild(img);
+    }
+
+  });
 }
 
 // استدعاء الدالة
@@ -116,56 +121,38 @@ function spin() {
 
   reels.forEach((reel, index) => {
 
-    reel.classList.add("spinning");
+    const strip = reel.querySelector(".reel-strip");
 
-    let speed = 25; // بداية سريعة جدًا
+    let position = 0;
+    let speed = 30;
 
+    // 🔥 دوران سريع
     const interval = setInterval(() => {
-
-      // 🎰 إحساس "scroll" بدل تبديل عشوائي فقط
-      reel.style.transform = `translateY(${Math.random() * 6 - 3}px)`;
-
-      for (let i = 0; i < reel.children.length; i++) {
-
-        const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-        reel.children[i].src = "../images/" + symbol.img;
-
-      }
-
+      position += 25;
+      strip.style.transform = `translateY(${position}px)`;
     }, speed);
 
-    // ⛔ توقف تدريجي أقوى (إحساس فيديو)
+    // ⛔ توقف تدريجي
     setTimeout(() => {
 
       clearInterval(interval);
 
-      // 🎯 توقف ناعم
-      reel.style.transition = "transform 0.5s cubic-bezier(0.17, 0.67, 0.21, 1)";
-      reel.style.transform = "translateY(0px)";
+      let finalPos = Math.floor(Math.random() * 8) * 80;
 
-      for (let i = 0; i < reel.children.length; i++) {
+      strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
+      strip.style.transform = `translateY(${finalPos}px)`;
 
-        const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-        reel.children[i].src = "../images/" + symbol.img;
-
-      }
-
-      reel.classList.remove("spinning");
-
-      // 🔊 صوت التوقف لكل بكرة
       stopSound.currentTime = 0;
       stopSound.play();
 
-      // 🎉 آخر بكرة = فحص الفوز
+      // آخر بكرة
       if (index === reels.length - 1) {
-
         spinSound.pause();
         spinSound.currentTime = 0;
-
         checkWin();
       }
 
-    }, 1200 + index * 500);
+    }, 1200 + index * 400);
 
   });
 }
