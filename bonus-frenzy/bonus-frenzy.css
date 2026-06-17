@@ -170,4 +170,18 @@ display: block;
   display: flex;
   flex-direction: column;
   transition: transform 1s cubic-bezier(0.17, 0.67, 0.21, 1);
+}.reel {
+  overflow: hidden;
+  height: 240px; /* مهم جداً */
 }
+
+.reel-strip img {
+  height: 60px;
+  width: 60px;
+  display: block;
+}
+  .reel-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  }
