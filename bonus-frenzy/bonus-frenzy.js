@@ -116,6 +116,10 @@ function spin() {
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
+  firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
+
   spinSound.currentTime = 0;
   spinSound.play();
 
@@ -124,31 +128,25 @@ function spin() {
     const strip = reel.querySelector(".reel-strip");
 
     let position = 0;
-    let speed = 30;
 
-    // 🔥 دوران سريع
     const interval = setInterval(() => {
-      position += 25;
-      strip.style.transform = `translateY(${position}px)`;
-    }, speed);
+      position += 20;
+      strip.style.transform = `translateY(-${position}px)`;
+    }, 16);
 
-    // ⛔ توقف تدريجي
     setTimeout(() => {
 
       clearInterval(interval);
 
-      let finalPos = Math.floor(Math.random() * 8) * 80;
+      const final = Math.floor(Math.random() * 10) * 80;
 
       strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
-      strip.style.transform = `translateY(${finalPos}px)`;
+      strip.style.transform = `translateY(-${final}px)`;
 
-      stopSound.currentTime = 0;
       stopSound.play();
 
-      // آخر بكرة
       if (index === reels.length - 1) {
         spinSound.pause();
-        spinSound.currentTime = 0;
         checkWin();
       }
 
