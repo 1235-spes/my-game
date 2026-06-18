@@ -7,19 +7,11 @@
   <link rel="stylesheet" href="bonus-frenzy.css">
 </head>
 <body>
-
 <div class="game-container">
   <div id="game-section">
     <h1 class="game-title">
   <img src="../images/gogo.jpg" alt="Golden Tree Logo" class="game-logo">
 </h1>
-
-  <div class="jackpot-box">
-  <div class="jp-slot" id="jp1">♠️</div>
-  <div class="jp-slot" id="jp2">♣️</div>
-  <div class="jp-slot" id="jp3">♦️</div>
-  <div class="jp-slot" id="jp4">♥️</div>
-  </div>
     <div class="reels">
 
   <div class="reel" id="reel1">
@@ -59,20 +51,13 @@
   </button>
 </div>
 
-   <div class="info">
-  الرهان: <span id="bet">300</span>
+    <div class="info">
+      الرهان: <span id="bet">300</span>
+      الرصيد: <span id="balance">0</span>
+    </div>
+  </div>
 </div>
 
-<div class="info">
-  الرصيد: <span id="balance">0</span>
-</div>
- <div class="info">
-  Jackpot: <span id="jackpot">0</span>
-</div>
-
-<div class="info">
-  Jackpot Value: <span id="jackpot-value">0</span>
-</div> 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
