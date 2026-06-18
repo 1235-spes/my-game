@@ -1,6 +1,14 @@
 let selectedBet = 300;
 let balance = 0;
 let jackpot = 0;
+let jackpotSymbols = {
+  spade: { symbol: "♠️", value: 0 },
+  club: { symbol: "♣️", value: 0 },
+  diamond: { symbol: "♦️", value: 0 },
+  heart: { symbol: "♥️", value: 0 }
+};
+
+const symbolKeys = ["spade", "club", "diamond", "heart"];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
