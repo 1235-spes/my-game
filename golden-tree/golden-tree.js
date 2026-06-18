@@ -1,6 +1,12 @@
 let selectedBet = 300;
 let balance = 0;
+const spinSound = new Audio("../sounds/spin.mp3");
+spinSound.loop = true;
+spinSound.volume = 0.4;
 
+const stopSound = new Audio("../sounds/stop.mp3");
+const winSound = new Audio("../sounds/win.mp3");
+const jackpotSound = new Audio("../sounds/jackpot.mp3");
 const currentUser = localStorage.getItem("currentUser");
 if (!currentUser) {
 alert("يرجى تسجيل الدخول أولاً!");
@@ -38,21 +44,52 @@ document.getElementById("reel3"),
 document.getElementById("reel4"),
 document.getElementById("reel5")
 ];
-// تعبئة البكرات لأول مرة عند فتح اللعبة
-function initializeReels() {
-reels.forEach(reel => {
-reel.innerHTML = "";
-for (let i = 0; i < 3; i++) {
-const img = document.createElement("img");
+function spinReel(reel, delay, onStop) {
 
-const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+  let speed = 30;
 
-img.src = "../images/" + symbol.img;
-img.dataset.symbol = symbol.img;
+  const interval = setInterval(() => {
 
-reel.appendChild(img);
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
+
+  }, speed);
+
+  setTimeout(() => {
+    clearInterval(interval);
+
+    // توقف نهائي
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
+
+    onStop();
+
+  }, delay);
 }
-});
+// تعبئة البكرات لأول مرة عند فتح اللعبة
+
+function initializeReels() {
+  reels.forEach(reel => {
+
+    const strip = reel.querySelector(".reel-strip");
+    strip.innerHTML = "";
+
+    // نملأ الشريط بصور كثيرة (هذا سر الاحتراف)
+    for (let i = 0; i < 25; i++) {
+
+      const img = document.createElement("img");
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+      img.src = "../images/" + symbol.img;
+
+      strip.appendChild(img);
+    }
+
+  });
 }
 
 // استدعاء الدالة
@@ -74,34 +111,57 @@ return;
 alert("Spin Started 🎰");
 spin();
 };
-
 function spin() {
-balance -= selectedBet;
-document.getElementById("balance").innerText = balance;
-reels.forEach((reel, index) => {
-reel.classList.add("spinning");
 
-setTimeout(() => {  
-  reel.innerHTML = "";  
-  for (let i = 0; i < 3; i++) {  
-    const img = document.createElement("img");  
-    const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+  balance -= selectedBet;
+  document.getElementById("balance").innerText = balance;
 
-img.src = "../images/" + symbol.img;
-img.dataset.symbol = symbol.img;  
-    reel.appendChild(img);  
-  }  
+  firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
 
-  reel.classList.remove("spinning");  
+  spinSound.currentTime = 0;
+  spinSound.play();
 
-  // بعد توقف آخر بكرة، تحقق من الفوز  
-  if (index === reels.length - 1) {  
-    checkWin();  
-  }  
-}, 500 + (index * 300)); // كل بكرة تتأخر قليلاً عن الأخرى  
+  reels.forEach((reel, index) => {
 
+    const strip = reel.querySelector(".reel-strip");
 
-});
+strip.style.transition = "none";
+
+// حركة دوران ثابتة (سريعة)
+let position = 0;
+
+const interval = setInterval(() => {
+  position += 60; // سرعة النزول
+  strip.style.transform = `translateY(-${position}px)`;
+}, 16);
+
+// التوقف
+setTimeout(() => {
+
+  clearInterval(interval);
+
+  const STEP = 60; // لازم يطابق ارتفاع الصورة
+
+  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
+  const final = finalIndex * STEP;
+
+  strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
+  strip.style.transform = `translateY(-${final}px)`;
+
+  stopSound.currentTime = 0;
+  stopSound.play();
+
+  if (index === reels.length - 1) {
+    spinSound.pause();
+    checkWin();
+  }
+
+}, 1200 + index * 400);
+
+      
+  });
 }
 function checkWin() {
 
@@ -151,4 +211,4 @@ if (symbolData && symbolData.payouts[matchCount]) {
         .ref("users/" + currentUser)
         .update({ balance });
 
-}
+             }
