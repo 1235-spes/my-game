@@ -242,4 +242,6 @@ function startFakeJackpot() {
   }, 200);
 }
 
-startFakeJackpot();
+window.addEventListener("load", () => {
+  startFakeJackpot();
+});
