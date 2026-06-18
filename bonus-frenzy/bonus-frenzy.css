@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  padding: 20px 10px;
+  padding: 10px;
   background: url("../images/Kalfia.jpg") center center / cover no-repeat fixed;
   color: white;
   font-family: Arial, sans-serif;
@@ -10,7 +10,7 @@ body {
   align-items: center;
 
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .game-container {
@@ -22,6 +22,9 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 12px;
+
+  height: 100vh;
+  justify-content: space-between;
 }
 
 .reels {
@@ -135,11 +138,4 @@ color: gold;
   gap: 40px;
   }
 
-  .reels {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 100%;
-  }
-
+  
