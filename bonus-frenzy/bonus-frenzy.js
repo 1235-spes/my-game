@@ -12,7 +12,17 @@ if (!currentUser) {
 alert("يرجى تسجيل الدخول أولاً!");
 window.location.href = "../index.html";
 }
-
+firebase.database().ref("jackpot/global").once("value").then(snap => {
+  if (!snap.exists()) {
+    firebase.database().ref("jackpot/global").set({
+      spade: 0,
+      club: 0,
+      diamond: 0,
+      heart: 0,
+      jackpotValue: 0
+    });
+  }
+});
 // جلب الرصيد من Firebase
 firebase.database().ref("users/" + currentUser + "/balance").get()
 .then(snapshot => {
