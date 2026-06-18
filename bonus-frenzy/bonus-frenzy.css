@@ -1,30 +1,18 @@
 body {
-  margin: 0;
-  padding: 10px;
-  background: url("../images/Kalfia.jpg") center center / cover no-repeat fixed;
-  color: white;
-  font-family: Arial, sans-serif;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  min-height: 100vh;
-  overflow: hidden;
+margin: 0;
+padding: 20px 10px;
+background: url("../images/Kalfia.jpg") center center / cover no-repeat fixed;
+color: white;
+font-family: Arial, sans-serif;
+display: flex;
+justify-content: center;
+min-height: 100vh;
 }
 
 .game-container {
-  text-align: center;
-  width: 100%;
-  max-width: 480px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-
-  height: 100vh;
-  justify-content: space-between;
+text-align: center;
+width: 100%;
+max-width: 480px;
 }
 
 .reels {
@@ -91,7 +79,8 @@ margin-top: 10px;
 font-size: 16px;
 color: gold;
 }
-#fake-jackpot {
+
+fake-jackpot {
   text-align: center;
   color: gold;
   font-size: 20px;
