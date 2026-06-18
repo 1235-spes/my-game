@@ -40,8 +40,20 @@ width: 100%;
 display: flex;
 flex-direction: column;
 align-items: center;
-}
 
+will-change: transform;
+}
+.reel {
+width: 75px;
+height: 240px;
+overflow: hidden;
+position: relative;
+border: 3px solid #ffd700;
+border-radius: 18px;
+background: linear-gradient(to bottom, #000, #111);
+
+display: block;
+}
 .reel-strip img {
 width: 60px;
 height: 60px;
