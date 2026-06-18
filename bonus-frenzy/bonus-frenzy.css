@@ -1,18 +1,27 @@
 body {
-margin: 0;
-padding: 20px 10px;
-background: url("../images/Kalfia.jpg") center center / cover no-repeat fixed;
-color: white;
-font-family: Arial, sans-serif;
-display: flex;
-justify-content: center;
-min-height: 100vh;
+  margin: 0;
+  padding: 20px 10px;
+  background: url("../images/Kalfia.jpg") center center / cover no-repeat fixed;
+  color: white;
+  font-family: Arial, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .game-container {
-text-align: center;
-width: 100%;
-max-width: 480px;
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .reels {
@@ -126,6 +135,11 @@ color: gold;
   gap: 40px;
   }
 
-  text-align: center;
-}
+  .reels {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 100%;
+  }
 
