@@ -1,5 +1,5 @@
 let selectedBet = 300;
-let babalance 0;
+let balance = 0;
 let jackpot = 0;
 
 let jackpotSymbols = {
