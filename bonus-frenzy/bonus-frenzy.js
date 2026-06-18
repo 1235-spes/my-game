@@ -12,17 +12,7 @@ if (!currentUser) {
 alert("يرجى تسجيل الدخول أولاً!");
 window.location.href = "../index.html";
 }
-firebase.database().ref("jackpot/global").once("value").then(snap => {
-  if (!snap.exists()) {
-    firebase.database().ref("jackpot/global").set({
-      spade: 0,
-      club: 0,
-      diamond: 0,
-      heart: 0,
-      jackpotValue: 0
-    });
-  }
-});
+
 // جلب الرصيد من Firebase
 firebase.database().ref("users/" + currentUser + "/balance").get()
 .then(snapshot => {
@@ -33,20 +23,7 @@ firebase.database().ref("users/" + currentUser).update({ balance });
 document.getElementById("balance").innerText = balance;
 })
 .catch(err => console.error(err));
-firebase.database().ref("jackpot/global").on("value", snap => {
-  const jp = snap.val() || {
-    spade: 0,
-    club: 0,
-    diamond: 0,
-    heart: 0,
-    jackpotValue: 0
-  };
 
-  document.getElementById("jp1").innerText = "♠️ " + jp.spade;
-  document.getElementById("jp2").innerText = "♣️ " + jp.club;
-  document.getElementById("jp3").innerText = "♦️ " + jp.diamond;
-  document.getElementById("jp4").innerText = "♥️ " + jp.heart;
-});
 // الرموز
 const SYMBOLS = [
   { img: "tree1.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
@@ -138,33 +115,11 @@ function spin() {
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
-firebase.database().ref("jackpot/global").transaction(jp => {
 
-  if (!jp) {
-    jp = {
-      spade: 0,
-      club: 0,
-      diamond: 0,
-      heart: 0,
-      jackpotValue: 0
-    };
-  }
+  firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
 
-  let add = Math.floor(selectedBet * 0.05);
-
-  let keys = ["spade", "club", "diamond", "heart"];
-  let key = keys[Math.floor(Math.random() * keys.length)];
-
-  jp[key] += add;
-  jp.jackpotValue += add;
-
-  return jp;
-});
-
-  
-  firebase.database().ref("users/" + currentUser).update({ balance });
-
-  // 🎰 تشغيل الصوت
   spinSound.currentTime = 0;
   spinSound.play();
 
@@ -172,38 +127,40 @@ firebase.database().ref("jackpot/global").transaction(jp => {
 
     const strip = reel.querySelector(".reel-strip");
 
-    if (!strip) return; // 💥 حماية مهمة
+strip.style.transition = "none";
 
-    strip.style.transition = "none";
+// حركة دوران ثابتة (سريعة)
+let position = 0;
 
-    let position = 0;
+const interval = setInterval(() => {
+  position += 60; // سرعة النزول
+  strip.style.transform = `translateY(-${position}px)`;
+}, 16);
 
-    const interval = setInterval(() => {
-      position += 60;
-      strip.style.transform = `translateY(-${position}px)`;
-    }, 16);
+// التوقف
+setTimeout(() => {
 
-    setTimeout(() => {
+  clearInterval(interval);
 
-      clearInterval(interval);
+  const STEP = 60; // لازم يطابق ارتفاع الصورة
 
-      const STEP = 60;
-      const finalIndex = Math.floor(Math.random() * 20);
-      const final = finalIndex * STEP;
+  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
+  const final = finalIndex * STEP;
 
-      strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
-      strip.style.transform = `translateY(-${final}px)`;
+  strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
+  strip.style.transform = `translateY(-${final}px)`;
 
-      stopSound.currentTime = 0;
-      stopSound.play();
+  stopSound.currentTime = 0;
+  stopSound.play();
 
-      if (index === reels.length - 1) {
-        spinSound.pause();
-        checkWin();
-      }
+  if (index === reels.length - 1) {
+    spinSound.pause();
+    checkWin();
+  }
 
-    }, 1200 + index * 400);
+}, 1200 + index * 400);
 
+      
   });
 }
 function checkWin() {
@@ -222,45 +179,30 @@ function checkWin() {
         let matchCount = 1;
 
         for (let i = 1; i < row.length; i++) {
+
             if (row[i] === firstSymbol) {
                 matchCount++;
             } else {
                 break;
             }
+
         }
 
         const symbolName = firstSymbol.split("/").pop();
-        const symbolData = SYMBOLS.find(s => s.img === symbolName);
 
-        if (symbolData && symbolData.payouts[matchCount]) {
-            totalWin += selectedBet * symbolData.payouts[matchCount];
-        }
+const symbolData = SYMBOLS.find(s => s.img === symbolName);
+
+if (symbolData && symbolData.payouts[matchCount]) {
+    totalWin += selectedBet * symbolData.payouts[matchCount];
+}
     });
 
-    // 🎰 ربح عادي
     if (totalWin > 0) {
+
         balance += totalWin;
+
         alert("🎉 مبروك! ربحت " + totalWin);
-    }
 
-    // 💥 JACKPOT
-    if (totalWin > selectedBet * 50) {
-        alert("🎉 JACKPOT WINNER!");
-
-        firebase.database().ref("jackpot/global").transaction(jp => {
-
-            if (!jp) return jp;
-
-            let keys = ["spade", "club", "diamond", "heart"];
-            let winKey = keys[Math.floor(Math.random() * keys.length)];
-
-            let winAmount = jp[winKey] || 0;
-
-            balance += winAmount;
-            jp[winKey] = 0;
-
-            return jp;
-        });
     }
 
     document.getElementById("balance").innerText = balance;
@@ -268,4 +210,5 @@ function checkWin() {
     firebase.database()
         .ref("users/" + currentUser)
         .update({ balance });
-}
+
+             }
