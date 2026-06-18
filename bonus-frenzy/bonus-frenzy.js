@@ -1,13 +1,13 @@
 let selectedBet = 300;
-let balance = 0;
+let babalance 0;
 let jackpot = 0;
-let jackpotSymbols = {
-  spade: { symbol: "♠️", value: 0 },
-  club: { symbol: "♣️", value: 0 },
-  diamond: { symbol: "♦️", value: 0 },
-  heart: { symbol: "♥️", value: 0 }
-};
 
+let jackpotSymbols = {
+  spade: "♠️",
+  club: "♣️",
+  diamond: "♦️",
+  heart: "♥️"
+};
 const symbolKeys = ["spade", "club", "diamond", "heart"];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
@@ -31,21 +31,20 @@ firebase.database().ref("users/" + currentUser).update({ balance });
 }
 document.getElementById("balance").innerText = balance;
 })
+  
   firebase.database().ref("jackpot/global").on("value", snap => {
-  let jp = snap.val();
-
+  const jp = snap.val();
   if (!jp) return;
 
-  jackpot = jp.value || 0;
+  jackpot = jp.jackpotValue || 0;
 
-  document.getElementById("jackpot").innerText = jackpot;
+  document.getElementById("jackpot-value").innerText = jackpot;
 
-  document.getElementById("jp1").src = "../images/" + jp.slots[0];
-  document.getElementById("jp2").src = "../images/" + jp.slots[1];
-  document.getElementById("jp3").src = "../images/" + jp.slots[2];
-  document.getElementById("jp4").src = "../images/" + jp.slots[3];
+  document.getElementById("jp1").innerText = jackpotSymbols.spade;
+  document.getElementById("jp2").innerText = jackpotSymbols.club;
+  document.getElementById("jp3").innerText = jackpotSymbols.diamond;
+  document.getElementById("jp4").innerText = jackpotSymbols.heart;
 });
-
 // الرموز
 const SYMBOLS = [
   { img: "tree1.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
@@ -58,7 +57,6 @@ const SYMBOLS = [
   { img: "777.jpg", payouts: { 3: 25, 4: 50, 5: 100 } }
 ];
 
-// البكرات
 const reels = [
 document.getElementById("reel1"),
 document.getElementById("reel2"),
@@ -141,17 +139,20 @@ function spin() {
 
   if (!jp) {
     jp = {
-      value: 0,
-      slots: ["jack-1.png","jack-2.png","jack-3.png","jack-4.png"]
+      spade: 0,
+      club: 0,
+      diamond: 0,
+      heart: 0,
+      jackpotValue: 0
     };
   }
 
-  jp.value += Math.floor(selectedBet * 0.05);
+  let add = Math.floor(selectedBet * 0.05);
 
-  let icons = ["jack-1.png","jack-2.png","jack-3.png","jack-4.png","jack-5.png"];
+  let key = symbolKeys[Math.floor(Math.random() * 4)];
 
-  let index = Math.floor(Math.random() * 4);
-  jp.slots[index] = icons[Math.floor(Math.random() * icons.length)];
+  jp[key] += add;
+  jp.jackpotValue += add;
 
   return jp;
 });
@@ -160,6 +161,7 @@ function spin() {
   firebase.database()
     .ref("users/" + currentUser)
     .update({ balance });
+
 
   spinSound.currentTime = 0;
   spinSound.play();
@@ -178,8 +180,7 @@ const interval = setInterval(() => {
   strip.style.transform = `translateY(-${position}px)`;
 }, 16);
 
-// التوقف
-setTimeout(() => {
+// الالتوقفetTimeout(() => {
 
   clearInterval(interval);
 
