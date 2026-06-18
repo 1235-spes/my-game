@@ -85,3 +85,43 @@ color: gold;
   font-size: 20px;
   margin-bottom: 10px;
 }
+.jackpot-top {
+  text-align: center;
+  color: gold;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+
+  /* 💥 اللمعة الذهبية */
+  text-shadow: 
+    0 0 5px gold,
+    0 0 10px gold,
+    0 0 20px orange,
+    0 0 30px gold;
+
+  animation: goldGlow 1.5s infinite alternate;
+}
+
+/* ✨ حركة اللمعة */
+@keyframes goldGlow {
+  0% {
+    text-shadow: 
+      0 0 5px gold,
+      0 0 10px gold,
+      0 0 20px orange;
+  }
+
+  100% {
+    text-shadow: 
+      0 0 10px yellow,
+      0 0 25px gold,
+      0 0 40px orange;
+  }
+}
+
+/* تنظيم الصفوف */
+.jackpot-top div {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  }
