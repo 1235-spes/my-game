@@ -34,20 +34,18 @@ document.getElementById("balance").innerText = balance;
 })
 .catch(err => console.error(err));
 firebase.database().ref("jackpot/global").on("value", snap => {
-  const jp = snap.val();
+  const jp = snap.val() || {
+    spade: 0,
+    club: 0,
+    diamond: 0,
+    heart: 0,
+    jackpotValue: 0
+  };
 
-  if (!jp) {
-    document.getElementById("jp1").innerText = "♠️ 0";
-    document.getElementById("jp2").innerText = "♣️ 0";
-    document.getElementById("jp3").innerText = "♦️ 0";
-    document.getElementById("jp4").innerText = "♥️ 0";
-    return;
-  }
-
-  document.getElementById("jp1").innerText = "♠️ " + (jp.spade ?? 0);
-  document.getElementById("jp2").innerText = "♣️ " + (jp.club ?? 0);
-  document.getElementById("jp3").innerText = "♦️ " + (jp.diamond ?? 0);
-  document.getElementById("jp4").innerText = "♥️ " + (jp.heart ?? 0);
+  document.getElementById("jp1").innerText = "♠️ " + jp.spade;
+  document.getElementById("jp2").innerText = "♣️ " + jp.club;
+  document.getElementById("jp3").innerText = "♦️ " + jp.diamond;
+  document.getElementById("jp4").innerText = "♥️ " + jp.heart;
 });
 // الرموز
 const SYMBOLS = [
