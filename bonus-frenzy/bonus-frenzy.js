@@ -1,6 +1,7 @@
 let selectedBet = 300;
 let balance = 0;
 let jackpot = 0;
+let jackpotSlots = ["?", "?", "?", "?"];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -116,11 +117,16 @@ function spin() {
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
-// 💰 تحديث الجاكبوت
+
+  jackpotSlots[Math.floor(Math.random() * 4)] = "💰";
 let jackpotContribution = Math.floor(selectedBet * 0.05);
 jackpot += jackpotContribution;
 document.getElementById("jackpot").innerText = jackpot;
-  
+  // تحديث العرض
+document.getElementById("jp1").innerText = jackpotSlots[0];
+document.getElementById("jp2").innerText = jackpotSlots[1];
+document.getElementById("jp3").innerText = jackpotSlots[2];
+document.getElementById("jp4").innerText = jackpotSlots[3];
   firebase.database()
     .ref("users/" + currentUser)
     .update({ balance });
