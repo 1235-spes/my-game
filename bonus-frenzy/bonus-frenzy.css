@@ -163,3 +163,23 @@ html, body {
 .bet-box.active {
   display: flex;
 }
+.game-title {
+  position: relative;
+  text-align: center;
+}
+
+.jackpot-top {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: gold;
+  font-weight: bold;
+  text-shadow: 0 0 10px gold;
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  0% { text-shadow: 0 0 5px gold; }
+  100% { text-shadow: 0 0 20px orange; }
+}
