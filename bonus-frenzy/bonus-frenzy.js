@@ -140,7 +140,28 @@ function spin() {
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
-setTimeout(() => {
+firebase.database().ref("jackpot/global").transaction(jp => {
+
+  if (!jp) {
+    jp = {
+      spade: 0,
+      club: 0,
+      diamond: 0,
+      heart: 0,
+      jackpotValue: 0
+    };
+  }
+
+  let add = Math.floor(selectedBet * 0.05);
+
+  let keys = ["spade", "club", "diamond", "heart"];
+  let key = keys[Math.floor(Math.random() * keys.length)];
+
+  jp[key] += add;
+  jp.jackpotValue += add;
+
+  return jp;
+});
 
   
   firebase.database().ref("users/" + currentUser).update({ balance });
