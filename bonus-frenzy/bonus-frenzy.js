@@ -101,7 +101,28 @@ selectedBet = parseInt(btn.dataset.bet);
 document.getElementById("bet").innerText = selectedBet;
 });
 });
+const boxes = document.querySelectorAll(".bet-box");
+const tabs = document.querySelectorAll(".bet-tabs button");
 
+// إظهار أول خانة تلقائياً
+showBox(1);
+
+function showBox(id) {
+
+  boxes.forEach(b => {
+    b.classList.remove("active");
+    if (b.dataset.box === id.toString()) {
+      b.classList.add("active");
+    }
+  });
+}
+
+// عند الضغط على التبويبات
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    showBox(tab.dataset.tab);
+  });
+});
 // دوران البكرات
 document.getElementById("spin").onclick = () => {
 if(balance < selectedBet){
