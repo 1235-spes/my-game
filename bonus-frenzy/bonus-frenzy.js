@@ -123,30 +123,10 @@ function spin() {
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
-firebase.database().ref("jackpot/global").transaction(jp => {
 
-  if (!jp) {
-    jp = {
-      spade: 0,
-      club: 0,
-      diamond: 0,
-      heart: 0
-    };
-  }
+  firebase.database().ref("users/" + currentUser).update({ balance });
 
-  let add = Math.floor(selectedBet * 0.05);
-
-  let keys = ["spade", "club", "diamond", "heart"];
-  let key = keys[Math.floor(Math.random() * 4)];
-
-  jp[key] += add;
-
-  return jp;
-});
-  firebase.database()
-    .ref("users/" + currentUser)
-    .update({ balance });
-
+  // 🎰 تشغيل الصوت
   spinSound.currentTime = 0;
   spinSound.play();
 
@@ -154,40 +134,38 @@ firebase.database().ref("jackpot/global").transaction(jp => {
 
     const strip = reel.querySelector(".reel-strip");
 
-strip.style.transition = "none";
+    if (!strip) return; // 💥 حماية مهمة
 
-// حركة دوران ثابتة (سريعة)
-let position = 0;
+    strip.style.transition = "none";
 
-const interval = setInterval(() => {
-  position += 60; // سرعة النزول
-  strip.style.transform = `translateY(-${position}px)`;
-}, 16);
+    let position = 0;
 
-// التوقف
-setTimeout(() => {
+    const interval = setInterval(() => {
+      position += 60;
+      strip.style.transform = `translateY(-${position}px)`;
+    }, 16);
 
-  clearInterval(interval);
+    setTimeout(() => {
 
-  const STEP = 60; // لازم يطابق ارتفاع الصورة
+      clearInterval(interval);
 
-  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
-  const final = finalIndex * STEP;
+      const STEP = 60;
+      const finalIndex = Math.floor(Math.random() * 20);
+      const final = finalIndex * STEP;
 
-  strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
-  strip.style.transform = `translateY(-${final}px)`;
+      strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
+      strip.style.transform = `translateY(-${final}px)`;
 
-  stopSound.currentTime = 0;
-  stopSound.play();
+      stopSound.currentTime = 0;
+      stopSound.play();
 
-  if (index === reels.length - 1) {
-    spinSound.pause();
-    checkWin();
-  }
+      if (index === reels.length - 1) {
+        spinSound.pause();
+        checkWin();
+      }
 
-}, 1200 + index * 400);
+    }, 1200 + index * 400);
 
-      
   });
 }
 function checkWin() {
