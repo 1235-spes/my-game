@@ -125,3 +125,14 @@ color: gold;
   justify-content: center;
   gap: 40px;
   }
+html, body {
+  height: 100%;
+  overflow: hidden; /* ❌ يمنع السحب */
+}
+.game-container {
+  height: 100vh;  /* يملأ الشاشة كاملة */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* يوزع العناصر بشكل احترافي */
+  align-items: center;
+}
