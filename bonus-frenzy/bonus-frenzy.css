@@ -136,3 +136,25 @@ html, body {
   justify-content: space-between; /* يوزع العناصر بشكل احترافي */
   align-items: center;
 }
+.bet-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.bet-box {
+  background: rgba(0,0,0,0.4);
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+
+.bet-box button {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+}
