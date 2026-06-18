@@ -180,7 +180,7 @@ const interval = setInterval(() => {
   strip.style.transform = `translateY(-${position}px)`;
 }, 16);
 
-// الالتوقفetTimeout(() => {
+setTimeout(() => {
 
   clearInterval(interval);
 
