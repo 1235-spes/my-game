@@ -31,20 +31,20 @@ firebase.database().ref("users/" + currentUser).update({ balance });
 }
 document.getElementById("balance").innerText = balance;
 })
-  
   firebase.database().ref("jackpot/global").on("value", snap => {
   const jp = snap.val();
   if (!jp) return;
 
   jackpot = jp.jackpotValue || 0;
 
-  document.getElementById("jackpot-value").innerText = jackpot;
+  document.getElementById("jackpot").innerText = jackpot;
 
-  document.getElementById("jp1").innerText = jackpotSymbols.spade;
-  document.getElementById("jp2").innerText = jackpotSymbols.club;
-  document.getElementById("jp3").innerText = jackpotSymbols.diamond;
-  document.getElementById("jp4").innerText = jackpotSymbols.heart;
+  document.getElementById("jp1").innerText = "♠️ " + (jp.spade || 0);
+  document.getElementById("jp2").innerText = "♣️ " + (jp.club || 0);
+  document.getElementById("jp3").innerText = "♦️ " + (jp.diamond || 0);
+  document.getElementById("jp4").innerText = "♥️ " + (jp.heart || 0);
 });
+  
 // الرموز
 const SYMBOLS = [
   { img: "tree1.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
@@ -149,13 +149,15 @@ function spin() {
 
   let add = Math.floor(selectedBet * 0.05);
 
-  let key = symbolKeys[Math.floor(Math.random() * 4)];
+  let keys = ["spade", "club", "diamond", "heart"];
+  let key = keys[Math.floor(Math.random() * keys.length)];
 
   jp[key] += add;
   jp.jackpotValue += add;
 
   return jp;
 });
+
 
   
   firebase.database()
