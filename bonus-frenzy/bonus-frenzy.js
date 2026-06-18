@@ -1,7 +1,6 @@
 let selectedBet = 300;
 let balance = 0;
-let jackpot = 0;
-let jackpotSlots = ["?", "?", "?", "?"];
+
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -24,6 +23,20 @@ firebase.database().ref("users/" + currentUser).update({ balance });
 }
 document.getElementById("balance").innerText = balance;
 })
+  firebase.database().ref("jackpot/global").on("value", snap => {
+  let jp = snap.val();
+
+  if (!jp) return;
+
+  jackpot = jp.value || 0;
+
+  document.getElementById("jackpot").innerText = jackpot;
+
+  document.getElementById("jp1").src = "../images/" + jp.slots[0];
+  document.getElementById("jp2").src = "../images/" + jp.slots[1];
+  document.getElementById("jp3").src = "../images/" + jp.slots[2];
+  document.getElementById("jp4").src = "../images/" + jp.slots[3];
+});
 .catch(err => console.error(err));
 
 // الرموز
@@ -117,27 +130,26 @@ function spin() {
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
+  firebase.database().ref("jackpot/global").transaction(jp => {
 
-  const jackpotImages = [
-  "jack-1.png",
-  "jack-2.png",
-  "jack-3.png",
-  "jack-4.png",
-  "jack-5.png"
-];
+  if (!jp) {
+    jp = {
+      value: 0,
+      slots: ["jack-1.png","jack-2.png","jack-3.png","jack-4.png"]
+    };
+  }
 
-let randomIndex = Math.floor(Math.random() * 4);
-let randomImage = jackpotImages[Math.floor(Math.random() * jackpotImages.length)];
+  jp.value += Math.floor(selectedBet * 0.05);
 
-document.getElementById("jp" + (randomIndex + 1)).src = "../images/" + randomImage;
-let jackpotContribution = Math.floor(selectedBet * 0.05);
-jackpot += jackpotContribution;
-document.getElementById("jackpot").innerText = jackpot;
-  // تحديث العرض
-document.getElementById("jp1").innerText = jackpotSlots[0];
-document.getElementById("jp2").innerText = jackpotSlots[1];
-document.getElementById("jp3").innerText = jackpotSlots[2];
-document.getElementById("jp4").innerText = jackpotSlots[3];
+  let icons = ["jack-1.png","jack-2.png","jack-3.png","jack-4.png","jack-5.png"];
+
+  let index = Math.floor(Math.random() * 4);
+  jp.slots[index] = icons[Math.floor(Math.random() * icons.length)];
+
+  return jp;
+});
+
+  
   firebase.database()
     .ref("users/" + currentUser)
     .update({ balance });
