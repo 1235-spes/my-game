@@ -23,7 +23,15 @@ firebase.database().ref("users/" + currentUser).update({ balance });
 document.getElementById("balance").innerText = balance;
 })
 .catch(err => console.error(err));
+firebase.database().ref("jackpot/global").on("value", snap => {
+  const jp = snap.val();
+  if (!jp) return;
 
+  document.getElementById("jp1").innerText = "♠️ " + (jp.spade || 0);
+  document.getElementById("jp2").innerText = "♣️ " + (jp.club || 0);
+  document.getElementById("jp3").innerText = "♦️ " + (jp.diamond || 0);
+  document.getElementById("jp4").innerText = "♥️ " + (jp.heart || 0);
+});
 // الرموز
 const SYMBOLS = [
   { img: "tree1.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
@@ -115,7 +123,26 @@ function spin() {
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
+firebase.database().ref("jackpot/global").transaction(jp => {
 
+  if (!jp) {
+    jp = {
+      spade: 0,
+      club: 0,
+      diamond: 0,
+      heart: 0
+    };
+  }
+
+  let add = Math.floor(selectedBet * 0.05);
+
+  let keys = ["spade", "club", "diamond", "heart"];
+  let key = keys[Math.floor(Math.random() * 4)];
+
+  jp[key] += add;
+
+  return jp;
+});
   firebase.database()
     .ref("users/" + currentUser)
     .update({ balance });
@@ -198,12 +225,27 @@ if (symbolData && symbolData.payouts[matchCount]) {
     });
 
     if (totalWin > 0) {
+    balance += totalWin;
+    alert("🎉 مبروك! ربحت " + totalWin);
+}
 
-        balance += totalWin;
+/* 💥 JACKPOT HERE */
+if (totalWin > selectedBet * 50) {
+    alert("🎉 JACKPOT WINNER!");
 
-        alert("🎉 مبروك! ربحت " + totalWin);
+    firebase.database().ref("jackpot/global").transaction(jp => {
 
-    }
+        if (!jp) return jp;
+
+        let keys = ["spade", "club", "diamond", "heart"];
+        let winKey = keys[Math.floor(Math.random() * keys.length)];
+
+        balance += jp[winKey] || 0;
+        jp[winKey] = 0;
+
+        return jp;
+    });
+}
 
     document.getElementById("balance").innerText = balance;
 
