@@ -123,28 +123,32 @@ function spin() {
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
-firebase.database().ref("jackpot/global").transaction(jp => {
+setTimeout(() => {
 
-  if (!jp) {
-    jp = {
-      spade: 0,
-      club: 0,
-      diamond: 0,
-      heart: 0,
-      jackpotValue: 0
-    };
-  }
+  firebase.database().ref("jackpot/global").transaction(jp => {
 
-  let add = Math.floor(selectedBet * 0.05);
+    if (!jp) {
+      jp = {
+        spade: 0,
+        club: 0,
+        diamond: 0,
+        heart: 0,
+        jackpotValue: 0
+      };
+    }
 
-  let keys = ["spade", "club", "diamond", "heart"];
-  let key = keys[Math.floor(Math.random() * keys.length)];
+    let add = Math.floor(selectedBet * 0.05);
 
-  jp[key] += add;
-  jp.jackpotValue += add;
+    let keys = ["spade", "club", "diamond", "heart"];
+    let key = keys[Math.floor(Math.random() * keys.length)];
 
-  return jp;
-});
+    jp[key] += add;
+    jp.jackpotValue += add;
+
+    return jp;
+  });
+
+}, 0);
   firebase.database().ref("users/" + currentUser).update({ balance });
 
   // 🎰 تشغيل الصوت
