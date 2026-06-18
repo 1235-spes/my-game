@@ -1,5 +1,6 @@
 let selectedBet = 300;
 let balance = 0;
+let jackpot = 0;
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -115,7 +116,11 @@ function spin() {
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
-
+// 💰 تحديث الجاكبوت
+let jackpotContribution = Math.floor(selectedBet * 0.05);
+jackpot += jackpotContribution;
+document.getElementById("jackpot").innerText = jackpot;
+  
   firebase.database()
     .ref("users/" + currentUser)
     .update({ balance });
@@ -197,13 +202,19 @@ if (symbolData && symbolData.payouts[matchCount]) {
 }
     });
 
-    if (totalWin > 0) {
+// 💥 شرط الجاكبوت
+if (totalWin > selectedBet * 50) {
+  alert("🎉 JACKPOT WINNER!");
 
-        balance += totalWin;
+  balance += jackpot;
+  jackpot = 0;
 
-        alert("🎉 مبروك! ربحت " + totalWin);
-
-    }
+  document.getElementById("jackpot").innerText = jackpot;
+} else if (totalWin > 0) {
+  // 🎰 ربح عادي
+  balance += totalWin;
+  alert("🎉 مبروك! ربحت " + totalWin);
+}
 
     document.getElementById("balance").innerText = balance;
 
