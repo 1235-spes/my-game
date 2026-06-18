@@ -1,6 +1,6 @@
 let selectedBet = 300;
 let balance = 0;
-
+let jackpot = 0;
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -37,7 +37,6 @@ document.getElementById("balance").innerText = balance;
   document.getElementById("jp3").src = "../images/" + jp.slots[2];
   document.getElementById("jp4").src = "../images/" + jp.slots[3];
 });
-.catch(err => console.error(err));
 
 // الرموز
 const SYMBOLS = [
