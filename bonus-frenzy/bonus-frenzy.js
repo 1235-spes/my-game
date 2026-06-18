@@ -206,51 +206,50 @@ function checkWin() {
         let matchCount = 1;
 
         for (let i = 1; i < row.length; i++) {
-
             if (row[i] === firstSymbol) {
                 matchCount++;
             } else {
                 break;
             }
-
         }
 
         const symbolName = firstSymbol.split("/").pop();
+        const symbolData = SYMBOLS.find(s => s.img === symbolName);
 
-const symbolData = SYMBOLS.find(s => s.img === symbolName);
-
-if (symbolData && symbolData.payouts[matchCount]) {
-    totalWin += selectedBet * symbolData.payouts[matchCount];
-}
+        if (symbolData && symbolData.payouts[matchCount]) {
+            totalWin += selectedBet * symbolData.payouts[matchCount];
+        }
     });
 
+    // 🎰 ربح عادي
     if (totalWin > 0) {
-    balance += totalWin;
-    alert("🎉 مبروك! ربحت " + totalWin);
-}
+        balance += totalWin;
+        alert("🎉 مبروك! ربحت " + totalWin);
+    }
 
-/* 💥 JACKPOT HERE */
-if (totalWin > selectedBet * 50) {
-    alert("🎉 JACKPOT WINNER!");
+    // 💥 JACKPOT
+    if (totalWin > selectedBet * 50) {
+        alert("🎉 JACKPOT WINNER!");
 
-    firebase.database().ref("jackpot/global").transaction(jp => {
+        firebase.database().ref("jackpot/global").transaction(jp => {
 
-        if (!jp) return jp;
+            if (!jp) return jp;
 
-        let keys = ["spade", "club", "diamond", "heart"];
-        let winKey = keys[Math.floor(Math.random() * keys.length)];
+            let keys = ["spade", "club", "diamond", "heart"];
+            let winKey = keys[Math.floor(Math.random() * keys.length)];
 
-        balance += jp[winKey] || 0;
-        jp[winKey] = 0;
+            let winAmount = jp[winKey] || 0;
 
-        return jp;
-    });
-}
+            balance += winAmount;
+            jp[winKey] = 0;
+
+            return jp;
+        });
+    }
 
     document.getElementById("balance").innerText = balance;
 
     firebase.database()
         .ref("users/" + currentUser)
         .update({ balance });
-
-             }
+}
