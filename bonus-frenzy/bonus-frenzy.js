@@ -1,14 +1,5 @@
 let selectedBet = 300;
 let balance = 0;
-let jackpot = 0;
-
-let jackpotSymbols = {
-  spade: "♠️",
-  club: "♣️",
-  diamond: "♦️",
-  heart: "♥️"
-};
-const symbolKeys = ["spade", "club", "diamond", "heart"];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -31,20 +22,8 @@ firebase.database().ref("users/" + currentUser).update({ balance });
 }
 document.getElementById("balance").innerText = balance;
 })
-  firebase.database().ref("jackpot/global").on("value", snap => {
-  const jp = snap.val();
-  if (!jp) return;
+.catch(err => console.error(err));
 
-  jackpot = jp.jackpotValue || 0;
-
-  document.getElementById("jackpot").innerText = jackpot;
-
-  document.getElementById("jp1").innerText = "♠️ " + (jp.spade || 0);
-  document.getElementById("jp2").innerText = "♣️ " + (jp.club || 0);
-  document.getElementById("jp3").innerText = "♦️ " + (jp.diamond || 0);
-  document.getElementById("jp4").innerText = "♥️ " + (jp.heart || 0);
-});
-  
 // الرموز
 const SYMBOLS = [
   { img: "tree1.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
@@ -57,6 +36,7 @@ const SYMBOLS = [
   { img: "777.jpg", payouts: { 3: 25, 4: 50, 5: 100 } }
 ];
 
+// البكرات
 const reels = [
 document.getElementById("reel1"),
 document.getElementById("reel2"),
@@ -135,35 +115,10 @@ function spin() {
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
-  firebase.database().ref("jackpot/global").transaction(jp => {
 
-  if (!jp) {
-    jp = {
-      spade: 0,
-      club: 0,
-      diamond: 0,
-      heart: 0,
-      jackpotValue: 0
-    };
-  }
-
-  let add = Math.floor(selectedBet * 0.05);
-
-  let keys = ["spade", "club", "diamond", "heart"];
-  let key = keys[Math.floor(Math.random() * keys.length)];
-
-  jp[key] += add;
-  jp.jackpotValue += add;
-
-  return jp;
-});
-
-
-  
   firebase.database()
     .ref("users/" + currentUser)
     .update({ balance });
-
 
   spinSound.currentTime = 0;
   spinSound.play();
@@ -182,6 +137,7 @@ const interval = setInterval(() => {
   strip.style.transform = `translateY(-${position}px)`;
 }, 16);
 
+// التوقف
 setTimeout(() => {
 
   clearInterval(interval);
@@ -241,19 +197,13 @@ if (symbolData && symbolData.payouts[matchCount]) {
 }
     });
 
-// 💥 شرط الجاكبوت
-if (totalWin > selectedBet * 50) {
-  alert("🎉 JACKPOT WINNER!");
+    if (totalWin > 0) {
 
-  balance += jackpot;
-  jackpot = 0;
+        balance += totalWin;
 
-  document.getElementById("jackpot").innerText = jackpot;
-} else if (totalWin > 0) {
-  // 🎰 ربح عادي
-  balance += totalWin;
-  alert("🎉 مبروك! ربحت " + totalWin);
-}
+        alert("🎉 مبروك! ربحت " + totalWin);
+
+    }
 
     document.getElementById("balance").innerText = balance;
 
@@ -261,4 +211,4 @@ if (totalWin > selectedBet * 50) {
         .ref("users/" + currentUser)
         .update({ balance });
 
-}
+             }
