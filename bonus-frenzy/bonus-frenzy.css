@@ -79,3 +79,24 @@ margin-top: 10px;
 font-size: 16px;
 color: gold;
 }
+.jackpot-box {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.jackpot-slot {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(to bottom, #222, #000);
+  border: 2px solid gold;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: gold;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
