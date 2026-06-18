@@ -118,7 +118,18 @@ function spin() {
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
-  jackpotSlots[Math.floor(Math.random() * 4)] = "💰";
+  const jackpotImages = [
+  "jack-1.png",
+  "jack-2.png",
+  "jack-3.png",
+  "jack-4.png",
+  "jack-5.png"
+];
+
+let randomIndex = Math.floor(Math.random() * 4);
+let randomImage = jackpotImages[Math.floor(Math.random() * jackpotImages.length)];
+
+document.getElementById("jp" + (randomIndex + 1)).src = "../images/" + randomImage;
 let jackpotContribution = Math.floor(selectedBet * 0.05);
 jackpot += jackpotContribution;
 document.getElementById("jackpot").innerText = jackpot;
