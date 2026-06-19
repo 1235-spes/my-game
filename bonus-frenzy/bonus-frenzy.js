@@ -205,7 +205,9 @@ const allCells = reels.map(r => r.children[1].src);
         }
 
     });
-const grid = reels.map(r => r.children[1].src);
+const grid = reels.flatMap(r =>
+    Array.from(r.children).map(img => img.src)
+);
 
 // 💎 دولار
 if (checkRare("دولر.لر.jpg", grid)) {
