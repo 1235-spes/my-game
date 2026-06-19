@@ -177,15 +177,14 @@ function checkWin() {
 const allCells = reels.map(r => r.children[1].src);
     let totalWin = 0;
 
-    rows.forEach(row => {
+    let symbols = row.filter(s => !s.includes("شجرةرة.jpg"));
 
-        let firstSymbol = row[0];
-        let matchCount = 1;
+if (symbols.length === 0) return;
+
+let firstSymbol = symbols[0];
 
         // 🌳 إذا في Wild
-        if (checkRow(row)) {
-            matchCount = 3;
-        } else {
+        
 
             // 🔁 حساب عادي
             for (let i = 1; i < row.length; i++) {
