@@ -303,21 +303,19 @@ if (betToggle && betMenu) {
 }
 const speedBtn = document.getElementById("speedToggle");
 
-speedBtn.addEventListener("click", () => {
+let modes = ["slow", "medium", "fast"];
+let icons = {
+  slow: "🐌",
+  medium: "🐇",
+  fast: "🐆"
+};
 
-  if (spinSpeed === "slow") {
-    spinSpeed = "medium";
-    speedBtn.innerText = "🐇";
-  }
+let modeIndex = 0;
 
-  else if (spinSpeed === "medium") {
-    spinSpeed = "fast";
-    speedBtn.innerText = "🐆";
-  }
-
-  else {
-    spinSpeed = "slow";
-    speedBtn.innerText = "🐌";
-  }
-
-});
+if (speedBtn) {
+  speedBtn.addEventListener("click", () => {
+    modeIndex = (modeIndex + 1) % modes.length;
+    spinMode = modes[modeIndex];
+    speedBtn.innerText = icons[spinMode];
+  });
+}
