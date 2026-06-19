@@ -1,18 +1,23 @@
 body {
-margin: 0;
-padding: 20px 10px;
-background: url("../images/Kalfia.jpg") center center / cover no-repeat fixed;
-color: white;
-font-family: Arial, sans-serif;
-display: flex;
-justify-content: center;
-min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: url("../images/Kalfia.jpg") center/cover no-repeat fixed;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .game-container {
-text-align: center;
-width: 100%;
-max-width: 480px;
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
 }
 
 .reels {
@@ -49,26 +54,6 @@ display: block;
 object-fit: cover;
 }
 
-.bet-buttons {
-display: flex;
-gap: 10px;
-justify-content: center;
-margin-bottom: 15px;
-}
-
-.bet-buttons button, #spin {
-padding: 10px 20px;
-border: none;
-border-radius: 10px;
-font-weight: bold;
-background: gold;
-cursor: pointer;
-transition: 0.2s;
-}
-
-.bet-buttons button:hover, #spin:hover {
-transform: scale(1.05);
-}
 
 #spin {
 margin-top: 10px;
@@ -78,4 +63,88 @@ margin-top: 10px;
 margin-top: 10px;
 font-size: 16px;
 color: gold;
+}
+
+fake-jackpot {
+  text-align: center;
+  color: gold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.jackpot-top {
+  text-align: center;
+  color: gold;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+
+  /* 💥 اللمعة الذهبية */
+  text-shadow: 
+    0 0 5px gold,
+    0 0 10px gold,
+    0 0 20px orange,
+    0 0 30px gold;
+
+  animation: goldGlow 1.5s infinite alternate;
+}
+
+/* ✨ حركة اللمعة */
+@keyframes goldGlow {
+  0% {
+    text-shadow: 
+      0 0 5px gold,
+      0 0 10px gold,
+      0 0 20px orange;
+  }
+
+  100% {
+    text-shadow: 
+      0 0 10px yellow,
+      0 0 25px gold,
+      0 0 40px orange;
+  }
+}
+
+/* تنظيم الصفوف */
+.jackpot-top div {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  }
+
+  
+.bet-toggle {
+  margin-left: 10px;
+  padding: 10px;
+  border-radius: 50%;
+  background: gold;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+.controls {
+  position: relative;
+}
+.bet-menu {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  border: 2px solid gold;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  gap: 5px;
+  z-index: 999;
+}
+.bet-box {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.bet-box.active {
+  display: flex;
 }
