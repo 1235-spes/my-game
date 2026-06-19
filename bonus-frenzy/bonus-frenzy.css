@@ -35,7 +35,6 @@ position: relative;
 border: 3px solid #ffd700;
 border-radius: 18px;
 background: linear-gradient(to bottom, #000, #111);
-overflow: hidden; /* هذا هو الحارس الرئيسي */
 }
 
 .reel-strip {
@@ -46,7 +45,6 @@ width: 100%;
 display: flex;
 flex-direction: column;
 align-items: center;
-  will-change: transform; /* 👈 مهم للحركة السلسة */
 }
 
 .reel-strip img {
@@ -54,7 +52,6 @@ width: 60px;
 height: 60px;
 display: block;
 object-fit: cover;
-  flex-shrink: 0; /* 👈 يمنع انضغاط الصورة أو اختفائها */
 }
 
 
