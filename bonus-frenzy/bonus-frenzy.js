@@ -1,37 +1,5 @@
 let selectedBet = 300;
 let balance = 0;
-const STEP = 60;
-let spinMode = "slow";
-const speedToggle = document.getElementById("speedToggle");
-
-const modes = ["slow", "medium", "fast"];
-const icons = {
-  slow: "🐌",
-  medium: "🐇",
-  fast: "🐆"
-};
-
-let modeIndex = 0;
-window.addEventListener("DOMContentLoaded", () => {
-
-  const speedToggle = document.getElementById("speedToggle");
-
-  if (!speedToggle) {
-    console.log("speedToggle غير موجود في HTML");
-    return;
-  }
-
-  speedToggle.addEventListener("click", () => {
-    modeIndex = (modeIndex + 1) % modes.length;
-    spinMode = modes[modeIndex];
-
-    speedToggle.innerText = icons[spinMode];
-
-    console.log("Speed:", spinMode);
-  });
-
-});
-
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -76,7 +44,6 @@ document.getElementById("reel3"),
 document.getElementById("reel4"),
 document.getElementById("reel5")
 ];
-
 function spinReel(reel, delay, onStop) {
 
   let speed = 30;
@@ -144,7 +111,6 @@ return;
 alert("Spin Started 🎰");
 spin();
 };
-
 function spin() {
 
   balance -= selectedBet;
@@ -163,25 +129,24 @@ function spin() {
 
 strip.style.transition = "none";
 
-const settings = getSpinSettings(spinMode);
-
+// حركة دوران ثابتة (سريعة)
 let position = 0;
 
 const interval = setInterval(() => {
-
-  if (spinMode === "fast") return;
-
-  position += settings.speed;
+  position += 60; // سرعة النزول
   strip.style.transform = `translateY(-${position}px)`;
-
 }, 16);
 
 // التوقف
-position = Math.random() * 300;// لازم يطابق ارتفاع الصورة
+setTimeout(() => {
 
-  
-const finalIndex = Math.floor(Math.random() * 20);
-const final = finalIndex * STEP;
+  clearInterval(interval);
+
+  const STEP = 60; // لازم يطابق ارتفاع الصورة
+
+  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
+  const final = finalIndex * STEP;
+
   strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
   strip.style.transform = `translateY(-${final}px)`;
 
@@ -305,4 +270,3 @@ if (betToggle && betMenu) {
     });
   });
 }
-
