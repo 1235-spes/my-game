@@ -143,10 +143,18 @@ setTimeout(() => {
 
   const STEP = 60; // لازم يطابق ارتفاع الصورة
 
-  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
-  const final = finalIndex * STEP;
+const finalIndex = Math.floor(Math.random() * 20);
 
-  strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
+// عدد لفات كاملة (كل ما زاد = احتراف أكثر)
+const extraRounds = 5;
+
+// 25 = عدد الصور داخل البكرة عندك
+const reelHeight = STEP * 25;
+
+// الحركة النهائية
+const final = (extraRounds * reelHeight) + (finalIndex * STEP);
+
+  strip.style.transition = "transform 2.2s cubic-bezier(0.12, 0.85, 0.25, 1)";
   strip.style.transform = `translateY(-${final}px)`;
 
   stopSound.currentTime = 0;
