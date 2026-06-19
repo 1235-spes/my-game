@@ -94,13 +94,14 @@ function initializeReels() {
 
 // استدعاء الدالة
 initializeReels();
-// اختيار الرهان
-document.querySelectorAll(".bet-buttons button").forEach(btn=>{
-btn.addEventListener("click", ()=>{
-selectedBet = parseInt(btn.dataset.bet);
-document.getElementById("bet").innerText = selectedBet;
+ // اختيار الرهان من النظام الجديد (bet-box)
+document.querySelectorAll(".bet-box button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedBet = parseInt(btn.dataset.bet);
+    document.getElementById("bet").innerText = selectedBet;
+  });
 });
-});
+
 // دوران البكرات
 document.getElementById("spin").onclick = () => {
 if(balance < selectedBet){
