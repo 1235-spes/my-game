@@ -10,6 +10,10 @@
 <div class="game-container">
   <div id="game-section">
     <h1 class="game-title">
+        <div class="jackpot-top">
+    <div>♠️ <span id="jp1">0</span> ❤️ <span id="jp4">0</span></div>
+    <div>♦️ <span id="jp3">0</span> ♣️ <span id="jp2">0</span></div>
+        </div>
   <img src="../images/gogo.jpg" alt="Golden Tree Logo" class="game-logo">
 </h1>
     <div class="reels">
@@ -37,15 +41,41 @@
     </div>
     
 
-    <div class="bet-buttons">
-      <button data-bet="300">300</button>
-      <button data-bet="500">500</button>
-      <button data-bet="1000">1000</button>
-      <button data-bet="5000">5000</button>
-      <button data-bet="8000">8000</button>
+    <div class="bet-box" data-box="1">
+  <button data-bet="300">300</button>
+  <button data-bet="600">600</button>
+  <button data-bet="1200">1200</button>
+  <button data-bet="1500">1500</button>
+  <button data-bet="2000">2000</button>
+    </div>
+    <div class="bet-box" data-box="2">
+  <button data-bet="3000">3000</button>
+  <button data-bet="6000">6000</button>
+  <button data-bet="12000">12000</button>
+  <button data-bet="15000">15000</button>
+  <button data-bet="30000">30000</button>
+    </div>
+    <div class="bet-box" data-box="3">
+  <button data-bet="60000">60000</button>
+  <button data-bet="120000">120000</button>
+  <button data-bet="200000">200000</button>
+  <button data-bet="300000">300000</button>
+  <button data-bet="600000">600000</button>
+    </div>
+    <div class="bet-box" data-box="4">
+  <button data-bet="1200000">1200000</button>
+  <button data-bet="1500000">1500000</button>
     </div>
 
     <div class="controls">
+      <button id="betToggle" class="bet-toggle">💰</button>
+
+<div id="betMenu" class="bet-menu hidden">
+  <button data-tab="1">1</button>
+  <button data-tab="2">2</button>
+  <button data-tab="3">3</button>
+  <button data-tab="4">4</button>
+</div>
   <button id="spin" class="spin-btn">
    <img src="../images/Zr.jpg" alt="Spin"> 
   </button>
