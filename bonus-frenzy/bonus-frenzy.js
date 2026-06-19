@@ -174,52 +174,51 @@ function checkWin() {
         reels.map(r => r.children[1].src),
         reels.map(r => r.children[2].src)
     ];
-
+const allCells = reels.map(r => r.children[1].src);
     let totalWin = 0;
 
     rows.forEach(row => {
 
         let firstSymbol = row[0];
         let matchCount = 1;
-if (checkRow(row)) {
-  matchCount = 3;
-}
-      if (checkRow(row)) {
-    matchCount = 3;
 
-    // 🎯 تأثير الشجرة (مثال بسيط صحيح)
-    reels.forEach(reel => {
-        const img = reel.children[1]; // الوسط
-        if (img.src.includes("شجرةرة.jpg")) {
-            img.classList.add("win");
-        }
-    });
-      }
-        for (let i = 1; i < row.length; i++) {
+        // 🌳 إذا في Wild
+        if (checkRow(row)) {
+            matchCount = 3;
+        } else {
 
-            if (row[i] === firstSymbol) {
-                matchCount++;
-            } else {
-                break;
+            // 🔁 حساب عادي
+            for (let i = 1; i < row.length; i++) {
+                if (row[i] === firstSymbol) {
+                    matchCount++;
+                } else {
+                    break;
+                }
             }
+        }
+      
+        const symbolName = firstSymbol.split("/").pop();
+        const symbolData = SYMBOLS.find(s => s.img === symbolName);
 
+        if (symbolData && symbolData.payouts[matchCount]) {
+            totalWin += selectedBet * symbolData.payouts[matchCount];
         }
 
-        const symbolName = firstSymbol.split("/").pop();
-
-const symbolData = SYMBOLS.find(s => s.img === symbolName);
-
-if (symbolData && symbolData.payouts[matchCount]) {
-    totalWin += selectedBet * symbolData.payouts[matchCount];
-}
     });
+const grid = reels.map(r => r.children[1].src);
 
+// 💎 دولار
+if (checkRare("دولر.لر.jpg", grid)) {
+    totalWin += selectedBet * 10;
+}
+
+// ✨ نجمي
+if (checkRare("نجمي.مي.jpg", grid)) {
+    totalWin += selectedBet * 10;
+}
     if (totalWin > 0) {
-
         balance += totalWin;
-
         alert("🎉 مبروك! ربحت " + totalWin);
-
     }
 
     document.getElementById("balance").innerText = balance;
@@ -227,8 +226,7 @@ if (symbolData && symbolData.payouts[matchCount]) {
     firebase.database()
         .ref("users/" + currentUser)
         .update({ balance });
-
-             }
+          }
 let fakeJP = {
   spade: 1200,
   club: 3400,
@@ -237,23 +235,33 @@ let fakeJP = {
 };
 function checkRow(row) {
 
-  const left = row[0];
-  const middle = row[1];
-  const right = row[2];
+    const left = row[0];
+    const middle = row[1];
+    const right = row[2];
 
-  // الشجرة تعمل كـ Wild
-  if (middle === "شجرةرة.jpg") {
-    if (left === right) {
-      return true;
+    // 🌳 Wild (الشجرة)
+    if (middle.includes("شجرةرة.jpg")) {
+        return true;
     }
-  }
 
-  // عادي بدون شجرة
-  if (left === middle && middle === right) {
-    return true;
-  }
+    // عادي
+    if (left === middle && middle === right) {
+        return true;
+    }
 
-  return false;
+    return false;
+}
+function checkRare(symbolName, grid) {
+
+    let count = 0;
+
+    grid.forEach(cell => {
+        if (cell.includes(symbolName)) {
+            count++;
+        }
+    });
+
+    return count >= 3;
 }
 function startFakeJackpot() {
 
