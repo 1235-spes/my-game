@@ -1,6 +1,5 @@
 let selectedBet = 300;
 let balance = 0;
-let isSpinning = false;
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -45,7 +44,32 @@ document.getElementById("reel3"),
 document.getElementById("reel4"),
 document.getElementById("reel5")
 ];
+function spinReel(reel, delay, onStop) {
 
+  let speed = 30;
+
+  const interval = setInterval(() => {
+
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
+
+  }, speed);
+
+  setTimeout(() => {
+    clearInterval(interval);
+
+    // توقف نهائي
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
+
+    onStop();
+
+  }, delay);
+}
 // تعبئة البكرات لأول مرة عند فتح اللعبة
 
 function initializeReels() {
@@ -55,12 +79,14 @@ function initializeReels() {
     strip.innerHTML = "";
 
     // نملأ الشريط بصور كثيرة (هذا سر الاحتراف)
-    for (let i = 0; i < 150; i++) {
-  const img = document.createElement("img");
-  const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+    for (let i = 0; i < 25; i++) {
 
-  img.src = "../images/" + symbol.img;
-  strip.appendChild(img);
+      const img = document.createElement("img");
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+      img.src = "../images/" + symbol.img;
+
+      strip.appendChild(img);
     }
 
   });
@@ -77,28 +103,15 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
 });
 
 // دوران البكرات
- document.getElementById("spin").onclick = () => {
-
-  // إذا يدور → نوقفه
-  if (isSpinning) {
-    isSpinning = false;
-    spinSound.pause();
-    console.log("Stopped manually");
-    return;
-  }
-
-  // إذا ما يدور → نبدأ
-  if (balance < selectedBet) {
-    alert("رصيدك غير كافٍ!");
-    return;
-  }
-
-  isSpinning = true;
-  spin();
+document.getElementById("spin").onclick = () => {
+if(balance < selectedBet){
+alert("رصيدك غير كافٍ!");
+return;
+}
+alert("Spin Started 🎰");
+spin();
 };
-
 function spin() {
-  isSpinning = true;
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
@@ -117,16 +130,13 @@ function spin() {
 strip.style.transition = "none";
 
 // حركة دوران ثابتة (سريعة)
-const settings = getSpinSettings(spinMode);
-
 let position = 0;
 
 const interval = setInterval(() => {
-  if (spinMode === "fast") return;
-
-  position += settings.speed;
+  position += 60; // سرعة النزول
   strip.style.transform = `translateY(-${position}px)`;
 }, 16);
+
 // التوقف
 setTimeout(() => {
 
@@ -134,18 +144,10 @@ setTimeout(() => {
 
   const STEP = 60; // لازم يطابق ارتفاع الصورة
 
-const finalIndex = Math.floor(Math.random() * 20);
+  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
+  const final = finalIndex * STEP;
 
-// عدد لفات كاملة (كل ما زاد = احتراف أكثر)
-const extraRounds = 5;
-
-// 25 = عدد الصور داخل البكرة عندك
-const reelHeight = STEP * 25;
-
-// الحركة النهائية
-const final = (extraRounds * reelHeight) + (finalIndex * STEP);
-
-  strip.style.transition = "transform 2.2s cubic-bezier(0.12, 0.85, 0.25, 1)";
+  strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
   strip.style.transform = `translateY(-${final}px)`;
 
   stopSound.currentTime = 0;
@@ -154,7 +156,6 @@ const final = (extraRounds * reelHeight) + (finalIndex * STEP);
   if (index === reels.length - 1) {
     spinSound.pause();
     checkWin();
-    isSpinning = false;
   }
 
 }, 1200 + index * 400);
