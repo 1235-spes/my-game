@@ -181,7 +181,9 @@ function checkWin() {
 
         let firstSymbol = row[0];
         let matchCount = 1;
-
+if (checkRow(row)) {
+  matchCount = 3;
+}
         for (let i = 1; i < row.length; i++) {
 
             if (row[i] === firstSymbol) {
@@ -222,7 +224,26 @@ let fakeJP = {
   diamond: 5600,
   heart: 7800
 };
+function checkRow(row) {
 
+  const left = row[0];
+  const middle = row[1];
+  const right = row[2];
+
+  // الشجرة تعمل كـ Wild
+  if (middle === "شجرة") {
+    if (left === right) {
+      return true;
+    }
+  }
+
+  // عادي بدون شجرة
+  if (left === middle && middle === right) {
+    return true;
+  }
+
+  return false;
+}
 function startFakeJackpot() {
 
   setInterval(() => {
