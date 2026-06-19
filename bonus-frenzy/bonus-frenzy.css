@@ -49,26 +49,6 @@ display: block;
 object-fit: cover;
 }
 
-.bet-buttons {
-display: flex;
-gap: 10px;
-justify-content: center;
-margin-bottom: 15px;
-}
-
-.bet-buttons button, #spin {
-padding: 10px 20px;
-border: none;
-border-radius: 10px;
-font-weight: bold;
-background: gold;
-cursor: pointer;
-transition: 0.2s;
-}
-
-.bet-buttons button:hover, #spin:hover {
-transform: scale(1.05);
-}
 
 #spin {
 margin-top: 10px;
