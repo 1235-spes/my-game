@@ -175,9 +175,9 @@ const interval = setInterval(() => {
 // التوقف
 position = Math.random() * 300;// لازم يطابق ارتفاع الصورة
 
-  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
-  const final = finalIndex * STEP;
-
+  const STEP = 60;
+const finalIndex = Math.floor(Math.random() * 20);
+const final = finalIndex * STEP;
   strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
   strip.style.transform = `translateY(-${final}px)`;
 
@@ -301,21 +301,4 @@ if (betToggle && betMenu) {
     });
   });
 }
-const speedBtn = document.getElementById("speedToggle");
 
-let modes = ["slow", "medium", "fast"];
-let icons = {
-  slow: "🐌",
-  medium: "🐇",
-  fast: "🐆"
-};
-
-let modeIndex = 0;
-
-if (speedBtn) {
-  speedBtn.addEventListener("click", () => {
-    modeIndex = (modeIndex + 1) % modes.length;
-    spinMode = modes[modeIndex];
-    speedBtn.innerText = icons[spinMode];
-  });
-}
