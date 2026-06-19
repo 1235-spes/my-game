@@ -1,5 +1,6 @@
 let selectedBet = 300;
 let balance = 0;
+const STEP = 60;
 let spinMode = "slow";
 const speedToggle = document.getElementById("speedToggle");
 
@@ -11,6 +12,20 @@ const icons = {
 };
 
 let modeIndex = 0;
+function getSpinSettings(mode) {
+  if (mode === "slow") return { speed: 40, duration: 2500 };
+  if (mode === "medium") return { speed: 25, duration: 1700 };
+  if (mode === "fast") return { speed: 0, duration: 800 };
+}
+const speedToggle = document.getElementById("speedToggle");
+
+speedToggle.addEventListener("click", () => {
+  modeIndex = (modeIndex + 1) % modes.length;
+  spinMode = modes[modeIndex];
+  speedToggle.innerText = icons[spinMode];
+
+  console.log("Speed:", spinMode);
+});
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -55,12 +70,7 @@ document.getElementById("reel3"),
 document.getElementById("reel4"),
 document.getElementById("reel5")
 ];
-speedToggle.addEventListener("click", () => {
-  modeIndex = (modeIndex + 1) % modes.length;
 
-  spinMode = modes[modeIndex];
-  speedToggle.innerText = icons[spinMode];
-});
 function spinReel(reel, delay, onStop) {
 
   let speed = 30;
@@ -128,19 +138,7 @@ return;
 alert("Spin Started 🎰");
 spin();
 };
-function getSpinSettings(mode) {
-  if (mode === "slow") {
-    return { speed: 40, duration: 2500 };
-  }
 
-  if (mode === "medium") {
-    return { speed: 25, duration: 1700 };
-  }
-
-  if (mode === "fast") {
-    return { speed: 0, duration: 800 };
-  }
-}
 function spin() {
 
   balance -= selectedBet;
@@ -175,7 +173,7 @@ const interval = setInterval(() => {
 // التوقف
 position = Math.random() * 300;// لازم يطابق ارتفاع الصورة
 
-  const STEP = 60;
+  
 const finalIndex = Math.floor(Math.random() * 20);
 const final = finalIndex * STEP;
   strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
