@@ -184,6 +184,17 @@ function checkWin() {
 if (checkRow(row)) {
   matchCount = 3;
 }
+      if (checkRow(row)) {
+    matchCount = 3;
+
+    // 🎯 تأثير الشجرة (مثال بسيط صحيح)
+    reels.forEach(reel => {
+        const img = reel.children[1]; // الوسط
+        if (img.src.includes("شجرةرة.jpg")) {
+            img.classList.add("win");
+        }
+    });
+      }
         for (let i = 1; i < row.length; i++) {
 
             if (row[i] === firstSymbol) {
@@ -231,7 +242,7 @@ function checkRow(row) {
   const right = row[2];
 
   // الشجرة تعمل كـ Wild
-  if (middle === "شجرة") {
+  if (middle === "شجرةرة.jpg") {
     if (left === right) {
       return true;
     }
