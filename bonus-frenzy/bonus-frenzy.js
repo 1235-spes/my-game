@@ -244,3 +244,28 @@ function startFakeJackpot() {
 window.addEventListener("load", () => {
   startFakeJackpot();
 });
+function showBox(id) {
+  const boxes = document.querySelectorAll(".bet-box");
+
+  boxes.forEach(b => {
+    b.classList.remove("active");
+    if (b.dataset.box === id.toString()) {
+      b.classList.add("active");
+    }
+  });
+}
+const betToggle = document.getElementById("betToggle");
+const betMenu = document.getElementById("betMenu");
+
+if (betToggle && betMenu) {
+  betToggle.addEventListener("click", () => {
+    betMenu.classList.toggle("hidden");
+  });
+
+  betMenu.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      showBox(btn.dataset.tab);
+      betMenu.classList.add("hidden");
+    });
+  });
+}
