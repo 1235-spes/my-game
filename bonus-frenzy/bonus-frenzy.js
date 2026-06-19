@@ -104,15 +104,20 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
 
 // دوران البكرات
 document.getElementById("spin").onclick = () => {
-if(balance < selectedBet){
-alert("رصيدك غير كافٍ!");
-return;
-}
-alert("Spin Started 🎰");
-spin();
+
+  if (isSpinning) return; // يمنع ضغط متكرر
+
+  if (balance < selectedBet) {
+    alert("رصيدك غير كافٍ!");
+    return;
+  }
+
+  isSpinning = true;
+
+  spin();
 };
 function spin() {
-
+isSpinning = true;
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
