@@ -1,5 +1,6 @@
 let selectedBet = 300;
 let balance = 0;
+let isSpinning = false;
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -78,14 +79,28 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
 });
 
 // دوران البكرات
-document.getElementById("spin").onclick = () => {
-if(balance < selectedBet){
-alert("رصيدك غير كافٍ!");
-return;
-}
-spin();
+ document.getElementById("spin").onclick = () => {
+
+  // إذا يدور → نوقفه
+  if (isSpinning) {
+    isSpinning = false;
+    spinSound.pause();
+    console.log("Stopped manually");
+    return;
+  }
+
+  // إذا ما يدور → نبدأ
+  if (balance < selectedBet) {
+    alert("رصيدك غير كافٍ!");
+    return;
+  }
+
+  isSpinning = true;
+  spin();
 };
+
 function spin() {
+  isSpinning = true;
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
@@ -107,8 +122,18 @@ strip.style.transition = "none";
 let position = 0;
 
 const interval = setInterval(() => {
-  position += 60; // سرعة النزول
+
+  if (!isSpinning) {
+    clearInterval(interval);
+    strip.style.transition = "none";
+    return;
+  }
+
+  if (spinMode === "fast") return;
+
+  position += settings.speed;
   strip.style.transform = `translateY(-${position}px)`;
+
 }, 16);
 
 // التوقف
@@ -130,6 +155,7 @@ setTimeout(() => {
   if (index === reels.length - 1) {
     spinSound.pause();
     checkWin();
+    isSpinning = false;
   }
 
 }, 1200 + index * 400);
