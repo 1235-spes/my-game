@@ -55,6 +55,12 @@ document.getElementById("reel3"),
 document.getElementById("reel4"),
 document.getElementById("reel5")
 ];
+speedToggle.addEventListener("click", () => {
+  modeIndex = (modeIndex + 1) % modes.length;
+
+  spinMode = modes[modeIndex];
+  speedToggle.innerText = icons[spinMode];
+});
 function spinReel(reel, delay, onStop) {
 
   let speed = 30;
@@ -122,6 +128,19 @@ return;
 alert("Spin Started 🎰");
 spin();
 };
+function getSpinSettings(mode) {
+  if (mode === "slow") {
+    return { speed: 40, duration: 2500 };
+  }
+
+  if (mode === "medium") {
+    return { speed: 25, duration: 1700 };
+  }
+
+  if (mode === "fast") {
+    return { speed: 0, duration: 800 };
+  }
+}
 function spin() {
 
   balance -= selectedBet;
@@ -140,20 +159,21 @@ function spin() {
 
 strip.style.transition = "none";
 
-// حركة دوران ثابتة (سريعة)
+const settings = getSpinSettings(spinMode);
+
 let position = 0;
 
 const interval = setInterval(() => {
-  position += 60; // سرعة النزول
+
+  if (spinMode === "fast") return;
+
+  position += settings.speed;
   strip.style.transform = `translateY(-${position}px)`;
+
 }, 16);
 
 // التوقف
-setTimeout(() => {
-
-  clearInterval(interval);
-
-  const STEP = 60; // لازم يطابق ارتفاع الصورة
+position = Math.random() * 300;// لازم يطابق ارتفاع الصورة
 
   const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
   const final = finalIndex * STEP;
