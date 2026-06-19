@@ -301,3 +301,23 @@ if (betToggle && betMenu) {
     });
   });
 }
+const speedBtn = document.getElementById("speedToggle");
+
+speedBtn.addEventListener("click", () => {
+
+  if (spinSpeed === "slow") {
+    spinSpeed = "medium";
+    speedBtn.innerText = "🐇";
+  }
+
+  else if (spinSpeed === "medium") {
+    spinSpeed = "fast";
+    speedBtn.innerText = "🐆";
+  }
+
+  else {
+    spinSpeed = "slow";
+    speedBtn.innerText = "🐌";
+  }
+
+});
