@@ -220,7 +220,9 @@ if (checkRare("نجمي.مي.jpg", grid)) {
         balance += totalWin;
         alert("🎉 مبروك! ربحت " + totalWin);
     }
-
+if (totalWin > selectedBet * 10) {
+    showBigWin(totalWin);
+}
     document.getElementById("balance").innerText = balance;
 
     firebase.database()
@@ -262,6 +264,19 @@ function checkRare(symbolName, grid) {
     });
 
     return count >= 3;
+}
+function showBigWin(amount) {
+
+    const el = document.createElement("div");
+
+    el.innerText = "BIG WIN 💰 " + amount;
+    el.className = "big-win";
+
+    document.body.appendChild(el);
+
+    setTimeout(() => {
+        el.remove();
+    }, 2000);
 }
 function startFakeJackpot() {
 
