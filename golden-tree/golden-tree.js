@@ -94,12 +94,12 @@ function initializeReels() {
 
 // استدعاء الدالة
 initializeReels();
-// اختيار الرهان
-document.querySelectorAll(".bet-buttons button").forEach(btn=>{
-btn.addEventListener("click", ()=>{
-selectedBet = parseInt(btn.dataset.bet);
-document.getElementById("bet").innerText = selectedBet;
-});
+ // اختيار الرهان من النظام الجديد (bet-box)
+document.querySelectorAll(".bet-box button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedBet = parseInt(btn.dataset.bet);
+    document.getElementById("bet").innerText = selectedBet;
+  });
 });
 
 // دوران البكرات
@@ -212,3 +212,61 @@ if (symbolData && symbolData.payouts[matchCount]) {
         .update({ balance });
 
              }
+let fakeJP = {
+  spade: 1200,
+  club: 3400,
+  diamond: 5600,
+  heart: 7800
+};
+
+function startFakeJackpot() {
+
+  setInterval(() => {
+
+    fakeJP.spade += Math.floor(Math.random() * 40);
+    fakeJP.club += Math.floor(Math.random() * 40);
+    fakeJP.diamond += Math.floor(Math.random() * 40);
+    fakeJP.heart += Math.floor(Math.random() * 40);
+
+    // إعادة دورة وهمية
+    if (fakeJP.spade > 9999) fakeJP.spade = 1000;
+    if (fakeJP.club > 9999) fakeJP.club = 2000;
+    if (fakeJP.diamond > 9999) fakeJP.diamond = 3000;
+    if (fakeJP.heart > 9999) fakeJP.heart = 4000;
+
+    document.getElementById("jp1").innerText = fakeJP.spade;
+    document.getElementById("jp2").innerText = fakeJP.club;
+    document.getElementById("jp3").innerText = fakeJP.diamond;
+    document.getElementById("jp4").innerText = fakeJP.heart;
+
+  }, 200);
+}
+
+window.addEventListener("load", () => {
+  startFakeJackpot();
+});
+function showBox(id) {
+  const boxes = document.querySelectorAll(".bet-box");
+
+  boxes.forEach(b => {
+    b.classList.remove("active");
+    if (b.dataset.box === id.toString()) {
+      b.classList.add("active");
+    }
+  });
+}
+const betToggle = document.getElementById("betToggle");
+const betMenu = document.getElementById("betMenu");
+
+if (betToggle && betMenu) {
+  betToggle.addEventListener("click", () => {
+    betMenu.classList.toggle("hidden");
+  });
+
+  betMenu.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      showBox(btn.dataset.tab);
+      betMenu.classList.add("hidden");
+    });
+  });
+}
