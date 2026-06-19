@@ -148,3 +148,17 @@ fake-jackpot {
 .bet-box.active {
   display: flex;
 }
+.speed-btn {
+  margin-left: 10px;
+  padding: 10px;
+  border-radius: 50%;
+  background: gold;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.speed-btn:hover {
+  transform: scale(1.1);
+}
