@@ -117,23 +117,16 @@ function spin() {
 strip.style.transition = "none";
 
 // حركة دوران ثابتة (سريعة)
+const settings = getSpinSettings(spinMode);
+
 let position = 0;
 
 const interval = setInterval(() => {
-
-  if (!isSpinning) {
-    clearInterval(interval);
-    strip.style.transition = "none";
-    return;
-  }
-
   if (spinMode === "fast") return;
 
   position += settings.speed;
   strip.style.transform = `translateY(-${position}px)`;
-
 }, 16);
-
 // التوقف
 setTimeout(() => {
 
