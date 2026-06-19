@@ -1,5 +1,6 @@
 let selectedBet = 300;
 let balance = 0;
+let isSpinning = false;
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
