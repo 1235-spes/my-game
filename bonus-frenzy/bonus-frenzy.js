@@ -112,7 +112,7 @@ if(balance < selectedBet){
 alert("رصيدك غير كافٍ!");
 return;
 }
-alert("Spin Started 🎰");
+
 spin();
 };
 
