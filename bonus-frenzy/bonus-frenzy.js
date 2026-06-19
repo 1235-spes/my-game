@@ -12,20 +12,26 @@ const icons = {
 };
 
 let modeIndex = 0;
-function getSpinSettings(mode) {
-  if (mode === "slow") return { speed: 40, duration: 2500 };
-  if (mode === "medium") return { speed: 25, duration: 1700 };
-  if (mode === "fast") return { speed: 0, duration: 800 };
-}
-const speedToggle = document.getElementById("speedToggle");
+window.addEventListener("DOMContentLoaded", () => {
 
-speedToggle.addEventListener("click", () => {
-  modeIndex = (modeIndex + 1) % modes.length;
-  spinMode = modes[modeIndex];
-  speedToggle.innerText = icons[spinMode];
+  const speedToggle = document.getElementById("speedToggle");
 
-  console.log("Speed:", spinMode);
+  if (!speedToggle) {
+    console.log("speedToggle غير موجود في HTML");
+    return;
+  }
+
+  speedToggle.addEventListener("click", () => {
+    modeIndex = (modeIndex + 1) % modes.length;
+    spinMode = modes[modeIndex];
+
+    speedToggle.innerText = icons[spinMode];
+
+    console.log("Speed:", spinMode);
+  });
+
 });
+
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
