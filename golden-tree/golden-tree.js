@@ -26,15 +26,19 @@ document.getElementById("balance").innerText = balance;
 
 // الرموز
 const SYMBOLS = [
-  { img: "tree1.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
-  { img: "خوخ.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
-  { img: "كرز.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
-  { img: "جرس.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
-  { img: "اخضر.jpg", payouts: { 3: 8, 4: 16, 5: 32 } },
-  { img: "ornj.jpg", payouts: { 3: 12, 4: 24, 5: 48 } },
-  { img: "Anb.jpg", payouts: { 3: 20, 4: 40, 5: 80 } },
-  { img: "777.jpg", payouts: { 3: 25, 4: 50, 5: 100 } }
+  { img: "جبس.بس.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
+  { img: "برتقان.قان.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
+  { img: "جرس.رس.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
+  { img: "خوخ.خ.jpg", payouts: { 3: 4, 4: 8, 5: 16 } },
+  { img: "دولر.لر.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
+  { img: "سبعة.بعة.jpg", payouts: { 3: 6, 4: 12, 5: 25 } },
+  { img: "شجرةرة.jpg", payouts: { 3: 2, 4: 5, 5: 10 } },
+  { img: "عنبي.بي.jpg", payouts: { 3: 3, 4: 7, 5: 14 } },
+  { img: "كرز.رز.jpg", payouts: { 3: 4, 4: 9, 5: 18 } },
+  { img: "ليمون.مون.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
+  { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
+  
 
 // البكرات
 const reels = [
@@ -103,16 +107,16 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
 });
 
 // دوران البكرات
-document.getElementById("spin").onclick = () => {
+ document.getElementById("spin").onclick = () => {
 if(balance < selectedBet){
 alert("رصيدك غير كافٍ!");
 return;
 }
-alert("Spin Started 🎰");
+
 spin();
 };
-function spin() {
 
+function spin() {
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
