@@ -52,9 +52,9 @@ const SYMBOLS = [
   { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
 function isWild(symbol, index) {
-  return symbol === "شجرةرة.jpg" && index >= 1 && index <= 3;
+  // الشجرة تظهر فقط في الوسط (2–3 فقط)
+  return symbol === "شجرةرة.jpg" && index >= 2 && index <= 3;
 }
-
 const SYMBOL_RARITY = {
   "جبس.بس.jpg": 25,
   "برتقان.قان.jpg": 20,
@@ -68,10 +68,10 @@ const SYMBOL_RARITY = {
   "شجرةرة.jpg": 2,
   "سبعة.بعة.jpg": 1
 };
-const RTP = 0.85; // مثال احترافي
+const RTP = 0.06; // 6% فقط (احترافي)
 
-function adjustWin(win) {
-  return win * RTP;
+function applyRTP(win) {
+  return Math.floor(win * RTP);
 }
 function getRandomSymbol() {
   let pool = [];
@@ -88,13 +88,14 @@ function getRandomSymbol() {
 }
 function forceTreeLogic() {
 
-  // احتمال الشجرة الحقيقي 1%
-  if (Math.random() < 0.01) {
+  // ⛔ احتمال أقل جداً
+  if (Math.random() < 0.005) { // 0.5% فقط
     return SYMBOLS.find(s => s.img === "شجرةرة.jpg");
   }
 
   return getRandomSymbol();
 }
+
 // البكرات
 const reels = [
 document.getElementById("reel1"),
@@ -315,22 +316,23 @@ function applyWild(row) {
 
 function checkSpecialSymbols(grid) {
 
-let starCount = 0;
-let dollarCount = 0;
+  let starCount = 0;
+  let dollarCount = 0;
 
-grid.flat().forEach(s => {
+  grid.flat().forEach(s => {
 
-const img = (s && s.img) ? s.img : s;
-const symbol = SYMBOLS.find(x => x.img === img);
-if (!symbol) return;
-if (symbol.img.includes("نجمي")) starCount++;
-if (symbol.img.includes("دولر")) dollarCount++;
+    const img = (s && s.img) ? s.img : s;
 
-});
+    if (img.includes("نجمي")) starCount++;
+    if (img.includes("دولر")) dollarCount++;
+
+  });
+
   let bonus = 0;
 
-  if (starCount >= 3) bonus += selectedBet * 10;
-  if (dollarCount >= 3) bonus += selectedBet * 7;
+  // ⭐ حد أقصى
+  if (starCount === 3) bonus += selectedBet * 5;
+  if (dollarCount === 3) bonus += selectedBet * 3;
 
   return bonus;
 }
@@ -395,7 +397,7 @@ function checkWin() {
 
   
   const RTP = 0.05;
-totalWin = Math.floor(adjustWin(totalWin));
+totalWin = applyRTP(totalWin);
   if (totalWin > 0) {
     balance += totalWin;
     alert("🎉 مبروك! ربحت " + totalWin);
