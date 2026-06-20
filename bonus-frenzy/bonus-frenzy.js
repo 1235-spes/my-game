@@ -203,7 +203,7 @@ const allCells = reels.map(r => r.children[1].src);
             totalWin += selectedBet * symbolData.payouts[matchCount];
         }
 
-    });
+    
 const grid = reels.flatMap(r =>
     Array.from(r.children).map(img => img.src)
 );
