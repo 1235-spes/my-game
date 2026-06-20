@@ -169,12 +169,18 @@ setTimeout(() => {
 }
 function checkWin() {
 
-    const rows = [
-        reels.map(r => r.children[0].src),
-        reels.map(r => r.children[1].src),
-        reels.map(r => r.children[2].src)
-    ];
+    const rows = [];
 
+for (let i = 0; i < 3; i++) {
+
+    rows.push(
+        reels.map(r => {
+            const imgs = r.querySelectorAll("img");
+            return imgs[i].src;
+        })
+    );
+
+}
     let totalWin = 0;
 
     rows.forEach(row => {
