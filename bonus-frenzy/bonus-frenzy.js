@@ -136,20 +136,26 @@ function checkPaylines() {
 
     const first = symbols[0];
 
-    let match = symbols.every(s => s.img === first.img);
+    let matchCount = 0;
 
-    if (match) {
-      const symbolData = SYMBOLS.find(s => s.img === first.img);
-
-      if (symbolData?.payouts?.[5]) {
-        win += selectedBet * symbolData.payouts[5];
+    for (let s of symbols) {
+      if (s.img === first.img) {
+        matchCount++;
+      } else {
+        break;
       }
+    }
+
+    const symbolData = SYMBOLS.find(s => s.img === first.img);
+
+    if (symbolData?.payouts?.[matchCount]) {
+      win += selectedBet * symbolData.payouts[matchCount];
     }
 
   });
 
   return win;
-}
+  }
 function generateFinalResult() {
   finalResult = [];
 
@@ -304,12 +310,13 @@ function checkSpecialSymbols(grid) {
 
   grid.flat().forEach(s => {
 
-    const symbol = SYMBOL_MAP[s] || { img: s };
+  const symbol = SYMBOLS.find(x => x.img === s);
+  if (!symbol) return;
 
-    if (symbol.img.includes("نجمي")) starCount++;
-    if (symbol.img.includes("دولر")) dollarCount++;
+  if (symbol.img.includes("نجمي")) starCount++;
+  if (symbol.img.includes("دولر")) dollarCount++;
 
-  });
+});
 
   let bonus = 0;
 
