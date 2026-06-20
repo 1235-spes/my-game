@@ -202,7 +202,9 @@ function checkWin() {
         }
 
     });
+const RTP = 0.35;
 
+totalWin = Math.floor(totalWin * RTP);
     if (totalWin > 0) {
         balance += totalWin;
         alert("🎉 مبروك! ربحت " + totalWin);
