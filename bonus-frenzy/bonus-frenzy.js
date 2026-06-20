@@ -1,5 +1,6 @@
 let selectedBet = 300;
 let balance = 0;
+let finalResult = [];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -107,6 +108,20 @@ function getVisibleSymbols() {
 
   return grid;
 }
+function generateFinalResult() {
+  finalResult = [];
+
+  for (let r = 0; r < reels.length; r++) {
+    const reelResult = [];
+
+    for (let i = 0; i < 25; i++) {
+      const symbol = forceTreeLogic();
+      reelResult.push(symbol);
+    }
+
+    finalResult.push(reelResult);
+  }
+}
 function spinReel(reel, delay, onStop) {
 
   let speed = 30;
@@ -178,6 +193,9 @@ spin();
 
 function spin() {
 
+  generateFinalResult(); // 👈 أهم سطر
+
+  let finished = 0;
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
@@ -186,41 +204,51 @@ function spin() {
     .ref("users/" + currentUser)
     .update({ balance });
 
-  spinSound.currentTime = 0;
   playSound(spinSound);
 
-  let finished = 0;
+  reels.forEach((reel, index) => {
 
-reels.forEach((reel, index) => {
+    const strip = reel.querySelector(".reel-strip");
+    if (!strip) return;
 
-  const strip = reel.querySelector(".reel-strip");
-  if (!strip) return;
+    let position = 0;
 
-  const interval = setInterval(() => {
-    let position = Math.random() * 1000;
-    strip.style.transform = `translateY(-${position}px)`;
-  }, 16);
+    const interval = setInterval(() => {
+      position += 60;
+      strip.style.transform = `translateY(-${position}px)`;
+    }, 16);
 
-  setTimeout(() => {
+    setTimeout(() => {
 
-    clearInterval(interval);
+      clearInterval(interval);
 
-    stopSound.currentTime = 0;
-    stopSound.play();
+      // 🎯 هنا نضع النتيجة الحقيقية
+      const reelData = finalResult[index];
 
-    finished++;
+      strip.innerHTML = "";
 
-    if (finished === reels.length) {
-      spinSound.pause();
-      checkWin();
-    }
+      reelData.forEach(symbol => {
+        const img = document.createElement("img");
+        img.src = "../images/" + symbol.img;
+        img.dataset.symbol = symbol.img;
+        strip.appendChild(img);
+      });
 
-  }, 1200 + index * 400);
+      strip.style.transition = "transform 0.8s ease-out";
+      strip.style.transform = "translateY(0px)";
 
-});
-  let lastDelay = 1200 + (reels.length - 1) * 400;
+      playSound(stopSound);
 
+      finished++;
 
+      if (finished === reels.length) {
+        spinSound.pause();
+        checkWin();
+      }
+
+    }, 1200 + index * 400);
+
+  });
 }
 function applyWild(row) {
   const base = row.find(s => !isWild(s)) || row[0];
