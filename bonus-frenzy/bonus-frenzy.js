@@ -170,11 +170,7 @@ setTimeout(() => {
 }
 function checkWin() {
 
-    const rows = [
-    getVisibleSymbols()[0],
-    getVisibleSymbols()[1],
-    getVisibleSymbols()[2]
-];
+    const rows = getVisibleSymbols();
 
     let totalWin = 0;
 
@@ -182,32 +178,34 @@ function checkWin() {
 
         let firstSymbol = row[0];
         let matchCount = 1;
-if (symbols.includes("شجرةرة.jpg")) {
-    matchCount = 5;
-}
-    
-        for (let i = 1; i < row.length; i++) {
 
-            if (row[i] === firstSymbol) {
-                matchCount++;
-            } else {
-                break;
+        // 🌳 Wild (الشجرة)
+        if (row.some(s => s === "شجرةرة.jpg")) {
+            matchCount = 5;
+        } else {
+
+            for (let i = 1; i < row.length; i++) {
+                if (row[i] === firstSymbol) {
+                    matchCount++;
+                } else {
+                    break;
+                }
             }
-
         }
 
-        const symbolData = SYMBOLS.find(s => s.img === first);
-if (symbolData && symbolData.payouts[matchCount]) {
-    totalWin += selectedBet * symbolData.payouts[matchCount];
-}
+        // 🔥 إصلاح مهم جداً
+        const symbolData = SYMBOLS.find(s => s.img === firstSymbol);
+
+        if (symbolData && symbolData.payouts[matchCount]) {
+            totalWin += selectedBet * symbolData.payouts[matchCount];
+        }
+
     });
 
     if (totalWin > 0) {
-
         balance += totalWin;
-
         alert("🎉 مبروك! ربحت " + totalWin);
-
+        winSound.play();
     }
 
     document.getElementById("balance").innerText = balance;
@@ -215,15 +213,9 @@ if (symbolData && symbolData.payouts[matchCount]) {
     firebase.database()
         .ref("users/" + currentUser)
         .update({ balance });
+}
 
-             }
-let fakeJP = {
-  spade: 1200,
-  club: 3400,
-  diamond: 5600,
-  heart: 7800
-};
-function getVisibleSymbols() {
+ function getVisibleSymbols() {
     return reels.map(reel => {
         const imgs = reel.querySelectorAll(".reel-strip img");
         const middle = Math.floor(imgs.length / 2);
@@ -234,7 +226,13 @@ function getVisibleSymbols() {
             imgs[middle + 1].dataset.symbol
         ];
     });
-}
+ }            
+let fakeJP = {
+  spade: 1200,
+  club: 3400,
+  diamond: 5600,
+  heart: 7800
+};
 function startFakeJackpot() {
 
   setInterval(() => {
