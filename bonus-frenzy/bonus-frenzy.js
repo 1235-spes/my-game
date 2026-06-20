@@ -1,24 +1,5 @@
 let selectedBet = 300;
 let balance = 0;
-const PAYLINES = [
-  // خط وسط مستقيم
-  [1, 1, 1, 1, 1],
-
-  // خط علوي
-  [0, 0, 0, 0, 0],
-
-  // خط سفلي
-  [2, 2, 2, 2, 2],
-
-  // X شكل
-  [0, 1, 2, 1, 0],
-
-  // V شكل
-  [2, 1, 0, 1, 2],
-
-  // موجة
-  [1, 0, 1, 2, 1]
-];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -188,61 +169,44 @@ setTimeout(() => {
 }
 function checkWin() {
 
-    const grid = getGrid(); 
+    const rows = [
+        reels.map(r => r.children[0].src),
+        reels.map(r => r.children[1].src),
+        reels.map(r => r.children[2].src)
+    ];
+
     let totalWin = 0;
 
-    PAYLINES.forEach(line => {
+    rows.forEach(row => {
 
-        let symbols = [];
-
-        // نبني الخط حسب الـ paylines
-        for (let reelIndex = 0; reelIndex < 5; reelIndex++) {
-            const rowIndex = line[reelIndex];
-            symbols.push(grid[reelIndex][rowIndex]);
-        }
-
-        let first = symbols[0];
+        let firstSymbol = row[0];
         let matchCount = 1;
 
-        // 🌳 Wild (الشجرة)
-      if (symbols.some(s => s.includes("شجرةرة.jpg"))){
-            matchCount = 5;
-        } else {
+        for (let i = 1; i < row.length; i++) {
 
-            for (let i = 1; i < symbols.length; i++) {
-                if (symbols[i] === first) {
-                    matchCount++;
-                } else {
-                    break;
-                }
+            if (row[i] === firstSymbol) {
+                matchCount++;
+            } else {
+                break;
             }
+
         }
 
-        const symbolName = decodeURIComponent(first.split("/").pop().split("?")[0]);
-        const symbolData = SYMBOLS.find(s => s.img === symbolName);
+        const symbolName = firstSymbol.split("/").pop();
 
-        if (symbolData && symbolData.payouts[matchCount] !== undefined) {
-            totalWin += selectedBet * symbolData.payouts[matchCount];
-        }
+const symbolData = SYMBOLS.find(s => s.img === symbolName);
 
+if (symbolData && symbolData.payouts[matchCount]) {
+    totalWin += selectedBet * symbolData.payouts[matchCount];
+}
     });
 
-    // 🎁 رموز نادرة (Scatter)
-    const flat = grid.flat();
-
-    if (checkRare("دولر.لر.jpg", flat)) {
-        totalWin += selectedBet * 10;
-    }
-
-    if (checkRare("نجمي.مي.jpg", flat)) {
-        totalWin += selectedBet * 10;
-    }
-
     if (totalWin > 0) {
+
         balance += totalWin;
-        alert("🎉 ربحت: " + totalWin);
-        dropGold();
-        winSound.play();
+
+        alert("🎉 مبروك! ربحت " + totalWin);
+
     }
 
     document.getElementById("balance").innerText = balance;
@@ -250,92 +214,15 @@ function checkWin() {
     firebase.database()
         .ref("users/" + currentUser)
         .update({ balance });
-}
+
+             }
 let fakeJP = {
   spade: 1200,
   club: 3400,
   diamond: 5600,
   heart: 7800
 };
-function getGrid() {
-  return reels.map(reel => {
-    const imgs = reel.querySelectorAll(".reel-strip img");
-    const middle = Math.floor(imgs.length / 2);
 
-    return [
-      imgs[middle - 1].src,
-      imgs[middle].src,
-      imgs[middle + 1].src
-    ];
-  });
-}
-function getVisibleSymbols() {
-    return reels.map(reel => {
-        const imgs = reel.querySelectorAll(".reel-strip img");
-
-        const middleIndex = Math.floor(imgs.length / 2);
-
-        return [
-            imgs[middleIndex - 1].src,
-            imgs[middleIndex].src,
-            imgs[middleIndex + 1].src
-        ];
-    });
-}
-function checkRow(row) {
-
-    const left = row[0];
-    const middle = row[1];
-    const right = row[2];
-
-    // 🌳 Wild
-    if (middle.includes("شجرةرة.jpg")) {
-        return left === right || left.includes(right.split("/").pop());
-    }
-
-    // عادي
-    return left === middle && middle === right;
-}
-function checkRare(symbolName, grid) {
-
-    let count = 0;
-
-    grid.forEach(cell => {
-        if (cell.includes(symbolName)) {
-            count++;
-        }
-    });
-
-    return count >= 3;
-}
-function showBigWin(amount) {
-
-    const el = document.createElement("div");
-
-    el.innerText = "BIG WIN 💰 " + amount;
-    el.className = "big-win";
-
-    document.body.appendChild(el);
-
-    setTimeout(() => {
-        el.remove();
-    }, 2000);
-}
-function dropGold() {
-
-    for (let i = 0; i < 20; i++) {
-
-        const gold = document.createElement("div");
-        gold.innerText = "💰";
-        gold.className = "gold";
-
-        gold.style.left = Math.random() * 100 + "vw";
-
-        document.body.appendChild(gold);
-
-        setTimeout(() => gold.remove(), 2000);
-    }
-}
 function startFakeJackpot() {
 
   setInterval(() => {
