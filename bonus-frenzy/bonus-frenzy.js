@@ -1,6 +1,13 @@
 let selectedBet = 300;
 let balance = 0;
 let finalResult = [];
+const PAYLINES = [
+  [0,0,0,0,0], // خط أفقي
+  [1,1,1,1,1],
+  [2,2,2,2,2],
+  [0,1,2,1,0], // X shape
+  [2,1,0,1,2]
+];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -47,6 +54,7 @@ const SYMBOLS = [
 function isWild(symbol) {
   return symbol === "شجرةرة.jpg";
 }
+
 const SYMBOL_RARITY = {
   "جبس.بس.jpg": 25,
   "برتقان.قان.jpg": 20,
@@ -60,6 +68,11 @@ const SYMBOL_RARITY = {
   "شجرةرة.jpg": 2,
   "سبعة.بعة.jpg": 1
 };
+const RTP = 0.85; // مثال احترافي
+
+function adjustWin(win) {
+  return win * RTP;
+}
 function getRandomSymbol() {
   let pool = [];
 
@@ -107,6 +120,35 @@ function getVisibleSymbols() {
   });
 
   return grid;
+}
+function checkPaylines() {
+
+  let win = 0;
+
+  PAYLINES.forEach(line => {
+
+    let symbols = [];
+
+    for (let i = 0; i < reels.length; i++) {
+      const reel = finalResult[i];
+      symbols.push(reel[line[i]]);
+    }
+
+    const first = symbols[0];
+
+    let match = symbols.every(s => s.img === first.img);
+
+    if (match) {
+      const symbolData = SYMBOLS.find(s => s.img === first.img);
+
+      if (symbolData?.payouts?.[5]) {
+        win += selectedBet * symbolData.payouts[5];
+      }
+    }
+
+  });
+
+  return win;
 }
 function generateFinalResult() {
   finalResult = [];
@@ -278,41 +320,16 @@ function checkSpecialSymbols(grid) {
 }
 function checkWin() {
 
-  const rows = getVisibleSymbols();
-
   let totalWin = 0;
 
-  rows.forEach(row => {
-
-    // 🌳 تطبيق الشجرة
-    let resolved = applyWild(row);
-
-    let firstSymbol = resolved[0];
-    let matchCount = 1;
-
-    for (let i = 1; i < resolved.length; i++) {
-      if (resolved[i] === firstSymbol) {
-        matchCount++;
-      } else {
-        break;
-      }
-    }
-
-    const symbolData = SYMBOLS.find(s => s.img === firstSymbol);
-
-    if (symbolData && symbolData.payouts[matchCount]) {
-      totalWin += selectedBet * symbolData.payouts[matchCount];
-    }
-
-  });
+  // 🎯 Paylines system
+  totalWin += checkPaylines();
 
   // ⭐ + 💰 بونص خاص
-  totalWin += checkSpecialSymbols(rows);
+  totalWin += checkSpecialSymbols(finalResult.map(r => r.map(s => s.img)));
 
-  // 🎯 RTP (اختياري لكن عندك الآن)
   const RTP = 0.35;
-  totalWin = Math.floor(totalWin * RTP);
-
+  totalWin = Math.floor(adjustWin(totalWin));
   if (totalWin > 0) {
     balance += totalWin;
     alert("🎉 مبروك! ربحت " + totalWin);
