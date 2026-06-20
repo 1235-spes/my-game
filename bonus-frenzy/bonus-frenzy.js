@@ -181,28 +181,30 @@ const allCells = reels.map(r => r.children[1].src);
 
     let firstSymbol = row[0];
     let matchCount = 1;
-        // 🌳 إذا في Wild
-        if (checkRow(row)) {
-    matchCount = 3;
-        }
 
-            // 🔁 حساب عادي
-            for (let i = 1; i < row.length; i++) {
-                if (row[i] === firstSymbol) {
-                    matchCount++;
-                } else {
-                    break;
-                }
+    // 🌳 Wild system الصحيح
+    if (!checkRow(row)) {
+
+        for (let i = 1; i < row.length; i++) {
+            if (row[i] === firstSymbol) {
+                matchCount++;
+            } else {
+                break;
             }
         }
-      
-        const symbolName = firstSymbol.split("/").pop();
-        const symbolData = SYMBOLS.find(s => s.img === symbolName);
 
-        if (symbolData && symbolData.payouts[matchCount]) {
-            totalWin += selectedBet * symbolData.payouts[matchCount];
-        }
+    } else {
+        matchCount = 3;
+    }
 
+    const symbolName = firstSymbol.split("/").pop();
+    const symbolData = SYMBOLS.find(s => s.img === symbolName);
+
+    if (symbolData && symbolData.payouts[matchCount]) {
+        totalWin += selectedBet * symbolData.payouts[matchCount];
+    }
+
+});
     
 const grid = reels.flatMap(r =>
     Array.from(r.children).map(img => img.src)
