@@ -159,16 +159,15 @@ function spin() {
       stopSound.currentTime = 0;
       stopSound.play();
 
-      finished++;
-
-      if (finished === reels.length) {
-        spinSound.pause();
-        checkWin();
-      }
-
     }, 1200 + index * 400);
 
   });
+  let lastDelay = 1200 + (reels.length - 1) * 400;
+
+setTimeout(() => {
+  spinSound.pause();
+  checkWin();
+}, lastDelay + 250);
 }
 function checkWin() {
 
