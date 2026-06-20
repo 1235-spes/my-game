@@ -240,7 +240,7 @@ spin();
 };
 
 function spin() {
-
+let winChecked = false;
   generateFinalResult(); // 👈 أهم سطر
 
   let finished = 0;
@@ -289,9 +289,14 @@ function spin() {
 
       finished++;
 
-      if (finished === reels.length) {
-        spinSound.pause();
-        checkWin();
+      if (finished === reels.length && !winChecked) {
+  winChecked = true;
+
+  // تأخير بسيط لضمان توقف بصري كامل
+  setTimeout(() => {
+    spinSound.pause();
+    checkWin();
+  }, 200);
       }
 
     }, 1200 + index * 400);
