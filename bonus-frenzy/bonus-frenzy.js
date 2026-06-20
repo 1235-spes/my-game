@@ -205,7 +205,7 @@ function checkWin() {
         let matchCount = 1;
 
         // 🌳 Wild (الشجرة)
-        if (symbols[2].includes("شجرةرة.jpg")) {
+      if (symbols.some(s => s.includes("شجرةرة.jpg"))){
             matchCount = 5;
         } else {
 
@@ -218,7 +218,7 @@ function checkWin() {
             }
         }
 
-        const symbolName = first.split("/").pop();
+        const symbolName = decodeURIComponent(first.split("/").pop().split("?")[0]);
         const symbolData = SYMBOLS.find(s => s.img === symbolName);
 
         if (symbolData && symbolData.payouts[matchCount] !== undefined) {
