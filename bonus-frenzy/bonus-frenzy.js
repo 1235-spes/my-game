@@ -320,9 +320,9 @@ let dollarCount = 0;
 
 grid.flat().forEach(s => {
 
-const symbol = SYMBOLS.find(x => x.img === s);
+const img = (s && s.img) ? s.img : s;
+const symbol = SYMBOLS.find(x => x.img === img);
 if (!symbol) return;
-
 if (symbol.img.includes("نجمي")) starCount++;
 if (symbol.img.includes("دولر")) dollarCount++;
 
