@@ -315,33 +315,18 @@ function applyWild(row) {
 
 function checkSpecialSymbols(grid) {
 
-  let starCount = 0;
-  let dollarCount = 0;
+let starCount = 0;
+let dollarCount = 0;
 
-  grid.flat().forEach(s => {
+grid.flat().forEach(s => {
 
-    // 🔥 لو s object
-    const img = s.img || s;
+const symbol = SYMBOLS.find(x => x.img === s);
+if (!symbol) return;
 
-    if (img.includes("نجمي")) starCount++;
-    if (img.includes("دولر")) dollarCount++;
+if (symbol.img.includes("نجمي")) starCount++;
+if (symbol.img.includes("دولر")) dollarCount++;
 
-  });
-
-  let bonus = 0;
-
-  if (starCount >= 3) bonus += selectedBet * 10;
-  if (dollarCount >= 3) bonus += selectedBet * 7;
-
-  return bonus;
-}
-  let bonus = 0;
-
-  if (starCount >= 3) bonus += selectedBet * 10;
-  if (dollarCount >= 3) bonus += selectedBet * 7;
-
-  return bonus;
-}
+});
 function checkPaylines() {
 
   let win = 0;
