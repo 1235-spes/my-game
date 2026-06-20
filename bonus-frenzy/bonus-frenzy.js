@@ -169,18 +169,12 @@ setTimeout(() => {
 }
 function checkWin() {
 
-    const rows = [];
+    const rows = [
+        getVisibleSymbols().map(r => r[0]),
+        getVisibleSymbols().map(r => r[1]),
+        getVisibleSymbols().map(r => r[2])
+    ];
 
-for (let i = 0; i < 3; i++) {
-
-    rows.push(
-        reels.map(r => {
-            const imgs = r.querySelectorAll("img");
-            return imgs[i].src;
-        })
-    );
-
-}
     let totalWin = 0;
 
     rows.forEach(row => {
@@ -188,16 +182,13 @@ for (let i = 0; i < 3; i++) {
         let firstSymbol = row[0];
         let matchCount = 1;
 
-        // 🌳 Wild
         if (checkRow(row)) {
             matchCount = 3;
         } else {
             for (let i = 1; i < row.length; i++) {
                 if (row[i] === firstSymbol) {
                     matchCount++;
-                } else {
-                    break;
-                }
+                } else break;
             }
         }
 
@@ -211,27 +202,17 @@ for (let i = 0; i < 3; i++) {
     });
 
     const grid = reels.flatMap(r =>
-        Array.from(r.children).map(img => img.src)
+        Array.from(r.querySelectorAll("img")).map(img => img.src)
     );
 
-    if (checkRare("دولر.لر.jpg", grid)) {
-        totalWin += selectedBet * 10;
-    }
-
-    if (checkRare("نجمي.مي.jpg", grid)) {
-        totalWin += selectedBet * 10;
-    }
+    if (checkRare("دولر.لر.jpg", grid)) totalWin += selectedBet * 10;
+    if (checkRare("نجمي.مي.jpg", grid)) totalWin += selectedBet * 10;
 
     if (totalWin > 0) {
         balance += totalWin;
         alert("🎉 مبروك! ربحت " + totalWin);
         dropGold();
         winSound.play();
-    }
-
-    if (totalWin > selectedBet * 10) {
-        showBigWin(totalWin);
-        jackpotSound.play();
     }
 
     document.getElementById("balance").innerText = balance;
@@ -246,6 +227,20 @@ let fakeJP = {
   diamond: 5600,
   heart: 7800
 };
+function getVisibleSymbols() {
+
+    return reels.map(reel => {
+        const imgs = reel.querySelectorAll(".reel-strip img");
+
+        // نأخذ الوسط (النتيجة الظاهرة)
+        return [
+            imgs[10].src,
+            imgs[11].src,
+            imgs[12].src
+        ];
+    });
+
+}
 function checkRow(row) {
 
     const left = row[0];
