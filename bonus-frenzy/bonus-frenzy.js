@@ -169,11 +169,13 @@ setTimeout(() => {
 }
 function checkWin() {
 
-    const rows = [
-        getVisibleSymbols().map(r => r[0]),
-        getVisibleSymbols().map(r => r[1]),
-        getVisibleSymbols().map(r => r[2])
-    ];
+    const visible = getVisibleSymbols();
+
+const rows = [
+    visible.map(r => r[0]),
+    visible.map(r => r[1]),
+    visible.map(r => r[2])
+];
 
     let totalWin = 0;
 
@@ -195,10 +197,11 @@ function checkWin() {
         const symbolName = firstSymbol.split("/").pop();
         const symbolData = SYMBOLS.find(s => s.img === symbolName);
 
-        if (symbolData && symbolData.payouts[matchCount]) {
-            totalWin += selectedBet * symbolData.payouts[matchCount];
-        }
-
+        
+    if (symbolData && symbolData.payouts[matchCount] !== undefined)  {  
+        totalWin += selectedBet * symbolData.payouts[matchCount];  
+    }  
+      
     });
 
     const grid = reels.flatMap(r =>
@@ -228,18 +231,17 @@ let fakeJP = {
   heart: 7800
 };
 function getVisibleSymbols() {
-
     return reels.map(reel => {
         const imgs = reel.querySelectorAll(".reel-strip img");
 
-        // نأخذ الوسط (النتيجة الظاهرة)
+        const middleIndex = Math.floor(imgs.length / 2);
+
         return [
-            imgs[10].src,
-            imgs[11].src,
-            imgs[12].src
+            imgs[middleIndex - 1].src,
+            imgs[middleIndex].src,
+            imgs[middleIndex + 1].src
         ];
     });
-
 }
 function checkRow(row) {
 
@@ -247,17 +249,13 @@ function checkRow(row) {
     const middle = row[1];
     const right = row[2];
 
-    // 🌳 Wild (الشجرة)
+    // 🌳 Wild
     if (middle.includes("شجرةرة.jpg")) {
-        return true;
+        return left === right || left.includes(right.split("/").pop());
     }
 
     // عادي
-    if (left === middle && middle === right) {
-        return true;
-    }
-
-    return false;
+    return left === middle && middle === right;
 }
 function checkRare(symbolName, grid) {
 
