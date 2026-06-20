@@ -174,67 +174,66 @@ function checkWin() {
         reels.map(r => r.children[1].src),
         reels.map(r => r.children[2].src)
     ];
-const allCells = reels.map(r => r.children[1].src);
+
     let totalWin = 0;
 
     rows.forEach(row => {
 
-    let firstSymbol = row[0];
-    let matchCount = 1;
+        let firstSymbol = row[0];
+        let matchCount = 1;
 
-    // 🌳 Wild system الصحيح
-    if (!checkRow(row)) {
-
-        for (let i = 1; i < row.length; i++) {
-            if (row[i] === firstSymbol) {
-                matchCount++;
-            } else {
-                break;
+        // 🌳 Wild
+        if (checkRow(row)) {
+            matchCount = 3;
+        } else {
+            for (let i = 1; i < row.length; i++) {
+                if (row[i] === firstSymbol) {
+                    matchCount++;
+                } else {
+                    break;
+                }
             }
         }
 
-    } else {
-        matchCount = 3;
+        const symbolName = firstSymbol.split("/").pop();
+        const symbolData = SYMBOLS.find(s => s.img === symbolName);
+
+        if (symbolData && symbolData.payouts[matchCount]) {
+            totalWin += selectedBet * symbolData.payouts[matchCount];
+        }
+
+    });
+
+    const grid = reels.flatMap(r =>
+        Array.from(r.children).map(img => img.src)
+    );
+
+    if (checkRare("دولر.لر.jpg", grid)) {
+        totalWin += selectedBet * 10;
     }
 
-    const symbolName = firstSymbol.split("/").pop();
-    const symbolData = SYMBOLS.find(s => s.img === symbolName);
-
-    if (symbolData && symbolData.payouts[matchCount]) {
-        totalWin += selectedBet * symbolData.payouts[matchCount];
+    if (checkRare("نجمي.مي.jpg", grid)) {
+        totalWin += selectedBet * 10;
     }
 
-});
-    
-const grid = reels.flatMap(r =>
-    Array.from(r.children).map(img => img.src)
-);
-
-// 💎 دولار
-if (checkRare("دولر.لر.jpg", grid)) {
-    totalWin += selectedBet * 10;
-}
-
-// ✨ نجمي
-if (checkRare("نجمي.مي.jpg", grid)) {
-    totalWin += selectedBet * 10;
-}
     if (totalWin > 0) {
         balance += totalWin;
         alert("🎉 مبروك! ربحت " + totalWin);
+        dropGold();
+        winSound.play();
     }
-  if (totalWin > 0) {
-    dropGold();
-  }
-if (totalWin > selectedBet * 10) {
-    showBigWin(totalWin);
-}
+
+    if (totalWin > selectedBet * 10) {
+        showBigWin(totalWin);
+        jackpotSound.play();
+    }
+
     document.getElementById("balance").innerText = balance;
 
     firebase.database()
         .ref("users/" + currentUser)
         .update({ balance });
-          }
+}
 let fakeJP = {
   spade: 1200,
   club: 3400,
