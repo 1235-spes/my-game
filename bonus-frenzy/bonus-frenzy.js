@@ -1,4 +1,4 @@
-.let selectedBet = 300;
+le.t selectedBet = 300;
 let balance = 0;
 let finalResult = [];
 const PAYLINES = [
