@@ -89,6 +89,7 @@ function initializeReels() {
       const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
       img.src = "../images/" + symbol.img;
+img.dataset.symbol = symbol.img;
 
       strip.appendChild(img);
     }
@@ -170,10 +171,10 @@ setTimeout(() => {
 function checkWin() {
 
     const rows = [
-        reels.map(r => r.children[0].src),
-        reels.map(r => r.children[1].src),
-        reels.map(r => r.children[2].src)
-    ];
+    getVisibleSymbols()[0],
+    getVisibleSymbols()[1],
+    getVisibleSymbols()[2]
+];
 
     let totalWin = 0;
 
@@ -181,7 +182,10 @@ function checkWin() {
 
         let firstSymbol = row[0];
         let matchCount = 1;
-
+if (symbols.includes("شجرةرة.jpg")) {
+    matchCount = 5;
+}
+    
         for (let i = 1; i < row.length; i++) {
 
             if (row[i] === firstSymbol) {
@@ -192,10 +196,7 @@ function checkWin() {
 
         }
 
-        const symbolName = firstSymbol.split("/").pop();
-
-const symbolData = SYMBOLS.find(s => s.img === symbolName);
-
+        const symbolData = SYMBOLS.find(s => s.img === first);
 if (symbolData && symbolData.payouts[matchCount]) {
     totalWin += selectedBet * symbolData.payouts[matchCount];
 }
@@ -222,7 +223,18 @@ let fakeJP = {
   diamond: 5600,
   heart: 7800
 };
+function getVisibleSymbols() {
+    return reels.map(reel => {
+        const imgs = reel.querySelectorAll(".reel-strip img");
+        const middle = Math.floor(imgs.length / 2);
 
+        return [
+            imgs[middle - 1].dataset.symbol,
+            imgs[middle].dataset.symbol,
+            imgs[middle + 1].dataset.symbol
+        ];
+    });
+}
 function startFakeJackpot() {
 
   setInterval(() => {
