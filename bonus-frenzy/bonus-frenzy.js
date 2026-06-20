@@ -1,4 +1,4 @@
-new selectedBet = 300;
+let selectedBet = 300;
 let balance = 0;
 let stoppedReels = 0;
 const spinSound = new Audio("../sounds/spin.mp3");
