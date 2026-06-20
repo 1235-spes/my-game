@@ -1,5 +1,24 @@
 let selectedBet = 300;
 let balance = 0;
+const PAYLINES = [
+  // خط وسط مستقيم
+  [1, 1, 1, 1, 1],
+
+  // خط علوي
+  [0, 0, 0, 0, 0],
+
+  // خط سفلي
+  [2, 2, 2, 2, 2],
+
+  // X شكل
+  [0, 1, 2, 1, 0],
+
+  // V شكل
+  [2, 1, 0, 1, 2],
+
+  // موجة
+  [1, 0, 1, 2, 1]
+];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -169,51 +188,59 @@ setTimeout(() => {
 }
 function checkWin() {
 
-    const visible = getVisibleSymbols();
-
-const rows = [
-    visible.map(r => r[0]),
-    visible.map(r => r[1]),
-    visible.map(r => r[2])
-];
-
+    const grid = getGrid(); 
     let totalWin = 0;
 
-    rows.forEach(row => {
+    PAYLINES.forEach(line => {
 
-        let firstSymbol = row[0];
+        let symbols = [];
+
+        // نبني الخط حسب الـ paylines
+        for (let reelIndex = 0; reelIndex < 5; reelIndex++) {
+            const rowIndex = line[reelIndex];
+            symbols.push(grid[reelIndex][rowIndex]);
+        }
+
+        let first = symbols[0];
         let matchCount = 1;
 
-        if (checkRow(row)) {
-            matchCount = 3;
+        // 🌳 Wild (الشجرة)
+        if (symbols[2].includes("شجرةرة.jpg")) {
+            matchCount = 5;
         } else {
-            for (let i = 1; i < row.length; i++) {
-                if (row[i] === firstSymbol) {
+
+            for (let i = 1; i < symbols.length; i++) {
+                if (symbols[i] === first) {
                     matchCount++;
-                } else break;
+                } else {
+                    break;
+                }
             }
         }
 
-        const symbolName = firstSymbol.split("/").pop();
+        const symbolName = first.split("/").pop();
         const symbolData = SYMBOLS.find(s => s.img === symbolName);
 
-        
-    if (symbolData && symbolData.payouts[matchCount] !== undefined)  {  
-        totalWin += selectedBet * symbolData.payouts[matchCount];  
-    }  
-      
+        if (symbolData && symbolData.payouts[matchCount] !== undefined) {
+            totalWin += selectedBet * symbolData.payouts[matchCount];
+        }
+
     });
 
-    const grid = reels.flatMap(r =>
-        Array.from(r.querySelectorAll("img")).map(img => img.src)
-    );
+    // 🎁 رموز نادرة (Scatter)
+    const flat = grid.flat();
 
-    if (checkRare("دولر.لر.jpg", grid)) totalWin += selectedBet * 10;
-    if (checkRare("نجمي.مي.jpg", grid)) totalWin += selectedBet * 10;
+    if (checkRare("دولر.لر.jpg", flat)) {
+        totalWin += selectedBet * 10;
+    }
+
+    if (checkRare("نجمي.مي.jpg", flat)) {
+        totalWin += selectedBet * 10;
+    }
 
     if (totalWin > 0) {
         balance += totalWin;
-        alert("🎉 مبروك! ربحت " + totalWin);
+        alert("🎉 ربحت: " + totalWin);
         dropGold();
         winSound.play();
     }
@@ -230,6 +257,18 @@ let fakeJP = {
   diamond: 5600,
   heart: 7800
 };
+function getGrid() {
+  return reels.map(reel => {
+    const imgs = reel.querySelectorAll(".reel-strip img");
+    const middle = Math.floor(imgs.length / 2);
+
+    return [
+      imgs[middle - 1].src,
+      imgs[middle].src,
+      imgs[middle + 1].src
+    ];
+  });
+}
 function getVisibleSymbols() {
     return reels.map(reel => {
         const imgs = reel.querySelectorAll(".reel-strip img");
