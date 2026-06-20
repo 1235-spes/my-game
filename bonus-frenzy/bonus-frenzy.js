@@ -157,79 +157,94 @@ function spin() {
       strip.style.transform = `translateY(-${final}px)`;
 
       stopSound.currentTime = 0;
-      stopSound.play();
+stopSound.play();
+
+finished++;
+
+let lastReelTime = 1200 + (reels.length - 1) * 400 + 800;
+
+setTimeout(() => {
+  spinSound.pause();
+  checkWin();
+}, lastReelTime);
 
     }, 1200 + index * 400);
 
   });
   let lastDelay = 1200 + (reels.length - 1) * 400;
 
-setTimeout(() => {
-  spinSound.pause();
-  checkWin();
-}, lastDelay + 250);
+
+}
+function applyWild(row) {
+  const base = row.find(s => !isWild(s)) || row[0];
+  return row.map(s => isWild(s) ? base : s);
+}
+function checkSpecialSymbols(grid) {
+
+  let star = 0;
+  let dollar = 0;
+
+  grid.flat().forEach(s => {
+    if (s === "نجمي.مي.jpg") star++;
+    if (s === "دولر.لر.jpg") dollar++;
+  });
+
+  let bonus = 0;
+
+  if (star >= 3) bonus += selectedBet * 10;
+  if (dollar >= 3) bonus += selectedBet * 7;
+
+  return bonus;
 }
 function checkWin() {
 
-    const rows = getVisibleSymbols();
+  const rows = getVisibleSymbols();
 
-    let totalWin = 0;
+  let totalWin = 0;
 
-    rows.forEach(row => {
+  rows.forEach(row => {
 
-        let firstSymbol = row[0];
-        let matchCount = 1;
+    // 🌳 تطبيق الشجرة
+    let resolved = applyWild(row);
 
-        // 🌳 Wild (الشجرة)
-        if (row.some(s => s === "شجرةرة.jpg")) {
-            matchCount = 5;
-        } else {
+    let firstSymbol = resolved[0];
+    let matchCount = 1;
 
-            for (let i = 1; i < row.length; i++) {
-                if (row[i] === firstSymbol) {
-                    matchCount++;
-                } else {
-                    break;
-                }
-            }
-        }
-
-        // 🔥 إصلاح مهم جداً
-        const symbolData = SYMBOLS.find(s => s.img === firstSymbol);
-
-        if (symbolData && symbolData.payouts[matchCount]) {
-            totalWin += selectedBet * symbolData.payouts[matchCount];
-        }
-
-    });
-const RTP = 0.35;
-
-totalWin = Math.floor(totalWin * RTP);
-    if (totalWin > 0) {
-        balance += totalWin;
-        alert("🎉 مبروك! ربحت " + totalWin);
-        winSound.play();
+    for (let i = 1; i < resolved.length; i++) {
+      if (resolved[i] === firstSymbol) {
+        matchCount++;
+      } else {
+        break;
+      }
     }
 
-    document.getElementById("balance").innerText = balance;
+    const symbolData = SYMBOLS.find(s => s.img === firstSymbol);
 
-    firebase.database()
-        .ref("users/" + currentUser)
-        .update({ balance });
+    if (symbolData && symbolData.payouts[matchCount]) {
+      totalWin += selectedBet * symbolData.payouts[matchCount];
+    }
+
+  });
+
+  // ⭐ + 💰 بونص خاص
+  totalWin += checkSpecialSymbols(rows);
+
+  // 🎯 RTP (اختياري لكن عندك الآن)
+  const RTP = 0.35;
+  totalWin = Math.floor(totalWin * RTP);
+
+  if (totalWin > 0) {
+    balance += totalWin;
+    alert("🎉 مبروك! ربحت " + totalWin);
+    winSound.play();
+  }
+
+  document.getElementById("balance").innerText = balance;
+
+  firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
 }
-
- function getVisibleSymbols() {
-    return reels.map(reel => {
-        const imgs = reel.querySelectorAll(".reel-strip img");
-        const middle = Math.floor(imgs.length / 2);
-
-        return [
-            imgs[middle - 1].dataset.symbol,
-            imgs[middle].dataset.symbol,
-            imgs[middle + 1].dataset.symbol
-        ];
-    });
- }            
 let fakeJP = {
   spade: 1200,
   club: 3400,
