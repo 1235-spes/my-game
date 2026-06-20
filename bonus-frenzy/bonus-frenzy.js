@@ -118,7 +118,11 @@ spin();
 };
 
 function spin() {
-  balance -= ifent.getElementById("balance").innerText = balance;
+
+  let finished = 0;
+
+  balance -= selectedBet;
+  document.getElementById("balance").innerText = balance;
 
   firebase.database()
     .ref("users/" + currentUser)
@@ -130,42 +134,40 @@ function spin() {
   reels.forEach((reel, index) => {
 
     const strip = reel.querySelector(".reel-strip");
+    if (!strip) return;
 
-strip.style.transition = "none";
+    strip.style.transition = "none";
 
-// حركة دوران ثابتة (سريعة)
-let position = 0;
+    let position = 0;
 
-const interval = setInterval(() => {
-  position += 60; // سرعة النزول
-  strip.style.transform = `translateY(-${position}px)`;
-}, 16);
+    const interval = setInterval(() => {
+      position += 60;
+      strip.style.transform = `translateY(-${position}px)`;
+    }, 16);
 
-// التوقف
-setTimeout(() => {
+    setTimeout(() => {
 
-  clearInterval(interval);
+      clearInterval(interval);
 
-  const STEP = 60; // لازم يطابق ارتفاع الصورة
+      const STEP = 60;
+      const finalIndex = Math.floor(Math.random() * 20);
+      const final = finalIndex * STEP;
 
-  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
-  const final = finalIndex * STEP;
+      strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
+      strip.style.transform = `translateY(-${final}px)`;
 
-  strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
-  strip.style.transform = `translateY(-${final}px)`;
+      stopSound.currentTime = 0;
+      stopSound.play();
 
-  stopSound.currentTime = 0;
-  stopSound.play();
-finished++;
+      finished++;
 
-if (finished === reels.length) {
-  spinSound.pause();
-  checkWin();
-}
+      if (finished === reels.length) {
+        spinSound.pause();
+        checkWin();
+      }
 
-}, 1200 + index * 400);
+    }, 1200 + index * 400);
 
-      
   });
 }
 function checkWin() {
