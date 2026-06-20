@@ -1,5 +1,6 @@
-let selectedBet = 300;
+new selectedBet = 300;
 let balance = 0;
+let stoppedReels = 0;
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -118,8 +119,7 @@ spin();
 };
 
 function spin() {
-  balance -= selectedBet;
-  document.getElementById("balance").innerText = balance;
+  balance -= ifent.getElementById("balance").innerText = balance;
 
   firebase.database()
     .ref("users/" + currentUser)
@@ -157,11 +157,13 @@ setTimeout(() => {
 
   stopSound.currentTime = 0;
   stopSound.play();
+stoppedReels++;
 
-  if (index === reels.length - 1) {
+if (stoppedReels === reels.length) {
     spinSound.pause();
     checkWin();
-  }
+    stoppedReels = 0;
+}
 
 }, 1200 + index * 400);
 
