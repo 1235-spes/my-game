@@ -12,7 +12,11 @@ if (!currentUser) {
 alert("يرجى تسجيل الدخول أولاً!");
 window.location.href = "../index.html";
 }
-
+function playSound(sound) {
+  sound.pause();
+  sound.currentTime = 0;
+  sound.play();
+}
 // جلب الرصيد من Firebase
 firebase.database().ref("users/" + currentUser + "/balance").get()
 .then(snapshot => {
@@ -23,6 +27,7 @@ firebase.database().ref("users/" + currentUser).update({ balance });
 document.getElementById("balance").innerText = balance;
 })
 .catch(err => console.error(err));
+
 
 // الرموز
 const SYMBOLS = [
@@ -38,8 +43,44 @@ const SYMBOLS = [
   { img: "ليمون.مون.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
   { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
-  
+function isWild(symbol) {
+  return symbol === "شجرةرة.jpg";
+}
+const SYMBOL_RARITY = {
+  "جبس.بس.jpg": 25,
+  "برتقان.قان.jpg": 20,
+  "جرس.رس.jpg": 18,
+  "خوخ.خ.jpg": 15,
+  "عنبي.بي.jpg": 15,
+  "كرز.رز.jpg": 15,
+  "ليمون.مون.jpg": 12,
+  "نجمي.مي.jpg": 4,
+  "دولر.لر.jpg": 3,
+  "شجرةرة.jpg": 2,
+  "سبعة.بعة.jpg": 1
+};
+function getRandomSymbol() {
+  let pool = [];
 
+  SYMBOLS.forEach(s => {
+    let weight = SYMBOL_RARITY[s.img] || 10;
+
+    for (let i = 0; i < weight; i++) {
+      pool.push(s);
+    }
+  });
+
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+function forceTreeLogic() {
+
+  // احتمال الشجرة الحقيقي 1%
+  if (Math.random() < 0.01) {
+    return SYMBOLS.find(s => s.img === "شجرةرة.jpg");
+  }
+
+  return getRandomSymbol();
+}
 // البكرات
 const reels = [
 document.getElementById("reel1"),
@@ -48,6 +89,24 @@ document.getElementById("reel3"),
 document.getElementById("reel4"),
 document.getElementById("reel5")
 ];
+function getVisibleSymbols() {
+  const grid = [];
+
+  reels.forEach(reel => {
+    const strip = reel.querySelector(".reel-strip");
+    const imgs = strip.querySelectorAll("img");
+
+    const row = [];
+
+    imgs.forEach(img => {
+      row.push(img.dataset.symbol || img.src.split("/").pop());
+    });
+
+    grid.push(row);
+  });
+
+  return grid;
+}
 function spinReel(reel, delay, onStop) {
 
   let speed = 30;
@@ -55,7 +114,7 @@ function spinReel(reel, delay, onStop) {
   const interval = setInterval(() => {
 
     for (let i = 0; i < reel.children.length; i++) {
-      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      const symbol = forceTreeLogic();
       reel.children[i].src = "../images/" + symbol.img;
     }
 
@@ -66,7 +125,7 @@ function spinReel(reel, delay, onStop) {
 
     // توقف نهائي
     for (let i = 0; i < reel.children.length; i++) {
-      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      const symbol = forceTreeLogic();
       reel.children[i].src = "../images/" + symbol.img;
     }
 
@@ -86,7 +145,7 @@ function initializeReels() {
     for (let i = 0; i < 25; i++) {
 
       const img = document.createElement("img");
-      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      const symbol = forceTreeLogic();
 
       img.src = "../images/" + symbol.img;
 img.dataset.symbol = symbol.img;
@@ -119,7 +178,6 @@ spin();
 
 function spin() {
 
-  let finished = 0;
 
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
@@ -129,48 +187,37 @@ function spin() {
     .update({ balance });
 
   spinSound.currentTime = 0;
-  spinSound.play();
+  playSound(spinSound);
 
-  reels.forEach((reel, index) => {
+  let finished = 0;
 
-    const strip = reel.querySelector(".reel-strip");
-    if (!strip) return;
+reels.forEach((reel, index) => {
 
-    strip.style.transition = "none";
+  const strip = reel.querySelector(".reel-strip");
+  if (!strip) return;
 
-    let position = 0;
+  const interval = setInterval(() => {
+    let position = Math.random() * 1000;
+    strip.style.transform = `translateY(-${position}px)`;
+  }, 16);
 
-    const interval = setInterval(() => {
-      position += 60;
-      strip.style.transform = `translateY(-${position}px)`;
-    }, 16);
+  setTimeout(() => {
 
-    setTimeout(() => {
+    clearInterval(interval);
 
-      clearInterval(interval);
+    stopSound.currentTime = 0;
+    stopSound.play();
 
-      const STEP = 60;
-      const finalIndex = Math.floor(Math.random() * 20);
-      const final = finalIndex * STEP;
+    finished++;
 
-      strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
-      strip.style.transform = `translateY(-${final}px)`;
+    if (finished === reels.length) {
+      spinSound.pause();
+      checkWin();
+    }
 
-      stopSound.currentTime = 0;
-stopSound.play();
+  }, 1200 + index * 400);
 
-finished++;
-
-let lastReelTime = 1200 + (reels.length - 1) * 400 + 800;
-
-setTimeout(() => {
-  spinSound.pause();
-  checkWin();
-}, lastReelTime);
-
-    }, 1200 + index * 400);
-
-  });
+});
   let lastDelay = 1200 + (reels.length - 1) * 400;
 
 
@@ -179,20 +226,25 @@ function applyWild(row) {
   const base = row.find(s => !isWild(s)) || row[0];
   return row.map(s => isWild(s) ? base : s);
 }
+
 function checkSpecialSymbols(grid) {
 
-  let star = 0;
-  let dollar = 0;
+  let starCount = 0;
+  let dollarCount = 0;
 
   grid.flat().forEach(s => {
-    if (s === "نجمي.مي.jpg") star++;
-    if (s === "دولر.لر.jpg") dollar++;
+
+    const symbol = SYMBOL_MAP[s] || { img: s };
+
+    if (symbol.img.includes("نجمي")) starCount++;
+    if (symbol.img.includes("دولر")) dollarCount++;
+
   });
 
   let bonus = 0;
 
-  if (star >= 3) bonus += selectedBet * 10;
-  if (dollar >= 3) bonus += selectedBet * 7;
+  if (starCount >= 3) bonus += selectedBet * 10;
+  if (dollarCount >= 3) bonus += selectedBet * 7;
 
   return bonus;
 }
