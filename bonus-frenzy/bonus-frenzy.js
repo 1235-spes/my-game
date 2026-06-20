@@ -386,8 +386,9 @@ function checkWin() {
   // ⭐ + 💰 بونص خاص
   totalWin += checkSpecialSymbols(finalResult.map(r => r.map(s => s.img)));
 
-  const RTP = 0.35;
-  totalWin = Math.floor(totalWin * 0.05); // 5% RTP حقيقي
+  
+  const RTP = 0.05;
+totalWin = Math.floor(adjustWin(totalWin));
   if (totalWin > 0) {
     balance += totalWin;
     alert("🎉 مبروك! ربحت " + totalWin);
