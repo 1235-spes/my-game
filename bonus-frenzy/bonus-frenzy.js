@@ -327,6 +327,13 @@ if (symbol.img.includes("نجمي")) starCount++;
 if (symbol.img.includes("دولر")) dollarCount++;
 
 });
+  let bonus = 0;
+
+  if (starCount >= 3) bonus += selectedBet * 10;
+  if (dollarCount >= 3) bonus += selectedBet * 7;
+
+  return bonus;
+}
 function checkPaylines() {
 
   let win = 0;
