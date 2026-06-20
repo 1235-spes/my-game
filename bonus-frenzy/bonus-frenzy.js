@@ -118,7 +118,6 @@ spin();
 };
 
 function spin() {
-  let finished = 0;
   balance -= ifent.getElementById("balance").innerText = balance;
 
   firebase.database()
