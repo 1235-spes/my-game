@@ -51,8 +51,8 @@ const SYMBOLS = [
   { img: "ليمون.مون.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
   { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
-function isWild(symbol) {
-  return symbol === "شجرةرة.jpg";
+function isWild(symbol, index) {
+  return symbol === "شجرةرة.jpg" && index >= 1 && index <= 3;
 }
 
 const SYMBOL_RARITY = {
@@ -304,8 +304,13 @@ let winChecked = false;
   });
 }
 function applyWild(row) {
-  const base = row.find(s => !isWild(s)) || row[0];
-  return row.map(s => isWild(s) ? base : s);
+
+  const base = row.find((s, i) => !isWild(s, i)) || row[0];
+
+  return row.map((s, i) =>
+    isWild(s, i) ? base : s
+  );
+
 }
 
 function checkSpecialSymbols(grid) {
@@ -315,13 +320,13 @@ function checkSpecialSymbols(grid) {
 
   grid.flat().forEach(s => {
 
-  const symbol = SYMBOLS.find(x => x.img === s);
-  if (!symbol) return;
+    // 🔥 لو s object
+    const img = s.img || s;
 
-  if (symbol.img.includes("نجمي")) starCount++;
-  if (symbol.img.includes("دولر")) dollarCount++;
+    if (img.includes("نجمي")) starCount++;
+    if (img.includes("دولر")) dollarCount++;
 
-});
+  });
 
   let bonus = 0;
 
@@ -329,6 +334,62 @@ function checkSpecialSymbols(grid) {
   if (dollarCount >= 3) bonus += selectedBet * 7;
 
   return bonus;
+}
+  let bonus = 0;
+
+  if (starCount >= 3) bonus += selectedBet * 10;
+  if (dollarCount >= 3) bonus += selectedBet * 7;
+
+  return bonus;
+}
+function checkPaylines() {
+
+  let win = 0;
+
+  PAYLINES.forEach(line => {
+
+    let symbols = [];
+
+    // 🎯 نأخذ الرموز حسب الخط
+    for (let i = 0; i < reels.length; i++) {
+
+      const reel = finalResult[i];
+      symbols.push(reel[line[i]]);
+
+    }
+
+    const first = symbols[0];
+
+    // ❗ شرط مهم: لازم يبدأ من أول رمز
+    if (!first) return;
+
+    let matchCount = 1;
+
+    // 🔥 تطابق متصل فقط
+    for (let i = 1; i < symbols.length; i++) {
+
+      if (symbols[i].img === first.img) {
+        matchCount++;
+      } else {
+        break; // ❌ ينقطع فوراً
+      }
+
+    }
+
+    // 🎯 لازم 3+ فقط
+    if (matchCount >= 3) {
+
+      const symbolData = SYMBOLS.find(s => s.img === first.img);
+
+      if (symbolData?.payouts?.[matchCount]) {
+        win += selectedBet * symbolData.payouts[matchCount];
+      }
+
+    }
+
+  });
+
+  return win;
 }
 function checkWin() {
 
@@ -341,7 +402,7 @@ function checkWin() {
   totalWin += checkSpecialSymbols(finalResult.map(r => r.map(s => s.img)));
 
   const RTP = 0.35;
-  totalWin = Math.floor(adjustWin(totalWin));
+  totalWin = Math.floor(totalWin * 0.05); // 5% RTP حقيقي
   if (totalWin > 0) {
     balance += totalWin;
     alert("🎉 مبروك! ربحت " + totalWin);
