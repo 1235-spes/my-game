@@ -355,7 +355,7 @@ function checkPaylines() {
     const first = symbols[0];
 
     // ❗ شرط مهم: لازم يبدأ من أول رمز
-    if (!first) return;
+    if (!first || !first.img) return;
 
     let matchCount = 1;
 
@@ -371,11 +371,11 @@ function checkPaylines() {
     }
 
     // 🎯 لازم 3+ فقط
-    if (matchCount >= 3) {
+    if (matchCount < 3) return; {
 
       const symbolData = SYMBOLS.find(s => s.img === first.img);
 
-      if (symbolData?.payouts?.[matchCount]) {
+      if (symbolData && symbolData.payouts && symbolData.payouts[matchCount] > 0)  {
         win += selectedBet * symbolData.payouts[matchCount];
       }
 
