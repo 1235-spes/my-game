@@ -371,7 +371,7 @@ function checkPaylines() {
     }
 
     // 🎯 لازم 3+ فقط
-    if (matchCount < 3) return; {
+    if (matchCount < 3) return;
 
       const symbolData = SYMBOLS.find(s => s.img === first.img);
 
