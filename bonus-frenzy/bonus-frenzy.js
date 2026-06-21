@@ -136,7 +136,7 @@ function checkPaylines() {
       const reel = finalResult[i];
       const symbol = reel?.[line[i]];
 
-if (!symbol) continue;
+if (!symbol) return;
 symbols.push(symbol);
 
     if (symbols.length === 0) return;
@@ -315,10 +315,6 @@ if (finished === reels.length && !winChecked) {
 
   winChecked = true;
 
-  if (finished === reels.length && !winChecked) {
-
-  winChecked = true;
-
   setTimeout(() => {
 
     requestAnimationFrame(() => {
@@ -329,7 +325,8 @@ if (finished === reels.length && !winChecked) {
     });
 
   }, 500);
-  }
+
+}
 }, 1200 + index * 400);
 
 });
