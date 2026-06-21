@@ -156,7 +156,7 @@ fake-jackpot {
   font-weight: bold;
   }
 .win-glow {
-  filter: drop-shadow(0 0 12px gold);
+  filter: brightness(1.8) drop-shadow(0 0 10px gold);
   transform: scale(1.1);
   transition: 0.3s;
-}
+    }
