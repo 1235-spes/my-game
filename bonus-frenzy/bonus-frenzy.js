@@ -60,7 +60,9 @@ function getRandomSymbol() {
     SYMBOLS[9], SYMBOLS[9], SYMBOLS[9],                         // ليمون
     SYMBOLS[10]                                                 // نجمة
   ];
-
+if (col === 0 || col === COLS - 1) {
+    weightedSymbols = weightedSymbols.filter(s => s.img !== "شجرةرة.jpg");
+}
   return weightedSymbols[
     Math.floor(Math.random() * weightedSymbols.length)
   ];
