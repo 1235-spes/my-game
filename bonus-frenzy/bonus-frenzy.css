@@ -172,3 +172,8 @@ fake-jackpot {
   from { transform: translateX(-50%) scale(0.5); opacity: 0; }
   to { transform: translateX(-50%) scale(1); opacity: 1; }
 }
+.win-glow {
+  filter: drop-shadow(0 0 12px gold);
+  transform: scale(1.1);
+  transition: 0.3s;
+}
