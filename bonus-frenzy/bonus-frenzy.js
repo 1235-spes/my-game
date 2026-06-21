@@ -1,14 +1,30 @@
 let selectedBet = 300;
 let balance = 0;
-let rareCount = 0;
-let finalResult = [];
-
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
 
 const stopSound = new Audio("../sounds/stop.mp3");
 const winSound = new Audio("../sounds/win.mp3");
+const jackpotSound = new Audio("../sounds/jackpot.mp3");
+const currentUser = localStorage.getItem("currentUser");
+if (!currentUser) {
+alert("يرجى تسجيل الدخول أولاً!");
+window.location.href = "../index.html";
+}
+
+// جلب الرصيد من Firebase
+firebase.database().ref("users/" + currentUser + "/balance").get()
+.then(snapshot => {
+balance = snapshot.exists() ? snapshot.val() : 1000;
+if(!snapshot.exists()){
+firebase.database().ref("users/" + currentUser).update({ balance });
+}
+document.getElementById("balance").innerText = balance;
+})
+.catch(err => console.error(err));
+
+// الرموز
 const SYMBOLS = [
   { img: "جبس.بس.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
   { img: "برتقان.قان.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
@@ -22,56 +38,85 @@ const SYMBOLS = [
   { img: "ليمون.مون.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
   { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
-function getRandomSymbol() {
-  return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-}
-function forceSymbol(colIndex) {
+  
 
-  let symbol = getRandomSymbol();
+// البكرات
+const reels = [
+document.getElementById("reel1"),
+document.getElementById("reel2"),
+document.getElementById("reel3"),
+document.getElementById("reel4"),
+document.getElementById("reel5")
+];
+function spinReel(reel, delay, onStop) {
 
-  // ⭐ Rare limit (نجمة + دولار)
-  if (symbol.img.includes("نجمي") || symbol.img.includes("دولر")) {
-    if (rareCount >= 3) return getRandomSymbol();
-    rareCount++;
-    return symbol;
-  }
+  let speed = 30;
 
-  // 🌳 WILD (شجرة)
-  if (symbol.img === "شجرةرة.jpg") {
+  const interval = setInterval(() => {
 
-    if (colIndex < 2) return getRandomSymbol(); // ممنوع أول عمودين
-
-    if (Math.random() > 0.02) return getRandomSymbol(); // نادر جداً
-
-    return symbol;
-  }
-
-  return symbol;
-}
-function generateFinalResult() {
-  finalResult = [];
-
-  for (let col = 0; col < 5; col++) {
-    const column = [];
-
-    for (let row = 0; row < 4; row++) {
-      column.push(forceSymbol(col));
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
     }
 
-    finalResult.push(column);
-  }
+  }, speed);
+
+  setTimeout(() => {
+    clearInterval(interval);
+
+    // توقف نهائي
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
     }
+
+    onStop();
+
+  }, delay);
+}
+// تعبئة البكرات لأول مرة عند فتح اللعبة
+
+function initializeReels() {
+  reels.forEach(reel => {
+
+    const strip = reel.querySelector(".reel-strip");
+    strip.innerHTML = "";
+
+    // نملأ الشريط بصور كثيرة (هذا سر الاحتراف)
+    for (let i = 0; i < 25; i++) {
+
+      const img = document.createElement("img");
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+      img.src = "../images/" + symbol.img;
+
+      strip.appendChild(img);
+    }
+
+  });
+}
+
+// استدعاء الدالة
+initializeReels();
+ // اختيار الرهان من النظام الجديد (bet-box)
+document.querySelectorAll(".bet-box button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedBet = parseInt(btn.dataset.bet);
+    document.getElementById("bet").innerText = selectedBet;
+  });
+});
+
+// دوران البكرات
+ document.getElementById("spin").onclick = () => {
+if(balance < selectedBet){
+alert("رصيدك غير كافٍ!");
+return;
+}
+
+spin();
+};
+
 function spin() {
-
-  rareCount = 0;
-
-  if (balance < selectedBet) {
-    alert("رصيدك غير كافٍ!");
-    return;
-  }
-
-  generateFinalResult(); // ⭐ مهم جداً
-
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
@@ -82,8 +127,9 @@ function spin() {
   spinSound.currentTime = 0;
   spinSound.play();
 
-  // 🎰 تشغيل الحركة
-  reels.forEach((reel, colIndex) => {
+  generateFinalResult(); // 🔥 أهم سطر
+
+  reels.forEach((reel, index) => {
 
     const strip = reel.querySelector(".reel-strip");
 
@@ -91,13 +137,11 @@ function spin() {
 
     let position = 0;
 
-    // حركة سريعة
     const interval = setInterval(() => {
       position += 60;
       strip.style.transform = `translateY(-${position}px)`;
     }, 16);
 
-    // التوقف لكل بكرة
     setTimeout(() => {
 
       clearInterval(interval);
@@ -110,37 +154,19 @@ function spin() {
       strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
       strip.style.transform = `translateY(-${final}px)`;
 
+      stopSound.currentTime = 0;
       stopSound.play();
 
-      if (colIndex === reels.length - 1) {
-
+      if (index === reels.length - 1) {
+        spinSound.pause();
         setTimeout(() => {
-          spinSound.pause();
-          checkWin();
-        }, 300);
+          checkWin(); // 🔥 يعتمد على finalResult فقط
+        }, 200);
       }
 
-    }, 1200 + colIndex * 400);
+    }, 1200 + index * 400);
   });
 }
-function initializeReels() {
-
-  reels.forEach((reel, colIndex) => {
-
-    const strip = reel.querySelector(".reel-strip");
-    strip.innerHTML = "";
-
-    for (let i = 0; i < 25; i++) {
-
-      const img = document.createElement("img");
-      img.src = "../images/" + getRandomSymbol().img;
-
-      strip.appendChild(img);
-    }
-  });
-}
-
-initializeReels();
 function checkWin() {
 
   let totalWin = 0;
@@ -149,31 +175,40 @@ function checkWin() {
 
     let symbols = [];
 
-    for (let col = 0; col < 5; col++) {
-      symbols.push(finalResult[col][row]);
+    for (let col = 0; col < reels.length; col++) {
+
+      const symbol = finalResult[col]?.[row];
+      if (symbol) symbols.push(symbol);
     }
 
+    if (symbols.length < 3) continue;
+
     let base = symbols[0];
-    let match = 1;
+    let matchCount = 1;
 
     for (let i = 1; i < symbols.length; i++) {
 
-      if (symbols[i].img === "شجرةرة.jpg") {
-        match++;
+      let current = symbols[i];
+
+      // WILD
+      if (current.img === "شجرةرة.jpg") {
+        matchCount++;
         continue;
       }
 
-      if (symbols[i].img === base.img) {
-        match++;
-      } else break;
+      if (current.img === base.img) {
+        matchCount++;
+      } else {
+        break;
+      }
     }
 
-    if (match >= 3) {
+    if (matchCount >= 3) {
 
-      let data = SYMBOLS.find(s => s.img === base.img);
+      let symbolData = SYMBOLS.find(s => s.img === base.img);
 
-      if (data?.payouts?.[match]) {
-        totalWin += selectedBet * data.payouts[match];
+      if (symbolData?.payouts?.[matchCount]) {
+        totalWin += selectedBet * symbolData.payouts[matchCount];
       }
     }
   }
@@ -189,4 +224,65 @@ function checkWin() {
   firebase.database()
     .ref("users/" + currentUser)
     .update({ balance });
+}
+
+
+             
+let fakeJP = {
+  spade: 1200,
+  club: 3400,
+  diamond: 5600,
+  heart: 7800
+};
+
+function startFakeJackpot() {
+
+  setInterval(() => {
+
+    fakeJP.spade += Math.floor(Math.random() * 40);
+    fakeJP.club += Math.floor(Math.random() * 40);
+    fakeJP.diamond += Math.floor(Math.random() * 40);
+    fakeJP.heart += Math.floor(Math.random() * 40);
+
+    // إعادة دورة وهمية
+    if (fakeJP.spade > 9999) fakeJP.spade = 1000;
+    if (fakeJP.club > 9999) fakeJP.club = 2000;
+    if (fakeJP.diamond > 9999) fakeJP.diamond = 3000;
+    if (fakeJP.heart > 9999) fakeJP.heart = 4000;
+
+    document.getElementById("jp1").innerText = fakeJP.spade;
+    document.getElementById("jp2").innerText = fakeJP.club;
+    document.getElementById("jp3").innerText = fakeJP.diamond;
+    document.getElementById("jp4").innerText = fakeJP.heart;
+
+  }, 200);
+}
+
+window.addEventListener("load", () => {
+  startFakeJackpot();
+});
+function showBox(id) {
+  const boxes = document.querySelectorAll(".bet-box");
+
+  boxes.forEach(b => {
+    b.classList.remove("active");
+    if (b.dataset.box === id.toString()) {
+      b.classList.add("active");
+    }
+  });
+}
+const betToggle = document.getElementById("betToggle");
+const betMenu = document.getElementById("betMenu");
+
+if (betToggle && betMenu) {
+  betToggle.addEventListener("click", () => {
+    betMenu.classList.toggle("hidden");
+  });
+
+  betMenu.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      showBox(btn.dataset.tab);
+      betMenu.classList.add("hidden");
+    });
+  });
 }
