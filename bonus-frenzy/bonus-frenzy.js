@@ -350,35 +350,29 @@ function checkPaylines() {
 
     for (let i = 0; i < reels.length; i++) {
       const reel = finalResult[i];
-      symbols.push(reel[line[i]]);
+      const symbol = reel[line[i]];
+      if (!symbol) return;
+      symbols.push(symbol);
     }
 
     const first = symbols[0];
     if (!first || !first.img) return;
 
-    const base = first.img;
     let matchCount = 1;
 
     for (let i = 1; i < symbols.length; i++) {
 
-      const current = symbols[i];
-
-      // ⭐ WILD (الشجرة)
-      if (isWild(current.img, i)) {
-        matchCount++;
-        continue;
-      }
-
-      if (current.img === base) {
+      if (symbols[i].img === first.img) {
         matchCount++;
       } else {
         break;
       }
+
     }
 
     if (matchCount < 3) return;
 
-    const symbolData = SYMBOLS.find(s => s.img === base);
+    const symbolData = SYMBOLS.find(s => s.img === first.img);
 
     if (symbolData?.payouts?.[matchCount]) {
       win += selectedBet * symbolData.payouts[matchCount];
