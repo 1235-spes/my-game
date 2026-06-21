@@ -45,8 +45,26 @@ const SYMBOLS = [
 ];
   
 function getRandomSymbol() {
-  return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-                                  }
+
+  const weightedSymbols = [
+
+    SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], // جبس
+    SYMBOLS[1], SYMBOLS[1], SYMBOLS[1], SYMBOLS[1], SYMBOLS[1], // برتقال
+    SYMBOLS[2], SYMBOLS[2], SYMBOLS[2], SYMBOLS[2],             // جرس
+    SYMBOLS[3], SYMBOLS[3], SYMBOLS[3], SYMBOLS[3],             // خوخ
+    SYMBOLS[4], SYMBOLS[4],                                     // دولار
+    SYMBOLS[5],                                                 // سبعة
+    SYMBOLS[6],                                                 // شجرة Wild
+    SYMBOLS[7], SYMBOLS[7], SYMBOLS[7],                         // عنب
+    SYMBOLS[8], SYMBOLS[8], SYMBOLS[8],                         // كرز
+    SYMBOLS[9], SYMBOLS[9], SYMBOLS[9],                         // ليمون
+    SYMBOLS[10]                                                 // نجمة
+  ];
+
+  return weightedSymbols[
+    Math.floor(Math.random() * weightedSymbols.length)
+  ];
+    }
 // البكرات
 const reels = [
 document.getElementById("reel1"),
