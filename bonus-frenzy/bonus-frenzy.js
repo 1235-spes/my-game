@@ -46,7 +46,8 @@ const SYMBOLS = [
   
 function getRandomSymbol(col) {
 
-  const weightedSymbols = [
+  let weightedSymbols = [
+    
 
     SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], // جبس
     SYMBOLS[1], SYMBOLS[1], SYMBOLS[1], SYMBOLS[1], SYMBOLS[1], // برتقال
