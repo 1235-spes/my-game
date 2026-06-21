@@ -341,47 +341,47 @@ if (dollarCount === 3) bonus += selectedBet * 3;
 return bonus;
 }
 function checkPaylines() {
+PAYLINES.forEach(line => {
 
-  let win = 0;
+  let symbols = [];
 
-  PAYLINES.forEach(line => {
+  for (let i = 0; i < reels.length; i++) {
+    const reel = finalResult[i];
+    symbols.push(reel[line[i]]);
+  }
 
-    let symbols = [];
+  const first = symbols[0];
+  if (!first || !first.img) return;
 
-    for (let i = 0; i < reels.length; i++) {
-      const reel = finalResult[i];
-      const symbol = reel[line[i]];
-      if (!symbol) return;
-      symbols.push(symbol);
+  const base = first.img;
+  let matchCount = 1;
+
+  for (let i = 1; i < symbols.length; i++) {
+
+    const current = symbols[i];
+
+    // ⭐ شرط الشجرة (WILD) هنا
+    if (isWild(current.img, i)) {
+      matchCount++;
+      continue;
     }
 
-    const first = symbols[0];
-    if (!first || !first.img) return;
-
-    let matchCount = 1;
-
-    for (let i = 1; i < symbols.length; i++) {
-
-      if (symbols[i].img === first.img) {
-        matchCount++;
-      } else {
-        break;
-      }
-
+    if (current.img === base) {
+      matchCount++;
+    } else {
+      break;
     }
+  }
 
-    if (matchCount < 3) return;
+  if (matchCount < 3) return;
 
-    const symbolData = SYMBOLS.find(s => s.img === first.img);
+  const symbolData = SYMBOLS.find(s => s.img === base);
 
-    if (symbolData?.payouts?.[matchCount]) {
-      win += selectedBet * symbolData.payouts[matchCount];
-    }
+  if (symbolData && symbolData.payouts && symbolData.payouts[matchCount]) {
+    win += selectedBet * symbolData.payouts[matchCount];
+  }
 
-  });
-
-  return win;
-}
+});
 
 function checkWin() {
 
