@@ -44,7 +44,9 @@ const SYMBOLS = [
   { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
   
-
+function getRandomSymbol() {
+  return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+                                  }
 // البكرات
 const reels = [
 document.getElementById("reel1"),
@@ -174,7 +176,7 @@ for (let row = 0; row < ROWS; row++) {
 
   strip.appendChild(img);
 }
-
+strip.style.transform = "translateY(0px)";
       stopSound.currentTime = 0;
       stopSound.play();
 
@@ -189,9 +191,7 @@ for (let row = 0; row < ROWS; row++) {
     }, 1200 + colIndex * 400);
   });
     }
-function getRandomSymbol() {
-  return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-}
+
 function generateFinalResult() {
   finalResult = [];
 
