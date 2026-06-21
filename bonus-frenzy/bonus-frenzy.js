@@ -310,7 +310,6 @@ setTimeout(() => {
   playSound(stopSound);  
 
   finished++;  
-
 if (finished === reels.length && !winChecked) {
 
   winChecked = true;
@@ -326,10 +325,6 @@ if (finished === reels.length && !winChecked) {
 
   }, 500);
 
-}
-}, 1200 + index * 400);
-
-});
 }
 function applyWild(row) {
 
