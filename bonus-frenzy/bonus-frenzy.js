@@ -244,8 +244,14 @@ function generateFinalResult() {
 function highlightWins(winningImg) {
 
   document.querySelectorAll(".reel-strip img").forEach(img => {
+    img.classList.remove("win-glow");
+  });
 
-    if (img.src.includes(winningImg)) {
+  document.querySelectorAll(".reel-strip img").forEach(img => {
+
+    const fileName = img.src.split("/").pop(); // 👈 أهم سطر
+
+    if (fileName === winningImg) {
       img.classList.add("win-glow");
     }
 
