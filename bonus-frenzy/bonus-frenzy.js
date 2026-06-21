@@ -44,9 +44,9 @@ const SYMBOLS = [
   { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
   
-function getRandomSymbol(col) {
+function getRandomSymbol() {
 
-  let weightedSymbols = [
+ const weightedSymbols = [
     
 
     SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], // جبس
@@ -61,9 +61,7 @@ function getRandomSymbol(col) {
     SYMBOLS[9], SYMBOLS[9], SYMBOLS[9],                         // ليمون
     SYMBOLS[10]                                                 // نجمة
   ];
-if (col === 0 || col === COLS - 1) {
-    weightedSymbols = weightedSymbols.filter(s => s.img !== "شجرةرة.jpg");
-}
+
   return weightedSymbols[
     Math.floor(Math.random() * weightedSymbols.length)
   ];
@@ -220,7 +218,20 @@ function generateFinalResult() {
     const column = [];
 
     for (let row = 0; row < ROWS; row++) {
-      column.push(getRandomSymbol());
+      let symbol = getRandomSymbol();
+
+      // ❌ شرط الشجرة: لا تظهر في أول وآخر عمود
+      if (
+        symbol.img === "شجرةرة.jpg" &&
+        (col === 0 || col === COLS - 1)
+      ) {
+        // نعيد الاختيار مرة ثانية بدون Wild
+        do {
+          symbol = getRandomSymbol();
+        } while (symbol.img === "شجرةرة.jpg");
+      }
+
+      column.push(symbol);
     }
 
     finalResult.push(column);
