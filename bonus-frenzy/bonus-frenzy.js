@@ -1,5 +1,10 @@
+
 let selectedBet = 300;
 let balance = 0;
+let finalResult = [];
+
+const ROWS = 4;
+const COLS = 5;
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -117,6 +122,12 @@ spin();
 };
 
 function spin() {
+
+  if (balance < selectedBet) {
+    alert("رصيدك غير كافٍ!");
+    return;
+  }
+
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
@@ -124,12 +135,12 @@ function spin() {
     .ref("users/" + currentUser)
     .update({ balance });
 
+  generateFinalResult(); // 👈 أهم سطر
+
   spinSound.currentTime = 0;
   spinSound.play();
 
-  generateFinalResult(); // 🔥 أهم سطر
-
-  reels.forEach((reel, index) => {
+  reels.forEach((reel, colIndex) => {
 
     const strip = reel.querySelector(".reel-strip");
 
@@ -146,69 +157,88 @@ function spin() {
 
       clearInterval(interval);
 
-      const STEP = 60;
+      strip.style.transition = "transform 0.8s cubic-bezier(0.17,0.67,0.21,1)";
 
-      const finalIndex = Math.floor(Math.random() * 20);
-      const final = finalIndex * STEP;
+      // 🔥 هنا نستخدم نفس finalResult
+      
 
-      strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
-      strip.style.transform = `translateY(-${final}px)`;
+strip.innerHTML = "";
+
+for (let row = 0; row < ROWS; row++) {
+
+  const img = document.createElement("img");
+
+  img.src =
+    "../images/" +
+    finalResult[colIndex][row].img;
+
+  strip.appendChild(img);
+}
 
       stopSound.currentTime = 0;
       stopSound.play();
 
-      if (index === reels.length - 1) {
+      if (colIndex === reels.length - 1) {
         spinSound.pause();
+
         setTimeout(() => {
-          checkWin(); // 🔥 يعتمد على finalResult فقط
-        }, 200);
+          checkWin();
+        }, 300);
       }
 
-    }, 1200 + index * 400);
+    }, 1200 + colIndex * 400);
   });
+    }
+function getRandomSymbol() {
+  return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+}
+function generateFinalResult() {
+  finalResult = [];
+
+  for (let col = 0; col < COLS; col++) {
+    const column = [];
+
+    for (let row = 0; row < ROWS; row++) {
+      column.push(getRandomSymbol());
+    }
+
+    finalResult.push(column);
+  }
 }
 function checkWin() {
 
   let totalWin = 0;
 
-  for (let row = 0; row < 4; row++) {
+  for (let row = 0; row < ROWS; row++) {
 
     let symbols = [];
 
-    for (let col = 0; col < reels.length; col++) {
-
-      const symbol = finalResult[col]?.[row];
-      if (symbol) symbols.push(symbol);
+    for (let col = 0; col < COLS; col++) {
+      symbols.push(finalResult[col][row]);
     }
 
-    if (symbols.length < 3) continue;
-
     let base = symbols[0];
-    let matchCount = 1;
+    let match = 1;
 
     for (let i = 1; i < symbols.length; i++) {
 
-      let current = symbols[i];
-
-      // WILD
-      if (current.img === "شجرةرة.jpg") {
-        matchCount++;
+      if (symbols[i].img === "شجرةرة.jpg") {
+        match++;
         continue;
       }
 
-      if (current.img === base.img) {
-        matchCount++;
+      if (symbols[i].img === base.img) {
+        match++;
       } else {
         break;
       }
     }
 
-    if (matchCount >= 3) {
+    if (match >= 3) {
+      const symbolData = SYMBOLS.find(s => s.img === base.img);
 
-      let symbolData = SYMBOLS.find(s => s.img === base.img);
-
-      if (symbolData?.payouts?.[matchCount]) {
-        totalWin += selectedBet * symbolData.payouts[matchCount];
+      if (symbolData?.payouts?.[match]) {
+        totalWin += selectedBet * symbolData.payouts[match];
       }
     }
   }
@@ -225,7 +255,6 @@ function checkWin() {
     .ref("users/" + currentUser)
     .update({ balance });
 }
-
 
              
 let fakeJP = {
