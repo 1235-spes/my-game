@@ -242,9 +242,16 @@ function generateFinalResult() {
   }
 }
 function highlightWins(winningImg) {
+
+  document.querySelectorAll(".reel-strip img").forEach(img => {
+    img.classList.remove("win-glow");
+  });
+
   document.querySelectorAll(".reel-strip img").forEach(img => {
 
-    if (img.src.includes(winningImg)) {
+    const imgName = img.src.split("/").pop(); // 🔥 أهم سطر
+
+    if (imgName === winningImg) {
       img.classList.add("win-glow");
     }
 
