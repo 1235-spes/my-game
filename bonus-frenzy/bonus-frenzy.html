@@ -80,7 +80,9 @@
    <img src="../images/Zr.jpg" alt="Spin"> 
   </button>
 </div>
-
+<div id="winToast" class="win-toast hidden">
+  🎉 مبروك! لقد ربحت <span id="winAmount">0</span>
+</div>
     <div class="info">
       الرهان: <span id="bet">300</span>
       الرصيد: <span id="balance">0</span>
@@ -101,7 +103,7 @@ const firebaseConfig = {
   storageBucket: "chanci-app.firebasestorage.app",
   messagingSenderId: "18416485348",
   appId: "1:18416485348:web:918a393569acb47a7b3df1",
-  measurementId: "G-S8ZCNJBFQ8"
+  measurementId: "div"
 };
 
 if (!firebase.apps.length) {
