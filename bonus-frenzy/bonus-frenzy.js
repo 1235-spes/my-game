@@ -277,7 +277,14 @@ function checkWin() {
 
   if (totalWin > 0) {
     balance += totalWin;
-    alert("🎉 ربحت " + totalWin);
+    document.getElementById("winAmount").innerText = totalWin;
+
+const toast = document.getElementById("winToast");
+toast.classList.remove("hidden");
+
+setTimeout(() => {
+  toast.classList.add("hidden");
+}, 2500);
     winSound.play();
   }
 
