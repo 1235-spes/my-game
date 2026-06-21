@@ -342,53 +342,47 @@ return bonus;
 }
 function checkPaylines() {
 
-let win = 0;
+  let win = 0;
 
-PAYLINES.forEach(line => {
+  PAYLINES.forEach(line => {
 
-let symbols = [];  
+    let symbols = [];
 
-// 🎯 نأخذ الرموز حسب الخط  
-for (let i = 0; i < reels.length; i++) {  
+    for (let i = 0; i < reels.length; i++) {
+      const reel = finalResult[i];
+      const symbol = reel[line[i]];
+      if (!symbol) return;
+      symbols.push(symbol);
+    }
 
-  const reel = finalResult[i];  
-  symbols.push(reel[line[i]]);  
+    const first = symbols[0];
+    if (!first || !first.img) return;
 
-}  
+    let matchCount = 1;
 
-const first = symbols[0];  
+    for (let i = 1; i < symbols.length; i++) {
 
-// ❗ شرط مهم: لازم يبدأ من أول رمز  
-if (!first || !first.img) return;  
+      if (symbols[i].img === first.img) {
+        matchCount++;
+      } else {
+        break;
+      }
 
-let matchCount = 1;  
+    }
 
-// 🔥 تطابق متصل فقط  
-for (let i = 1; i < symbols.length; i++) {  
+    if (matchCount < 3) return;
 
-  if (symbols[i].img === first.img) {  
-    matchCount++;  
-  } else {  
-    break; // ❌ ينقطع فوراً  
-  }  
+    const symbolData = SYMBOLS.find(s => s.img === first.img);
 
-}  
+    if (symbolData?.payouts?.[matchCount]) {
+      win += selectedBet * symbolData.payouts[matchCount];
+    }
 
-// 🎯 لازم 3+ فقط  
-if (matchCount < 3) return   
+  });
 
-  const symbolData = SYMBOLS.find(s => s.img === first.img);  
-
-  if (symbolData && symbolData.payouts && symbolData.payouts[matchCount] > 0)  {  
-    win += selectedBet * symbolData.payouts[matchCount];  
-  }  
-
+  return win;
 }
 
-});
-
-return win;
-}
 function checkWin() {
 
 let totalWin = 0;
