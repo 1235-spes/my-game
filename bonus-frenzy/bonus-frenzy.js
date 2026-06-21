@@ -44,7 +44,7 @@ const SYMBOLS = [
   { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
   
-function getRandomSymbol(col = 0) {
+function getRandomSymbol(col) {
 
   const weightedSymbols = [
 
