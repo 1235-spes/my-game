@@ -384,8 +384,22 @@ function checkPaylines() {
       } else {
         break;
       }
-
     }
+
+    if (matchCount < 3) return;
+
+    const symbolData = SYMBOLS.find(s => s.img === first.img);
+
+    const payout = symbolData?.payouts?.[matchCount] || 0;
+
+    if (payout > 0) {
+      win += selectedBet * payout;
+    }
+
+  });
+
+  return win;
+}
 
     if (matchCount < 3) return;
 
