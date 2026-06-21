@@ -244,10 +244,6 @@ function generateFinalResult() {
 function highlightWins(winningImg) {
 
   document.querySelectorAll(".reel-strip img").forEach(img => {
-    img.classList.remove("win-glow");
-  });
-
-  document.querySelectorAll(".reel-strip img").forEach(img => {
 
     if (img.src.includes(winningImg)) {
       img.classList.add("win-glow");
