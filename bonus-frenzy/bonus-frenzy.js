@@ -163,7 +163,11 @@ function checkPaylines() {
 
     const symbolData = SYMBOLS.find(s => s.img === base);
 
-    if (symbolData?.payouts?.[matchCount]) {
+    const payout = symbolData?.payouts?.[matchCount] || 0;
+
+if (payout > 0) {
+  win += selectedBet * payout;
+ {
       win += selectedBet * symbolData.payouts[matchCount];
     }
 
