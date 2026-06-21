@@ -125,38 +125,51 @@ return grid;
 }
 function checkPaylines() {
 
-let win = 0;
+  let win = 0;
 
-PAYLINES.forEach(line => {
+  PAYLINES.forEach(line => {
 
-let symbols = [];  
+    let symbols = [];
 
-for (let i = 0; i < reels.length; i++) {  
-  const reel = finalResult[i];  
-  symbols.push(reel[line[i]]);  
-}  
+    for (let i = 0; i < reels.length; i++) {
+      const reel = finalResult[i];
+      symbols.push(reel[line[i]]);
+    }
 
-const first = symbols[0];  
+    const first = symbols[0];
+    if (!first || !first.img) return;
 
-let matchCount = 0;  
+    const base = first.img;
+    let matchCount = 1;
 
-for (let s of symbols) {  
-  if (s.img === first.img) {  
-    matchCount++;  
-  } else {  
-    break;  
-  }  
-}  
+    for (let i = 1; i < symbols.length; i++) {
 
-const symbolData = SYMBOLS.find(s => s.img === first.img);  
+      const current = symbols[i];
 
-if (symbolData?.payouts?.[matchCount]) {  
-  win += selectedBet * symbolData.payouts[matchCount];  
-}
+      // ⭐ WILD (الشجرة)
+      if (isWild(current.img, i)) {
+        matchCount++;
+        continue;
+      }
 
-});
+      if (current.img === base) {
+        matchCount++;
+      } else {
+        break;
+      }
+    }
 
-return win;
+    if (matchCount < 3) return;
+
+    const symbolData = SYMBOLS.find(s => s.img === base);
+
+    if (symbolData?.payouts?.[matchCount]) {
+      win += selectedBet * symbolData.payouts[matchCount];
+    }
+
+  });
+
+  return win;
 }
 function generateFinalResult() {
 finalResult = [];
