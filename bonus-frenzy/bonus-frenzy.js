@@ -143,7 +143,11 @@ spin();
 };
 
 function spin() {
+document.querySelectorAll(".reel-strip img").forEach(img => {
+  img.classList.remove("win-glow");
+});
 
+document.getElementById("winAmount").innerText = 0;
   if (balance < selectedBet) {
     alert("رصيدك غير كافٍ!");
     return;
@@ -237,6 +241,20 @@ function generateFinalResult() {
     finalResult.push(column);
   }
 }
+function highlightWins(winningImg) {
+
+  document.querySelectorAll(".reel-strip img").forEach(img => {
+    img.classList.remove("win-glow");
+  });
+
+  document.querySelectorAll(".reel-strip img").forEach(img => {
+
+    if (img.src.includes(winningImg)) {
+      img.classList.add("win-glow");
+    }
+
+  });
+}
 function checkWin() {
 
   let totalWin = 0;
@@ -276,18 +294,17 @@ function checkWin() {
   }
 
   if (totalWin > 0) {
-    balance += totalWin;
-    document.getElementById("winAmount").innerText = totalWin;
 
-const toast = document.getElementById("winToast");
-toast.classList.remove("hidden");
+  balance += totalWin;
 
-setTimeout(() => {
-  toast.classList.add("hidden");
-}, 2500);
-    winSound.play();
+  document.getElementById("winAmount").innerText = totalWin;
+
+  // 🔥 إضاءة الرموز الرابحة
+  let baseImg = symbols[0].img;
+  highlightWins(baseImg);
+
+  winSound.play();
   }
-
   document.getElementById("balance").innerText = balance;
 
   firebase.database()
