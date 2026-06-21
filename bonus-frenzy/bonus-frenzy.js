@@ -324,6 +324,8 @@ if (finished === reels.length && !winChecked) {
   }, 500);
 
 }
+});
+}
 function applyWild(row) {
 
 const base = row.find((s, i) => !isWild(s, i)) || row[0];
