@@ -337,6 +337,7 @@ function checkSpecialSymbols(grid) {
   return bonus;
 }
 function checkPaylines() {
+function checkPaylines() {
 
   let win = 0;
 
@@ -344,50 +345,43 @@ function checkPaylines() {
 
     let symbols = [];
 
-    // 🎯 نأخذ الرموز حسب الخط
     for (let i = 0; i < reels.length; i++) {
-
       const reel = finalResult[i];
-      symbols.push(reel[line[i]]);
-
+      const symbol = reel[line[i]];
+      if (!symbol) return;
+      symbols.push(symbol);
     }
 
     const first = symbols[0];
-
-    // ❗ شرط مهم: لازم يبدأ من أول رمز
     if (!first || !first.img) return;
 
     let matchCount = 1;
-const base = first.img;
 
-for (let i = 1; i < symbols.length; i++) {
+    for (let i = 1; i < symbols.length; i++) {
 
-  if (isWild(symbols[i].img, i)) continue;
-
-  if (symbols[i].img === base) {
-    matchCount++;
-  } else {
-    break;
-  }
-
-}
-
-
-    // 🎯 لازم 3+ فقط
-    if (matchCount < 3) return;
-
-      const symbolData = SYMBOLS.find(s => s.img === first.img);
-
-      if (symbolData && symbolData.payouts && symbolData.payouts[matchCount] > 0)  {
-        win += selectedBet * symbolData.payouts[matchCount];
+      if (symbols[i].img === first.img) {
+        matchCount++;
+      } else {
+        break;
       }
 
+    }
+
+    if (matchCount < 3) return;
+
+    const symbolData = SYMBOLS.find(s => s.img === first.img);
+
+    if (symbolData && symbolData.payouts && symbolData.payouts[matchCount]) {
+      win += selectedBet * symbolData.payouts[matchCount];
     }
 
   });
 
   return win;
 }
+
+
+  
 function checkWin() {
 
   let totalWin = 0;
