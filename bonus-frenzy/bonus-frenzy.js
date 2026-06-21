@@ -377,36 +377,30 @@ function checkPaylines() {
 
     let matchCount = 1;
 
-    for (let i = 1; i < symbols.length; i++) {
+for (let i = 1; i < symbols.length; i++) {
 
-      if (symbols[i].img === first.img) {
-        matchCount++;
-      } else {
-        break;
-      }
-    }
+  const current = symbols[i];
 
-    if (matchCount < 3) return;
+  // ⭐ شرط الشجرة (WILD)
+  if (isWild(current.img, i)) {
+    matchCount++;
+    continue;
+  }
 
-    const symbolData = SYMBOLS.find(s => s.img === first.img);
-
-    const payout = symbolData?.payouts?.[matchCount] || 0;
-
-    if (payout > 0) {
-      win += selectedBet * payout;
-    }
-
-  });
-
-  return win;
+  if (current.img === first.img) {
+    matchCount++;
+  } else {
+    break;
+  }
 }
 
     if (matchCount < 3) return;
 
     const symbolData = SYMBOLS.find(s => s.img === first.img);
+    const payout = symbolData?.payouts?.[matchCount] || 0;
 
-    if (symbolData?.payouts?.[matchCount]) {
-      win += selectedBet * symbolData.payouts[matchCount];
+    if (payout > 0) {
+      win += selectedBet * payout;
     }
 
   });
