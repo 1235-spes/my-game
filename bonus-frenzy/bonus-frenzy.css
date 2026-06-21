@@ -156,7 +156,11 @@ fake-jackpot {
   font-weight: bold;
   }
 .win-glow {
-  filter: brightness(1.8) drop-shadow(0 0 10px gold);
-  transform: scale(1.1);
-  transition: 0.3s;
-    }
+  filter: brightness(1.8) drop-shadow(0 0 15px gold);
+  animation: glowPulse 0.8s infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
