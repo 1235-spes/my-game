@@ -296,9 +296,7 @@ function checkWin() {
   document.getElementById("winAmount").innerText = totalWin;
 
   // 🔥 إضاءة الرموز الرابحة
-  let baseImg = symbols[0].img;
-  highlightWins(baseImg);
-
+  highlightWins(base.img);
   winSound.play();
   }
   document.getElementById("balance").innerText = balance;
