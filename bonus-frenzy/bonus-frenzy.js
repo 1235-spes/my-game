@@ -169,53 +169,65 @@ setTimeout(() => {
 }
 function checkWin() {
 
-    const rows = [
-        reels.map(r => r.children[0].src),
-        reels.map(r => r.children[1].src),
-        reels.map(r => r.children[2].src)
-    ];
+  let totalWin = 0;
 
-    let totalWin = 0;
+  // 4 صفوف (مهم جداً)
+  for (let row = 0; row < 4; row++) {
 
-    rows.forEach(row => {
+    let symbols = [];
 
-        let firstSymbol = row[0];
-        let matchCount = 1;
+    // نجمع نفس الصف من كل الأعمدة
+    for (let col = 0; col < reels.length; col++) {
 
-        for (let i = 1; i < row.length; i++) {
-
-            if (row[i] === firstSymbol) {
-                matchCount++;
-            } else {
-                break;
-            }
-
-        }
-
-        const symbolName = firstSymbol.split("/").pop();
-
-const symbolData = SYMBOLS.find(s => s.img === symbolName);
-
-if (symbolData && symbolData.payouts[matchCount]) {
-    totalWin += selectedBet * symbolData.payouts[matchCount];
-}
-    });
-
-    if (totalWin > 0) {
-
-        balance += totalWin;
-
-        alert("🎉 مبروك! ربحت " + totalWin);
-
+      const symbol = finalResult[col]?.[row];
+      if (symbol) symbols.push(symbol);
     }
 
-    document.getElementById("balance").innerText = balance;
+    if (symbols.length < 3) continue;
 
-    firebase.database()
-        .ref("users/" + currentUser)
-        .update({ balance });
+    let base = symbols[0];
+    let matchCount = 1;
 
-             }
+    for (let i = 1; i < symbols.length; i++) {
+
+      let current = symbols[i];
+
+      // ⭐ WILD
+      if (current.img === "شجرةرة.jpg") {
+        matchCount++;
+        continue;
+      }
+
+      if (current.img === base.img) {
+        matchCount++;
+      } else {
+        break;
+      }
+    }
+
+    // 🎯 شرط الربح (3+)
+    if (matchCount >= 3) {
+
+      let symbolData = SYMBOLS.find(s => s.img === base.img);
+
+      if (symbolData?.payouts?.[matchCount]) {
+        totalWin += selectedBet * symbolData.payouts[matchCount];
+      }
+    }
+  }
+
+  if (totalWin > 0) {
+    balance += totalWin;
+    alert("🎉 ربحت " + totalWin);
+    winSound.play();
+  }
+
+  document.getElementById("balance").innerText = balance;
+
+  firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
+}
 let fakeJP = {
   spade: 1200,
   club: 3400,
