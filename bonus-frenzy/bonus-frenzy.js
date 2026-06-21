@@ -133,7 +133,9 @@ function checkPaylines() {
 
     for (let i = 0; i < reels.length; i++) {
       const reel = finalResult[i];
-      symbols.push(reel[line[i]]);
+      const symbol = reel[line[i]];
+      if (!symbol) return;
+      symbols.push(symbol);
     }
 
     const first = symbols[0];
@@ -165,10 +167,8 @@ function checkPaylines() {
 
     const payout = symbolData?.payouts?.[matchCount] || 0;
 
-if (payout > 0) {
-  win += selectedBet * payout;
- {
-      win += selectedBet * symbolData.payouts[matchCount];
+    if (payout > 0) {
+      win += selectedBet * payout;
     }
 
   });
