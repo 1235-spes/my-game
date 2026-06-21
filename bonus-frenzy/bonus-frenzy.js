@@ -1,13 +1,5 @@
 let selectedBet = 300;
 let balance = 0;
-let finalResult = [];
-const PAYLINES = [
-[0,0,0,0,0], // خط أفقي
-[1,1,1,1,1],
-[2,2,2,2,2],
-[0,1,2,1,0], // X shape
-[2,1,0,1,2]
-];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -20,11 +12,7 @@ if (!currentUser) {
 alert("يرجى تسجيل الدخول أولاً!");
 window.location.href = "../index.html";
 }
-function playSound(sound) {
-sound.pause();
-sound.currentTime = 0;
-sound.play();
-}
+
 // جلب الرصيد من Firebase
 firebase.database().ref("users/" + currentUser + "/balance").get()
 .then(snapshot => {
@@ -38,63 +26,19 @@ document.getElementById("balance").innerText = balance;
 
 // الرموز
 const SYMBOLS = [
-{ img: "جبس.بس.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
-{ img: "برتقان.قان.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
-{ img: "جرس.رس.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
-{ img: "خوخ.خ.jpg", payouts: { 3: 4, 4: 8, 5: 16 } },
-{ img: "دولر.لر.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
-{ img: "سبعة.بعة.jpg", payouts: { 3: 6, 4: 12, 5: 25 } },
-{ img: "شجرةرة.jpg", payouts: { 3: 2, 4: 5, 5: 10 } },
-{ img: "عنبي.بي.jpg", payouts: { 3: 3, 4: 7, 5: 14 } },
-{ img: "كرز.رز.jpg", payouts: { 3: 4, 4: 9, 5: 18 } },
-{ img: "ليمون.مون.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
-{ img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
+  { img: "جبس.بس.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
+  { img: "برتقان.قان.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
+  { img: "جرس.رس.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
+  { img: "خوخ.خ.jpg", payouts: { 3: 4, 4: 8, 5: 16 } },
+  { img: "دولر.لر.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
+  { img: "سبعة.بعة.jpg", payouts: { 3: 6, 4: 12, 5: 25 } },
+  { img: "شجرةرة.jpg", payouts: { 3: 2, 4: 5, 5: 10 } },
+  { img: "عنبي.بي.jpg", payouts: { 3: 3, 4: 7, 5: 14 } },
+  { img: "كرز.رز.jpg", payouts: { 3: 4, 4: 9, 5: 18 } },
+  { img: "ليمون.مون.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
+  { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
-function isWild(symbol, index) {
-// الشجرة تظهر فقط في الوسط (2–3 فقط)
-return symbol === "شجرةرة.jpg" && index >= 2 && index <= 3;
-}
-const SYMBOL_RARITY = {
-"جبس.بس.jpg": 25,
-"برتقان.قان.jpg": 20,
-"جرس.رس.jpg": 18,
-"خوخ.خ.jpg": 15,
-"عنبي.بي.jpg": 15,
-"كرز.رز.jpg": 15,
-"ليمون.مون.jpg": 12,
-"نجمي.مي.jpg": 4,
-"دولر.لر.jpg": 3,
-"شجرةرة.jpg": 2,
-"سبعة.بعة.jpg": 1
-};
-const RTP = 0.06; // 6% فقط (احترافي)
-
-function applyRTP(win) {
-return Math.floor(win * RTP);
-}
-function getRandomSymbol() {
-let pool = [];
-
-SYMBOLS.forEach(s => {
-let weight = SYMBOL_RARITY[s.img] || 10;
-
-for (let i = 0; i < weight; i++) {  
-  pool.push(s);  
-}
-
-});
-
-return pool[Math.floor(Math.random() * pool.length)];
-}
-function forceTreeLogic() {
-
-// ⛔ احتمال أقل جداً
-if (Math.random() < 0.005) { // 0.5% فقط
-return SYMBOLS.find(s => s.img === "شجرةرة.jpg");
-}
-
-return getRandomSymbol();
-}
+  
 
 // البكرات
 const reels = [
@@ -104,153 +48,66 @@ document.getElementById("reel3"),
 document.getElementById("reel4"),
 document.getElementById("reel5")
 ];
-function getVisibleSymbols() {
-const grid = [];
-
-reels.forEach(reel => {
-const strip = reel.querySelector(".reel-strip");
-const imgs = strip.querySelectorAll("img");
-
-const row = [];  
-
-imgs.forEach(img => {  
-  row.push(img.dataset.symbol || img.src.split("/").pop());  
-});  
-
-grid.push(row);
-
-});
-
-return grid;
-}
-function checkPaylines() {
-
-  let win = 0;
-
-  for (let line of PAYLINES) {
-
-    let symbols = [];
-
-    for (let i = 0; i < reels.length; i++) {
-
-      const reel = finalResult[i];
-      const symbol = reel?.[line[i]];
-
-      if (!symbol) continue;
-      symbols.push(symbol);
-    }
-
-    if (symbols.length < 3) continue;
-
-    const first = symbols[0];
-    if (!first || !first.img) continue;
-
-    const base = first.img;
-    let matchCount = 1;
-
-    for (let i = 1; i < symbols.length; i++) {
-
-      const current = symbols[i];
-
-      if (current?.img && isWild(current.img, i)) {
-        matchCount++;
-        continue;
-      }
-
-      if (current.img === base) {
-        matchCount++;
-      } else {
-        break;
-      }
-    }
-
-    if (matchCount < 3) continue;
-
-    const symbolData = SYMBOLS.find(s => s.img === base);
-    const payout = symbolData?.payouts?.[matchCount] || 0;
-
-    win += selectedBet * payout;
-  }
-
-  return win;
-}
-function generateFinalResult() {
-finalResult = [];
-
-for (let r = 0; r < reels.length; r++) {
-const reelResult = [];
-
-for (let i = 0; i < 25; i++) {  
-  const symbol = forceTreeLogic();  
-  reelResult.push(symbol);  
-}  
-
-finalResult.push(reelResult);
-
-}
-}
 function spinReel(reel, delay, onStop) {
 
-let speed = 30;
+  let speed = 30;
 
-const interval = setInterval(() => {
+  const interval = setInterval(() => {
 
-for (let i = 0; i < reel.children.length; i++) {  
-  const symbol = forceTreeLogic();  
-  reel.children[i].src = "../images/" + symbol.img;  
-}
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
 
-}, speed);
+  }, speed);
 
-setTimeout(() => {
-clearInterval(interval);
+  setTimeout(() => {
+    clearInterval(interval);
 
-// توقف نهائي  
-for (let i = 0; i < reel.children.length; i++) {  
-  const symbol = forceTreeLogic();  
-  reel.children[i].src = "../images/" + symbol.img;  
-}  
+    // توقف نهائي
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
 
-onStop();
+    onStop();
 
-}, delay);
+  }, delay);
 }
 // تعبئة البكرات لأول مرة عند فتح اللعبة
 
 function initializeReels() {
-reels.forEach(reel => {
+  reels.forEach(reel => {
 
-const strip = reel.querySelector(".reel-strip");  
-strip.innerHTML = "";  
+    const strip = reel.querySelector(".reel-strip");
+    strip.innerHTML = "";
 
-// نملأ الشريط بصور كثيرة (هذا سر الاحتراف)  
-for (let i = 0; i < 25; i++) {  
+    // نملأ الشريط بصور كثيرة (هذا سر الاحتراف)
+    for (let i = 0; i < 25; i++) {
 
-  const img = document.createElement("img");  
-  const symbol = forceTreeLogic();  
+      const img = document.createElement("img");
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
 
-  img.src = "../images/" + symbol.img;
+      img.src = "../images/" + symbol.img;
 
-img.dataset.symbol = symbol.img;
+      strip.appendChild(img);
+    }
 
-strip.appendChild(img);  
-}
-
-});
+  });
 }
 
 // استدعاء الدالة
 initializeReels();
-// اختيار الرهان من النظام الجديد (bet-box)
+ // اختيار الرهان من النظام الجديد (bet-box)
 document.querySelectorAll(".bet-box button").forEach(btn => {
-btn.addEventListener("click", () => {
-selectedBet = parseInt(btn.dataset.bet);
-document.getElementById("bet").innerText = selectedBet;
-});
+  btn.addEventListener("click", () => {
+    selectedBet = parseInt(btn.dataset.bet);
+    document.getElementById("bet").innerText = selectedBet;
+  });
 });
 
 // دوران البكرات
-document.getElementById("spin").onclick = () => {
+ document.getElementById("spin").onclick = () => {
 if(balance < selectedBet){
 alert("رصيدك غير كافٍ!");
 return;
@@ -260,183 +117,160 @@ spin();
 };
 
 function spin() {
-let winChecked = false;
-generateFinalResult(); // 👈 أهم سطر
+  balance -= selectedBet;
+  document.getElementById("balance").innerText = balance;
 
-let finished = 0;
+  firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
 
-balance -= selectedBet;
-document.getElementById("balance").innerText = balance;
+  spinSound.currentTime = 0;
+  spinSound.play();
 
-firebase.database()
-.ref("users/" + currentUser)
-.update({ balance });
+  reels.forEach((reel, index) => {
 
-playSound(spinSound);
+    const strip = reel.querySelector(".reel-strip");
 
-reels.forEach((reel, index) => {
+strip.style.transition = "none";
 
-const strip = reel.querySelector(".reel-strip");  
-if (!strip) return;  
+// حركة دوران ثابتة (سريعة)
+let position = 0;
 
-let position = 0;  
+const interval = setInterval(() => {
+  position += 60; // سرعة النزول
+  strip.style.transform = `translateY(-${position}px)`;
+}, 16);
 
-const interval = setInterval(() => {  
-  position += 60;  
-  strip.style.transform = `translateY(-${position}px)`;  
-}, 16);  
+// التوقف
+setTimeout(() => {
 
-setTimeout(() => {  
+  clearInterval(interval);
 
-  clearInterval(interval);  
+  const STEP = 60; // لازم يطابق ارتفاع الصورة
 
-  // 🎯 هنا نضع النتيجة الحقيقية  
-  const reelData = finalResult[index];  
+  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
+  const final = finalIndex * STEP;
 
-  strip.innerHTML = "";  
+  strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
+  strip.style.transform = `translateY(-${final}px)`;
 
-  reelData.forEach(symbol => {  
-    const img = document.createElement("img");  
-    img.src = "../images/" + symbol.img;  
-    img.dataset.symbol = symbol.img;  
-    strip.appendChild(img);  
-  });  
+  stopSound.currentTime = 0;
+  stopSound.play();
 
-  strip.style.transition = "transform 0.8s ease-out";  
-  strip.style.transform = "translateY(0px)";  
+  if (index === reels.length - 1) {
+    spinSound.pause();
+    checkWin();
+  }
 
-  playSound(stopSound);  
+}, 1200 + index * 400);
 
-  finished++;  
-if (finished === reels.length && !winChecked) {
-
-  winChecked = true;
-
-  setTimeout(() => {
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        spinSound.pause();
-        checkWin();
-      });
-    });
-
-  }, 500);
-
+      
+  });
 }
-});
-}
-function applyWild(row) {
-
-const base = row.find((s, i) => !isWild(s, i)) || row[0];
-
-return row.map((s, i) =>
-isWild(s, i) ? base : s
-);
-
-}
-
-function checkSpecialSymbols(grid) {
-
-let starCount = 0;
-let dollarCount = 0;
-
-grid.flat().forEach(s => {
-
-const img = (s && s.img) ? s.img : s;  
-
-if (img.includes("نجمي")) starCount++;  
-if (img.includes("دولر")) dollarCount++;
-
-});
-
-let bonus = 0;
-
-// ⭐ حد أقصى
-if (starCount === 3) bonus += selectedBet * 5;
-if (dollarCount === 3) bonus += selectedBet * 3;
-
-return bonus;
-}
-
 function checkWin() {
 
-let totalWin = 0;
+    const rows = [
+        reels.map(r => r.children[0].src),
+        reels.map(r => r.children[1].src),
+        reels.map(r => r.children[2].src)
+    ];
 
-// 🎯 Paylines system
-totalWin += checkPaylines();
+    let totalWin = 0;
 
-// ⭐ + 💰 بونص خاص
-totalWin += checkSpecialSymbols(finalResult.map(r => r.map(s => s.img)));
+    rows.forEach(row => {
 
-const RTP = 0.05;
-totalWin = applyRTP(totalWin);
-if (totalWin > 0) {
-balance += totalWin;
-alert("🎉 مبروك! ربحت " + totalWin);
-winSound.play();
+        let firstSymbol = row[0];
+        let matchCount = 1;
+
+        for (let i = 1; i < row.length; i++) {
+
+            if (row[i] === firstSymbol) {
+                matchCount++;
+            } else {
+                break;
+            }
+
+        }
+
+        const symbolName = firstSymbol.split("/").pop();
+
+const symbolData = SYMBOLS.find(s => s.img === symbolName);
+
+if (symbolData && symbolData.payouts[matchCount]) {
+    totalWin += selectedBet * symbolData.payouts[matchCount];
 }
+    });
 
-document.getElementById("balance").innerText = balance;
+    if (totalWin > 0) {
 
-firebase.database()
-.ref("users/" + currentUser)
-.update({ balance });
-}
+        balance += totalWin;
+
+        alert("🎉 مبروك! ربحت " + totalWin);
+
+    }
+
+    document.getElementById("balance").innerText = balance;
+
+    firebase.database()
+        .ref("users/" + currentUser)
+        .update({ balance });
+
+             }
 let fakeJP = {
-spade: 1200,
-club: 3400,
-diamond: 5600,
-heart: 7800
+  spade: 1200,
+  club: 3400,
+  diamond: 5600,
+  heart: 7800
 };
+
 function startFakeJackpot() {
 
-setInterval(() => {
+  setInterval(() => {
 
-fakeJP.spade += Math.floor(Math.random() * 40);  
-fakeJP.club += Math.floor(Math.random() * 40);  
-fakeJP.diamond += Math.floor(Math.random() * 40);  
-fakeJP.heart += Math.floor(Math.random() * 40);  
+    fakeJP.spade += Math.floor(Math.random() * 40);
+    fakeJP.club += Math.floor(Math.random() * 40);
+    fakeJP.diamond += Math.floor(Math.random() * 40);
+    fakeJP.heart += Math.floor(Math.random() * 40);
 
-// إعادة دورة وهمية  
-if (fakeJP.spade > 9999) fakeJP.spade = 1000;  
-if (fakeJP.club > 9999) fakeJP.club = 2000;  
-if (fakeJP.diamond > 9999) fakeJP.diamond = 3000;  
-if (fakeJP.heart > 9999) fakeJP.heart = 4000;  
+    // إعادة دورة وهمية
+    if (fakeJP.spade > 9999) fakeJP.spade = 1000;
+    if (fakeJP.club > 9999) fakeJP.club = 2000;
+    if (fakeJP.diamond > 9999) fakeJP.diamond = 3000;
+    if (fakeJP.heart > 9999) fakeJP.heart = 4000;
 
-document.getElementById("jp1").innerText = fakeJP.spade;  
-document.getElementById("jp2").innerText = fakeJP.club;  
-document.getElementById("jp3").innerText = fakeJP.diamond;  
-document.getElementById("jp4").innerText = fakeJP.heart;
+    document.getElementById("jp1").innerText = fakeJP.spade;
+    document.getElementById("jp2").innerText = fakeJP.club;
+    document.getElementById("jp3").innerText = fakeJP.diamond;
+    document.getElementById("jp4").innerText = fakeJP.heart;
 
-}, 200);
+  }, 200);
 }
 
 window.addEventListener("load", () => {
-startFakeJackpot();
+  startFakeJackpot();
 });
 function showBox(id) {
-const boxes = document.querySelectorAll(".bet-box");
+  const boxes = document.querySelectorAll(".bet-box");
 
-boxes.forEach(b => {
-b.classList.remove("active");
-if (b.dataset.box === id.toString()) {
-b.classList.add("active");
-}
-});
+  boxes.forEach(b => {
+    b.classList.remove("active");
+    if (b.dataset.box === id.toString()) {
+      b.classList.add("active");
+    }
+  });
 }
 const betToggle = document.getElementById("betToggle");
 const betMenu = document.getElementById("betMenu");
 
 if (betToggle && betMenu) {
-betToggle.addEventListener("click", () => {
-betMenu.classList.toggle("hidden");
-});
+  betToggle.addEventListener("click", () => {
+    betMenu.classList.toggle("hidden");
+  });
 
-betMenu.querySelectorAll("button").forEach(btn => {
-btn.addEventListener("click", () => {
-showBox(btn.dataset.tab);
-betMenu.classList.add("hidden");
-});
-});
+  betMenu.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      showBox(btn.dataset.tab);
+      betMenu.classList.add("hidden");
+    });
+  });
 }
