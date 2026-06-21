@@ -368,7 +368,7 @@ function checkPaylines() {
     for (let i = 0; i < reels.length; i++) {
       const reel = finalResult[i];
       const symbol = reel[line[i]];
-      if (!symbol) return;
+      if (!symbol) continue;
       symbols.push(symbol);
     }
 
