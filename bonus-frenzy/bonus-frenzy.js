@@ -127,7 +127,7 @@ function checkPaylines() {
 
   let win = 0;
 
-  PAYLINES.forEach(line => {
+  for (let line of PAYLINES) {
 
     let symbols = [];
 
@@ -136,13 +136,14 @@ function checkPaylines() {
       const reel = finalResult[i];
       const symbol = reel?.[line[i]];
 
-if (!symbol) return;
-symbols.push(symbol);
+      if (!symbol) continue;
+      symbols.push(symbol);
+    }
 
-    if (symbols.length === 0) return;
+    if (symbols.length < 3) continue;
 
     const first = symbols[0];
-    if (!first || !first.img) return;
+    if (!first || !first.img) continue;
 
     const base = first.img;
     let matchCount = 1;
@@ -151,8 +152,7 @@ symbols.push(symbol);
 
       const current = symbols[i];
 
-      // ⭐ WILD (الشجرة)
-      if (isWild(current.img, i)) {
+      if (current?.img && isWild(current.img, i)) {
         matchCount++;
         continue;
       }
@@ -164,15 +164,13 @@ symbols.push(symbol);
       }
     }
 
-    if (matchCount < 3) return;
+    if (matchCount < 3) continue;
 
     const symbolData = SYMBOLS.find(s => s.img === base);
-    const payout = symbolData?.payouts?.[matchCount] ?? 0;
-    if (payout > 0) {
-      win += selectedBet * payout;
-    }
+    const payout = symbolData?.payouts?.[matchCount] || 0;
 
-  });
+    win += selectedBet * payout;
+  }
 
   return win;
 }
