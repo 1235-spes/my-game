@@ -242,16 +242,9 @@ function generateFinalResult() {
   }
 }
 function highlightWins(winningImg) {
-
-  document.querySelectorAll(".reel-strip img").forEach(img => {
-    img.classList.remove("win-glow");
-  });
-
   document.querySelectorAll(".reel-strip img").forEach(img => {
 
-    const fileName = img.src.split("/").pop(); // 👈 أهم سطر
-
-    if (fileName === winningImg) {
+    if (img.src.includes(winningImg)) {
       img.classList.add("win-glow");
     }
 
@@ -301,8 +294,43 @@ function checkWin() {
 
   document.getElementById("winAmount").innerText = totalWin;
 
-  // 🔥 إضاءة الرموز الرابحة
-  highlightWins(base.img);
+  // 🔥 هنا نحدد رمز الفوز من النتيجة الصحيحة
+  let winningImg = null;
+
+  for (let row = 0; row < ROWS; row++) {
+
+    let symbols = [];
+
+    for (let col = 0; col < COLS; col++) {
+      symbols.push(finalResult[col][row]);
+    }
+
+    let base = symbols[0];
+    let match = 1;
+
+    for (let i = 1; i < symbols.length; i++) {
+      if (symbols[i].img === "شجرةرة.jpg") {
+        match++;
+        continue;
+      }
+
+      if (symbols[i].img === base.img) {
+        match++;
+      } else {
+        break;
+      }
+    }
+
+    if (match >= 3) {
+      winningImg = base.img;
+      break;
+    }
+  }
+
+  if (winningImg) {
+    highlightWins(winningImg);
+  }
+
   winSound.play();
   }
   document.getElementById("balance").innerText = balance;
