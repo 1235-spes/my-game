@@ -357,56 +357,6 @@ if (dollarCount === 3) bonus += selectedBet * 3;
 
 return bonus;
 }
-function checkPaylines() {
-
-  let win = 0;
-
-  PAYLINES.forEach(line => {
-
-    let symbols = [];
-
-    for (let i = 0; i < reels.length; i++) {
-      const reel = finalResult[i];
-      const symbol = reel[line[i]];
-      if (!symbol) continue;
-      symbols.push(symbol);
-    }
-
-    const first = symbols[0];
-    if (!first || !first.img) return;
-
-    let matchCount = 1;
-
-for (let i = 1; i < symbols.length; i++) {
-
-  const current = symbols[i];
-
-  // ⭐ شرط الشجرة (WILD)
-  if (isWild(current.img, i)) {
-    matchCount++;
-    continue;
-  }
-
-  if (current.img === first.img) {
-    matchCount++;
-  } else {
-    break;
-  }
-}
-
-    if (matchCount < 3) return;
-
-    const symbolData = SYMBOLS.find(s => s.img === first.img);
-    const payout = symbolData?.payouts?.[matchCount] || 0;
-
-    if (payout > 0) {
-      win += selectedBet * payout;
-    }
-
-  });
-
-  return win;
-}
 
 function checkWin() {
 
