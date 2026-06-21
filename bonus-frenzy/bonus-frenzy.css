@@ -148,30 +148,13 @@ fake-jackpot {
 .bet-box.active {
   display: flex;
 }
-.win-toast {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(45deg, gold, orange);
-  color: #000;
-  padding: 15px 25px;
-  border-radius: 12px;
-  font-size: 18px;
+.win-info {
+  margin-top: 10px;
+  font-size: 20px;
+  color: gold;
+  text-align: center;
   font-weight: bold;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  z-index: 9999;
-  animation: pop 0.3s ease;
-}
-
-.hidden {
-  display: none;
-}
-
-@keyframes pop {
-  from { transform: translateX(-50%) scale(0.5); opacity: 0; }
-  to { transform: translateX(-50%) scale(1); opacity: 1; }
-}
+  }
 .win-glow {
   filter: drop-shadow(0 0 12px gold);
   transform: scale(1.1);
