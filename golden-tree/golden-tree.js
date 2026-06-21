@@ -1,5 +1,10 @@
+
 let selectedBet = 300;
 let balance = 0;
+let finalResult = [];
+
+const ROWS = 4;
+const COLS = 5;
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -39,7 +44,28 @@ const SYMBOLS = [
   { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
   
+function getRandomSymbol() {
 
+ const weightedSymbols = [
+    
+
+    SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], SYMBOLS[0], // جبس
+    SYMBOLS[1], SYMBOLS[1], SYMBOLS[1], SYMBOLS[1], SYMBOLS[1], // برتقال
+    SYMBOLS[2], SYMBOLS[2], SYMBOLS[2], SYMBOLS[2],             // جرس
+    SYMBOLS[3], SYMBOLS[3], SYMBOLS[3], SYMBOLS[3],             // خوخ
+    SYMBOLS[4], SYMBOLS[4],                                     // دولار
+    SYMBOLS[5],                                                 // سبعة
+    SYMBOLS[6],                                                 // شجرة Wild
+    SYMBOLS[7], SYMBOLS[7], SYMBOLS[7],                         // عنب
+    SYMBOLS[8], SYMBOLS[8], SYMBOLS[8],                         // كرز
+    SYMBOLS[9], SYMBOLS[9], SYMBOLS[9],                         // ليمون
+    SYMBOLS[10]                                                 // نجمة
+  ];
+
+  return weightedSymbols[
+    Math.floor(Math.random() * weightedSymbols.length)
+  ];
+    }
 // البكرات
 const reels = [
 document.getElementById("reel1"),
@@ -117,6 +143,12 @@ spin();
 };
 
 function spin() {
+
+  if (balance < selectedBet) {
+    alert("رصيدك غير كافٍ!");
+    return;
+  }
+
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
@@ -124,98 +156,139 @@ function spin() {
     .ref("users/" + currentUser)
     .update({ balance });
 
+  generateFinalResult(); // 👈 أهم سطر
+
   spinSound.currentTime = 0;
   spinSound.play();
 
-  reels.forEach((reel, index) => {
+  reels.forEach((reel, colIndex) => {
 
     const strip = reel.querySelector(".reel-strip");
 
-strip.style.transition = "none";
+    strip.style.transition = "none";
 
-// حركة دوران ثابتة (سريعة)
-let position = 0;
+    let position = 0;
 
-const interval = setInterval(() => {
-  position += 60; // سرعة النزول
-  strip.style.transform = `translateY(-${position}px)`;
-}, 16);
+    const interval = setInterval(() => {
+      position += 60;
+      strip.style.transform = `translateY(-${position}px)`;
+    }, 16);
 
-// التوقف
-setTimeout(() => {
+    setTimeout(() => {
 
-  clearInterval(interval);
+      clearInterval(interval);
 
-  const STEP = 60; // لازم يطابق ارتفاع الصورة
+      strip.style.transition = "transform 0.8s cubic-bezier(0.17,0.67,0.21,1)";
 
-  const finalIndex = Math.floor(Math.random() * 20); // أكثر عشوائية = احتراف
-  const final = finalIndex * STEP;
-
-  strip.style.transition = "transform 0.8s cubic-bezier(0.17, 0.67, 0.21, 1)";
-  strip.style.transform = `translateY(-${final}px)`;
-
-  stopSound.currentTime = 0;
-  stopSound.play();
-
-  if (index === reels.length - 1) {
-    spinSound.pause();
-    checkWin();
-  }
-
-}, 1200 + index * 400);
-
+      // 🔥 هنا نستخدم نفس finalResult
       
+
+strip.innerHTML = "";
+
+for (let row = 0; row < ROWS; row++) {
+
+  const img = document.createElement("img");
+
+  img.src =
+    "../images/" +
+    finalResult[colIndex][row].img;
+
+  strip.appendChild(img);
+}
+strip.style.transform = "translateY(0px)";
+      stopSound.currentTime = 0;
+      stopSound.play();
+
+      if (colIndex === reels.length - 1) {
+        spinSound.pause();
+
+        setTimeout(() => {
+          checkWin();
+        }, 300);
+      }
+
+    }, 1200 + colIndex * 400);
   });
+    }
+
+function generateFinalResult() {
+  finalResult = [];
+
+  for (let col = 0; col < COLS; col++) {
+    const column = [];
+
+    for (let row = 0; row < ROWS; row++) {
+      let symbol = getRandomSymbol();
+
+      // ❌ شرط الشجرة: لا تظهر في أول وآخر عمود
+      if (
+        symbol.img === "شجرةرة.jpg" &&
+        (col === 0 || col === COLS - 1)
+      ) {
+        // نعيد الاختيار مرة ثانية بدون Wild
+        do {
+          symbol = getRandomSymbol();
+        } while (symbol.img === "شجرةرة.jpg");
+      }
+
+      column.push(symbol);
+    }
+
+    finalResult.push(column);
+  }
 }
 function checkWin() {
 
-    const rows = [
-        reels.map(r => r.children[0].src),
-        reels.map(r => r.children[1].src),
-        reels.map(r => r.children[2].src)
-    ];
+  let totalWin = 0;
 
-    let totalWin = 0;
+  for (let row = 0; row < ROWS; row++) {
 
-    rows.forEach(row => {
+    let symbols = [];
 
-        let firstSymbol = row[0];
-        let matchCount = 1;
-
-        for (let i = 1; i < row.length; i++) {
-
-            if (row[i] === firstSymbol) {
-                matchCount++;
-            } else {
-                break;
-            }
-
-        }
-
-        const symbolName = firstSymbol.split("/").pop();
-
-const symbolData = SYMBOLS.find(s => s.img === symbolName);
-
-if (symbolData && symbolData.payouts[matchCount]) {
-    totalWin += selectedBet * symbolData.payouts[matchCount];
-}
-    });
-
-    if (totalWin > 0) {
-
-        balance += totalWin;
-
-        alert("🎉 مبروك! ربحت " + totalWin);
-
+    for (let col = 0; col < COLS; col++) {
+      symbols.push(finalResult[col][row]);
     }
 
-    document.getElementById("balance").innerText = balance;
+    let base = symbols[0];
+    let match = 1;
 
-    firebase.database()
-        .ref("users/" + currentUser)
-        .update({ balance });
+    for (let i = 1; i < symbols.length; i++) {
 
-             }
+      if (symbols[i].img === "شجرةرة.jpg") {
+        match++;
+        continue;
+      }
+
+      if (symbols[i].img === base.img) {
+        match++;
+      } else {
+        break;
+      }
+    }
+
+    if (match >= 3) {
+      const symbolData = SYMBOLS.find(s => s.img === base.img);
+
+      if (symbolData?.payouts?.[match]) {
+        totalWin += selectedBet * symbolData.payouts[match];
+      }
+    }
+  }
+
+  if (totalWin > 0) {
+    balance += totalWin;
+    alert("🎉 ربحت " + totalWin);
+    winSound.play();
+  }
+
+  document.getElementById("balance").innerText = balance;
+
+  firebase.database()
+    .ref("users/" + currentUser)
+    .update({ balance });
+}
+
+             
 let fakeJP = {
   spade: 1200,
   club: 3400,
