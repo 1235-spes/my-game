@@ -358,17 +358,20 @@ function checkPaylines() {
     if (!first || !first.img) return;
 
     let matchCount = 1;
+const base = first.img;
 
-    // 🔥 تطابق متصل فقط
-    for (let i = 1; i < symbols.length; i++) {
+for (let i = 1; i < symbols.length; i++) {
 
-      if (symbols[i].img === first.img) {
-        matchCount++;
-      } else {
-        break; // ❌ ينقطع فوراً
-      }
+  if (isWild(symbols[i].img, i)) continue;
 
-    }
+  if (symbols[i].img === base) {
+    matchCount++;
+  } else {
+    break;
+  }
+
+}
+
 
     // 🎯 لازم 3+ فقط
     if (matchCount < 3) return;
