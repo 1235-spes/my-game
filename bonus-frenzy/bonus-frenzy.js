@@ -132,11 +132,14 @@ function checkPaylines() {
     let symbols = [];
 
     for (let i = 0; i < reels.length; i++) {
+
       const reel = finalResult[i];
-      const symbol = reel[line[i]];
-      if (!symbol) return;
-      symbols.push(symbol);
-    }
+      const symbol = reel?.[line[i]];
+
+if (!symbol) continue;
+symbols.push(symbol);
+
+    if (symbols.length === 0) return;
 
     const first = symbols[0];
     if (!first || !first.img) return;
@@ -164,9 +167,7 @@ function checkPaylines() {
     if (matchCount < 3) return;
 
     const symbolData = SYMBOLS.find(s => s.img === base);
-
-    const payout = symbolData?.payouts?.[matchCount] || 0;
-
+    const payout = symbolData?.payouts?.[matchCount] ?? 0;
     if (payout > 0) {
       win += selectedBet * payout;
     }
@@ -310,17 +311,25 @@ setTimeout(() => {
 
   finished++;  
 
+if (finished === reels.length && !winChecked) {
+
+  winChecked = true;
+
   if (finished === reels.length && !winChecked) {
 
-winChecked = true;
+  winChecked = true;
 
-// تأخير بسيط لضمان توقف بصري كامل
-setTimeout(() => {
-spinSound.pause();
-checkWin();
-}, 200);
-}
+  setTimeout(() => {
 
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        spinSound.pause();
+        checkWin();
+      });
+    });
+
+  }, 500);
+  }
 }, 1200 + index * 400);
 
 });
