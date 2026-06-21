@@ -1,5 +1,7 @@
 let selectedBet = 300;
 let balance = 0;
+let rareCount = 0;
+let finalResult = [];
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -117,6 +119,9 @@ spin();
 };
 
 function spin() {
+  rareCount = 0;
+  
+  generateFinalResult(); // ⭐ مهم جدًا
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
@@ -158,14 +163,62 @@ setTimeout(() => {
   stopSound.play();
 
   if (index === reels.length - 1) {
+  setTimeout(() => {
     spinSound.pause();
     checkWin();
+  }, 200);
   }
 
 }, 1200 + index * 400);
 
       
   });
+}
+function forceTreeLogic(colIndex) {
+
+  let symbol = getRandomSymbol();
+
+  // ⭐ التحكم بالرموز النادرة (نجمة + دولار)
+  if (symbol.img.includes("نجمي") || symbol.img.includes("دولر")) {
+
+    if (rareCount >= 3) {
+      return getRandomSymbol(); // منع زيادة أكثر من 3
+    }
+
+    rareCount++;
+    return symbol;
+  }
+
+  // 🌳 التحكم بالشجرة (WILD)
+  if (symbol.img === "شجرةرة.jpg") {
+
+    // ❌ ممنوع في أول بكرتين
+    if (colIndex < 2) {
+      return getRandomSymbol();
+    }
+
+    // ❌ احتمال ضعيف جداً
+    if (Math.random() > 0.02) { // 2% فقط
+      return getRandomSymbol();
+    }
+
+    return symbol;
+  }
+
+  return symbol;
+}
+function generateFinalResult() {
+  finalResult = [];
+
+  for (let col = 0; col < reels.length; col++) {
+    const column = [];
+
+    for (let row = 0; row < 4; row++) {
+      column.push(getRandomSymbol());
+    }
+
+    finalResult.push(column);
+  }
 }
 function checkWin() {
 
