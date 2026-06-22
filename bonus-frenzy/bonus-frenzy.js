@@ -3,6 +3,7 @@ let selectedBet = 300;
 let balance = 0;
 let finalResult = [];
 let spinSpeed = 4000;
+let isSpinning = false;
 const ROWS = 4;
 const COLS = 5;
 const spinSound = new Audio("../sounds/spin.mp3");
@@ -136,15 +137,20 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
 
 // دوران البكرات
  document.getElementById("spin").onclick = () => {
-if(balance < selectedBet){
-alert("رصيدك غير كافٍ!");
-return;
-}
 
-spin();
+  if (isSpinning) return; // ⛔ يمنع إعادة الضغط
+
+  if (balance < selectedBet) {
+    alert("رصيدك غير كافٍ!");
+    return;
+  }
+
+  spin();
 };
 
 function spin() {
+  isSpinning = true; // 🔒 قفل الزر
+  
   // 🌳 تنظيف تأثير الشجرة (Wild)
 document.querySelectorAll(".reel-strip img").forEach(img => {
   img.classList.remove("wild-big");
@@ -219,6 +225,7 @@ strip.style.transform = "translateY(0px)";
 
         setTimeout(() => {
           checkWin();
+          isSpinning = false; // 🔓 فتح الزر بعد انتهاء اللعب
         }, 300);
       }
 
