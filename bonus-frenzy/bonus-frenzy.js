@@ -259,12 +259,26 @@ function highlightWins(winningImg) {
     }
 function highlightWild(winningImg) {
 
-  document.querySelectorAll(".reel-strip img").forEach(img => {
+  const reels = document.querySelectorAll(".reel");
 
-    const imgName = img.src.split("/").pop();
+  reels.forEach(reel => {
 
-    if (imgName === "شجرةرة.jpg") {
-      img.classList.add("wild-big");
+    const imgs = reel.querySelectorAll("img");
+
+    let hasWild = false;
+
+    imgs.forEach(img => {
+      const name = img.src.split("/").pop();
+      if (name === "شجرةرة.jpg") {
+        hasWild = true;
+      }
+    });
+
+    // إذا يوجد Wild في هذا العمود → كبّر العمود كامل
+    if (hasWild) {
+      imgs.forEach(img => {
+        img.classList.add("wild-big");
+      });
     }
 
   });
