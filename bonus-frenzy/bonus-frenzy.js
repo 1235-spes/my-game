@@ -461,7 +461,7 @@ betMenu.querySelectorAll("button").forEach(btn => {
 
   });
 });
-  
+}
 const autoBtn = document.getElementById("autoSpinBtn");
 const autoMenu = document.getElementById("autoMenu");
 
