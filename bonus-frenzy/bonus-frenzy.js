@@ -191,7 +191,7 @@ document.getElementById("winAmount").innerText = 0;
     let position = 20;
 
     const interval = setInterval(() => {
-      position += speed + colIndex * 2;
+      position += 60;
       strip.style.transform = `translateY(-${position}px)`;
     }, 16);
 
