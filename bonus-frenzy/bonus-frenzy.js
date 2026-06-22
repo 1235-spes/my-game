@@ -385,7 +385,7 @@ function checkWin() {
     wildSound.currentTime = 0;
     wildSound.play(); 
    }
-  }
+  
   document.getElementById("balance").innerText = balance;
 
   firebase.database()
