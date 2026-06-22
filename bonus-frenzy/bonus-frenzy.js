@@ -267,20 +267,21 @@ function highlightWild() {
     let hasWild = false;
 
     imgs.forEach(img => {
-      const name = img.src.split("/").pop();
+      const name = img.getAttribute("src").split("/").pop();
 
       if (name === "شجرةرة.jpg") {
         hasWild = true;
       }
     });
 
-    // إذا فيه Wild في هذا العمود → يكبر كل العمود
     if (hasWild) {
-      imgs.forEach(img => {
-        img.classList.add("wild-big");
-      });
+      reel.classList.add("wild-column");
 
-      strip.classList.add("wild-column");
+      imgs.forEach(img => {
+        if (img.getAttribute("src").includes("شجرةرة.jpg")) {
+          img.classList.add("wild-big");
+        }
+      });
     }
   });
 }
