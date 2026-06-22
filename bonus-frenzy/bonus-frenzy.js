@@ -466,3 +466,38 @@ if (betToggle && betBox) {
     betBox.classList.toggle("active");
   });
 }
+const autoBtn = document.getElementById("autoSpinBtn");
+const autoMenu = document.getElementById("autoMenu");
+
+let autoInterval = null;
+
+autoBtn.addEventListener("click", () => {
+  autoMenu.classList.toggle("hidden");
+});
+
+// تشغيل Auto Spin
+autoMenu.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const times = parseInt(btn.dataset.spin);
+
+    autoMenu.classList.add("hidden");
+
+    startAutoSpin(times);
+  });
+});
+
+function startAutoSpin(times) {
+  let count = 0;
+
+  autoInterval = setInterval(() => {
+
+    if (count >= times) {
+      clearInterval(autoInterval);
+      return;
+    }
+
+    document.getElementById("spin").click(); // نستعمل نفس spin بدون تعديل
+    count++;
+
+  }, 2000); // كل 2 ثانية Spin
+}
