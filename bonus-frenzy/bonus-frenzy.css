@@ -166,3 +166,8 @@ fake-jackpot {
   from { transform: scale(1); }
   to { transform: scale(1.1); }
 }
+.reel-strip img.win-glow {
+  filter: brightness(2) drop-shadow(0 0 12px gold);
+  transform: scale(1.08);
+  z-index: 10;
+}
