@@ -267,14 +267,14 @@ function highlightWild() {
     let hasWild = false;
 
     imgs.forEach(img => {
-      const name = img.src.split("/").pop();
+      const name = img.dataset.symbol || img.getAttribute("src").split("/").pop();
 
       if (name === "شجرةرة.jpg") {
         hasWild = true;
       }
     });
 
-    // 🔥 إذا يوجد Wild في العمود
+    // 💥 إذا فيه Wild في العمود → استبدل كل الرموز
     if (hasWild) {
 
       imgs.forEach(img => {
