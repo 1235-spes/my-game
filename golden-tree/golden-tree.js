@@ -458,3 +458,40 @@ if (betToggle && betMenu) {
     });
   });
 }
+const autoBtn = document.getElementById("autoSpinBtn");
+const autoMenu = document.getElementById("autoMenu");
+
+let autoInterval = null;
+
+autoBtn.addEventListener("click", () => {
+  autoMenu.classList.toggle("hidden");
+});
+
+// تشغيل Auto Spin
+autoMenu.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const times = parseInt(btn.dataset.spin);
+
+    autoMenu.classList.add("hidden");
+
+    startAutoSpin(times);
+  });
+});
+
+function startAutoSpin(times) {
+  let count = 0;
+
+  function runNext() {
+
+    if (count >= times) return;
+
+    document.getElementById("spin").click();
+    count++;
+
+    // ⛔ ننتظر وقت أطول من spin الحقيقي
+    // (1200 + colIndex*400 + checkWin delay ≈ 2500ms آمن)
+    setTimeout(runNext, 4000);
+  }
+
+  runNext();
+}
