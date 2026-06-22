@@ -10,7 +10,7 @@ spinSound.loop = true;
 spinSound.volume = 0.4;
 
 const stopSound = new Audio("../sounds/stop.mp3");
-const wildSound = new Audio("../sounds/wild.mp3");
+const wildSound = new Audio("../sounds/Eooz.mp3");
 wildSound.volume = 0.6;
 const winSound = new Audio("../sounds/win.mp3");
 const jackpotSound = new Audio("../sounds/jackpot.mp3");
