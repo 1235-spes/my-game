@@ -452,12 +452,16 @@ if (betToggle && betMenu) {
   });
 
   betMenu.querySelectorAll("button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      showBox(btn.dataset.tab);
-      betMenu.classList.add("hidden");
-    });
+  btn.addEventListener("click", () => {
+
+    // 1) إخفاء الأرقام
+    betMenu.classList.add("hidden");
+
+    // 2) إظهار صندوق الرهان الخاص بهذا الرقم فقط
+    showBox(btn.dataset.tab);
+
   });
-}
+});
 const autoBtn = document.getElementById("autoSpinBtn");
 const autoMenu = document.getElementById("autoMenu");
 
@@ -512,23 +516,3 @@ if (speedBtn && speedMenu) {
   });
 
 }
-window.addEventListener("DOMContentLoaded", () => {
-
-  const betToggle = document.getElementById("betToggle");
-
-  if (!betToggle) return;
-
-  betToggle.addEventListener("click", () => {
-
-    window.addEventListener("DOMContentLoaded", () => {
-
-  const betToggle = document.getElementById("betToggle");
-  const betMenu = document.getElementById("betMenu");
-
-  if (!betToggle || !betMenu) return;
-
-  betToggle.addEventListener("click", () => {
-    betMenu.classList.toggle("hidden");
-  });
-
-});
