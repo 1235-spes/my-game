@@ -257,7 +257,7 @@ function highlightWins(winningImg) {
 
   });
     }
-function highlightWild(winningImg) {
+function highlightWild() {
 
   const reels = document.querySelectorAll(".reel");
 
@@ -269,18 +269,17 @@ function highlightWild(winningImg) {
 
     imgs.forEach(img => {
       const name = img.src.split("/").pop();
+
       if (name === "شجرةرة.jpg") {
         hasWild = true;
       }
     });
 
-    // إذا يوجد Wild في هذا العمود → كبّر العمود كامل
     if (hasWild) {
       imgs.forEach(img => {
         img.classList.add("wild-big");
       });
     }
-
   });
 }
 function checkWin() {
@@ -362,7 +361,7 @@ function checkWin() {
 
   if (winningImg) {
     highlightWins(winningImg);
-    highlightWild(winningImg);
+    highlightWild();
   }
 
   winSound.play();
