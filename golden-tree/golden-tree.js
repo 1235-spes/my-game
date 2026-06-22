@@ -2,7 +2,8 @@
 let selectedBet = 300;
 let balance = 0;
 let finalResult = [];
-
+let spinSpeed = 4000;
+let isSpinning = false;
 const ROWS = 4;
 const COLS = 5;
 const spinSound = new Audio("../sounds/spin.mp3");
@@ -136,15 +137,20 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
 
 // دوران البكرات
  document.getElementById("spin").onclick = () => {
-if(balance < selectedBet){
-alert("رصيدك غير كافٍ!");
-return;
-}
 
-spin();
+  if (isSpinning) return; // ⛔ يمنع إعادة الضغط
+
+  if (balance < selectedBet) {
+    alert("رصيدك غير كافٍ!");
+    return;
+  }
+
+  spin();
 };
 
 function spin() {
+  isSpinning = true; // 🔒 قفل الزر
+  
   // 🌳 تنظيف تأثير الشجرة (Wild)
 document.querySelectorAll(".reel-strip img").forEach(img => {
   img.classList.remove("wild-big");
@@ -182,7 +188,7 @@ document.getElementById("winAmount").innerText = 0;
 
     strip.style.transition = "none";
 
-    let position = 0;
+    let position = 20;
 
     const interval = setInterval(() => {
       position += 60;
@@ -219,6 +225,7 @@ strip.style.transform = "translateY(0px)";
 
         setTimeout(() => {
           checkWin();
+          isSpinning = false; // 🔓 فتح الزر بعد انتهاء اللعب
         }, 300);
       }
 
@@ -450,13 +457,17 @@ if (betToggle && betMenu) {
   betToggle.addEventListener("click", () => {
     betMenu.classList.toggle("hidden");
   });
+betMenu.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
 
-  betMenu.querySelectorAll("button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      showBox(btn.dataset.tab);
-      betMenu.classList.add("hidden");
-    });
+    // 1) إخفاء الأرقام
+    betMenu.classList.add("hidden");
+
+    // 2) إظهار صندوق الرهان الخاص بهذا الرقم فقط
+    showBox(btn.dataset.tab);
+
   });
+});
 }
 const autoBtn = document.getElementById("autoSpinBtn");
 const autoMenu = document.getElementById("autoMenu");
@@ -490,8 +501,25 @@ function startAutoSpin(times) {
 
     // ⛔ ننتظر وقت أطول من spin الحقيقي
     // (1200 + colIndex*400 + checkWin delay ≈ 2500ms آمن)
-    setTimeout(runNext, 4000);
+setTimeout(runNext, spinSpeed);
   }
 
   runNext();
+}
+const speedMenu = document.getElementById("speedMenu");
+const speedBtn = document.getElementById("speedBtn");
+
+if (speedBtn && speedMenu) {
+
+  speedBtn.addEventListener("click", () => {
+    speedMenu.classList.toggle("hidden");
+  });
+
+  speedMenu.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      spinSpeed = parseInt(btn.dataset.speed);
+      speedMenu.classList.add("hidden");
+    });
+  });
+
 }
