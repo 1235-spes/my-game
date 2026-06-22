@@ -458,8 +458,6 @@ if (betToggle && betMenu) {
     });
   });
 }
-// 🎰 فتح وإغلاق قائمة الرهان (BET BOX)
-
 const autoBtn = document.getElementById("autoSpinBtn");
 const autoMenu = document.getElementById("autoMenu");
 
@@ -479,12 +477,7 @@ autoMenu.querySelectorAll("button").forEach(btn => {
     startAutoSpin(times);
   });
 });
-const betToggle = document.getElementById("betToggle");
-const betMenu = document.getElementById("betMenu");
 
-betToggle.addEventListener("click", () => {
-  betMenu.classList.toggle("hidden");
-});
 function startAutoSpin(times) {
   let count = 0;
 
