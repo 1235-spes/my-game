@@ -141,17 +141,19 @@ fake-jackpot {
   z-index: 999;
 }
 .bet-box {
-  display: flex;
+ 
+.bet-box {
+  display: none;   /* ❌ مخفية افتراضيًا */
   justify-content: center;
   flex-wrap: wrap;
   gap: 8px;
-
   margin-top: 10px;
 }
 
 .bet-box.active {
-  display: flex;
+  display: flex;   /* ✅ تظهر فقط لما تكون active */
 }
+
 .bet-box button {
   background: rgba(255, 255, 255, 0.08); /* شفاف */
   border: 1px solid rgba(255, 255, 255, 0.2);
