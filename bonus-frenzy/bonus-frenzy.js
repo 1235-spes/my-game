@@ -498,7 +498,7 @@ function startAutoSpin(times) {
 
     // ⛔ ننتظر وقت أطول من spin الحقيقي
     // (1200 + colIndex*400 + checkWin delay ≈ 2500ms آمن)
-    setTimeout(runNext, 3500);
+    setTimeout(runNext, 4000);
   }
 
   runNext();
