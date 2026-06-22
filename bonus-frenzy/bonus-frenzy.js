@@ -2,7 +2,7 @@
 let selectedBet = 300;
 let balance = 0;
 let finalResult = [];
-
+let spinSpeed = 4000;
 const ROWS = 4;
 const COLS = 5;
 const spinSound = new Audio("../sounds/spin.mp3");
@@ -490,8 +490,21 @@ function startAutoSpin(times) {
 
     // ⛔ ننتظر وقت أطول من spin الحقيقي
     // (1200 + colIndex*400 + checkWin delay ≈ 2500ms آمن)
-    setTimeout(runNext, 4000);
+    setTimeout(runNext, spinSpeed);
   }
 
   runNext();
 }
+const speedMenu = document.getElementById("speedMenu");
+const speedBtn = document.getElementById("speedBtn");
+
+speedBtn.addEventListener("click", () => {
+  speedMenu.classList.toggle("hidden");
+});
+
+speedMenu.querySelectorAll("button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    spinSpeed = parseInt(btn.dataset.speed);
+    speedMenu.classList.add("hidden");
+  });
+});
