@@ -52,6 +52,8 @@ width: 60px;
 height: 60px;
 display: block;
 object-fit: cover;
+  position: relative;
+  z-index: 999; 
 }
 
 
@@ -148,3 +150,49 @@ fake-jackpot {
 .bet-box.active {
   display: flex;
 }
+.win-info {
+  margin-top: 10px;
+  font-size: 20px;
+  color: gold;
+  text-align: center;
+  font-weight: bold;
+  }
+.win-glow {
+  filter: brightness(1.8) drop-shadow(0 0 15px gold);
+  animation: glowPulse 0.8s infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+.reel-strip img.win-glow {
+  filter: brightness(2) drop-shadow(0 0 12px gold);
+  transform: scale(1.08);
+  z-index: 10;
+}
+
+.reel-strip.wild-column {
+  animation: columnPulse 0.6s infinite alternate;
+}
+
+@keyframes columnPulse {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.4); }
+  }
+/* العمود كامل */
+.wild-column {
+  background: rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 25px gold;
+}
+/* 🌳 Wild Column Replace Effect */
+.wild-column img {
+  filter: brightness(1.6) drop-shadow(0 0 10px gold);
+  transform: scale(1.05);
+}
+
+/* تمييز الشجرة فقط */
+.wild-column img[src*="شجرةرة.jpg"] {
+  filter: brightness(2.5) drop-shadow(0 0 20px gold);
+  transform: scale(1.1);
+    }
