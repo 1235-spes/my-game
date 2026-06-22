@@ -270,6 +270,8 @@ function highlightWins(winningImg) {
     }
 function highlightWild() {
 
+  let wildFound = false;
+
   reels.forEach(reel => {
 
     const strip = reel.querySelector(".reel-strip");
@@ -278,14 +280,14 @@ function highlightWild() {
     let hasWild = false;
 
     imgs.forEach(img => {
-      const name = img.dataset.symbol || img.getAttribute("src").split("/").pop();
+      const name = img.getAttribute("src").split("/").pop();
 
       if (name === "شجرةرة.jpg") {
         hasWild = true;
+        wildFound = true;
       }
     });
 
-    // 💥 إذا فيه Wild في العمود → استبدل كل الرموز
     if (hasWild) {
 
       imgs.forEach(img => {
@@ -296,9 +298,11 @@ function highlightWild() {
       strip.classList.add("wild-column");
     }
   });
-if (wildFound) {
+
+  // ✅ تشغيل الصوت مرة واحدة فقط
+  if (wildFound) {
     wildSound.currentTime = 0;
-    wildSound.play();
+    wildSound.play().catch(() => {});
   }
 }
 function checkWin() {
