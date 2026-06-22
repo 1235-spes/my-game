@@ -468,12 +468,7 @@ let autoInterval = null;
 autoBtn.addEventListener("click", () => {
   autoMenu.classList.toggle("hidden");
 });
-const betToggle = document.getElementById("betToggle");
-const betMenu = document.getElementById("betMenu");
 
-betToggle.addEventListener("click", () => {
-  betMenu.classList.toggle("hidden");
-});
 // تشغيل Auto Spin
 autoMenu.querySelectorAll("button").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -484,7 +479,12 @@ autoMenu.querySelectorAll("button").forEach(btn => {
     startAutoSpin(times);
   });
 });
+const betToggle = document.getElementById("betToggle");
+const betMenu = document.getElementById("betMenu");
 
+betToggle.addEventListener("click", () => {
+  betMenu.classList.toggle("hidden");
+});
 function startAutoSpin(times) {
   let count = 0;
 
