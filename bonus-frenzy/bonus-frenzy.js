@@ -2,7 +2,7 @@
 let selectedBet = 300;
 let balance = 0;
 let finalResult = [];
-let spinSpeed = 4000;
+
 const ROWS = 4;
 const COLS = 5;
 const spinSound = new Audio("../sounds/spin.mp3");
@@ -450,8 +450,7 @@ if (betToggle && betMenu) {
   betToggle.addEventListener("click", () => {
     betMenu.classList.toggle("hidden");
   });
-
-  betMenu.querySelectorAll("button").forEach(btn => {
+betMenu.querySelectorAll("button").forEach(btn => {
   btn.addEventListener("click", () => {
 
     // 1) إخفاء الأرقام
@@ -462,6 +461,7 @@ if (betToggle && betMenu) {
 
   });
 });
+  
 const autoBtn = document.getElementById("autoSpinBtn");
 const autoMenu = document.getElementById("autoMenu");
 
@@ -494,25 +494,8 @@ function startAutoSpin(times) {
 
     // ⛔ ننتظر وقت أطول من spin الحقيقي
     // (1200 + colIndex*400 + checkWin delay ≈ 2500ms آمن)
-    setTimeout(runNext, spinSpeed);
+    setTimeout(runNext, 4000);
   }
 
   runNext();
-}
-const speedMenu = document.getElementById("speedMenu");
-const speedBtn = document.getElementById("speedBtn");
-
-if (speedBtn && speedMenu) {
-
-  speedBtn.addEventListener("click", () => {
-    speedMenu.classList.toggle("hidden");
-  });
-
-  speedMenu.querySelectorAll("button").forEach(btn => {
-    btn.addEventListener("click", () => {
-      spinSpeed = parseInt(btn.dataset.speed);
-      speedMenu.classList.add("hidden");
-    });
-  });
-
 }
