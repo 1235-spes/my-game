@@ -188,3 +188,11 @@ fake-jackpot {
     transform: scaleY(4.2) scaleX(1.25);
   }
 }
+.reel-strip.wild-column {
+  animation: columnPulse 0.6s infinite alternate;
+}
+
+@keyframes columnPulse {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.4); }
+  }
