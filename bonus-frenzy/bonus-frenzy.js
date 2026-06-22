@@ -257,6 +257,18 @@ function highlightWins(winningImg) {
 
   });
     }
+function highlightWild(winningImg) {
+
+  document.querySelectorAll(".reel-strip img").forEach(img => {
+
+    const imgName = img.src.split("/").pop();
+
+    if (imgName === "شجرةرة.jpg") {
+      img.classList.add("wild-big");
+    }
+
+  });
+}
 function checkWin() {
 
   let totalWin = 0;
@@ -336,6 +348,7 @@ function checkWin() {
 
   if (winningImg) {
     highlightWins(winningImg);
+    highlightWild(winningImg);
   }
 
   winSound.play();
