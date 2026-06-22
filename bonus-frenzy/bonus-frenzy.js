@@ -489,15 +489,17 @@ autoMenu.querySelectorAll("button").forEach(btn => {
 function startAutoSpin(times) {
   let count = 0;
 
-  autoInterval = setInterval(() => {
+  function runNext() {
 
-    if (count >= times) {
-      clearInterval(autoInterval);
-      return;
-    }
+    if (count >= times) return;
 
-    document.getElementById("spin").click(); // نستعمل نفس spin بدون تعديل
+    document.getElementById("spin").click();
     count++;
 
-  }, 2000); // كل 2 ثانية Spin
+    // ⛔ ننتظر وقت أطول من spin الحقيقي
+    // (1200 + colIndex*400 + checkWin delay ≈ 2500ms آمن)
+    setTimeout(runNext, 3000);
+  }
+
+  runNext();
 }
