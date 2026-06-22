@@ -143,6 +143,15 @@ spin();
 };
 
 function spin() {
+  // 🌳 تنظيف تأثير الشجرة (Wild)
+document.querySelectorAll(".reel-strip img").forEach(img => {
+  img.classList.remove("wild-big");
+});
+
+// إزالة تأثير العمود كامل
+document.querySelectorAll(".reel-strip").forEach(strip => {
+  strip.classList.remove("wild-column");
+});
 document.querySelectorAll(".reel-strip img").forEach(img => {
   img.classList.remove("win-glow");
 });
