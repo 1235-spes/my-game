@@ -10,6 +10,8 @@ spinSound.loop = true;
 spinSound.volume = 0.4;
 
 const stopSound = new Audio("../sounds/stop.mp3");
+const wildSound = new Audio("../sounds/Eooz.mp3");
+wildSound.volume = 0.6;
 const winSound = new Audio("../sounds/win.mp3");
 const jackpotSound = new Audio("../sounds/jackpot.mp3");
 const currentUser = localStorage.getItem("currentUser");
@@ -143,7 +145,20 @@ spin();
 };
 
 function spin() {
+  // 🌳 تنظيف تأثير الشجرة (Wild)
+document.querySelectorAll(".reel-strip img").forEach(img => {
+  img.classList.remove("wild-big");
+});
 
+// إزالة تأثير العمود كامل
+document.querySelectorAll(".reel-strip").forEach(strip => {
+  strip.classList.remove("wild-column");
+});
+document.querySelectorAll(".reel-strip img").forEach(img => {
+  img.classList.remove("win-glow");
+});
+
+document.getElementById("winAmount").innerText = 0;
   if (balance < selectedBet) {
     alert("رصيدك غير كافٍ!");
     return;
@@ -237,6 +252,55 @@ function generateFinalResult() {
     finalResult.push(column);
   }
 }
+function highlightWins(winningImg) {
+
+  const images = document.querySelectorAll(".reel-strip img");
+
+  images.forEach(img => {
+
+    img.classList.remove("win-glow");
+
+    const src = img.getAttribute("src");
+
+    if (src && src.includes(winningImg)) {
+      img.classList.add("win-glow");
+    }
+
+  });
+    }
+function highlightWild() {
+
+  reels.forEach(reel => {
+
+    const strip = reel.querySelector(".reel-strip");
+    const imgs = strip.querySelectorAll("img");
+
+    let hasWild = false;
+
+    imgs.forEach(img => {
+      const name = img.dataset.symbol || img.getAttribute("src").split("/").pop();
+
+      if (name === "شجرةرة.jpg") {
+        hasWild = true;
+      }
+    });
+
+    // 💥 إذا فيه Wild في العمود → استبدل كل الرموز
+    if (hasWild) {
+
+      imgs.forEach(img => {
+        img.src = "../images/شجرةرة.jpg";
+        img.classList.add("wild-big");
+      });
+
+      strip.classList.add("wild-column");
+    }
+  });
+if (wildFound) {
+    wildSound.currentTime = 0;
+    wildSound.play();
+  }
+}
 function checkWin() {
 
   let totalWin = 0;
@@ -276,11 +340,54 @@ function checkWin() {
   }
 
   if (totalWin > 0) {
-    balance += totalWin;
-    alert("🎉 ربحت " + totalWin);
-    winSound.play();
+
+  balance += totalWin;
+
+  document.getElementById("winAmount").innerText = totalWin;
+
+  // 🔥 هنا نحدد رمز الفوز من النتيجة الصحيحة
+  let winningImg = null;
+
+  for (let row = 0; row < ROWS; row++) {
+
+    let symbols = [];
+
+    for (let col = 0; col < COLS; col++) {
+      symbols.push(finalResult[col][row]);
+    }
+
+    let base = symbols[0];
+    let match = 1;
+
+    for (let i = 1; i < symbols.length; i++) {
+      if (symbols[i].img === "شجرةرة.jpg") {
+        match++;
+        continue;
+      }
+
+      if (symbols[i].img === base.img) {
+        match++;
+      } else {
+        break;
+      }
+    }
+
+    if (match >= 3) {
+      winningImg = base.img;
+      break;
+    }
   }
 
+  if (winningImg) {
+    highlightWins(winningImg);
+    highlightWild();
+      if (winningImg === "شجرةرة.jpg") {
+    wildSound.currentTime = 0;
+    wildSound.play(); 
+   }
+    }
+  winSound.play();
+  }
   document.getElementById("balance").innerText = balance;
 
   firebase.database()
