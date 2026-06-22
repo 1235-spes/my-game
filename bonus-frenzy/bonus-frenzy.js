@@ -499,3 +499,28 @@ function startAutoSpin(times) {
 
   runNext();
 }
+document.addEventListener("DOMContentLoaded", () => {
+
+  const speedBtn = document.getElementById("speedBtn");
+  const speedMenu = document.getElementById("speedMenu");
+
+  if (!speedBtn || !speedMenu) {
+    console.log("Speed button or menu not found");
+    return;
+  }
+
+  speedBtn.addEventListener("click", () => {
+    speedMenu.classList.toggle("hidden");
+  });
+
+  speedMenu.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      spinSpeed = parseInt(btn.dataset.speed);
+
+      speedMenu.classList.add("hidden");
+
+    });
+  });
+
+});
