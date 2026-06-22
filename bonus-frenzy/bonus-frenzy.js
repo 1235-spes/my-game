@@ -259,11 +259,10 @@ function highlightWins(winningImg) {
     }
 function highlightWild() {
 
-  const reels = document.querySelectorAll(".reel");
-
   reels.forEach(reel => {
 
-    const imgs = reel.querySelectorAll("img");
+    const strip = reel.querySelector(".reel-strip");
+    const imgs = strip.querySelectorAll("img");
 
     let hasWild = false;
 
@@ -275,10 +274,13 @@ function highlightWild() {
       }
     });
 
+    // إذا فيه Wild في هذا العمود → يكبر كل العمود
     if (hasWild) {
       imgs.forEach(img => {
         img.classList.add("wild-big");
       });
+
+      strip.classList.add("wild-column");
     }
   });
 }
