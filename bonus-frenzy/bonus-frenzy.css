@@ -277,3 +277,6 @@ fake-jackpot {
   border-radius: 10px;
   cursor: pointer;
 }
+.hidden {
+  display: none !important;
+}
