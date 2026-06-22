@@ -496,15 +496,19 @@ function startAutoSpin(times) {
   runNext();
 }
 const speedMenu = document.getElementById("speedMenu");
-const speedBtn = document.getElementById("speedBtn");
+const speedBtn = document.getElementById("spin"); // 👈 مؤقتًا نستخدم زر spin
 
-speedBtn.addEventListener("click", () => {
-  speedMenu.classList.toggle("hidden");
-});
+if (speedMenu && speedBtn) {
 
-speedMenu.querySelectorAll("button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    spinSpeed = parseInt(btn.dataset.speed);
-    speedMenu.classList.add("hidden");
+  speedBtn.addEventListener("click", () => {
+    speedMenu.classList.toggle("hidden");
   });
-});
+
+  speedMenu.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      spinSpeed = parseInt(btn.dataset.speed);
+      speedMenu.classList.add("hidden");
+    });
+  });
+
+}
