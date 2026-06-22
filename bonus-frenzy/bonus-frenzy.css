@@ -141,19 +141,15 @@ fake-jackpot {
   z-index: 999;
 }
 .bet-box {
- 
-.bet-box {
-  display: none;   /* ❌ مخفية افتراضيًا */
-  justify-content: center;
+  display: none;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+  justify-content: center;
+  gap: 6px;
 }
 
 .bet-box.active {
-  display: flex;   /* ✅ تظهر فقط لما تكون active */
+  display: flex;
 }
-
 .bet-box button {
   background: rgba(255, 255, 255, 0.08); /* شفاف */
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -226,8 +222,6 @@ fake-jackpot {
   filter: brightness(2.5) drop-shadow(0 0 20px gold);
   transform: scale(1.1);
     }
-
-
 .bet-box button:hover {
   background: rgba(255, 215, 0, 0.2);
   transform: scale(1.05);
