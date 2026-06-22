@@ -188,12 +188,18 @@ document.getElementById("winAmount").innerText = 0;
 
     strip.style.transition = "none";
 
-    let position = 20;
+    let position = 0;
 
-    const interval = setInterval(() => {
-      position += 60;
-      strip.style.transform = `translateY(-${position}px)`;
-    }, 16);
+const interval = setInterval(() => {
+  position += 20; // أبطأ + أنعم
+
+  if (position >= 600) {
+    position = 0; // 🔁 يرجع من البداية (illusion of spinning)
+  }
+
+  strip.style.transform = `translateY(-${position}px)`;
+
+}, 16);
 
     setTimeout(() => {
 
