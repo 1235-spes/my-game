@@ -512,3 +512,17 @@ if (speedBtn && speedMenu) {
   });
 
 }
+const betToggle = document.getElementById("betToggle");
+
+// ما نلمس أي شيء موجود، فقط نضيف حماية
+if (betToggle) {
+
+  betToggle.addEventListener("click", () => {
+
+    document.querySelectorAll(".bet-box").forEach(box => {
+      box.classList.toggle("active");
+    });
+
+  });
+
+}
