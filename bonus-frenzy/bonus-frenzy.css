@@ -141,22 +141,12 @@ fake-jackpot {
   z-index: 999;
 }
 .bet-box {
-  display: none;
-  flex-wrap: wrap;
+  display: flex;
   justify-content: center;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: 8px;
 
-  position: absolute;
-  bottom: 80px; /* 👈 هذا يخليها تحت البكرات */
-  left: 50%;
-  transform: translateX(-50%);
-
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid gold;
-  padding: 10px;
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  z-index: 1000;
+  margin-top: 10px;
 }
 
 .bet-box.active {
