@@ -496,9 +496,9 @@ function startAutoSpin(times) {
   runNext();
 }
 const speedMenu = document.getElementById("speedMenu");
-const speedBtn = document.getElementById("spin"); // 👈 مؤقتًا نستخدم زر spin
+const speedBtn = document.getElementById("speedBtn");
 
-if (speedMenu && speedBtn) {
+if (speedBtn && speedMenu) {
 
   speedBtn.addEventListener("click", () => {
     speedMenu.classList.toggle("hidden");
