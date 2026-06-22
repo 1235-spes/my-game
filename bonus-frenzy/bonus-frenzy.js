@@ -243,20 +243,20 @@ function generateFinalResult() {
 }
 function highlightWins(winningImg) {
 
-  document.querySelectorAll(".reel-strip img").forEach(img => {
+  const images = document.querySelectorAll(".reel-strip img");
+
+  images.forEach(img => {
+
     img.classList.remove("win-glow");
-  });
 
-  document.querySelectorAll(".reel-strip img").forEach(img => {
+    const src = img.getAttribute("src");
 
-    const imgName = img.src.split("/").pop(); // 🔥 أهم سطر
-
-    if (imgName === winningImg) {
+    if (src && src.includes(winningImg)) {
       img.classList.add("win-glow");
     }
 
   });
-}
+    }
 function checkWin() {
 
   let totalWin = 0;
