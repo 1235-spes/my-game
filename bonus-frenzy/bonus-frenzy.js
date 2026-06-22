@@ -10,6 +10,8 @@ spinSound.loop = true;
 spinSound.volume = 0.4;
 
 const stopSound = new Audio("../sounds/stop.mp3");
+const wildSound = new Audio("../sounds/wild.mp3");
+wildSound.volume = 0.6;
 const winSound = new Audio("../sounds/win.mp3");
 const jackpotSound = new Audio("../sounds/jackpot.mp3");
 const currentUser = localStorage.getItem("currentUser");
@@ -294,6 +296,10 @@ function highlightWild() {
       strip.classList.add("wild-column");
     }
   });
+if (wildFound) {
+    wildSound.currentTime = 0;
+    wildSound.play();
+  }
 }
 function checkWin() {
 
@@ -375,9 +381,10 @@ function checkWin() {
   if (winningImg) {
     highlightWins(winningImg);
     highlightWild();
-  }
-
-  winSound.play();
+      if (winningImg === "شجرةرة.jpg") {
+    wildSound.currentTime = 0;
+    wildSound.play(); 
+   }
   }
   document.getElementById("balance").innerText = balance;
 
