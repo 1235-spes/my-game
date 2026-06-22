@@ -520,10 +520,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
   betToggle.addEventListener("click", () => {
 
-    document.querySelectorAll(".bet-box").forEach(box => {
-      box.classList.toggle("active");
-    });
+    window.addEventListener("DOMContentLoaded", () => {
 
+  const betToggle = document.getElementById("betToggle");
+  const betMenu = document.getElementById("betMenu");
+
+  if (!betToggle || !betMenu) return;
+
+  betToggle.addEventListener("click", () => {
+    betMenu.classList.toggle("hidden");
   });
 
 });
