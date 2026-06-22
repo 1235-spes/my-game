@@ -252,3 +252,31 @@ fake-jackpot {
   border-radius: 10px;
   cursor: pointer;
 }
+.speed-menu {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.6);
+  border: 1px solid gold;
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.speed-menu.hidden {
+  display: none;
+}
+
+.speed-menu button {
+  background: rgba(255,255,255,0.1);
+  color: gold;
+  border: 1px solid rgba(255,215,0,0.3);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.hidden {
+  display: none !important;
+}
