@@ -512,10 +512,11 @@ if (speedBtn && speedMenu) {
   });
 
 }
-const betToggle = document.getElementById("betToggle");
+window.addEventListener("DOMContentLoaded", () => {
 
-// ما نلمس أي شيء موجود، فقط نضيف حماية
-if (betToggle) {
+  const betToggle = document.getElementById("betToggle");
+
+  if (!betToggle) return;
 
   betToggle.addEventListener("click", () => {
 
@@ -525,4 +526,4 @@ if (betToggle) {
 
   });
 
-}
+});
