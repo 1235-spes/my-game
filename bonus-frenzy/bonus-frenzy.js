@@ -458,3 +458,11 @@ if (betToggle && betMenu) {
     });
   });
 }
+// 🎰 فتح وإغلاق قائمة الرهان (BET BOX)
+const betBox = document.getElementById("betBox");
+
+if (betToggle && betBox) {
+  betToggle.addEventListener("click", () => {
+    betBox.classList.toggle("active");
+  });
+}
