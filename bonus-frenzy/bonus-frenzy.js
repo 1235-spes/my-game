@@ -188,7 +188,7 @@ document.getElementById("winAmount").innerText = 0;
 
     strip.style.transition = "none";
 
-    let position = 0;
+    let position = 20;
 
     const interval = setInterval(() => {
       position += speed;
