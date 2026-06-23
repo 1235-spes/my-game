@@ -192,7 +192,7 @@ strip.style.transform = "translateY(0px)";
 strip.offsetHeight; // force reflow
 
 let position = 0;
-let speed = 60;
+let speed = 120;
 
 function animate() {
 
@@ -201,25 +201,14 @@ function animate() {
   strip.style.transform = `translateY(-${position}px)`;
 
   // لف مستمر بدون فراغ
-  if (position > 2000) {
+  if (position > 6000) {
     position = 0;
   }
 
   // توقف تدريجي
-  speed *= 0.96;
+  speed *= 0.985;
 
   if (speed < 2) {
-
-    // تثبيت النتيجة النهائية
-    strip.innerHTML = "";
-
-    for (let row = 0; row < ROWS; row++) {
-      const img = document.createElement("img");
-      img.src = "../images/" + finalResult[colIndex][row].img;
-      strip.appendChild(img);
-    }
-
-    strip.style.transform = "translateY(0px)";
     return;
   }
 
@@ -230,7 +219,7 @@ animate();
 
     setTimeout(() => {
 
-      clearInterval(interval);
+      
 
       strip.style.transition = "transform 0.8s cubic-bezier(0.17,0.67,0.21,1)";
 
