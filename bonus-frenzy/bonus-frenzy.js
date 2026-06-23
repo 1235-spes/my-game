@@ -186,38 +186,31 @@ document.getElementById("winAmount").innerText = 0;
 
     const strip = reel.querySelector(".reel-strip");
 
-    strip.style.transition = "none";
+// تشغيل دوران سلس
 strip.style.transition = "none";
-strip.style.transform = "translateY(0)";
+strip.style.transform = "translateY(0px)";
 strip.offsetHeight; // force reflow
 
-strip.style.transition = "transform 0.05s linear";
-    strip.style.transform = "translateY(-10000px)";
-    let position = 0;
-
-
-  let position = 0;
-let speed = 80;        // سرعة البداية
-let friction = 0.98;   // تباطؤ تدريجي
+let position = 0;
+let speed = 60;
 
 function animate() {
 
   position += speed;
 
-  // 🎯 لفّ مستمر بدون توقف (illusion of infinite reel)
-  if (position > 3000) {
+  strip.style.transform = `translateY(-${position}px)`;
+
+  // لف مستمر بدون فراغ
+  if (position > 2000) {
     position = 0;
   }
 
-  strip.style.transform = `translateY(-${position}px)`;
+  // توقف تدريجي
+  speed *= 0.96;
 
-  // 🔥 تباطؤ تدريجي
-  speed *= friction;
-
-  // ⛔ شرط التوقف
   if (speed < 2) {
 
-    // تثبيت نهائي على النتيجة
+    // تثبيت النتيجة النهائية
     strip.innerHTML = "";
 
     for (let row = 0; row < ROWS; row++) {
