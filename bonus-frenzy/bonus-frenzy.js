@@ -112,7 +112,7 @@ function initializeReels() {
     strip.innerHTML = "";
 
     // نملأ الشريط بصور كثيرة (هذا سر الاحتراف)
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 25; i++) {
 
       const img = document.createElement("img");
       const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
@@ -186,40 +186,18 @@ document.getElementById("winAmount").innerText = 0;
 
     const strip = reel.querySelector(".reel-strip");
 
-// تشغيل دوران سلس
-strip.style.transition = "none";
-strip.style.transform = "translateY(0px)";
-strip.offsetHeight; // force reflow
+    strip.style.transition = "none";
 
-let position = 0;
-let speed = 120;
+    let position = 20;
 
-function animate() {
-
-  position += speed;
-
-  strip.style.transform = `translateY(-${position}px)`;
-
-  // لف مستمر بدون فراغ
-  if (position > 5000) {
-    position = 0;
-  }
-
-  // توقف تدريجي
-  speed *= 0.985;
-
-  if (speed < 2) {
-    return;
-  }
-
-  requestAnimationFrame(animate);
-}
-
-animate();
+    const interval = setInterval(() => {
+      position += 60;
+      strip.style.transform = `translateY(-${position}px)`;
+    }, 16);
 
     setTimeout(() => {
 
-      
+      clearInterval(interval);
 
       strip.style.transition = "transform 0.8s cubic-bezier(0.17,0.67,0.21,1)";
 
