@@ -188,17 +188,15 @@ document.getElementById("winAmount").innerText = 0;
 
     strip.style.transition = "none";
 
-    let position = 20;
+    let position = 0;
 
-    const interval = setInterval(() => {
-      position += 18;
-      const maxHeight = strip.scrollHeight / 2;
+const interval = setInterval(() => {
 
-if (position >= maxHeight) {
-    position = 0;
-}
-      strip.style.transform = `translateY(-${position}px)`;
-    }, 16);
+  position += 12; // سرعة أنعم
+
+  strip.style.transform = `translateY(-${position}px)`;
+
+}, 16);
 
     setTimeout(() => {
 
@@ -208,16 +206,12 @@ if (position >= maxHeight) {
 
       // 🔥 هنا نستخدم نفس finalResult
       
-
-strip.innerHTML = "";
-
+strip.style.transition = "transform 0.6s cubic-bezier(0.17,0.67,0.21,1)";
 for (let row = 0; row < ROWS; row++) {
+  const img = strip.children[row];
+  img.src = "../images/" + finalResult[colIndex][row].img;
+}
 
-  const img = document.createElement("img");
-
-  img.src =
-    "../images/" +
-    finalResult[colIndex][row].img;
 
   strip.appendChild(img);
 }
