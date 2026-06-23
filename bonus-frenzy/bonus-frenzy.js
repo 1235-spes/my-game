@@ -187,7 +187,11 @@ document.getElementById("winAmount").innerText = 0;
     const strip = reel.querySelector(".reel-strip");
 
     strip.style.transition = "none";
+strip.style.transition = "none";
+strip.style.transform = "translateY(0)";
+strip.offsetHeight; // force reflow
 
+strip.style.transition = "transform 0.05s linear";
     let position = 0;
 
 const interval = setInterval(() => {
