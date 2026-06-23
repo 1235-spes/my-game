@@ -112,7 +112,7 @@ function initializeReels() {
     strip.innerHTML = "";
 
     // نملأ الشريط بصور كثيرة (هذا سر الاحتراف)
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 80; i++) {
 
       const img = document.createElement("img");
       const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
@@ -187,16 +187,23 @@ document.getElementById("winAmount").innerText = 0;
     const strip = reel.querySelector(".reel-strip");
 
     strip.style.transition = "none";
-
-    let position = 0;
+let position = 0;
+let speed = 30;
 
 const interval = setInterval(() => {
 
-  position += 12; // سرعة أنعم
+  position += speed;
 
   strip.style.transform = `translateY(-${position}px)`;
 
+  speed *= 0.96; // تباطؤ طبيعي
+
+  if (position > strip.scrollHeight) {
+    position = 0;
+  }
+
 }, 16);
+    
 
     setTimeout(() => {
 
