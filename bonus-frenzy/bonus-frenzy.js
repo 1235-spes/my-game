@@ -196,10 +196,44 @@ strip.style.transition = "transform 0.05s linear";
     let position = 0;
 
 
-  const interval = setInterval(() => {
-    position += 60;
-    strip.style.transform = `translateY(-${position}px)`;
-  }, 16);
+  let position = 0;
+let speed = 80;        // سرعة البداية
+let friction = 0.98;   // تباطؤ تدريجي
+
+function animate() {
+
+  position += speed;
+
+  // 🎯 لفّ مستمر بدون توقف (illusion of infinite reel)
+  if (position > 3000) {
+    position = 0;
+  }
+
+  strip.style.transform = `translateY(-${position}px)`;
+
+  // 🔥 تباطؤ تدريجي
+  speed *= friction;
+
+  // ⛔ شرط التوقف
+  if (speed < 2) {
+
+    // تثبيت نهائي على النتيجة
+    strip.innerHTML = "";
+
+    for (let row = 0; row < ROWS; row++) {
+      const img = document.createElement("img");
+      img.src = "../images/" + finalResult[colIndex][row].img;
+      strip.appendChild(img);
+    }
+
+    strip.style.transform = "translateY(0px)";
+    return;
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
 
     setTimeout(() => {
 
