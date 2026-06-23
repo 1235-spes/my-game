@@ -112,7 +112,7 @@ function initializeReels() {
     strip.innerHTML = "";
 
     // نملأ الشريط بصور كثيرة (هذا سر الاحتراف)
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 100; i++) {
 
       const img = document.createElement("img");
       const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
@@ -201,7 +201,7 @@ function animate() {
   strip.style.transform = `translateY(-${position}px)`;
 
   // لف مستمر بدون فراغ
-  if (position > 6000) {
+  if (position > 5000) {
     position = 0;
   }
 
