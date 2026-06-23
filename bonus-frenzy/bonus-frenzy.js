@@ -149,27 +149,27 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
 };
 
 function spin() {
-  isSpinning = true; // 🔒 قفل الزر
-  
-  // 🌳 تنظيف تأثير الشجرة (Wild)
-document.querySelectorAll(".reel-strip img").forEach(img => {
-  img.classList.remove("wild-big");
-});
+  if (isSpinning) return;
 
-// إزالة تأثير العمود كامل
-document.querySelectorAll(".reel-strip").forEach(strip => {
-  strip.classList.remove("wild-column");
-});
-document.querySelectorAll(".reel-strip img").forEach(img => {
-  img.classList.remove("win-glow");
-});
-
-document.getElementById("winAmount").innerText = 0;
   if (balance < selectedBet) {
     alert("رصيدك غير كافٍ!");
     return;
   }
 
+  isSpinning = true;
+
+  // تنظيف المؤثرات
+  document.querySelectorAll(".reel-strip img").forEach(img => {
+    img.classList.remove("wild-big", "win-glow");
+  });
+
+  document.querySelectorAll(".reel-strip").forEach(strip => {
+    strip.classList.remove("wild-column");
+  });
+
+  document.getElementById("winAmount").innerText = 0;
+
+  // خصم الرهان
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
@@ -177,7 +177,7 @@ document.getElementById("winAmount").innerText = 0;
     .ref("users/" + currentUser)
     .update({ balance });
 
-  generateFinalResult(); // 👈 أهم سطر
+  generateFinalResult();
 
   spinSound.currentTime = 0;
   spinSound.play();
@@ -186,58 +186,65 @@ document.getElementById("winAmount").innerText = 0;
 
     const strip = reel.querySelector(".reel-strip");
 
-    strip.style.transition = "none";
-let position = 0;
-let speed = 30;
+    let position = 0;
+    let speed = 40;
 
-const interval = setInterval(() => {
+    // 🔥 دوران حقيقي سلس
+    const animate = () => {
 
-  position += speed;
+      position += speed;
 
-  strip.style.transform = `translateY(-${position}px)`;
-
-  speed *= 0.96; // تباطؤ طبيعي
-
-  if (position > strip.scrollHeight) {
-    position = 0;
-  }
-
-}, 16);
-    
-
-    setTimeout(() => {
-
-      clearInterval(interval);
-
-      strip.style.transition = "transform 0.8s cubic-bezier(0.17,0.67,0.21,1)";
-
-      // 🔥 هنا نستخدم نفس finalResult
-      
-strip.style.transition = "transform 0.6s cubic-bezier(0.17,0.67,0.21,1)";
-for (let row = 0; row < ROWS; row++) {
-  const img = strip.children[row];
-  img.src = "../images/" + finalResult[colIndex][row].img;
-}
-
-
-  strip.appendChild(img);
-}
-strip.style.transform = "translateY(0px)";
-      stopSound.currentTime = 0;
-      stopSound.play();
-
-      if (colIndex === reels.length - 1) {
-        spinSound.pause();
-
-        setTimeout(() => {
-          checkWin();
-          isSpinning = false; // 🔓 فتح الزر بعد انتهاء اللعب
-        }, 300);
+      // loop بدون اختفاء
+      if (position > strip.scrollHeight / 2) {
+        position = 0;
       }
 
-    }, 1200 + colIndex * 400);
+      strip.style.transform = `translateY(-${position}px)`;
+
+      // تباطؤ تدريجي
+      speed *= 0.97;
+
+      // 🔥 شرط التوقف
+      if (speed < 1.5) {
+
+        // تثبيت النتيجة النهائية
+        strip.style.transition = "transform 0.6s ease-out";
+
+        for (let row = 0; row < ROWS; row++) {
+          const img = strip.children[row];
+
+          img.src = "../images/" + finalResult[colIndex][row].img;
+        }
+
+        strip.style.transform = "translateY(0px)";
+
+        stopSound.currentTime = 0;
+        stopSound.play();
+
+        // آخر بكرة
+        if (colIndex === reels.length - 1) {
+
+          spinSound.pause();
+
+          setTimeout(() => {
+            checkWin();
+            isSpinning = false;
+          }, 400);
+        }
+
+        return;
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    // تأخير بين البكرات (احترافي)
+    setTimeout(() => {
+      animate();
+    }, colIndex * 250);
+
   });
-    }
+}
 
 function generateFinalResult() {
   finalResult = [];
