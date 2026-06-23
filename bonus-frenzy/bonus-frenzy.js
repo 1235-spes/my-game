@@ -112,7 +112,7 @@ function initializeReels() {
     strip.innerHTML = "";
 
     // نملأ الشريط بصور كثيرة (هذا سر الاحتراف)
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 120; i++) {
 
       const img = document.createElement("img");
       const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
@@ -191,7 +191,12 @@ document.getElementById("winAmount").innerText = 0;
     let position = 20;
 
     const interval = setInterval(() => {
-      position += 60;
+      position += 18;
+      const maxHeight = strip.scrollHeight / 2;
+
+if (position >= maxHeight) {
+    position = 0;
+}
       strip.style.transform = `translateY(-${position}px)`;
     }, 16);
 
