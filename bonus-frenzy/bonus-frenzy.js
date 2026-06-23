@@ -192,6 +192,7 @@ strip.style.transform = "translateY(0)";
 strip.offsetHeight; // force reflow
 
 strip.style.transition = "transform 0.05s linear";
+    strip.style.transform = "translateY(-10000px)";
     let position = 0;
 
 const interval = setInterval(() => {
