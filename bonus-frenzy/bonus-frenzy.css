@@ -228,16 +228,13 @@ fake-jackpot {
 }
 .auto-menu {
   position: absolute;
-  bottom: 60px;
+  bottom: 60px; /* 👈 تفتح فوق الزر */
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.6);
-  border: 1px solid gold;
-  padding: 10px;
-  border-radius: 12px;
+
   display: flex;
-  gap: 8px;
-  backdrop-filter: blur(10px);
+  flex-direction: column; /* 👈 هذا أهم شيء */
+  gap: 6px;
 }
 
 .auto-menu.hidden {
@@ -298,4 +295,10 @@ fake-jackpot {
 
 .reels {
   margin-top: 0;
+}
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* 👈 المسافة بينهم */
 }
