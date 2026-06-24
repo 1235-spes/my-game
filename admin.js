@@ -1,3 +1,16 @@
+const firebaseConfig = {
+apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
+authDomain: "chanci-app.firebaseapp.com",
+databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+projectId: "chanci-app",
+storageBucket: "chanci-app.firebasestorage.app",
+messagingSenderId: "18416485348",
+appId: "1:18416485348:web:918a393569acb47a7b3df1",
+measurementId: "G-S8ZCNJBFQ8"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 function createSubAdmin() {
 
   const name = document.getElementById("newSub").value.trim();
