@@ -323,13 +323,15 @@ fake-jackpot {
 #spin {
   width: 90px;
   height: 90px;
-  border-radius: 50%; /* 👈 هذا أهم شيء */
+  border-radius: 50%;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: rgba(255, 215, 0, 0.2);
+  overflow: hidden; /* 👈 أهم شيء */
+
+  background: rgba(255, 215, 0, 0.25);
   border: 2px solid gold;
 
   backdrop-filter: blur(10px);
@@ -365,4 +367,10 @@ fake-jackpot {
 .bet-toggle:hover {
   transform: scale(1.05);
   background: rgba(255, 215, 0, 0.12);
+}
+#spin img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* أو contain إذا تريدها كاملة */
+  border-radius: 50%;
 }
