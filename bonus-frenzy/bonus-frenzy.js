@@ -79,38 +79,36 @@ document.getElementById("reel5")
 ];
 function spinReel(reel, delay, onStop) {
 
-  let speed = 25; // سرعة البداية
-  let position = 0;
-
   const strip = reel.querySelector(".reel-strip");
 
-  // ❌ لا نلمس الصور هنا إطلاقاً (نمنع القفز)
+  let position = 0;
+  let speed = 55; // بداية قوية مثل الكازينو
+
+  strip.style.transition = "none";
+
   const animate = () => {
 
+    // ⬇️ نزول فقط (بدون رجوع مفاجئ)
     position += speed;
 
-    const max = strip.scrollHeight / 2;
+    strip.style.transform = `translateY(${position}px)`;
 
-    // 🔥 loop سلس بدون اختفاء أو قفز
-    if (position >= max) {
-      position -= max;
-    }
+    // 📉 تباطؤ تدريجي واقعي
+    speed *= 0.95;
 
-    strip.style.transform = `translateY(-${position}px)`;
+    // 🎯 شرط التوقف
+    if (speed < 1.5) {
 
-    // 🔥 تباطؤ تدريجي واقعي
-    speed *= 0.97;
+      strip.style.transition = "transform 0.7s cubic-bezier(0.17,0.67,0.21,1)";
 
-    // 🔥 شرط التوقف النهائي (كازينو طبيعي)
-    if (speed < 1.2) {
+      // تثبيت النتيجة النهائية (إذا موجودة)
+      if (typeof finalResult !== "undefined") {
+        const index = reels.indexOf(reel);
 
-      // تثبيت الحركة
-      strip.style.transition = "transform 0.6s ease-out";
-
-      // إدخال النتيجة النهائية بدون كسر الشكل
-      for (let i = 0; i < strip.children.length && i < ROWS; i++) {
-        strip.children[i].src =
-          "../images/" + finalResult[reels.indexOf(reel)][i].img;
+        for (let i = 0; i < ROWS; i++) {
+          strip.children[i].src =
+            "../images/" + finalResult[index][i].img;
+        }
       }
 
       strip.style.transform = "translateY(0px)";
@@ -118,7 +116,7 @@ function spinReel(reel, delay, onStop) {
       stopSound.currentTime = 0;
       stopSound.play();
 
-      onStop();
+      if (onStop) onStop();
 
       return;
     }
@@ -126,9 +124,8 @@ function spinReel(reel, delay, onStop) {
     requestAnimationFrame(animate);
   };
 
-  // 🔥 تأخير بسيط يعطي إحساس ماكينة حقيقية
   setTimeout(() => {
-    animate();
+    requestAnimationFrame(animate);
   }, delay);
 }
 // تعبئة البكرات لأول مرة عند فتح اللعبة
