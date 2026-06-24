@@ -280,3 +280,10 @@ fake-jackpot {
 .hidden {
   display: none !important;
 }
+.game-logo {
+  width: 90px;
+  height: auto;
+  margin: 5px auto;
+  display: block;
+  filter: drop-shadow(0 0 10px gold);
+}
