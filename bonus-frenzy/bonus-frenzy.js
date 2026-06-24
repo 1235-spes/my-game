@@ -176,28 +176,28 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
   spin();
 };
 
+
 function spin() {
   isSpinning = true;
 
+  // تنظيف التأثيرات
   document.querySelectorAll(".reel-strip img").forEach(img => {
-    img.classList.remove("wild-big");
+    img.classList.remove("wild-big", "win-glow");
   });
 
   document.querySelectorAll(".reel-strip").forEach(strip => {
     strip.classList.remove("wild-column");
   });
 
-  document.querySelectorAll(".reel-strip img").forEach(img => {
-    img.classList.remove("win-glow");
-  });
-
   document.getElementById("winAmount").innerText = 0;
 
   if (balance < selectedBet) {
     alert("رصيدك غير كافٍ!");
+    isSpinning = false;
     return;
   }
 
+  // خصم الرهان
   balance -= selectedBet;
   document.getElementById("balance").innerText = balance;
 
@@ -214,43 +214,34 @@ function spin() {
 
     const strip = reel.querySelector(".reel-strip");
 
-    strip.style.transition = "none";
-
     let position = 0;
-    let speed = 50; // 🔥 سرعة البداية (سريع جداً مثل الكازينو)
+    let speed = 60; // 🔥 بداية سريعة جداً للأسفل
+
+    strip.style.transition = "none";
 
     const animate = () => {
 
+      // 🔥 نزول فقط (بدون أي loop للأعلى)
       position += speed;
 
-      const max = strip.scrollHeight / 2;
+      strip.style.transform = `translateY(${position}px)`;
 
-      // 🔥 دوران مستمر بدون قفز
-      if (position >= max) {
-        position -= max;
-      }
+      // 🔥 تباطؤ تدريجي
+      speed *= 0.95;
 
-      strip.style.transform = `translateY(-${position}px)`;
-
-      // 🔥 تباطؤ تدريجي واقعي
-      speed *= 0.96;
-
-      // 🔥 شرط التوقف الحقيقي
+      // 🔥 شرط التوقف
       if (speed < 1.5) {
 
-        strip.style.transition = "transform 0.6s cubic-bezier(0.17,0.67,0.21,1)";
+        strip.style.transition = "transform 0.8s cubic-bezier(0.17,0.67,0.21,1)";
 
-        // 🔥 تثبيت النتيجة النهائية (بدون كسر النظام الحالي)
+        // تثبيت النتيجة
         for (let row = 0; row < ROWS; row++) {
-
           const img = strip.children[row];
-
-          img.src =
-            "../images/" +
-            finalResult[colIndex][row].img;
+          img.src = "../images/" + finalResult[colIndex][row].img;
         }
 
-        strip.style.transform = "translateY(0px)";
+        // رجوع بسيط لمكان ثابت (توقف نهائي)
+        strip.style.transform = `translateY(0px)`;
 
         stopSound.currentTime = 0;
         stopSound.play();
@@ -261,7 +252,7 @@ function spin() {
           setTimeout(() => {
             checkWin();
             isSpinning = false;
-          }, 300);
+          }, 400);
         }
 
         return;
@@ -271,11 +262,11 @@ function spin() {
     };
 
     setTimeout(() => {
-      animate();
-    }, colIndex * 250);
+      requestAnimationFrame(animate);
+    }, colIndex * 200);
 
   });
-      }
+}
 
 
 function generateFinalResult() {
