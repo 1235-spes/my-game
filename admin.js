@@ -11,6 +11,7 @@ measurementId: "G-S8ZCNJBFQ8"
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+
 function createSubAdmin() {
 
   const name = document.getElementById("newSub").value.trim();
