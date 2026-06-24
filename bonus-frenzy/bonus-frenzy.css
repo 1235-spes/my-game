@@ -281,9 +281,21 @@ fake-jackpot {
   display: none !important;
 }
 .game-logo {
-  width: 90px;
+  width: 120px;
   height: auto;
   margin: 5px auto;
   display: block;
   filter: drop-shadow(0 0 10px gold);
+}
+.jackpot-top {
+  white-space: nowrap;   /* 👈 يمنع النزول */
+  font-size: 14px;       /* 👈 تصغير الحجم */
+}
+.game-title {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.reels {
+  margin-top: 0;
 }
