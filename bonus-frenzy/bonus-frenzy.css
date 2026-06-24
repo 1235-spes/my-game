@@ -408,7 +408,7 @@ fake-jackpot {
   display: flex;
   justify-content: center;
   gap: 8px;
-
+ align-items: center;
   margin-top: 5px;
   padding: 5px;
 }
@@ -439,4 +439,23 @@ fake-jackpot {
 /* تحسين الشكل */
 .jp-box span {
   font-weight: bold;
+}
+#jp1, #jp2, #jp3, #jp4 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+  margin: 0 4px;
+
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 8px;
+
+  color: gold;
+  font-size: 14px;
+  font-weight: bold;
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
