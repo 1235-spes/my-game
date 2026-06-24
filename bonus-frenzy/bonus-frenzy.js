@@ -438,15 +438,6 @@ function checkWin() {
     .ref("users/" + currentUser)
     .update({ balance });
 }
-
-             
-let fakeJP = JSON.parse(localStorage.getItem("fakeJP")) || {
-  spade: 1200,
-  club: 3400,
-  diamond: 5600,
-  heart: 7800
-};
-
 let fakeJP;
 
 function initFakeJP() {
@@ -461,7 +452,16 @@ function initFakeJP() {
     }
   }
 
-  
+  // 🎯 إذا لا يوجد بيانات → رقم شبه واقعي عشوائي
+  if (!fakeJP) {
+    fakeJP = {
+      spade: 1000 + Math.floor(Math.random() * 2000),
+      club: 3000 + Math.floor(Math.random() * 3000),
+      diamond: 5000 + Math.floor(Math.random() * 3000),
+      heart: 7000 + Math.floor(Math.random() * 3000)
+    };
+  }
+}
 
 function startFakeJackpot() {
 
@@ -470,37 +470,37 @@ function startFakeJackpot() {
   const jp3 = document.getElementById("jp3");
   const jp4 = document.getElementById("jp4");
 
-  if (!jp1 || !jp2 || !jp3 || !jp4) {
-    console.error("Jackpot elements missing");
-    return;
-  }
-
   setInterval(() => {
 
-    fakeJP.spade += Math.floor(Math.random() * 40);
-    fakeJP.club += Math.floor(Math.random() * 40);
-    fakeJP.diamond += Math.floor(Math.random() * 40);
-    fakeJP.heart += Math.floor(Math.random() * 40);
+    // 🎰 زيادة واقعية (بطيئة + غير ثابتة)
+    fakeJP.spade += Math.random() * 25;
+    fakeJP.club += Math.random() * 30;
+    fakeJP.diamond += Math.random() * 35;
+    fakeJP.heart += Math.random() * 40;
 
-    if (fakeJP.spade > 9999) fakeJP.spade = 1200;
-    if (fakeJP.club > 9999) fakeJP.club = 3400;
-    if (fakeJP.diamond > 9999) fakeJP.diamond = 5600;
-    if (fakeJP.heart > 9999) fakeJP.heart = 7800;
+    // 🔄 إعادة تدوير طبيعية (بدون أرقام ثابتة)
+    if (fakeJP.spade > 9999) fakeJP.spade = 1000 + Math.random() * 500;
+    if (fakeJP.club > 9999) fakeJP.club = 2000 + Math.random() * 800;
+    if (fakeJP.diamond > 9999) fakeJP.diamond = 3000 + Math.random() * 900;
+    if (fakeJP.heart > 9999) fakeJP.heart = 4000 + Math.random() * 1000;
 
-    jp1.innerText = fakeJP.spade;
-    jp2.innerText = fakeJP.club;
-    jp3.innerText = fakeJP.diamond;
-    jp4.innerText = fakeJP.heart;
+    // 📊 عرض
+    jp1.innerText = Math.floor(fakeJP.spade);
+    jp2.innerText = Math.floor(fakeJP.club);
+    jp3.innerText = Math.floor(fakeJP.diamond);
+    jp4.innerText = Math.floor(fakeJP.heart);
 
+    // 💾 حفظ الحالة
     localStorage.setItem("fakeJP", JSON.stringify(fakeJP));
 
-  }, 200);
+  }, 150);
 }
 
 window.addEventListener("load", () => {
   initFakeJP();
   startFakeJackpot();
 });
+
 function showBox(id) {
   const boxes = document.querySelectorAll(".bet-box");
 
