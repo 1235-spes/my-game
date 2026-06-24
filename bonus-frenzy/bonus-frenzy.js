@@ -440,7 +440,7 @@ function checkWin() {
 }
 
              
-let fakeJP = {
+let fakeJP = JSON.parse(localStorage.getItem("fakeJP")) || {
   spade: 1200,
   club: 3400,
   diamond: 5600,
@@ -456,7 +456,6 @@ function startFakeJackpot() {
     fakeJP.diamond += Math.floor(Math.random() * 40);
     fakeJP.heart += Math.floor(Math.random() * 40);
 
-    // إعادة دورة وهمية
     if (fakeJP.spade > 9999) fakeJP.spade = 1000;
     if (fakeJP.club > 9999) fakeJP.club = 2000;
     if (fakeJP.diamond > 9999) fakeJP.diamond = 3000;
@@ -467,12 +466,11 @@ function startFakeJackpot() {
     document.getElementById("jp3").innerText = fakeJP.diamond;
     document.getElementById("jp4").innerText = fakeJP.heart;
 
+    // 💾 حفظ الحالة
+    localStorage.setItem("fakeJP", JSON.stringify(fakeJP));
+
   }, 200);
 }
-
-window.addEventListener("load", () => {
-  startFakeJackpot();
-});
 function showBox(id) {
   const boxes = document.querySelectorAll(".bet-box");
 
