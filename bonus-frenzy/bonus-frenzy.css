@@ -404,3 +404,39 @@ fake-jackpot {
   gap: 6px;
   align-items: center;
   }
+.jackpot-top {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  margin-top: 5px;
+  padding: 5px;
+}
+
+/* 🔥 المربع الشفاف لكل جاكبوت */
+.jp-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  padding: 6px 8px;
+
+  font-size: 14px;
+  color: gold;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+
+  border-radius: 8px;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  min-width: 70px;   /* نفس الحجم */
+}
+
+/* تحسين الشكل */
+.jp-box span {
+  font-weight: bold;
+}
