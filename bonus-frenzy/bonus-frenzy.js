@@ -308,6 +308,7 @@ function highlightWins(winningImg) {
 
   });
     }
+
 function highlightWild() {
 
   let wildFound = false;
@@ -330,14 +331,24 @@ function highlightWild() {
 
     if (hasWild) {
 
-      imgs.forEach(img => {
-        img.src = "../images/شجرةرة.jpg";
-        img.classList.add("wild-big");
-      });
+      // 🔥 أهم تعديل: لا نغير كل الصور
+      reel.classList.add("wild-column");
 
-      strip.classList.add("wild-column");
+      // فقط نميز صورة الشجرة نفسها
+      imgs.forEach(img => {
+        const name = img.getAttribute("src").split("/").pop();
+
+        if (name === "شجرةرة.jpg") {
+          img.classList.add("wild-only");
+        }
+      });
     }
   });
+
+  if (wildFound) {
+    wildSound.currentTime = 0;
+    wildSound.play().catch(() => {});
+  }
 
   // ✅ تشغيل الصوت مرة واحدة فقط
   if (wildFound) {
