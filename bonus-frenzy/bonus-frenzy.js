@@ -208,10 +208,12 @@ function generateFinalResult() {
     for (let row = 0; row < ROWS; row++) {
       let symbol = getRandomSymbol();
 
+      // ❌ شرط الشجرة: لا تظهر في أول وآخر عمود
       if (
         symbol.img === "شجرةرة.jpg" &&
         (col === 0 || col === COLS - 1)
       ) {
+        // نعيد الاختيار مرة ثانية بدون Wild
         do {
           symbol = getRandomSymbol();
         } while (symbol.img === "شجرةرة.jpg");
@@ -223,6 +225,7 @@ function generateFinalResult() {
     finalResult.push(column);
   }
 }
+
 function highlightWins(winningImg) {
 
   const images = document.querySelectorAll(".reel-strip img");
