@@ -447,7 +447,33 @@ let fakeJP = JSON.parse(localStorage.getItem("fakeJP")) || {
   heart: 7800
 };
 
+let fakeJP;
+
+function initFakeJP() {
+
+  const saved = localStorage.getItem("fakeJP");
+
+  if (saved) {
+    try {
+      fakeJP = JSON.parse(saved);
+    } catch (e) {
+      fakeJP = null;
+    }
+  }
+
+  
+
 function startFakeJackpot() {
+
+  const jp1 = document.getElementById("jp1");
+  const jp2 = document.getElementById("jp2");
+  const jp3 = document.getElementById("jp3");
+  const jp4 = document.getElementById("jp4");
+
+  if (!jp1 || !jp2 || !jp3 || !jp4) {
+    console.error("Jackpot elements missing");
+    return;
+  }
 
   setInterval(() => {
 
@@ -456,21 +482,25 @@ function startFakeJackpot() {
     fakeJP.diamond += Math.floor(Math.random() * 40);
     fakeJP.heart += Math.floor(Math.random() * 40);
 
-    if (fakeJP.spade > 9999) fakeJP.spade = 1000;
-    if (fakeJP.club > 9999) fakeJP.club = 2000;
-    if (fakeJP.diamond > 9999) fakeJP.diamond = 3000;
-    if (fakeJP.heart > 9999) fakeJP.heart = 4000;
+    if (fakeJP.spade > 9999) fakeJP.spade = 1200;
+    if (fakeJP.club > 9999) fakeJP.club = 3400;
+    if (fakeJP.diamond > 9999) fakeJP.diamond = 5600;
+    if (fakeJP.heart > 9999) fakeJP.heart = 7800;
 
-    document.getElementById("jp1").innerText = fakeJP.spade;
-    document.getElementById("jp2").innerText = fakeJP.club;
-    document.getElementById("jp3").innerText = fakeJP.diamond;
-    document.getElementById("jp4").innerText = fakeJP.heart;
+    jp1.innerText = fakeJP.spade;
+    jp2.innerText = fakeJP.club;
+    jp3.innerText = fakeJP.diamond;
+    jp4.innerText = fakeJP.heart;
 
-    // 💾 حفظ الحالة
     localStorage.setItem("fakeJP", JSON.stringify(fakeJP));
 
   }, 200);
 }
+
+window.addEventListener("load", () => {
+  initFakeJP();
+  startFakeJackpot();
+});
 function showBox(id) {
   const boxes = document.querySelectorAll(".bet-box");
 
