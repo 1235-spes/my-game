@@ -329,7 +329,13 @@ function checkWin() {
     }
 
     let base = symbols[0];
-    let match = 1;
+let match = 1;
+
+let hasWild = symbols.some(s => s.img === "شجرةرة.jpg");
+
+if (hasWild) {
+  isWildColumn = true;
+}
 
     for (let i = 1; i < symbols.length; i++) {
 
@@ -349,7 +355,15 @@ function checkWin() {
       const symbolData = SYMBOLS.find(s => s.img === base.img);
 
       if (symbolData?.payouts?.[match]) {
-        totalWin += selectedBet * symbolData.payouts[match];
+
+  let multiplier = 1;
+
+  // 🌳 Wild = مضاعف ×2
+  if (isWildColumn) {
+    multiplier = 2;
+  }
+
+  totalWin += selectedBet * symbolData.payouts[match] * multiplier;
       }
     }
   }
@@ -386,10 +400,16 @@ function checkWin() {
         break;
       }
     }
+if (match >= 3) {
 
-    if (match >= 3) {
-      winningImg = base.img;
-      break;
+  if (symbols.some(s => s.img === "شجرةرة.jpg")) {
+    winningImg = "شجرةرة.jpg"; // يعتبر Wild هو الفائز
+  } else {
+    winningImg = base.img;
+  }
+
+  break;
+}
     }
   }
 
