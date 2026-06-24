@@ -79,55 +79,32 @@ document.getElementById("reel5")
 ];
 function spinReel(reel, delay, onStop) {
 
-  const strip = reel.querySelector(".reel-strip");
 
-  let position = 0;
-  let speed = 55; // بداية قوية مثل الكازينو
+let speed = 30;
 
-  strip.style.transition = "none";
+const interval = setInterval(() => {
 
-  const animate = () => {
-
-    // ⬇️ نزول فقط (بدون رجوع مفاجئ)
-    position += speed;
-
-    strip.style.transform = `translateY(${position}px)`;
-
-    // 📉 تباطؤ تدريجي واقعي
-    speed *= 0.95;
-
-    // 🎯 شرط التوقف
-    if (speed < 1.5) {
-
-      strip.style.transition = "transform 0.7s cubic-bezier(0.17,0.67,0.21,1)";
-
-      // تثبيت النتيجة النهائية (إذا موجودة)
-      if (typeof finalResult !== "undefined") {
-        const index = reels.indexOf(reel);
-
-        for (let i = 0; i < ROWS; i++) {
-          strip.children[i].src =
-            "../images/" + finalResult[index][i].img;
-        }
-      }
-
-      strip.style.transform = "translateY(0px)";
-
-      stopSound.currentTime = 0;
-      stopSound.play();
-
-      if (onStop) onStop();
-
-      return;
-    }
-
-    requestAnimationFrame(animate);
-  };
-
-  setTimeout(() => {
-    requestAnimationFrame(animate);
-  }, delay);
+for (let i = 0; i < reel.children.length; i++) {  
+  const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];  
+  reel.children[i].src = "../images/" + symbol.img;  
 }
+
+}, speed);
+
+setTimeout(() => {
+clearInterval(interval);
+
+// توقف نهائي  
+for (let i = 0; i < reel.children.length; i++) {  
+  const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];  
+  reel.children[i].src = "../images/" + symbol.img;  
+}  
+
+onStop();
+
+}, delay);
+}
+  
 // تعبئة البكرات لأول مرة عند فتح اللعبة
 
 function initializeReels() {
@@ -173,102 +150,91 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
   spin();
 };
 
-
 function spin() {
-  isSpinning = true;
+isSpinning = true; // 🔒 قفل الزر
 
-  
-    // 🌳 تنظيف تأثير الشجرة (Wild)
+// 🌳 تنظيف تأثير الشجرة (Wild)
 document.querySelectorAll(".reel-strip img").forEach(img => {
-  img.classList.remove("wild-big");
+img.classList.remove("wild-big");
 });
 
 // إزالة تأثير العمود كامل
 document.querySelectorAll(".reel-strip").forEach(strip => {
-  strip.classList.remove("wild-column");
+strip.classList.remove("wild-column");
 });
 document.querySelectorAll(".reel-strip img").forEach(img => {
-  img.classList.remove("win-glow");
+img.classList.remove("win-glow");
 });
 
-  document.getElementById("winAmount").innerText = 0;
-
-  if (balance < selectedBet) {
-    alert("رصيدك غير كافٍ!");
-    isSpinning = false;
-    return;
-  }
-
-  // خصم الرهان
-  balance -= selectedBet;
-  document.getElementById("balance").innerText = balance;
-
-  firebase.database()
-    .ref("users/" + currentUser)
-    .update({ balance });
-
-  generateFinalResult();
-
-  spinSound.currentTime = 0;
-  spinSound.play();
-
-  reels.forEach((reel, colIndex) => {
-
-    const strip = reel.querySelector(".reel-strip");
-
-    let position = 0;
-    let speed = 60; // 🔥 بداية سريعة جداً للأسفل
-
-    strip.style.transition = "none";
-
-    const animate = () => {
-
-      // 🔥 نزول فقط (بدون أي loop للأعلى)
-      position += speed;
-
-      strip.style.transform = `translateY(${position}px)`;
-
-      // 🔥 تباطؤ تدريجي
-      speed *= 0.95;
-
-      // 🔥 شرط التوقف
-      if (speed < 1.5) {
-
-        strip.style.transition = "transform 0.8s cubic-bezier(0.17,0.67,0.21,1)";
-
-        // تثبيت النتيجة
-        for (let row = 0; row < ROWS; row++) {
-          const img = strip.children[row];
-          img.src = "../images/" + finalResult[colIndex][row].img;
-        }
-
-        // رجوع بسيط لمكان ثابت (توقف نهائي)
-        strip.style.transform = `translateY(0px)`;
-
-        stopSound.currentTime = 0;
-        stopSound.play();
-
-        if (colIndex === reels.length - 1) {
-          spinSound.pause();
-
-          setTimeout(() => {
-            checkWin();
-            isSpinning = false;
-          }, 400);
-        }
-
-        return;
-      }
-
-      requestAnimationFrame(animate);
-    };
-
-    setTimeout(() => {
-      requestAnimationFrame(animate);
-    }, colIndex * 200);
-
-  });
+document.getElementById("winAmount").innerText = 0;
+if (balance < selectedBet) {
+alert("رصيدك غير كافٍ!");
+return;
 }
+
+balance -= selectedBet;
+document.getElementById("balance").innerText = balance;
+
+firebase.database()
+.ref("users/" + currentUser)
+.update({ balance });
+
+generateFinalResult(); // 👈 أهم سطر
+
+spinSound.currentTime = 0;
+spinSound.play();
+
+reels.forEach((reel, colIndex) => {
+
+const strip = reel.querySelector(".reel-strip");  
+
+strip.style.transition = "none";  
+
+let position = 20;  
+
+const interval = setInterval(() => {  
+  position += 60;  
+  strip.style.transform = `translateY(-${position}px)`;  
+}, 16);  
+
+setTimeout(() => {  
+
+  clearInterval(interval);  
+
+  strip.style.transition = "transform 0.8s cubic-bezier(0.17,0.67,0.21,1)";  
+
+  // 🔥 هنا نستخدم نفس finalResult
+
+strip.innerHTML = "";
+
+for (let row = 0; row < ROWS; row++) {
+
+const img = document.createElement("img");
+
+img.src =
+"../images/" +
+finalResult[colIndex][row].img;
+
+strip.appendChild(img);
+}
+strip.style.transform = "translateY(0px)";
+stopSound.currentTime = 0;
+stopSound.play();
+
+if (colIndex === reels.length - 1) {  
+    spinSound.pause();  
+
+    setTimeout(() => {  
+      checkWin();  
+      isSpinning = false; // 🔓 فتح الزر بعد انتهاء اللعب  
+    }, 300);  
+  }  
+
+}, 1200 + colIndex * 400);
+
+});
+}
+
 
 function generateFinalResult() {
   finalResult = [];
