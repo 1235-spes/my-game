@@ -44,13 +44,7 @@ function createSubAdmin() {
     doktorRef.update({
       balance: newDoktorBalance
     });
-db.ref("subAdmins/" + name).set({
-  password: pass,
-  balance: balance,
-  remainingBalance: balance,
-  parent: "doktor",
-  role: "subAdmin"
-});
+
     // إنشاء subAdmin
     db.ref("subAdmins/" + name).set({
       password: pass,
