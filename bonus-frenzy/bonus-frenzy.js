@@ -79,30 +79,29 @@ document.getElementById("reel5")
 ];
 function spinReel(reel, delay, onStop) {
 
+  let speed = 30;
 
-let speed = 30;
+  const interval = setInterval(() => {
 
-const interval = setInterval(() => {
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
 
-for (let i = 0; i < reel.children.length; i++) {  
-  const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];  
-  reel.children[i].src = "../images/" + symbol.img;  
-}
+  }, speed);
 
-}, speed);
+  setTimeout(() => {
+    clearInterval(interval);
 
-setTimeout(() => {
-clearInterval(interval);
+    // توقف نهائي
+    for (let i = 0; i < reel.children.length; i++) {
+      const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+      reel.children[i].src = "../images/" + symbol.img;
+    }
 
-// توقف نهائي  
-for (let i = 0; i < reel.children.length; i++) {  
-  const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];  
-  reel.children[i].src = "../images/" + symbol.img;  
-}  
+    onStop();
 
-onStop();
-
-}, delay);
+  }, delay);
 }
   
 // تعبئة البكرات لأول مرة عند فتح اللعبة
