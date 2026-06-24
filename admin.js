@@ -43,3 +43,36 @@ function createSubAdmin() {
 
   });
       }
+function loadSubAdmins() {
+
+  db.ref("subAdmins").on("value", snapshot => {
+
+    const subs = snapshot.val();
+    if (!subs) return;
+
+    let html = "";
+
+    Object.keys(subs).forEach(name => {
+
+      const sub = subs[name];
+
+      html += `
+        <div class="user-card">
+
+          <div class="user-name">${name}</div>
+
+          <div class="user-info">
+            الرصيد: ${sub.balance || 0}
+          </div>
+
+          <div class="user-info">
+            المدير: ${sub.parent || "غير معروف"}
+          </div>
+
+        </div>
+      `;
+    });
+
+    document.getElementById("subAdminsList").innerHTML = html;
+  });
+}
