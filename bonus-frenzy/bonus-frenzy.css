@@ -302,3 +302,64 @@ fake-jackpot {
   align-items: center;
   gap: 10px; /* 👈 المسافة بينهم */
 }
+#spin,
+#autoSpinBtn,
+#speedBtn,
+.bet-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: gold;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+}
+#spin {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+
+  background: radial-gradient(circle, #ffd700, #b8860b);
+  border: 2px solid gold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 0 20px gold;
+}
+
+#spin:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px gold;
+}
+#autoSpinBtn,
+#speedBtn,
+.bet-toggle {
+  padding: 10px;
+  font-weight: bold;
+}
+.bet-menu,
+.speed-menu,
+.auto-menu {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+
+  padding: 10px;
+}
+#spin:hover,
+#autoSpinBtn:hover,
+#speedBtn:hover,
+.bet-toggle:hover {
+  transform: scale(1.05);
+  background: rgba(255, 215, 0, 0.12);
+}
