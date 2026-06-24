@@ -25,6 +25,7 @@ display: flex;
 gap: 10px;
 justify-content: center;
 margin-bottom: 20px;
+  margin-top: 0;
 }
 
 .reel {
@@ -125,6 +126,11 @@ fake-jackpot {
 }
 .controls {
   position: relative;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* 👈 المسافة بينهم */
+}
 }
 .bet-menu {
   position: absolute;
@@ -293,15 +299,7 @@ wild-column {
   padding-bottom: 0;
 }
 
-.reels {
-  margin-top: 0;
-}
-.controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px; /* 👈 المسافة بينهم */
-}
+
 #spin,
 #autoSpinBtn,
 #speedBtn,
