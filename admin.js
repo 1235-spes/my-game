@@ -76,3 +76,4 @@ function loadSubAdmins() {
     document.getElementById("subAdminsList").innerHTML = html;
   });
 }
+loadSubAdmins();
