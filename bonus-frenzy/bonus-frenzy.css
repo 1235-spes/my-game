@@ -53,9 +53,8 @@ height: 60px;
 display: block;
 object-fit: cover;
   position: relative;
-  
+  z-index: 999; 
 }
-
 
 #spin {
 margin-top: 10px;
@@ -198,10 +197,8 @@ fake-jackpot {
   z-index: 10;
 }
 
-.reel.wild-column {
-  background: rgba(255, 215, 0, 0.10);
-  box-shadow: inset 0 0 20px gold;
-  overflow: hidden;
+.reel-strip.wild-column {
+  animation: columnPulse 0.6s infinite alternate;
 }
 
 @keyframes columnPulse {
@@ -210,24 +207,21 @@ fake-jackpot {
   }
 
 /* العمود الذي يحتوي wild */
-.reel.wild-column {
-  background: rgba(255, 215, 0, 0.10);
-  box-shadow: inset 0 0 20px gold;
-  overflow: hidden;
+wild-column {
+  background: rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 25px gold;
+}
+/* 🌳 Wild Column Replace Effect */
+.wild-column img {
+  filter: brightness(1.6) drop-shadow(0 0 10px gold);
+  transform: scale(1.05);
 }
 
-/* كل الصور داخل هذا العمود فقط */
-.reel.wild-column .reel-strip img {
-  filter: brightness(1.4) drop-shadow(0 0 8px gold);
-  transform: scale(1.03);
+/* تمييز الشجرة فقط */
+.wild-column img[src*="شجرةرة.jpg"] {
+  filter: brightness(2.5) drop-shadow(0 0 20px gold);
+  transform: scale(1.1);
 }
-
-/* تمييز الشجرة فقط داخل نفس العمود */
-.reel.wild-column .reel-strip img[src*="شجرةرة.jpg"] {
-  filter: brightness(2.5) drop-shadow(0 0 18px gold);
-  transform: scale(1.08);
-}
- 
 .bet-box button:hover {
   background: rgba(255, 215, 0, 0.2);
   transform: scale(1.05);
@@ -465,15 +459,3 @@ fake-jackpot {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
-.reel-strip img {
- z-index: 999; 
-} 
-.reel.wild-column {
-  background: rgba(255, 215, 0, 0.10);
-  box-shadow: inset 0 0 20px gold;
-}
-
-.reel.wild-column .wild-only {
-  filter: brightness(2.5) drop-shadow(0 0 18px gold);
-  transform: scale(1.1);
-  }
