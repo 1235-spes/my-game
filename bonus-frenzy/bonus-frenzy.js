@@ -152,7 +152,7 @@ function spin() {
     const strip = reel.querySelector(".reel-strip");
 
     let position = 0;
-    let speed = 45;
+    let speed = 60;
 
     const animate = () => {
 
@@ -166,9 +166,9 @@ function spin() {
       strip.style.transform = `translateY(-${position}px)`;
 
       // slowdown
-      speed *= 0.97;
+      speed *= 0.93;
 
-      if (speed < 1.4) {
+      if (speed < 2.5) {
 
         // 🔥 FIX: بدون innerHTML
         setFinalStrip(strip, colIndex);
