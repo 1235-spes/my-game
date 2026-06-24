@@ -177,14 +177,19 @@ document.querySelectorAll(".bet-box button").forEach(btn => {
 function spin() {
   isSpinning = true;
 
-  // تنظيف التأثيرات
-  document.querySelectorAll(".reel-strip img").forEach(img => {
-    img.classList.remove("wild-big", "win-glow");
-  });
+  
+    // 🌳 تنظيف تأثير الشجرة (Wild)
+document.querySelectorAll(".reel-strip img").forEach(img => {
+  img.classList.remove("wild-big");
+});
 
-  document.querySelectorAll(".reel-strip").forEach(strip => {
-    strip.classList.remove("wild-column");
-  });
+// إزالة تأثير العمود كامل
+document.querySelectorAll(".reel-strip").forEach(strip => {
+  strip.classList.remove("wild-column");
+});
+document.querySelectorAll(".reel-strip img").forEach(img => {
+  img.classList.remove("win-glow");
+});
 
   document.getElementById("winAmount").innerText = 0;
 
@@ -265,7 +270,6 @@ function spin() {
   });
 }
 
-
 function generateFinalResult() {
   finalResult = [];
 
@@ -292,6 +296,7 @@ function generateFinalResult() {
     finalResult.push(column);
   }
 }
+
 function highlightWins(winningImg) {
 
   const images = document.querySelectorAll(".reel-strip img");
@@ -307,7 +312,7 @@ function highlightWins(winningImg) {
     }
 
   });
-    }
+}
 
 function highlightWild() {
 
@@ -331,24 +336,14 @@ function highlightWild() {
 
     if (hasWild) {
 
-      // 🔥 أهم تعديل: لا نغير كل الصور
-      reel.classList.add("wild-column");
-
-      // فقط نميز صورة الشجرة نفسها
       imgs.forEach(img => {
-        const name = img.getAttribute("src").split("/").pop();
-
-        if (name === "شجرةرة.jpg") {
-          img.classList.add("wild-only");
-        }
+        img.src = "../images/شجرةرة.jpg";
+        img.classList.add("wild-big");
       });
+
+      strip.classList.add("wild-column");
     }
   });
-
-  if (wildFound) {
-    wildSound.currentTime = 0;
-    wildSound.play().catch(() => {});
-  }
 
   // ✅ تشغيل الصوت مرة واحدة فقط
   if (wildFound) {
