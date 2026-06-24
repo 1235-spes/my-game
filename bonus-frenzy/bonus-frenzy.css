@@ -321,18 +321,21 @@ fake-jackpot {
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
 }
 #spin {
-  width: 85px;
-  height: 85px;
-  border-radius: 50%;
-
-  background: radial-gradient(circle, #ffd700, #b8860b);
-  border: 2px solid gold;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%; /* 👈 هذا أهم شيء */
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  box-shadow: 0 0 20px gold;
+  background: rgba(255, 215, 0, 0.2);
+  border: 2px solid gold;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  cursor: pointer;
 }
 
 #spin:hover {
