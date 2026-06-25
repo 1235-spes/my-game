@@ -2,84 +2,120 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Sub Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sup Admin Panel</title>
 
 <style>
-body{background:#0d0d0d;color:white;font-family:Arial;padding:20px}
-.card{background:#181818;padding:15px;border-radius:15px;margin-bottom:10px}
-input{width:100%;padding:10px;margin:5px 0;background:#222;color:white;border:none;border-radius:10px}
-button{width:100%;padding:10px;background:#FFD700;border:none;border-radius:10px;font-weight:bold}
-</style>
-</head>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0d0d0d;
+  color:white;
+}
 
+.header{
+  background:#181818;
+  padding:20px;
+  text-align:center;
+  font-size:26px;
+  font-weight:bold;
+  color:#FFD700;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+.card{
+  background:#181818;
+  padding:20px;
+  border-radius:15px;
+  margin-bottom:20px;
+  border:1px solid rgba(255,215,0,.2);
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:none;
+  border-radius:10px;
+  background:#242424;
+  color:white;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-top:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.create{
+  background:#FFD700;
+  color:black;
+}
+
+.logout{
+  background:#ff4444;
+  color:white;
+}
+
+.balance-box{
+  font-size:20px;
+  color:#FFD700;
+  margin-bottom:10px;
+}
+
+.user-card{
+  background:#222;
+  padding:15px;
+  border-radius:12px;
+  margin-top:10px;
+}
+</style>
+
+</head>
 <body>
 
-<h2>لوحة Sub Admin</h2>
+<div class="header">لوحة السوبر ادمن</div>
 
-<div class="card">
-رصيدك: <span id="balance">0</span>
+<div class="container">
+
+  <div class="card">
+    <div class="balance-box">
+      رصيدك: <span id="balance">0</span>
+    </div>
+
+    <button class="logout" onclick="logout()">تسجيل خروج</button>
+  </div>
+
+  <div class="card">
+    <h3>إنشاء لاعب</h3>
+
+    <input id="userName" placeholder="اسم اللاعب">
+    <input id="userPass" placeholder="كلمة المرور">
+    <input id="userBalance" type="number" placeholder="الرصيد">
+
+    <button class="create" onclick="createUser()">إنشاء لاعب</button>
+  </div>
+
+  <div class="card">
+    <h3>اللاعبين</h3>
+    <div id="usersList"></div>
+  </div>
+
 </div>
-
-<h3>إنشاء لاعب</h3>
-
-<input id="u" placeholder="اسم اللاعب">
-<input id="p" placeholder="كلمة المرور">
-<input id="b" type="number" placeholder="رصيد">
-
-<button onclick="createUser()">إنشاء</button>
-
-<div id="status"></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-<script>
-firebase.initializeApp({
-  apiKey:"AIza...",
-  authDomain:"chanci-app.firebaseapp.com",
-  databaseURL:"https://chanci-app-default-rtdb.firebaseio.com"
-});
-
-const db = firebase.database();
-const user = localStorage.getItem("currentUser");
-
-// تحميل رصيد subAdmin
-db.ref("subAdmins/" + user).get().then(s=>{
-  document.getElementById("balance").innerText = s.val().balance;
-});
-
-// إنشاء لاعب
-function createUser(){
-
-  const name = document.getElementById("u").value;
-  const pass = document.getElementById("p").value;
-  const bal = Number(document.getElementById("b").value || 0);
-
-  const ref = db.ref("subAdmins/" + user);
-
-  ref.get().then(s=>{
-
-    const sa = s.val();
-
-    if(bal > sa.balance){
-      document.getElementById("status").innerText = "رصيد غير كافي";
-      return;
-    }
-
-    ref.update({
-      balance: sa.balance - bal
-    });
-
-    db.ref("users/" + name).set({
-      password: pass,
-      balance: bal,
-      role: "user"
-    });
-
-    document.getElementById("status").innerText = "تم إنشاء اللاعب";
-  });
-}
-</script>
+<script src="supadmin.js"></script>
 
 </body>
 </html>
