@@ -85,6 +85,37 @@ function login(){
     console.error(error);
   });
 }
+ function login(username, password) {
+
+  db.ref("users/" + username).get().then(u => {
+
+    if (u.exists() && u.val().password === password) {
+      localStorage.setItem("currentUser", username);
+      window.location.href = "game.html";
+      return;
+    }
+
+    db.ref("superAdmins/" + username).get().then(sa => {
+
+      if (sa.exists() && sa.val().password === password) {
+        localStorage.setItem("currentUser", username);
+        window.location.href = "superadmin.html";
+        return;
+      }
+
+      if (username === "doktor" && password === "1234") {
+        localStorage.setItem("currentUser", "doktor");
+        window.location.href = "admin.html";
+        return;
+      }
+
+      alert("اسم المستخدم غير موجود");
+
+    });
+
+  });
+
+} 
 </script>
 </body>
 </html>
