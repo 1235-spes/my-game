@@ -73,4 +73,47 @@ function loadSuperAdmins() {
     document.getElementById("superAdminsList").innerHTML = html;
   });
 }
+function createSubAdmin(){
+
+  const name = document.getElementById("newSub").value.trim();
+  const pass = document.getElementById("newSubPass").value.trim();
+  const balance = Number(document.getElementById("newSubBalance").value || 0);
+
+  const status = document.getElementById("status");
+
+  if(!name || !pass){
+    status.innerHTML = "أدخل بيانات Sub Admin";
+    return;
+  }
+
+  const doktorRef = db.ref("users/doktor");
+
+  doktorRef.get().then(snapshot => {
+
+    const doktor = snapshot.val();
+    const currentBalance = Number(doktor.balance || 0);
+
+    if(balance > currentBalance){
+      status.innerHTML = "رصيد الدكتور غير كافي";
+      return;
+    }
+
+    // خصم من الدكتور
+    doktorRef.update({
+      balance: currentBalance - balance
+    });
+
+    // إنشاء SubAdmin
+    db.ref("subAdmins/" + name).set({
+      password: pass,
+      balance: balance,
+      parent: "doktor",
+      role: "subAdmin"
+    });
+
+    status.innerHTML = "تم إنشاء Sub Admin بنجاح";
+
+  });
+
+}
 loadSuperAdmins();
