@@ -1,4 +1,4 @@
-supAdminsmins firebaseConfig = {
+subAdminsmins firebaseConfig = {
   apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
   databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
@@ -35,7 +35,7 @@ function createUser(){
   const pass = document.getElementById("userPass").value.trim();
   const balance = Number(document.getElementById("userBalance").value || 0);
 
-  const ref = db.ref("supAdmins/" + currentUser);
+  const ref = db.ref("subAdmins/" + currentUser);
 
   ref.get().then(snap=>{
     const sa = snap.val();
