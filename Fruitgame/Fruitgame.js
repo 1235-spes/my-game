@@ -246,13 +246,13 @@ function generateFinalResult() {
 
       // ❌ شرط الشجرة: لا تظهر في أول وآخر عمود
       if (
-        symbol.img === "شجرةرة.jpg" &&
+        symbol.img === "الماس.لعبة.اولى.jpg" &&
         (col === 0 || col === COLS - 1)
       ) {
         // نعيد الاختيار مرة ثانية بدون Wild
         do {
           symbol = getRandomSymbol();
-        } while (symbol.img === "شجرةرة.jpg");
+        } while (symbol.img === "الماس.لعبة.اولى.jpg");
       }
 
       column.push(symbol);
@@ -293,7 +293,7 @@ function highlightWild() {
     imgs.forEach(img => {
       const name = img.getAttribute("src").split("/").pop();
 
-      if (name === "شجرةرة.jpg") {
+      if (name === "الماس.لعبة.اولى.jpg") {
         hasWild = true;
         wildFound = true;
       }
@@ -302,7 +302,7 @@ function highlightWild() {
     if (hasWild) {
 
       imgs.forEach(img => {
-        img.src = "../images/شجرةرة.jpg";
+        img.src = "../images/الماس.لعبة.اولى.jpg";
         img.classList.add("wild-big");
       });
 
@@ -331,7 +331,7 @@ function checkWin() {
     let base = symbols[0];
 let match = 1;
 
-let hasWild = symbols.some(s => s.img === "شجرةرة.jpg");
+let hasWild = symbols.some(s => s.img === "الماس.لعبة.اولى.jpg");
 
 if (hasWild) {
   isWildColumn = true;
@@ -339,7 +339,7 @@ if (hasWild) {
 
     for (let i = 1; i < symbols.length; i++) {
 
-      if (symbols[i].img === "شجرةرة.jpg") {
+      if (symbols[i].img === "الماس.لعبة.اولى.jpg") {
         match++;
         continue;
       }
@@ -389,7 +389,7 @@ if (hasWild) {
     let match = 1;
 
     for (let i = 1; i < symbols.length; i++) {
-      if (symbols[i].img === "شجرةرة.jpg") {
+      if (symbols[i].img === "الماس.لعبة.اولى.jpg") {
         match++;
         continue;
       }
@@ -402,8 +402,8 @@ if (hasWild) {
     }
 if (match >= 3) {
 
-  if (symbols.some(s => s.img === "شجرةرة.jpg")) {
-    winningImg = "شجرةرة.jpg"; // يعتبر Wild هو الفائز
+  if (symbols.some(s => s.img === "الماس.لعبة.اولى.jpg")) {
+    winningImg = "الماس.لعبة.اولى.jpg"; // يعتبر Wild هو الفائز
   } else {
     winningImg = base.img;
   }
@@ -416,7 +416,7 @@ if (match >= 3) {
   if (winningImg) {
     highlightWins(winningImg);
     highlightWild();
-      if (winningImg === "شجرةرة.jpg") {
+      if (winningImg === "الماس.لعبة.اولى.jpg") {
     wildSound.currentTime = 0;
     wildSound.play(); 
    }
