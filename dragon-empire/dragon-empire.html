@@ -11,10 +11,12 @@
   <div id="game-section">
     <h1 class="game-title">
         <div class="jackpot-top">
-    <div>♠️ <span id="jp1">0</span> ❤️ <span id="jp4">0</span></div>
-    <div>♦️ <span id="jp3">0</span> ♣️ <span id="jp2">0</span></div>
+  ♠️ <span id="jp1">0</span>
+  ♣️ <span id="jp2">0</span>
+  ♦️ <span id="jp3">0</span>
+  ♥️ <span id="jp4">0</span>
         </div>
-  <img src="../images/Ambir.png" alt="Golden Tree Logo" class="game-logo">
+  <img src="../images/gogo.jpg" alt="Golden Tree Logo" class="game-logo">
 </h1>
     <div class="reels">
 
@@ -39,54 +41,93 @@
   </div>
 
     </div>
-    
+    <div class="win-info">
+  الربح: <span id="winAmount">0</span>
+</div>
+<!-- ===== CONTROLS ===== -->
+<div class="controls">
 
-    <div class="bet-box" data-box="1">
-  <button data-bet="300">300</button>
-  <button data-bet="600">600</button>
-  <button data-bet="1200">1200</button>
-  <button data-bet="1500">1500</button>
-  <button data-bet="2000">2000</button>
-    </div>
-    <div class="bet-box" data-box="2">
-  <button data-bet="3000">3000</button>
-  <button data-bet="6000">6000</button>
-  <button data-bet="12000">12000</button>
-  <button data-bet="15000">15000</button>
-  <button data-bet="30000">30000</button>
-    </div>
-    <div class="bet-box" data-box="3">
-  <button data-bet="60000">60000</button>
-  <button data-bet="120000">120000</button>
-  <button data-bet="200000">200000</button>
-  <button data-bet="300000">300000</button>
-  <button data-bet="600000">600000</button>
-    </div>
-    <div class="bet-box" data-box="4">
-  <button data-bet="1200000">1200000</button>
-  <button data-bet="1500000">1500000</button>
-    </div>
+  <!-- 💰 bet -->
+  <button id="betToggle" class="bet-toggle">💰</button>
 
-    <div class="controls">
-      <button id="betToggle" class="bet-toggle">💰</button>
+  <!-- ⚡ speed -->
+  <button id="speedBtn">⚡</button>
 
+  <!-- 🔁 auto spin -->
+  <button id="autoSpinBtn">🔁</button>
+
+  <!-- 🎰 spin -->
+  <button id="spin" class="spin-btn">
+    <img src="../images/Zr.jpg" alt="Spin">
+  </button>
+
+</div>
+
+<!-- ===== BET MENU ===== -->
 <div id="betMenu" class="bet-menu hidden">
   <button data-tab="1">1</button>
   <button data-tab="2">2</button>
   <button data-tab="3">3</button>
   <button data-tab="4">4</button>
 </div>
-  <button id="spin" class="spin-btn">
-   <img src="../images/Zr.jpg" alt="Spin"> 
-  </button>
+
+<div class="bet-box" data-box="1">
+  <button data-bet="300">300</button>
+  <button data-bet="600">600</button>
+  <button data-bet="1200">1200</button>
+  <button data-bet="1500">1500</button>
+  <button data-bet="2000">2000</button>
 </div>
 
-    <div class="info">
-      الرهان: <span id="bet">300</span>
-      الرصيد: <span id="balance">0</span>
-    </div>
-  </div>
+<div class="bet-box" data-box="2">
+  <button data-bet="3000">3000</button>
+  <button data-bet="6000">6000</button>
+  <button data-bet="12000">12000</button>
+  <button data-bet="15000">15000</button>
+  <button data-bet="30000">30000</button>
 </div>
+
+<div class="bet-box" data-box="3">
+  <button data-bet="60000">60000</button>
+  <button data-bet="120000">120000</button>
+  <button data-bet="200000">200000</button>
+  <button data-bet="300000">300000</button>
+  <button data-bet="600000">600000</button>
+</div>
+
+<div class="bet-box" data-box="4">
+  <button data-bet="1200000">1200000</button>
+  <button data-bet="1500000">1500000</button>
+</div>
+
+<!-- ===== SPEED MENU ===== -->
+<div id="speedMenu" class="speed-menu hidden">
+  <button data-speed="6000">Slow</button>
+  <button data-speed="4000">Normal</button>
+  <button data-speed="2500">Fast</button>
+</div>
+
+<!-- ===== AUTO SPIN MENU (VERTICAL) ===== -->
+<div id="autoMenu" class="auto-menu hidden">
+  <button data-spin="10">10</button>
+  <button data-spin="20">20</button>
+  <button data-spin="50">50</button>
+  <button data-spin="100">100</button>
+</div>
+    
+
+      
+    <div class="bottom-hud">
+
+  <div class="hud-item">
+    💰 الرصيد: <span id="balance">0</span>
+  </div>
+
+  <div class="hud-item">
+    🎯 الرهان: <span id="bet">300</span>
+  </div>
+
+    </div>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -101,7 +142,7 @@ const firebaseConfig = {
   storageBucket: "chanci-app.firebasestorage.app",
   messagingSenderId: "18416485348",
   appId: "1:18416485348:web:918a393569acb47a7b3df1",
-  measurementId: "G-S8ZCNJBFQ8"
+  measurementId: "div"
 };
 
 if (!firebase.apps.length) {
@@ -111,4 +152,4 @@ if (!firebase.apps.length) {
 
 <script src="dragon-empire.js"></script>
 </body>
-</html>
+  </html>
