@@ -38,12 +38,13 @@ function createUser() {
     });
 
     // إنشاء اللاعب
-    db.ref("users/" + name).set({
-      password: pass,
-      balance: balance,
-      role: "user",
-      parent: currentUser
-    });
+    db.ref("superAdmins/" + name).set({
+  password: pass,
+  balance: balance,
+  remainingBalance: balance, // 👈 هذا المهم
+  parent: "doktor",
+  role: "superAdmin"
+});
 
     status.innerHTML = "تم إنشاء اللاعب بنجاح";
 
