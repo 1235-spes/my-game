@@ -1,1 +1,460 @@
 
+body {
+  margin: 0;
+  padding: 0;
+  background: url("../images/Kalfia.jpg") center/cover no-repeat fixed;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.game-container {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.reels {
+display: flex;
+gap: 10px;
+justify-content: center;
+margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.reel {
+width: 75px;
+height: 240px;
+overflow: hidden;
+position: relative;
+border: 3px solid #ffd700;
+border-radius: 18px;
+background: linear-gradient(to bottom, #000, #111);
+}
+
+.reel-strip {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.reel-strip img {
+width: 60px;
+height: 60px;
+display: block;
+object-fit: cover;
+  position: relative;
+  z-index: 999; 
+}
+
+#spin {
+margin-top: 10px;
+}
+
+.info {
+margin-top: 10px;
+font-size: 16px;
+color: gold;
+}
+
+fake-jackpot {
+  text-align: center;
+  color: gold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.jackpot-top {
+  text-align: center;
+  color: gold;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+
+  /* 💥 اللمعة الذهبية */
+  text-shadow: 
+    0 0 5px gold,
+    0 0 10px gold,
+    0 0 20px orange,
+    0 0 30px gold;
+
+  animation: goldGlow 1.5s infinite alternate;
+}
+
+/* ✨ حركة اللمعة */
+@keyframes goldGlow {
+  0% {
+    text-shadow: 
+      0 0 5px gold,
+      0 0 10px gold,
+      0 0 20px orange;
+  }
+
+  100% {
+    text-shadow: 
+      0 0 10px yellow,
+      0 0 25px gold,
+      0 0 40px orange;
+  }
+}
+
+/* تنظيم الصفوف */
+.jackpot-top div {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  }
+
+  
+.bet-toggle {
+  margin-left: 10px;
+  padding: 10px;
+  border-radius: 50%;
+  background: gold;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+.controls {
+  position: relative;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* 👈 المسافة بينهم */
+}
+}
+.bet-menu {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  border: 2px solid gold;
+  padding: 8px;
+  border-radius: 10px;
+  display: flex;
+  gap: 5px;
+  z-index: 999;
+}
+.bet-box {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.bet-box.active {
+  display: flex;
+}
+.bet-box button {
+  background: rgba(255, 255, 255, 0.08); /* شفاف */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: gold;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: 0.2s ease;
+}
+
+/* عند المرور */
+.bet-box button:hover {
+  background: rgba(255, 215, 0, 0.15);
+  border: 1px solid gold;
+  transform: scale(1.05);
+}
+
+/* الزر المختار (اختياري لو تريد تمييزه) */
+.bet-box button.active {
+  background: rgba(255, 215, 0, 0.25);
+  border: 1px solid gold;
+  box-shadow: 0 0 10px gold;
+  }
+.win-info {
+  margin-top: 10px;
+  font-size: 20px;
+  color: gold;
+  text-align: center;
+  font-weight: bold;
+  }
+.win-glow {
+  filter: brightness(1.8) drop-shadow(0 0 15px gold);
+  animation: glowPulse 0.8s infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+.reel-strip img.win-glow {
+  filter: brightness(2) drop-shadow(0 0 12px gold);
+  transform: scale(1.08);
+  z-index: 10;
+}
+
+.reel-strip.wild-column {
+  animation: columnPulse 0.6s infinite alternate;
+}
+
+@keyframes columnPulse {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.4); }
+  }
+
+/* العمود الذي يحتوي wild */
+wild-column {
+  background: rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 25px gold;
+}
+/* 🌳 Wild Column Replace Effect */
+.wild-column img {
+  filter: brightness(1.6) drop-shadow(0 0 10px gold);
+  transform: scale(1.05);
+}
+
+/* تمييز الشجرة فقط */
+.wild-column img[src*="شجرةرة.jpg"] {
+  filter: brightness(2.5) drop-shadow(0 0 20px gold);
+  transform: scale(1.1);
+}
+.bet-box button:hover {
+  background: rgba(255, 215, 0, 0.2);
+  transform: scale(1.05);
+}
+.auto-menu {
+  position: absolute;
+  bottom: 60px; /* 👈 تفتح فوق الزر */
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: column; /* 👈 هذا أهم شيء */
+  gap: 6px;
+}
+
+.auto-menu.hidden {
+  display: none;
+}
+
+.auto-menu button {
+  background: rgba(255,255,255,0.1);
+  color: gold;
+  border: 1px solid rgba(255,215,0,0.3);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.speed-menu {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.6);
+  border: 1px solid gold;
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.speed-menu.hidden {
+  display: none;
+}
+
+.speed-menu button {
+  background: rgba(255,255,255,0.1);
+  color: gold;
+  border: 1px solid rgba(255,215,0,0.3);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.hidden {
+  display: none !important;
+}
+.game-logo {
+  width: 120px;
+  height: auto;
+  margin: 5px auto;
+  display: block;
+  filter: drop-shadow(0 0 10px gold);
+}
+.jackpot-top {
+  white-space: nowrap;   /* 👈 يمنع النزول */
+  font-size: 14px;       /* 👈 تصغير الحجم */
+}
+.game-title {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+
+#spin,
+#autoSpinBtn,
+#speedBtn,
+.bet-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: gold;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+}
+#spin {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden; /* 👈 أهم شيء */
+
+  background: rgba(255, 215, 0, 0.25);
+  border: 2px solid gold;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  cursor: pointer;
+}
+
+#spin:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px gold;
+}
+#autoSpinBtn,
+#speedBtn,
+.bet-toggle {
+  padding: 10px;
+  font-weight: bold;
+}
+.bet-menu,
+.speed-menu,
+.auto-menu {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+
+  padding: 10px;
+}
+#spin:hover,
+#autoSpinBtn:hover,
+#speedBtn:hover,
+.bet-toggle:hover {
+  transform: scale(1.05);
+  background: rgba(255, 215, 0, 0.12);
+}
+#spin img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* أو contain إذا تريدها كاملة */
+  border-radius: 50%;
+}
+.bottom-hud {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 12px;
+
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-top: 1px solid rgba(255, 215, 0, 0.3);
+
+  color: gold;
+  font-weight: bold;
+  font-size: 16px;
+
+  z-index: 9999;
+}
+
+.hud-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  }
+.jackpot-top {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+ align-items: center;
+  margin-top: 5px;
+  padding: 5px;
+}
+
+/* 🔥 المربع الشفاف لكل جاكبوت */
+.jp-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  padding: 6px 8px;
+
+  font-size: 14px;
+  color: gold;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+
+  border-radius: 8px;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  min-width: 70px;   /* نفس الحجم */
+}
+
+/* تحسين الشكل */
+.jp-box span {
+  font-weight: bold;
+}
+#jp1, #jp2, #jp3, #jp4 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+  margin: 0 4px;
+
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 8px;
+
+  color: gold;
+  font-size: 14px;
+  font-weight: bold;
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
