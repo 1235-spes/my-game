@@ -248,13 +248,13 @@ function generateFinalResult() {
 
       // ❌ شرط الشجرة: لا تظهر في أول وآخر عمود
       if (
-        symbol.img === "شجرةرة.jpg" &&
+        symbol.img === "ويلد.لعبة.تانية.jpg" &&
         (col === 0 || col === COLS - 1)
       ) {
         // نعيد الاختيار مرة ثانية بدون Wild
         do {
           symbol = getRandomSymbol();
-        } while (symbol.img === "شجرةرة.jpg");
+        } while (symbol.img === "ويلد.لعبة.تانية.jpg");
       }
 
       column.push(symbol);
@@ -295,7 +295,7 @@ function highlightWild() {
     imgs.forEach(img => {
       const name = img.getAttribute("src").split("/").pop();
 
-      if (name === "شجرةرة.jpg") {
+      if (name === "ويلد.لعبة.تانية.jpg") {
         hasWild = true;
         wildFound = true;
       }
@@ -304,7 +304,7 @@ function highlightWild() {
     if (hasWild) {
 
       imgs.forEach(img => {
-        img.src = "../images/شجرةرة.jpg";
+        img.src = "../images/ويلد.لعبة.تانية.jpg";
         img.classList.add("wild-big");
       });
 
@@ -341,7 +341,7 @@ if (hasWild) {
 
     for (let i = 1; i < symbols.length; i++) {
 
-      if (symbols[i].img === "شجرةرة.jpg") {
+      if (symbols[i].img === "ويلد.لعبة.تانية.jpg") {
         match++;
         continue;
       }
@@ -391,7 +391,7 @@ if (hasWild) {
     let match = 1;
 
     for (let i = 1; i < symbols.length; i++) {
-      if (symbols[i].img === "شجرةرة.jpg") {
+      if (symbols[i].img === "ويلد.لعبة.تانية.jpg") {
         match++;
         continue;
       }
@@ -405,7 +405,7 @@ if (hasWild) {
 if (match >= 3) {
 
   if (symbols.some(s => s.img === "شجرةرة.jpg")) {
-    winningImg = "شجرةرة.jpg"; // يعتبر Wild هو الفائز
+    winningImg = "ويلد.لعبة.تانية.jpg"; // يعتبر Wild هو الفائز
   } else {
     winningImg = base.img;
   }
@@ -418,7 +418,7 @@ if (match >= 3) {
   if (winningImg) {
     highlightWins(winningImg);
     highlightWild();
-      if (winningImg === "شجرةرة.jpg") {
+      if (winningImg === "ويلد.لعبة.تانية.jpg") {
     wildSound.currentTime = 0;
     wildSound.play(); 
    }
