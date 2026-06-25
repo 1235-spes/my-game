@@ -54,6 +54,7 @@ if(currentUser){
 }
 
 function login(){
+function login(){
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
   const status = document.getElementById("status");
@@ -65,13 +66,15 @@ function login(){
 
   status.innerHTML = "جاري تسجيل الدخول...";
 
-  // 🟢 1 - فحص المستخدمين العاديين
+  // 🟢 1 - فحص users
   db.ref("users/" + username).get().then(snapshot=>{
     if(snapshot.exists()){
       const user = snapshot.val();
 
       if(String(user.password) === String(password)){
         localStorage.setItem("currentUser", username);
+        localStorage.setItem("role", "user");
+
         status.innerHTML = "تم تسجيل الدخول بنجاح";
 
         setTimeout(()=>{
@@ -84,13 +87,15 @@ function login(){
       }
     }
 
-    // 🟡 2 - إذا ليس user → نفحص superAdmins
+    // 🟡 2 - superAdmins
     db.ref("superAdmins/" + username).get().then(sa=>{
       if(sa.exists()){
         const data = sa.val();
 
         if(String(data.password) === String(password)){
           localStorage.setItem("currentUser", username);
+          localStorage.setItem("role", "superAdmin");
+
           status.innerHTML = "تم تسجيل الدخول (Super Admin)";
 
           setTimeout(()=>{
@@ -101,15 +106,36 @@ function login(){
         }
       }
 
-      // 🔴 3 - غير موجود
-      status.innerHTML = "اسم المستخدم غير موجود أو كلمة المرور خطأ";
+      // 🔵 3 - subAdmins (🔥 أضفناه هنا)
+      db.ref("subAdmins/" + username).get().then(sub=>{
+        if(sub.exists()){
+          const data = sub.val();
+
+          if(String(data.password) === String(password)){
+            localStorage.setItem("currentUser", username);
+            localStorage.setItem("role", "subAdmin");
+
+            status.innerHTML = "تم تسجيل الدخول (Sub Admin)";
+
+            setTimeout(()=>{
+              window.location.href = "subadmin.html";
+            },500);
+
+            return;
+          }
+        }
+
+        // 🔴 غير موجود
+        status.innerHTML = "اسم المستخدم غير موجود أو كلمة المرور خطأ";
+      });
+
     });
 
   }).catch(error=>{
     status.innerHTML = "حدث خطأ أثناء تسجيل الدخول";
     console.error(error);
   });
-}
+    }
 </script>
 </body>
 </html>
