@@ -1,36 +1,42 @@
-const firebaseConfig = {
-apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
-authDomain: "chanci-app.firebaseapp.com",
-databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
-projectId: "chanci-app",
-storageBucket: "chanci-app.firebasestorage.app",
-messagingSenderId: "18416485348",
-appId: "1:18416485348:web:918a393569acb47a7b3df1"
-};
+function createSuperAdmin() {
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+  const name = document.getElementById("newSuper").value.trim();
+  const pass = document.getElementById("newSuperPass").value.trim();
+  const balance = Number(document.getElementById("newSuperBalance").value || 0);
 
-console.log("ADMIN LOADED ✔");
+  const status = document.getElementById("status");
 
-function createUser(){
+  if (!name || !pass) {
+    status.innerHTML = "أدخل بيانات Super Admin";
+    return;
+  }
 
-const username = document.getElementById("newUser").value.trim();
-const password = document.getElementById("newPass").value.trim();
-const balance = Number(document.getElementById("newBalance").value || 0);
+  const doktorRef = db.ref("users/doktor");
 
-if(!username || !password){
-alert("أدخل البيانات");
-return;
-}
+  doktorRef.get().then(snapshot => {
 
-db.ref("users/" + username).set({
-password,
-balance,
-earnings: 0,
-points: 0,
-wins: 0
-});
+    const doktor = snapshot.val();
+    const currentBalance = Number(doktor.balance || 0);
 
-alert("تم إنشاء المستخدم ✔");
+    if (balance > currentBalance) {
+      status.innerHTML = "رصيد الدكتور غير كافي";
+      return;
+    }
+
+    // خصم من الدكتور
+    doktorRef.update({
+      balance: currentBalance - balance
+    });
+
+    // إنشاء SuperAdmin
+    db.ref("superAdmins/" + name).set({
+      password: pass,
+      balance: balance,
+      parent: "doktor",
+      role: "superAdmin"
+    });
+
+    status.innerHTML = "تم إنشاء Super Admin بنجاح";
+
+  });
 }
