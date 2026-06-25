@@ -1,11 +1,8 @@
-subAdminsmins firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
   databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
-  projectId: "chanci-app",
-  storageBucket: "chanci-app.firebasestorage.app",
-  messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:918a393569acb47a7b3df1"
+  projectId: "chanci-app"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -13,58 +10,63 @@ const db = firebase.database();
 
 const currentUser = localStorage.getItem("currentUser");
 
-// 🔴 حماية الدخول
+// 🔐 حماية
 if(!currentUser){
   window.location.href = "index.html";
 }
 
-// 🟣 تحميل بيانات السوبر
-function loadBalance(){
-  db.ref("subAdmins/" + currentUser).on("value", snap=>{
-    const data = snap.val();
-    if(data){
-      document.getElementById("balance").innerText = data.balance || 0;
-    }
-  });
-}
-
-// 🟢 إنشاء لاعب من رصيد السوبر
+// =====================
+// إنشاء مستخدم (نفس admin لكن من subAdmin)
+// =====================
 function createUser(){
 
-  const name = document.getElementById("userName").value.trim();
-  const pass = document.getElementById("userPass").value.trim();
-  const balance = Number(document.getElementById("userBalance").value || 0);
+  const name = document.getElementById("newUser").value.trim();
+  const pass = document.getElementById("newPass").value.trim();
+  const balance = Number(document.getElementById("newBalance").value || 0);
 
+  const status = document.getElementById("status");
+
+  if(!name || !pass){
+    status.innerHTML = "أدخل البيانات";
+    return;
+  }
+
+  // 🔥 subAdmin نفسه
   const ref = db.ref("subAdmins/" + currentUser);
 
   ref.get().then(snap=>{
-    const sa = snap.val();
+    const sa = snap.val() || {};
+    const currentBalance = Number(sa.balance || 0);
 
-    if(balance > sa.balance){
-      alert("الرصيد غير كافي");
+    if(balance > currentBalance){
+      status.innerHTML = "الرصيد غير كافي";
       return;
     }
 
-    // خصم من السوبر
+    // خصم من subAdmin
     ref.update({
-      balance: sa.balance - balance
+      balance: currentBalance - balance
     });
 
-    // إنشاء لاعب
+    // إنشاء user
     db.ref("users/" + name).set({
       password: pass,
       balance: balance,
-      role: "user"
+      owner: currentUser
     });
+
+    status.innerHTML = "تم إنشاء المستخدم";
 
     loadUsers();
   });
 }
 
-// 🟡 عرض اللاعبين
+// =====================
+// عرض المستخدمين (فقط تابعين له)
+// =====================
 function loadUsers(){
 
-  db.ref("users").on("value", snap=>{
+  db.ref("users").on("value",snap=>{
     const data = snap.val();
     let html = "";
 
@@ -72,6 +74,8 @@ function loadUsers(){
 
     Object.keys(data).forEach(name=>{
       const u = data[name];
+
+      if(u.owner !== currentUser) return;
 
       html += `
         <div class="user-card">
@@ -85,11 +89,10 @@ function loadUsers(){
   });
 }
 
-// 🔴 تسجيل خروج
+// =====================
 function logout(){
   localStorage.removeItem("currentUser");
   window.location.href = "index.html";
 }
 
-loadBalance();
 loadUsers();
