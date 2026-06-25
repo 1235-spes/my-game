@@ -65,56 +65,50 @@ function login(){
 
   status.innerHTML = "جاري تسجيل الدخول...";
 
+  // 🟢 1 - فحص المستخدمين العاديين
   db.ref("users/" + username).get().then(snapshot=>{
-    if(!snapshot.exists()){
-      status.innerHTML = "اسم المستخدم غير موجود";
-      return;
+    if(snapshot.exists()){
+      const user = snapshot.val();
+
+      if(String(user.password) === String(password)){
+        localStorage.setItem("currentUser", username);
+        status.innerHTML = "تم تسجيل الدخول بنجاح";
+
+        setTimeout(()=>{
+          window.location.href = username === "doktor"
+            ? "admin.html"
+            : "dashboard.html";
+        },500);
+
+        return;
+      }
     }
-    const user = snapshot.val();
-    if(String(user.password) === String(password)){
-      localStorage.setItem("currentUser", username);
-      status.innerHTML = "تم تسجيل الدخول بنجاح";
-      setTimeout(()=>{
-        window.location.href = username === "doktor" ? "admin.html" : "dashboard.html";
-      },500);
-    } else {
-      status.innerHTML = "كلمة المرور غير صحيحة";
-    }
+
+    // 🟡 2 - إذا ليس user → نفحص superAdmins
+    db.ref("superAdmins/" + username).get().then(sa=>{
+      if(sa.exists()){
+        const data = sa.val();
+
+        if(String(data.password) === String(password)){
+          localStorage.setItem("currentUser", username);
+          status.innerHTML = "تم تسجيل الدخول (Super Admin)";
+
+          setTimeout(()=>{
+            window.location.href = "superadmin.html";
+          },500);
+
+          return;
+        }
+      }
+
+      // 🔴 3 - غير موجود
+      status.innerHTML = "اسم المستخدم غير موجود أو كلمة المرور خطأ";
+    });
+
   }).catch(error=>{
     status.innerHTML = "حدث خطأ أثناء تسجيل الدخول";
     console.error(error);
   });
-}
- function login(username, password) {
-
-  db.ref("users/" + username).get().then(u => {
-
-    if (u.exists() && u.val().password === password) {
-      localStorage.setItem("currentUser", username);
-      window.location.href = "game.html";
-      return;
-    }
-
-    db.ref("superAdmins/" + username).get().then(sa => {
-
-      if (sa.exists() && sa.val().password === password) {
-        localStorage.setItem("currentUser", username);
-        window.location.href = "superadmin.html";
-        return;
-      }
-
-      if (username === "doktor" && password === "1234") {
-        localStorage.setItem("login ;
-        window.location.href = "admin.html";
-        return;
-      }
-
-      alert("اسم المستخدم غير موجود");
-
-    });
-
-  });
-
 }
 </script>
 </body>
