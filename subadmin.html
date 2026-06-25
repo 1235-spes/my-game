@@ -3,112 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>sub Admin Panel</title>
+<title>Sub Admin Panel</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#0d0d0d;
-  color:white;
+body{background:#0d0d0d;color:white;font-family:Arial}
+.header{background:#181818;padding:20px;text-align:center;color:#FFD700;font-size:26px}
+.container{max-width:1200px;margin:auto;padding:20px}
+
+.box{
+background:#181818;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
 }
 
-.header{
-  background:#181818;
-  padding:20px;
-  text-align:center;
-  font-size:26px;
-  font-weight:bold;
-  color:#FFD700;
+.input{
+width:100%;
+padding:10px;
+margin:5px 0;
+background:#252525;
+border:none;
+color:white;
+border-radius:8px;
 }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
+.btn{
+padding:10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+font-weight:bold;
 }
 
-.card{
-  background:#181818;
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:20px;
-  border:1px solid rgba(255,215,0,.2);
-}
-
-input{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border:none;
-  border-radius:10px;
-  background:#242424;
-  color:white;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  margin-top:10px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.create{
-  background:#FFD700;
-  color:black;
-}
-
-.logout{
-  background:#ff4444;
-  color:white;
-}
-
-.balance-box{
-  font-size:20px;
-  color:#FFD700;
-  margin-bottom:10px;
-}
+.create{background:#FFD700;color:black}
+.logout{background:#ff4444;color:white}
 
 .user-card{
-  background:#222;
-  padding:15px;
-  border-radius:12px;
-  margin-top:10px;
+background:#222;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+border:1px solid rgba(255,215,0,.2);
 }
 </style>
 
 </head>
 <body>
 
-<div class="header">لوحة السوبر ادمن</div>
+<div class="header">لوحة Sub Admin</div>
 
 <div class="container">
 
-  <div class="card">
-    <div class="balance-box">
-      رصيدك: <span id="balance">0</span>
-    </div>
+<div class="box">
+<h2>إنشاء مستخدم</h2>
 
-    <button class="logout" onclick="logout()">تسجيل خروج</button>
-  </div>
+<input id="newUser" class="input" placeholder="اسم المستخدم">
+<input id="newPass" class="input" placeholder="كلمة المرور">
+<input id="newBalance" class="input" type="number" placeholder="الرصيد">
 
-  <div class="card">
-    <h3>إنشاء لاعب</h3>
+<button class="btn create" onclick="createUser()">إنشاء</button>
+<button class="btn logout" onclick="logout()">تسجيل خروج</button>
 
-    <input id="userName" placeholder="اسم اللاعب">
-    <input id="userPass" placeholder="كلمة المرور">
-    <input id="userBalance" type="number" placeholder="الرصيد">
+<div id="status"></div>
+</div>
 
-    <button class="create" onclick="createUser()">إنشاء لاعب</button>
-  </div>
-
-  <div class="card">
-    <h3>اللاعبين</h3>
-    <div id="usersList"></div>
-  </div>
+<div class="box">
+<h2>المستخدمين</h2>
+<div id="usersList"></div>
+</div>
 
 </div>
 
