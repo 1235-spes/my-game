@@ -12,6 +12,7 @@ db.ref("superAdmins/" + currentUser).get().then(snapshot => {
 });
 
 // إنشاء user من رصيد السوبر
+
 function createUser() {
 
   const name = document.getElementById("newUser").value.trim();
@@ -27,7 +28,7 @@ function createUser() {
     const sa = snapshot.val();
 
     if (balance > sa.remainingBalance) {
-      status.innerHTML = "الرصيد غير كافي";
+      status.innerHTML = "الرصيد غير كافي عند السوبر ادمن";
       return;
     }
 
@@ -40,10 +41,11 @@ function createUser() {
     db.ref("users/" + name).set({
       password: pass,
       balance: balance,
-      role: "user"
+      role: "user",
+      parent: currentUser
     });
 
-    status.innerHTML = "تم إنشاء اللاعب";
+    status.innerHTML = "تم إنشاء اللاعب بنجاح";
 
   });
 }
