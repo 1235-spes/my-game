@@ -49,3 +49,83 @@ function createUser() {
 
   });
 }
+function loadMyPlayers() {
+
+  db.ref("users").on("value", snapshot => {
+
+    const users = snapshot.val();
+    if (!users) return;
+
+    let html = "";
+
+    Object.keys(users).forEach(name => {
+
+      const u = users[name];
+
+      // 👇 أهم شرط: فقط لاعبين هذا السوبر
+      if (u.parent !== currentUser) return;
+
+      html += `
+        <div class="user-card">
+
+          <div class="user-name">${name}</div>
+
+          <div class="user-info">الرصيد: ${u.balance}</div>
+
+          <input type="number" id="amt-${name}" class="input" placeholder="المبلغ">
+
+          <div class="actions">
+
+            <button class="btn add-btn" onclick="add('${name}')">
+              إضافة
+            </button>
+
+            <button class="btn remove-btn" onclick="remove('${name}')">
+              خصم
+            </button>
+
+          </div>
+
+        </div>
+      `;
+    });
+
+    document.getElementById("usersList").innerHTML = html;
+  });
+}
+function add(name) {
+
+  const amount = Number(document.getElementById("amt-" + name).value || 0);
+
+  const ref = db.ref("users/" + name);
+
+  ref.get().then(s => {
+
+    const u = s.val();
+    ref.update({
+      balance: Number(u.balance || 0) + amount
+    });
+
+  });
+}
+
+function remove(name) {
+
+  const amount = Number(document.getElementById("amt-" + name).value || 0);
+
+  const ref = db.ref("users/" + name);
+
+  ref.get().then(s => {
+
+    const u = s.val();
+    ref.update({
+      balance: Math.max(0, Number(u.balance || 0) - amount)
+    });
+
+  });
+}
+function logout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "index.html";
+}
+loadMyPlayers();
