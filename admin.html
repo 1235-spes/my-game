@@ -192,7 +192,17 @@ class="btn logout-btn"
 onclick="logout()">
 تسجيل خروج
 </button>
+<h2>إنشاء Super Admin</h2>
 
+<input class="input" type="text" id="newSuper" placeholder="اسم SuperAdmin">
+<input class="input" type="password" id="newSuperPass" placeholder="كلمة المرور">
+<input class="input" type="number" id="newSuperBalance" placeholder="الرصيد من الدكتور" value="0">
+
+<button class="btn btn-create" onclick="createSuperAdmin()">
+إنشاء Super Admin
+</button>
+
+<div class="users-grid" id="superAdminsList"></div>
 <div  
 class="status"  
 id="status">  
