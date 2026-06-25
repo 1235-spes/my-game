@@ -53,7 +53,7 @@ if(currentUser){
   window.location.href = currentUser === "doktor" ? "admin.html" : "dashboard.html";
 }
 
-function login(){
+
 function login(){
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -66,12 +66,13 @@ function login(){
 
   status.innerHTML = "جاري تسجيل الدخول...";
 
-  // 🟢 1 - فحص users
+  // 🟢 USERS
   db.ref("users/" + username).get().then(snapshot=>{
     if(snapshot.exists()){
       const user = snapshot.val();
 
       if(String(user.password) === String(password)){
+
         localStorage.setItem("currentUser", username);
         localStorage.setItem("role", "user");
 
@@ -87,55 +88,34 @@ function login(){
       }
     }
 
-    // 🟡 2 - superAdmins
-    db.ref("superAdmins/" + username).get().then(sa=>{
-      if(sa.exists()){
-        const data = sa.val();
+    // 🟣 SUB ADMINS فقط
+    db.ref("subAdmins/" + username).get().then(sub=>{
+      if(sub.exists()){
+        const data = sub.val();
 
         if(String(data.password) === String(password)){
-          localStorage.setItem("currentUser", username);
-          localStorage.setItem("role", "superAdmin");
 
-          status.innerHTML = "تم تسجيل الدخول (Super Admin)";
+          localStorage.setItem("currentUser", username);
+          localStorage.setItem("role", "subAdmin");
+
+          status.innerHTML = "تم تسجيل الدخول (Sub Admin)";
 
           setTimeout(()=>{
-            window.location.href = "superadmin.html";
+            window.location.href = "subadmin.html";
           },500);
 
           return;
         }
       }
 
-      // 🔵 3 - subAdmins (🔥 أضفناه هنا)
-      db.ref("subAdmins/" + username).get().then(sub=>{
-        if(sub.exists()){
-          const data = sub.val();
-
-          if(String(data.password) === String(password)){
-            localStorage.setItem("currentUser", username);
-            localStorage.setItem("role", "subAdmin");
-
-            status.innerHTML = "تم تسجيل الدخول (Sub Admin)";
-
-            setTimeout(()=>{
-              window.location.href = "subadmin.html";
-            },500);
-
-            return;
-          }
-        }
-
-        // 🔴 غير موجود
-        status.innerHTML = "اسم المستخدم غير موجود أو كلمة المرور خطأ";
-      });
-
+      status.innerHTML = "اسم المستخدم غير موجود أو كلمة المرور خطأ";
     });
 
   }).catch(error=>{
     status.innerHTML = "حدث خطأ أثناء تسجيل الدخول";
     console.error(error);
   });
-    }
+}                                      }
 </script>
 </body>
 </html>
