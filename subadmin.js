@@ -49,7 +49,7 @@ function createUser(){
     });
 
     // إنشاء user
-    db.ref("users/" + name).set({
+    db.ref("subAdmins/" + currentUser + "/users/" + name).set({
       password: pass,
       balance: balance,
       owner: currentUser
@@ -66,7 +66,7 @@ function createUser(){
 // =====================
 function loadUsers(){
 
-  db.ref("users").on("value",snap=>{
+db.ref("subAdmins/" + currentUser + "/users").on("value",snap=>{
     const data = snap.val();
     let html = "";
 
