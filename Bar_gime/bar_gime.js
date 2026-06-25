@@ -34,18 +34,19 @@ document.getElementById("balance").innerText = balance;
 .catch(err => console.error(err));
 
 // الرموز
+
 const SYMBOLS = [
-  { img: "جبس.بس.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
-  { img: "برتقان.قان.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
-  { img: "جرس.رس.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
-  { img: "خوخ.خ.jpg", payouts: { 3: 4, 4: 8, 5: 16 } },
-  { img: "دولر.لر.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
-  { img: "سبعة.بعة.jpg", payouts: { 3: 6, 4: 12, 5: 25 } },
-  { img: "شجرةرة.jpg", payouts: { 3: 2, 4: 5, 5: 10 } },
-  { img: "عنبي.بي.jpg", payouts: { 3: 3, 4: 7, 5: 14 } },
-  { img: "كرز.رز.jpg", payouts: { 3: 4, 4: 9, 5: 18 } },
-  { img: "ليمون.مون.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
-  { img: "نجمي.مي.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
+  { img: "جبس.لعبة.تانية.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
+  { img: "ليمون.لعبة.تانية.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
+  { img: "سبعة.لعبة.تانية.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
+  { img: "كرز.لعبة.تانية.jpg", payouts: { 3: 4, 4: 8, 5: 16 } },
+  { img: "دولار.بونص.لعبة.تانية.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
+  { img: "ثلاث.سبعات.لعبة.تانية.jpg", payouts: { 3: 6, 4: 12, 5: 25 } },
+  { img: "ويلد.لعبة.تانية.jpg", payouts: { 3: 2, 4: 5, 5: 10 } },
+  { img: "دولار.لعبة.تانية.jpg", payouts: { 3: 3, 4: 7, 5: 14 } },
+  { img: "تفاح.لعبة.تانية.jpg", payouts: { 3: 4, 4: 9, 5: 18 } },
+  { img: "تاج.لعبة.تانية.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
+  { img: "بار.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
   
 function getRandomSymbol() {
