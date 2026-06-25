@@ -6,25 +6,37 @@
 </head>
 <body>
 
-<h1>لوحة السوبر ادمن</h1>
-
-<div>
-رصيدك: <span id="balance">0</span>
+<div class="header">
+  لوحة السوبر ادمن
 </div>
 
-<h2>إنشاء لاعب</h2>
+<div class="container">
 
-<input id="newUser" placeholder="اسم اللاعب">
-<input id="newPass" placeholder="كلمة المرور">
-<input id="newBalance" placeholder="رصيد اللاعب" type="number">
+  <!-- زر خروج -->
+  <button class="btn logout-btn" onclick="logout()">تسجيل خروج</button>
 
-<button onclick="createUser()">إنشاء</button>
+  <!-- رصيد السوبر -->
+  <div class="stat-card">
+    رصيدك: <span id="balance">0</span>
+  </div>
 
-<div id="status"></div>
+  <!-- إنشاء لاعب -->
+  <div class="create-user">
+    <h2>إنشاء لاعب</h2>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="superadmin.js"></script>
+    <input id="newUser" class="input" placeholder="اسم اللاعب">
+    <input id="newPass" class="input" placeholder="كلمة المرور">
+    <input id="newBalance" class="input" type="number" placeholder="الرصيد">
 
-</body>
-</html>
+    <button class="btn btn-create" onclick="createUser()">
+      إنشاء لاعب
+    </button>
+  </div>
+
+  <!-- اللاعبين -->
+  <h2 style="color:#FFD700;">لاعبيّ</h2>
+  <div class="users-grid" id="usersList"></div>
+
+  <div id="status" class="status"></div>
+
+</div>
