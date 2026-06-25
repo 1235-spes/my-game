@@ -40,3 +40,37 @@ function createSuperAdmin() {
 
   });
 }
+function loadSuperAdmins() {
+
+  db.ref("superAdmins").on("value", snapshot => {
+
+    const data = snapshot.val();
+    if (!data) return;
+
+    let html = "";
+
+    Object.keys(data).forEach(name => {
+
+      const sa = data[name];
+
+      html += `
+        <div class="user-card">
+
+          <div class="user-name">${name}</div>
+
+          <div class="user-info">
+            الرصيد: ${sa.balance}
+          </div>
+
+          <div class="user-info">
+            المدير: ${sa.parent}
+          </div>
+
+        </div>
+      `;
+    });
+
+    document.getElementById("superAdminsList").innerHTML = html;
+  });
+}
+loadSuperAdmins();
