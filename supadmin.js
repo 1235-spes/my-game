@@ -1,4 +1,4 @@
-const firebaseConfig = {
+supAdminsmins firebaseConfig = {
   apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
   authDomain: "chanci-app.firebaseapp.com",
   databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
@@ -20,7 +20,7 @@ if(!currentUser){
 
 // 🟣 تحميل بيانات السوبر
 function loadBalance(){
-  db.ref("supAdmins/" + currentUser).on("value", snap=>{
+  db.ref("subAdmins/" + currentUser).on("value", snap=>{
     const data = snap.val();
     if(data){
       document.getElementById("balance").innerText = data.balance || 0;
