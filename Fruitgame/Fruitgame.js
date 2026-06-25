@@ -41,7 +41,10 @@ const SYMBOLS = [
   { img: "مصاري.عملة.اولى.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
   { img: "نجاص.jpg", payouts: { 3: 6, 4: 12, 5: 25 } },
   { img: "نجمة.لعبة.اولى.jpg", payouts: { 3: 2, 4: 5, 5: 10 } },
-
+{ img: "نجمة.لعبة.اولى.jpg", payouts: { 3: 2, 4: 5, 5: 10 } },
+  { img: "نجاص.jpg", payouts: { 3: 6, 4: 12, 5: 25 } },
+    { img: "اجر.حصان.لعبة.اولى.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
+  { img: "الماس.لعبة.اولى.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
 ];
   
 function getRandomSymbol() {
