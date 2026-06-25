@@ -64,52 +64,50 @@ function login(){
   }
 
   status.innerHTML = "جاري تسجيل الدخول...";
-db.ref("supAdmins/" + username).get().then(sa=>{
-  if(sa.exists()){
-    const data = sa.val();
 
-    if(String(data.password) === String(password)){
+  // 🟣 NEW: فحص subAdmin أولاً
+  db.ref("subAdmins/" + username).get().then(sa=>{
+    if(sa.exists()){
+      const data = sa.val();
 
-      localStorage.setItem("currentUser", username);
-      localStorage.setItem("role", "supAdmin");
+      if(String(data.password) === String(password)){
 
-      status.innerHTML = "تم تسجيل الدخول (Sup Admin)";
+        localStorage.setItem("currentUser", username);
+        localStorage.setItem("role", "subAdmin");
 
-      setTimeout(()=>{
-        window.location.href = "supadmin.html";
-      },500);
+        status.innerHTML = "تم تسجيل الدخول (Sub Admin)";
 
-      return;
-    }
-  }
+        setTimeout(()=>{
+          window.location.href = "subadmin.html";
+        },500);
 
-  // 🟢 بعدها نكمل users
-  db.ref("users/" + username).get().then(snapshot=>{
-    if(!snapshot.exists()){
-      status.innerHTML = "اسم المستخدم غير موجود";
-      return;
+        return;
+      }
     }
 
-    const user = snapshot.val();
+    // 🟢 users (كودك نفسه بدون تغيير)
+    db.ref("users/" + username).get().then(snapshot=>{
+      if(!snapshot.exists()){
+        status.innerHTML = "اسم المستخدم غير موجود";
+        return;
+      }
+      const user = snapshot.val();
+      if(String(user.password) === String(password)){
+        localStorage.setItem("currentUser", username);
+        status.innerHTML = "تم تسجيل الدخول بنجاح";
+        setTimeout(()=>{
+          window.location.href = username === "doktor" ? "admin.html" : "dashboard.html";
+        },500);
+      } else {
+        status.innerHTML = "كلمة المرور غير صحيحة";
+      }
+    }).catch(error=>{
+      status.innerHTML = "حدث خطأ أثناء تسجيل الدخول";
+      console.error(error);
+    });
 
-    if(String(user.password) === String(password)){
-      localStorage.setItem("currentUser", username);
-      localStorage.setItem("role", "user");
-
-      status.innerHTML = "تم تسجيل الدخول بنجاح";
-
-      setTimeout(()=>{
-        window.location.href = username === "doktor"
-          ? "admin.html"
-          : "dashboard.html";
-      },500);
-
-    } else {
-      status.innerHTML = "كلمة المرور غير صحيحة";
-    }
   });
-
-});
+    }
   
 </script>
 </body>
