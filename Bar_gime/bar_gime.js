@@ -333,7 +333,7 @@ function checkWin() {
     let base = symbols[0];
 let match = 1;
 
-let hasWild = symbols.some(s => s.img === "شجرةرة.jpg");
+let hasWild = symbols.some(s => s.img === "ويلد.لعبة.تانية.jpg");
 
 if (hasWild) {
   isWildColumn = true;
