@@ -404,7 +404,7 @@ if (hasWild) {
     }
 if (match >= 3) {
 
-  if (symbols.some(s => s.img === "شجرةرة.jpg")) {
+  if (symbols.some(s => s.img === "ويلد.لعبة.تانية.jpg")) {
     winningImg = "ويلد.لعبة.تانية.jpg"; // يعتبر Wild هو الفائز
   } else {
     winningImg = base.img;
