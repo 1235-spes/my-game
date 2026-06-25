@@ -224,7 +224,7 @@ wild-column {
 }
 
 /* تمييز الشجرة فقط */
-.wild-column img[src*="شجرةرة.jpg"] {
+.wild-column img[src*="الماس.لعبة.اولى.jpg"] {
   filter: brightness(2.5) drop-shadow(0 0 20px gold);
   transform: scale(1.1);
 }
