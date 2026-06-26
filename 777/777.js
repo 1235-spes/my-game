@@ -303,7 +303,7 @@ function highlightWild() {
     if (hasWild) {
 
       imgs.forEach(img => {
-        img.src = ".. images/لعبة.خامسي.سبعة.jpg";
+        img.src = "../images/لعبة.خامسي.سبعة.jpg";
         img.classList.add("wild-big");
       });
 
