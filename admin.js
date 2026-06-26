@@ -40,39 +40,8 @@ function createSuperAdmin() {
 
   });
 }
-function loadSuperAdmins() {
 
-  db.ref("superAdmins").on("value", snapshot => {
 
-    const data = snapshot.val();
-    if (!data) return;
-
-    let html = "";
-
-    Object.keys(data).forEach(name => {
-
-      const sa = data[name];
-
-      html += `
-        <div class="user-card">
-
-          <div class="user-name">${name}</div>
-
-          <div class="user-info">
-            الرصيد: ${sa.balance}
-          </div>
-
-          <div class="user-info">
-            المدير: ${sa.parent}
-          </div>
-
-        </div>
-      `;
-    });
-
-    document.getElementById("superAdminsList").innerHTML = html;
-  });
-}
 function createSubAdmin(){
 
   const name = document.getElementById("newSub").value.trim();
@@ -116,4 +85,56 @@ function createSubAdmin(){
   });
 
 }
-loadSuperAdmins();
+function loadSubAdmins(){
+  db.ref("subAdmins").on("value", snapshot=>{
+
+    const data = snapshot.val();
+
+    let html = "";
+
+    if(!data){
+      document.getElementById("subAdminsList").innerHTML = "";
+      return;
+    }
+
+    Object.keys(data).forEach(name=>{
+
+      const sa = data[name];
+
+      const users = sa.users ? Object.keys(sa.users).length : 0;
+
+      let totalBalance = 0;
+
+      if(sa.users){
+        Object.values(sa.users).forEach(u=>{
+          totalBalance += Number(u.balance || 0);
+        });
+      }
+
+      html += `
+      <div class="user-card">
+
+        <div class="user-name">${name}</div>
+
+        <div class="user-info">
+          💰 الرصيد : ${sa.balance || 0}
+        </div>
+
+        <div class="user-info">
+          👥 عدد اللاعبين : ${users}
+        </div>
+
+        <div class="user-info">
+          💵 مجموع أرصدتهم : ${totalBalance}
+        </div>
+
+      </div>
+      `;
+
+    });
+
+    document.getElementById("subAdminsList").innerHTML = html;
+
+  });
+}
+loadSubAdmins();
