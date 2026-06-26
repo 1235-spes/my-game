@@ -10,14 +10,23 @@ const db = firebase.database();
 
 const currentUser = localStorage.getItem("currentUser");
 
-// 🔐 حماية
 if(!currentUser){
   window.location.href = "index.html";
 }
 
-// =====================
-// إنشاء مستخدم (نفس admin لكن من subAdmin)
-// =====================
+/* =======================
+   💰 عرض رصيد الساب
+======================= */
+function loadBalance(){
+  db.ref("subAdmins/" + currentUser).on("value", snap=>{
+    const data = snap.val();
+    document.getElementById("balance").innerText = data?.balance || 0;
+  });
+}
+
+/* =======================
+   ➕ إنشاء مستخدم
+======================= */
 function createUser(){
 
   const name = document.getElementById("newUser").value.trim();
@@ -31,12 +40,11 @@ function createUser(){
     return;
   }
 
-  // 🔥 subAdmin نفسه
   const ref = db.ref("subAdmins/" + currentUser);
 
   ref.get().then(snap=>{
-    const sa = snap.val() || {};
-    const currentBalance = Number(sa.balance || 0);
+    const sa = snap.val();
+    const currentBalance = Number(sa?.balance || 0);
 
     if(balance > currentBalance){
       status.innerHTML = "الرصيد غير كافي";
@@ -48,40 +56,47 @@ function createUser(){
       balance: currentBalance - balance
     });
 
-    // إنشاء user
+    // إنشاء مستخدم
     db.ref("subAdmins/" + currentUser + "/users/" + name).set({
       password: pass,
       balance: balance,
       owner: currentUser
     });
 
-    status.innerHTML = "تم إنشاء المستخدم";
+    status.innerHTML = "تم إنشاء المستخدم بنجاح";
 
     loadUsers();
   });
 }
 
-// =====================
-// عرض المستخدمين (فقط تابعين له)
-// =====================
+/* =======================
+   👥 عرض المستخدمين
+======================= */
 function loadUsers(){
-
-db.ref("subAdmins/" + currentUser + "/users").on("value",snap=>{
+  db.ref("subAdmins/" + currentUser + "/users").on("value", snap=>{
     const data = snap.val();
     let html = "";
 
-    if(!data) return;
+    if(!data){
+      document.getElementById("usersList").innerHTML = "";
+      return;
+    }
 
     Object.keys(data).forEach(name=>{
       const u = data[name];
 
-      if(u.owner !== currentUser) return;
-
       html += `
-        <div class="user-card">
-          <div>👤 ${name}</div>
-          <div>💰 ${u.balance}</div>
+      <div class="user-card">
+        <div class="user-title">👤 ${name}</div>
+        <div>💰 الرصيد: ${u.balance}</div>
+
+        <input class="small-input" id="add-${name}" placeholder="إضافة أو خصم">
+
+        <div class="actions">
+          <button class="btn add" onclick="addBalance('${name}')">إضافة</button>
+          <button class="btn remove" onclick="removeBalance('${name}')">خصم</button>
         </div>
+      </div>
       `;
     });
 
@@ -89,10 +104,51 @@ db.ref("subAdmins/" + currentUser + "/users").on("value",snap=>{
   });
 }
 
-// =====================
+/* =======================
+   ➕ إضافة رصيد
+======================= */
+function addBalance(name){
+
+  const amount = Number(document.getElementById("add-" + name).value || 0);
+  if(amount <= 0) return;
+
+  const ref = db.ref("subAdmins/" + currentUser + "/users/" + name);
+
+  ref.get().then(snap=>{
+    const user = snap.val();
+
+    ref.update({
+      balance: (user.balance || 0) + amount
+    });
+  });
+}
+
+/* =======================
+   ➖ خصم رصيد
+======================= */
+function removeBalance(name){
+
+  const amount = Number(document.getElementById("add-" + name).value || 0);
+  if(amount <= 0) return;
+
+  const ref = db.ref("subAdmins/" + currentUser + "/users/" + name);
+
+  ref.get().then(snap=>{
+    const user = snap.val();
+
+    ref.update({
+      balance: Math.max(0, (user.balance || 0) - amount)
+    });
+  });
+}
+
+/* =======================
+   🚪 تسجيل خروج
+======================= */
 function logout(){
   localStorage.removeItem("currentUser");
   window.location.href = "index.html";
 }
 
+loadBalance();
 loadUsers();
