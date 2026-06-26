@@ -142,36 +142,113 @@ function loadUsers(){
 function addBalance(name){
 
   const amount = Number(document.getElementById("add-" + name).value || 0);
-  if(amount <= 0) return;
 
-  const ref = db.ref("subAdmins/" + currentUser + "/users/" + name);
+  if(amount <= 0){
+    alert("أدخل مبلغ صحيح");
+    return;
+  }
 
-  ref.get().then(snap=>{
-    const user = snap.val();
+  const subRef = db.ref("subAdmins/" + currentUser);
+  const userRef = db.ref("subAdmins/" + currentUser + "/users/" + name);
+  const globalUserRef = db.ref("users/" + name);
 
-    ref.update({
-      balance: (user.balance || 0) + amount
+  subRef.get().then(subSnap=>{
+
+    const sub = subSnap.val();
+
+    const subBalance = Number(sub.balance || 0);
+
+    if(subBalance < amount){
+      alert("رصيدك غير كافي");
+      return;
+    }
+
+    userRef.get().then(userSnap=>{
+
+      const user = userSnap.val();
+
+      const newUserBalance = Number(user.balance || 0) + amount;
+
+      // خصم من SubAdmin
+      subRef.update({
+        balance: subBalance - amount
+      });
+
+      // تحديث نسخة المستخدم داخل لوحة SubAdmin
+      userRef.update({
+        balance: newUserBalance
+      });
+
+      // تحديث المستخدم الحقيقي
+      globalUserRef.update({
+        balance: newUserBalance
+      });
+
+      loadBalance();
+      loadUsers();
+
     });
-  });
-}
 
+  });
+
+}
 /* =======================
    ➖ خصم رصيد
 ======================= */
 function removeBalance(name){
 
   const amount = Number(document.getElementById("add-" + name).value || 0);
-  if(amount <= 0) return;
 
-  const ref = db.ref("subAdmins/" + currentUser + "/users/" + name);
+  if(amount <= 0){
+    alert("أدخل مبلغ صحيح");
+    return;
+  }
 
-  ref.get().then(snap=>{
-    const user = snap.val();
+  const subRef = db.ref("subAdmins/" + currentUser);
+  const userRef = db.ref("subAdmins/" + currentUser + "/users/" + name);
+  const globalUserRef = db.ref("users/" + name);
 
-    ref.update({
-      balance: Math.max(0, (user.balance || 0) - amount)
+  userRef.get().then(userSnap=>{
+
+    const user = userSnap.val();
+
+    const currentUserBalance = Number(user.balance || 0);
+
+    if(currentUserBalance < amount){
+      alert("رصيد اللاعب لا يكفي");
+      return;
+    }
+
+    const newUserBalance = currentUserBalance - amount;
+
+    subRef.get().then(subSnap=>{
+
+      const sub = subSnap.val();
+
+      const subBalance = Number(sub.balance || 0);
+
+      // يرجع الرصيد إلى SubAdmin
+      subRef.update({
+        balance: subBalance + amount
+      });
+
+      // تحديث نسخة المستخدم
+      userRef.update({
+        balance: newUserBalance
+      });
+
+      // تحديث المستخدم الحقيقي
+      globalUserRef.update({
+        balance: newUserBalance
+      });
+
+      loadBalance();
+      loadUsers();
+
     });
+
   });
+
 }
 
 /* =======================
