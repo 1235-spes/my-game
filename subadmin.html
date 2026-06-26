@@ -3,74 +3,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sub Admin Panel</title>
+<title>Sub Admin Dashboard</title>
 
 <style>
-body{background:#0d0d0d;color:white;font-family:Arial}
-.header{background:#181818;padding:20px;text-align:center;color:#FFD700;font-size:26px}
-.container{max-width:1200px;margin:auto;padding:20px}
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#0a0a0a,#141414);
+color:white;
+}
+
+.header{
+background:#181818;
+padding:20px;
+text-align:center;
+color:#FFD700;
+font-size:24px;
+font-weight:bold;
+border-bottom:1px solid rgba(255,215,0,.2);
+}
+
+.balance-box{
+display:flex;
+justify-content:center;
+gap:20px;
+padding:20px;
+}
+
+.balance-card{
+background:#181818;
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(255,215,0,.2);
+min-width:200px;
+text-align:center;
+}
+
+.balance-card h3{
+margin:0;
+color:#aaa;
+}
+
+.balance-card h2{
+margin:10px 0 0;
+color:#FFD700;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
 
 .box{
 background:#181818;
 padding:20px;
 border-radius:15px;
 margin-bottom:20px;
+border:1px solid rgba(255,215,0,.15);
 }
 
 .input{
 width:100%;
-padding:10px;
-margin:5px 0;
+padding:12px;
+margin:6px 0;
 background:#252525;
 border:none;
+border-radius:10px;
 color:white;
-border-radius:8px;
 }
 
 .btn{
-padding:10px;
+padding:12px;
 border:none;
-border-radius:8px;
+border-radius:10px;
 cursor:pointer;
-margin-top:10px;
 font-weight:bold;
+margin-top:10px;
+width:100%;
 }
 
 .create{background:#FFD700;color:black}
 .logout{background:#ff4444;color:white}
 
+.user-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:15px;
+}
+
 .user-card{
 background:#222;
 padding:15px;
-margin:10px 0;
-border-radius:10px;
+border-radius:15px;
 border:1px solid rgba(255,215,0,.2);
+transition:.3s;
 }
-</style>
 
+.user-card:hover{
+transform:scale(1.03);
+}
+
+.user-title{
+font-size:18px;
+color:#FFD700;
+margin-bottom:10px;
+}
+
+.actions{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.add{background:#00c853;color:white}
+.remove{background:#ff5252;color:white}
+
+.small-input{
+width:100%;
+padding:10px;
+border-radius:8px;
+background:#333;
+border:none;
+color:white;
+margin-top:5px;
+}
+
+</style>
 </head>
+
 <body>
 
-<div class="header">لوحة Sub Admin</div>
+<div class="header">لوحة Sub Admin الاحترافية</div>
+
+<!-- 💰 الرصيد -->
+<div class="balance-box">
+<div class="balance-card">
+<h3>رصيدك الحالي</h3>
+<h2 id="balance">0</h2>
+</div>
+</div>
 
 <div class="container">
 
+<!-- إنشاء مستخدم -->
 <div class="box">
-<h2>إنشاء مستخدم</h2>
+<h2 style="color:#FFD700">إنشاء مستخدم</h2>
 
 <input id="newUser" class="input" placeholder="اسم المستخدم">
 <input id="newPass" class="input" placeholder="كلمة المرور">
 <input id="newBalance" class="input" type="number" placeholder="الرصيد">
 
-<button class="btn create" onclick="createUser()">إنشاء</button>
+<button class="btn create" onclick="createUser()">إنشاء المستخدم</button>
 <button class="btn logout" onclick="logout()">تسجيل خروج</button>
 
-<div id="status"></div>
+<div id="status" style="margin-top:10px;color:#FFD700"></div>
 </div>
 
+<!-- المستخدمين -->
 <div class="box">
-<h2>المستخدمين</h2>
-<div id="usersList"></div>
+<h2 style="color:#FFD700">المستخدمين التابعين لك</h2>
+<div class="user-grid" id="usersList"></div>
 </div>
 
 </div>
