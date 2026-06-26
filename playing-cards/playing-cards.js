@@ -38,13 +38,13 @@ const SYMBOLS = [
   { img: "لعبة.خامسي.زهر.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
   { img: "لعبة.خامسي.كوبا.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
   { img: "لعبة.خامسي.بستون.jpg", payouts: { 3: 4, 4: 8, 5: 16 } },
-  { img: "لعبة.خامسة.ورق.كوبا.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
-  { img: "لعبة.خامسة.ورق.البستون.jpg", payouts: { 3: 6, 4: 12, 5: 25 } },
-  { img: "لعبة.خامسي.تلت.حجرات.jpg", payouts: { 3: 2, 4: 5, 5: 10 } },
-  { img: "لعبة.خامسي.حجرا.حمرا.jpg", payouts: { 3: 3, 4: 7, 5: 14 } },
-  { img: "لعبة.خامسي.حجرة.صفرا.jpg", payouts: { 3: 4, 4: 9, 5: 18 } },
-  { img: "لعبة.خامسة.تاج.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
-  { img: "اربع.رموز.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
+  { img: "لعبة.خامسي.تلت.حجرات.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
+  { img: "لعبة.خامسي.حجرا.حمرا.jpg", payouts: { 3: 6, 4: 12, 5: 25 } },
+  { img: "شجرةرة.jpg", payouts: { 3: 2, 4: 5, 5: 10 } },
+  { img: "لعبة.خامسي.حجرة.صفرا.jpg", payouts: { 3: 3, 4: 7, 5: 14 } },
+  { img: "لعبة.خامسة.تاج.jpg", payouts: { 3: 4, 4: 9, 5: 18 } },
+  { img: "لعبة.خامسي.اربع.رموز.jpg", payouts: { 3: 5, 4: 11, 5: 22 } },
+  { img: "لعبة.خامسة.ورق.كوبا.jpg", payouts: { 3: 7, 4: 15, 5: 30 } }
 ];
   
 function getRandomSymbol() {
@@ -246,13 +246,13 @@ function generateFinalResult() {
 
       // ❌ شرط الشجرة: لا تظهر في أول وآخر عمود
       if (
-        symbol.img === "img: "اربع.رموز.jpg" &&
+        symbol.img === "شجرةرة.jpg" &&
         (col === 0 || col === COLS - 1)
       ) {
         // نعيد الاختيار مرة ثانية بدون Wild
         do {
           symbol = getRandomSymbol();
-        } while (symbol.img === "img: "اربع.رموز.jpg");
+        } while (symbol.img === "شجرةرة.jpg");
       }
 
       column.push(symbol);
@@ -293,7 +293,7 @@ function highlightWild() {
     imgs.forEach(img => {
       const name = img.getAttribute("src").split("/").pop();
 
-      if (name === "img: "اربع.رموز.jpg") {
+      if (name === "شجرةرة.jpg") {
         hasWild = true;
         wildFound = true;
       }
@@ -302,7 +302,7 @@ function highlightWild() {
     if (hasWild) {
 
       imgs.forEach(img => {
-        img.src = "../images/img: "اربع.رموز.jpg";
+        img.src = "../images/شجرةرة.jpg";
         img.classList.add("wild-big");
       });
 
@@ -331,7 +331,7 @@ function checkWin() {
     let base = symbols[0];
 let match = 1;
 
-let hasWild = symbols.some(s => s.img === "img: "اربع.رموز.jpg");
+let hasWild = symbols.some(s => s.img === "شجرةرة.jpg");
 
 if (hasWild) {
   isWildColumn = true;
@@ -339,7 +339,7 @@ if (hasWild) {
 
     for (let i = 1; i < symbols.length; i++) {
 
-      if (symbols[i].img === "img: "اربع.رموز.jpg") {
+      if (symbols[i].img === "شجرةرة.jpg") {
         match++;
         continue;
       }
@@ -389,7 +389,7 @@ if (hasWild) {
     let match = 1;
 
     for (let i = 1; i < symbols.length; i++) {
-      if (symbols[i].img === "img: "اربع.رموز.jpg") {
+      if (symbols[i].img === "شجرةرة.jpg") {
         match++;
         continue;
       }
@@ -402,8 +402,8 @@ if (hasWild) {
     }
 if (match >= 3) {
 
-  if (symbols.some(s => s.img === "img: "اربع.رموز.jpg")) {
-    winningImg = "img: "اربع.رموز.jpg"; // يعتبر Wild هو الفائز
+  if (symbols.some(s => s.img === "شجرةرة.jpg")) {
+    winningImg = "شجرةرة.jpg"; // يعتبر Wild هو الفائز
   } else {
     winningImg = base.img;
   }
@@ -416,7 +416,7 @@ if (match >= 3) {
   if (winningImg) {
     highlightWins(winningImg);
     highlightWild();
-      if (winningImg === "img: "اربع.رموز.jpg") {
+      if (winningImg === "شجرةرة.jpg") {
     wildSound.currentTime = 0;
     wildSound.play(); 
    }
