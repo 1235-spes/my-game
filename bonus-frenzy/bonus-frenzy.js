@@ -575,3 +575,11 @@ if (speedBtn && speedMenu) {
   });
 
 }
+const bonusBtn = document.getElementById("bonusBtn");
+const bonusMenu = document.getElementById("bonusMenu");
+
+bonusBtn.addEventListener("click", () => {
+
+bonusMenu.classList.toggle("hidden");
+
+});
