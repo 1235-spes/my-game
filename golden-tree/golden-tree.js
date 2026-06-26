@@ -34,8 +34,8 @@ document.getElementById("balance").innerText = balance;
 
 // الرموز
 const SYMBOLS = [
-  { img: "جبس.بس.jpg", payouts: { 3: 3, 4: 6, 5: 8 } },
-  { img: "برتقان.قان.jpg", payouts: { 3: 2, 4: 4, 5: 6 } },
+  { img: "جبس.بس.jpg", payouts: { 3: 1, 4: 2, 5: 4 } },
+  { img: "برتقان.قان.jpg", payouts: { 3: 2, 4: 4, 5: 8 } },
   { img: "جرس.رس.jpg", payouts: { 3: 3, 4: 6, 5: 12 } },
   { img: "خوخ.خ.jpg", payouts: { 3: 4, 4: 8, 5: 16 } },
   { img: "دولر.لر.jpg", payouts: { 3: 5, 4: 10, 5: 20 } },
