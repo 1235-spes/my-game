@@ -40,35 +40,67 @@ function createUser(){
     return;
   }
 
-  const ref = db.ref("subAdmins/" + currentUser);
+  if(balance <= 0){
+    status.innerHTML = "أدخل رصيد صحيح";
+    return;
+  }
 
-  ref.get().then(snap=>{
-    const sa = snap.val();
-    const currentBalance = Number(sa?.balance || 0);
+  // أولاً نتأكد أن اسم المستخدم غير موجود
+  db.ref("users/" + name).get().then(exist=>{
 
-    if(balance > currentBalance){
-      status.innerHTML = "الرصيد غير كافي";
+    if(exist.exists()){
+      status.innerHTML = "اسم المستخدم موجود مسبقاً";
       return;
     }
 
-    // خصم من subAdmin
-    ref.update({
-      balance: currentBalance - balance
+    const ref = db.ref("subAdmins/" + currentUser);
+
+    ref.get().then(snap=>{
+
+      const sa = snap.val();
+
+      const currentBalance = Number(sa.balance || 0);
+
+      if(currentBalance < balance){
+        status.innerHTML = "رصيدك غير كاف";
+        return;
+      }
+
+      // خصم الرصيد من SubAdmin
+      ref.update({
+        balance: currentBalance - balance
+      });
+
+      // إنشاء اللاعب داخل users
+      db.ref("users/" + name).set({
+        password: pass,
+        balance: balance,
+        owner: currentUser,
+        createdBy: currentUser,
+        role: "user",
+        earnings:0,
+        wins:0,
+        points:0,
+        spentSinceLastBox:0,
+        boxAvailable:false
+      });
+
+      // إنشاء نسخة داخل لوحة SubAdmin
+      db.ref("subAdmins/" + currentUser + "/users/" + name).set({
+        balance: balance,
+        owner: currentUser
+      });
+
+      status.innerHTML = "تم إنشاء المستخدم بنجاح";
+
+      loadBalance();
+      loadUsers();
+
     });
 
-    // إنشاء مستخدم
-    db.ref("subAdmins/" + currentUser + "/users/" + name).set({
-      password: pass,
-      balance: balance,
-      owner: currentUser
-    });
-
-    status.innerHTML = "تم إنشاء المستخدم بنجاح";
-
-    loadUsers();
   });
-}
 
+}
 /* =======================
    👥 عرض المستخدمين
 ======================= */
