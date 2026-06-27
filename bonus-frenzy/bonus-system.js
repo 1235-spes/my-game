@@ -1,124 +1,70 @@
-// ===============================
-// BONUS SYSTEM
-// ===============================
-
-const bonusBtn = document.getElementById("bonusBtn");
-const bonusMenu = document.getElementById("bonusMenu");
-
-
-const bonus = {
-    active: false,
-    totalSpins: 0,
-    spinsLeft: 0,
-    totalWin: 0,
-    cost: 0,
-
-    multiplier: 1,
-    wildBoost: false,
-    jackpotBoost: false
+window.bonus = {
+  active: false,
+  type: 1,
+  spinsLeft: 0,
+  totalSpins: 5,
+  multiplier: 1,
+  wildCount: 1,
+  totalWin: 0,
+  cost: 0
 };
-// فتح وإغلاق القائمة
-bonusBtn.addEventListener("click", () => {
-    bonusMenu.classList.toggle("hidden");
-});
 
-// أزرار شراء البونص
-bonusMenu.querySelectorAll("button").forEach(btn => {
+function startBonus(type, spins, cost){
 
-    btn.addEventListener("click", () => {
+  if(isSpinning) return;
 
-        const cost = Number(btn.dataset.cost);
-        const spins = Number(btn.dataset.spins);
+  bonus.active = true;
+  bonus.type = type;
+  bonus.totalSpins = spins;
+  bonus.spinsLeft = spins;
+  bonus.totalWin = 0;
+  bonus.cost = cost;
 
-        buyBonus(spins, cost);
+  // 🎯 تحديد قوة البونص
+  if(type === 1){
+    bonus.multiplier = 2;
+    bonus.wildCount = 1;
+  }
 
-    });
+  if(type === 2){
+    bonus.multiplier = 3;
+    bonus.wildCount = 2;
+  }
 
-});
+  if(type === 3){
+    bonus.multiplier = 5;
+    bonus.wildCount = 3;
+  }
 
-// شراء البونص
-function buyBonus(spins, cost){
+  showBonusIntro(spins);
 
-    bonusMenu.classList.add("hidden");
-
-    if(isSpinning){
-        return;
-    }
-
-    if(balance < cost){
-        alert("الرصيد غير كافٍ");
-        return;
-    }
-
-    // خصم الرصيد
-    balance -= cost;
-
-    document.getElementById("balance").innerText = balance;
-
-    firebase.database()
-    .ref("users/" + currentUser)
-    .update({
-        balance: balance
-    });
-
-    // تشغيل البونص
-    bonus.active = true;
-bonus.totalSpins = spins;
-bonus.spinsLeft = spins;
-bonus.totalWin = 0;
-bonus.cost = cost;
-
-// 💎 ميزات البونص
-bonus.multiplier = 2;
-bonus.wildBoost = true;
-bonus.jackpotBoost = true;
-
-    playBonusIntro();
-    
-    
-function showBonusIntro(spins){
-
-    const overlay = document.getElementById("bonusOverlay");
-    const text = document.getElementById("bonusSpinsText");
-
-    overlay.classList.remove("hidden");
-
-    text.innerText = "عدد اللفات: " + spins;
-
-    setTimeout(() => {
-
-        overlay.classList.add("hidden");
-
-        // ⏳ بعد 3 ثواني يبدأ البونص فعليًا
-        setTimeout(() => {
-            playBonus();
-        }, 300);
-
-    }, 3000);
+  setTimeout(() => {
+    playBonus();
+  }, 3000);
 }
+
 function playBonus(){
 
-    if(!bonus.active) return;
+  if(!bonus.active) return;
 
-    if(isSpinning) return;
+  if(bonus.spinsLeft <= 0){
+    finishBonus();
+    return;
+  }
 
-    if(bonus.spinsLeft <= 0){
-        finishBonus();
-        return;
-    }
+  bonus.spinsLeft--;
 
-    bonus.spinsLeft--;
+  // 🔥 تشغيل السبين الأساسي من لعبتك
+  document.getElementById("spin").click();
+}
 
-    // 🔥 انتظر انتهاء spin الحقيقي قبل التالي
-    spin();
+function finishBonus(){
 
-    // 🔥 تشغيل التالي بعد وقت spin الحقيقي
-    setTimeout(() => {
+  bonus.active = false;
 
-        if(bonus.active){
-            playBonus();
-        }
-
-    }, spinSpeed + 1000); // وقت أمان بعد spin
+  alert(
+    "🎉 BONUS FINISHED\n" +
+    "💰 WIN: " + bonus.totalWin
+  );
 
 }
