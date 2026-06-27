@@ -5,18 +5,18 @@
 const bonusBtn = document.getElementById("bonusBtn");
 const bonusMenu = document.getElementById("bonusMenu");
 
+
 const bonus = {
     active: false,
     totalSpins: 0,
     spinsLeft: 0,
     totalWin: 0,
-    cost: 0
-        
-    multiplier: 1,
-wildBoost: false,
-jackpotBoost: false
-};
+    cost: 0,
 
+    multiplier: 1,
+    wildBoost: false,
+    jackpotBoost: false
+};
 // فتح وإغلاق القائمة
 bonusBtn.addEventListener("click", () => {
     bonusMenu.classList.toggle("hidden");
@@ -63,26 +63,21 @@ function buyBonus(spins, cost){
 
     // تشغيل البونص
     bonus.active = true;
-    bonus.totalSpins = spins;
-    bonus.spinsLeft = spins;
-    bonus.totalWin = 0;
-    bonus.cost = cost;
-
-    playBonusIntro();
-    setTimeout(() => {
-    playBonus();
-}, 3000);
-    bonus.active = true;
 bonus.totalSpins = spins;
 bonus.spinsLeft = spins;
 bonus.totalWin = 0;
 bonus.cost = cost;
 
 // 💎 ميزات البونص
-bonus.multiplier = 2;      // 🔥 مضاعف ربح ×2
-bonus.wildBoost = true;    // 🌳 Wild أقوى
-bonus.jackpotBoost = true; // 💰 فرصة Jackpot أعلى
-}
+bonus.multiplier = 2;
+bonus.wildBoost = true;
+bonus.jackpotBoost = true;
+
+    playBonusIntro();
+    setTimeout(() => {
+    playBonus();
+}, 3000);
+    
 function showBonusIntro(spins){
 
     const overlay = document.getElementById("bonusOverlay");
