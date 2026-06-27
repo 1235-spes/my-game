@@ -4,11 +4,8 @@ let balance = 0;
 let finalResult = [];
 let spinSpeed = 4000;
 let isSpinning = false;
-let bonusMode = false;
-let bonusSpinsLeft = 0;
 const ROWS = 4;
 const COLS = 5;
-
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -432,25 +429,6 @@ if (match >= 3) {
     .ref("users/" + currentUser)
     .update({ balance });
 }
-// ===== استمرار اللفات المجانية =====
-if (bonusMode) {
-
-    freeSpins--;
-
-    if (freeSpins > 0) {
-
-        setTimeout(() => {
-            spin();
-        }, 1200);
-
-    } else {
-
-        bonusMode = false;
-
-        alert("انتهت اللفات المجانية");
-
-    }
-}
 let fakeJP;
 
 function initFakeJP() {
@@ -596,100 +574,4 @@ if (speedBtn && speedMenu) {
     });
   });
 
-}
-const bonusBtn = document.getElementById("bonusBtn");
-const bonusMenu = document.getElementById("bonusMenu");
-
-bonusBtn.addEventListener("click", () => {
-
-bonusMenu.classList.toggle("hidden");
-
-});
-bonusMenu.querySelectorAll("button").forEach(btn => {
-
-btn.addEventListener("click", () => {
-
-const cost = Number(btn.dataset.cost);
-const spins = Number(btn.dataset.spins);
-
-bonusMenu.classList.add("hidden");
-
-// الرصيد غير كافٍ
-if(balance < cost){
-
-alert("رصيدك غير كافٍ لشراء البونص");
-
-return;
-
-}
-
-// خصم الرصيد
-balance -= cost;
-
-document.getElementById("balance").innerText = balance;
-
-// تحديث Firebase
-firebase.database()
-.ref("users/" + currentUser)
-.update({
-balance: balance
-});
-
-// تشغيل وضع البونص
-bonusMode = true;
-
-bonusSpinsLeft = spins;
-
-alert("تم شراء Bonus عدد " + spins + " لفات");
-
-playBonusSpin();
-
-});
-
-});
-function playBonusSpin(){
-
-if(bonusSpinsLeft <= 0){
-
-finishBonus();
-
-return;
-
-}
-
-bonusSpinsLeft--;
-
-spin();
-
-}
-function finishBonus(){
-
-bonusMode = false;
-
-bonusSpinsLeft = 0;
-
-alert("انتهى Bonus");
-
-}
-function buyBonus() {
-
-  const cost = selectedBet * 100;
-
-  if (balance < cost) {
-    alert("الرصيد غير كاف");
-    return;
   }
-
-  balance -= cost;
-
-  firebase.database().ref("users/" + currentUser).update({
-    balance: balance
-  });
-
-  document.getElementById("balance").innerText = balance;
-
-  bonusMode = true;
-  freeSpins = 10;
-
-  spin();
-}
