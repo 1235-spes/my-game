@@ -340,53 +340,30 @@ const PAYLINES = [
 function checkWin() {
 
   let totalWin = 0;
+  let winningImgs = [];
+  let wildFoundGlobal = false;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   for (let p = 0; p < PAYLINES.length; p++) {
 
-  let line = PAYLINES[p];
+    const line = PAYLINES[p];
+    let symbols = [];
 
-  let symbols = [];
-
-  for (let col = 0; col < COLS; col++) {
-    symbols.push(finalResult[col][line[col]]);
-  }
-
-  let base = symbols[0];
-  let match = 1;
-
-  for (let i = 1; i < symbols.length; i++) {
-
-    if (symbols[i].img === "شجرةرة.jpg") {
-      match++;
-      continue;
+    for (let col = 0; col < COLS; col++) {
+      symbols.push(finalResult[col][line[col]]);
     }
-
-    if (symbols[i].img === base.img) {
-      match++;
-    } else {
-      break;
-    }
-  }
-
-  if (match >= 3) {
-    drawPayline(p);
-    // نفس حساب الربح الحالي
-  }
-  }
 
     let base = symbols[0];
-let match = 1;
-
-let hasWild = symbols.some(s => s.img === "شجرةرة.jpg");
-
-if (hasWild) {
-  isWildColumn = true;
-}
+    let match = 1;
+    let hasWild = false;
 
     for (let i = 1; i < symbols.length; i++) {
 
       if (symbols[i].img === "شجرةرة.jpg") {
         match++;
+        hasWild = true;
+        wildFoundGlobal = true;
         continue;
       }
 
@@ -398,83 +375,56 @@ if (hasWild) {
     }
 
     if (match >= 3) {
+
+      drawPayline(p); // 🎯 خط الفوز
+
       const symbolData = SYMBOLS.find(s => s.img === base.img);
 
       if (symbolData?.payouts?.[match]) {
 
-  let multiplier = 1;
+        let multiplier = hasWild ? 2 : 1;
 
-  // 🌳 Wild = مضاعف ×2
-  if (isWildColumn) {
-    multiplier = 2;
-  }
+        let win = selectedBet * symbolData.payouts[match] * multiplier;
 
-  totalWin += selectedBet * symbolData.payouts[match] * multiplier;
+        totalWin += win;
+
+        winningImgs.push(hasWild ? "شجرةرة.jpg" : base.img);
       }
     }
   }
 
+  // 💰 تطبيق الربح
   if (totalWin > 0) {
 
-  balance += totalWin;
+    balance += totalWin;
 
-  document.getElementById("winAmount").innerText = totalWin;
+    document.getElementById("winAmount").innerText = totalWin;
 
-  // 🔥 هنا نحدد رمز الفوز من النتيجة الصحيحة
-  let winningImg = null;
+    document.getElementById("balance").innerText = balance;
 
-  for (let row = 0; row < ROWS; row++) {
+    firebase.database()
+      .ref("users/" + currentUser)
+      .update({ balance });
 
-    let symbols = [];
-
-    for (let col = 0; col < COLS; col++) {
-      symbols.push(finalResult[col][row]);
+    // 🎯 التأثيرات
+    if (winningImgs.length > 0) {
+      highlightWins(winningImgs[0]);
     }
 
-    let base = symbols[0];
-    let match = 1;
-
-    for (let i = 1; i < symbols.length; i++) {
-      if (symbols[i].img === "شجرةرة.jpg") {
-        match++;
-        continue;
-      }
-
-      if (symbols[i].img === base.img) {
-        match++;
-      } else {
-        break;
-      }
+    if (wildFoundGlobal) {
+      highlightWild();
+      wildSound.currentTime = 0;
+      wildSound.play().catch(() => {});
     }
-if (match >= 3) {
 
-  if (symbols.some(s => s.img === "شجرةرة.jpg")) {
-    winningImg = "شجرةرة.jpg"; // يعتبر Wild هو الفائز
-  } else {
-    winningImg = base.img;
+    winSound.currentTime = 0;
+    winSound.play();
   }
-
-  break;
-
-    }
-  }
-
-  if (winningImg) {
-    highlightWins(winningImg);
-    highlightWild();
-      if (winningImg === "شجرةرة.jpg") {
-    wildSound.currentTime = 0;
-    wildSound.play(); 
-   }
-    }
-  winSound.play();
-  }
-  document.getElementById("balance").innerText = balance;
-
-  firebase.database()
-    .ref("users/" + currentUser)
-    .update({ balance });
 }
+
+    
+    
+
 let fakeJP;
 
 function initFakeJP() {
