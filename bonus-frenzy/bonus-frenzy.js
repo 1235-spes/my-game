@@ -254,9 +254,7 @@ function generateFinalResult() {
           symbol = getRandomSymbol();
         } while (symbol.img === "شجرةرة.jpg");
       }
-if(bonus.active){
-  column = applyBonusWild(column, col);
-}
+
       column.push(symbol);
     }
 
@@ -318,17 +316,52 @@ function highlightWild() {
     wildSound.play().catch(() => {});
   }
 }
+const PAYLINES = [
+  [0,0,0,0,0], // خط علوي
+  [1,1,1,1,1], // وسط
+  [2,2,2,2,2], // سفلي
+
+  [0,1,2,1,0], // V مائل
+  [2,1,0,1,2], // مقلوب V
+
+  [0,0,1,2,2], // مائل للأسفل
+  [2,2,1,0,0], // مائل للأعلى
+];
 function checkWin() {
 
   let totalWin = 0;
 
-  for (let row = 0; row < ROWS; row++) {
+  for (let p = 0; p < PAYLINES.length; p++) {
 
-    let symbols = [];
+  let line = PAYLINES[p];
 
-    for (let col = 0; col < COLS; col++) {
-      symbols.push(finalResult[col][row]);
+  let symbols = [];
+
+  for (let col = 0; col < COLS; col++) {
+    symbols.push(finalResult[col][line[col]]);
+  }
+
+  let base = symbols[0];
+  let match = 1;
+
+  for (let i = 1; i < symbols.length; i++) {
+
+    if (symbols[i].img === "شجرةرة.jpg") {
+      match++;
+      continue;
     }
+
+    if (symbols[i].img === base.img) {
+      match++;
+    } else {
+      break;
+    }
+  }
+
+  if (match >= 3) {
+    // نفس حساب الربح الحالي
+  }
+  }
 
     let base = symbols[0];
 let match = 1;
