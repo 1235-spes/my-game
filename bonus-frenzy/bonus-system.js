@@ -116,16 +116,32 @@ function playBonus(){
 
     bonus.spinsLeft--;
 
-    // 🔥 انتظر انتهاء spin الحقيقي قبل التالي
+    // 🔥 تأثير زيادة السرعة داخل البونص
+    spinSpeed = 3000;
+
     spin();
 
-    // 🔥 تشغيل التالي بعد وقت spin الحقيقي
+    // ⏳ تشغيل اللفة التالية
     setTimeout(() => {
 
         if(bonus.active){
             playBonus();
         }
 
-    }, spinSpeed + 1000); // وقت أمان بعد spin
+    }, spinSpeed + 800);
+    }
+function finishBonus(){
 
+    bonus.active = false;
+
+    // 💰 إظهار ملخص الربح
+    alert(
+        "🎉 انتهى البونص\n" +
+        "💰 إجمالي الربح: " + bonus.totalWin
+    );
+
+    // 🔄 إعادة الوضع الطبيعي
+    bonus.multiplier = 1;
+    bonus.wildBoost = false;
+    bonus.jackpotBoost = false;
 }
