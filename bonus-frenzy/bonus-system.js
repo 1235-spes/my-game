@@ -67,3 +67,44 @@ function buyBonus(spins, cost){
     playBonusIntro();
 
 }
+function showBonusIntro(spins){
+
+    const overlay = document.getElementById("bonusOverlay");
+    const text = document.getElementById("bonusSpinsText");
+
+    overlay.classList.remove("hidden");
+
+    text.innerText = "عدد اللفات: " + spins;
+
+    setTimeout(() => {
+
+        overlay.classList.add("hidden");
+
+        // ⏳ بعد 3 ثواني يبدأ البونص فعليًا
+        setTimeout(() => {
+            playBonus();
+        }, 300);
+
+    }, 3000);
+}
+function playBonus(){
+
+    if(!bonus.active) return;
+
+    if(bonus.spinsLeft <= 0){
+        finishBonus();
+        return;
+    }
+
+    bonus.spinsLeft--;
+
+    // 🔥 تشغيل نفس Spin الأساسي
+    document.getElementById("spin").click();
+}
+function finishBonus(){
+
+    bonus.active = false;
+
+    alert("🎉 انتهى البونص");
+
+       }
