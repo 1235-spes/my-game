@@ -35,3 +35,38 @@ function startBonus(spins, cost){
     console.log("BONUS STARTED");
 
 }
+// =========================
+// شراء البونص
+// =========================
+
+function buyBonus(spins, cost){
+
+    if(isSpinning) return;
+
+    if(balance < cost){
+
+        alert("رصيدك غير كافٍ");
+
+        return;
+
+    }
+
+    // خصم الرصيد
+    balance -= cost;
+
+    document.getElementById("balance").innerText = balance;
+
+    firebase.database()
+    .ref("users/" + currentUser)
+    .update({
+        balance: balance
+    });
+
+    // تشغيل نظام البونص
+    startBonus(spins, cost);
+
+    updateBonusUI();
+
+    playBonusIntro();
+
+}
