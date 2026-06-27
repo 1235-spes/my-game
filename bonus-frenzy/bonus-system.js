@@ -11,6 +11,10 @@ const bonus = {
     spinsLeft: 0,
     totalWin: 0,
     cost: 0
+        
+    multiplier: 1,
+wildBoost: false,
+jackpotBoost: false
 };
 
 // فتح وإغلاق القائمة
@@ -68,6 +72,16 @@ function buyBonus(spins, cost){
     setTimeout(() => {
     playBonus();
 }, 3000);
+    bonus.active = true;
+bonus.totalSpins = spins;
+bonus.spinsLeft = spins;
+bonus.totalWin = 0;
+bonus.cost = cost;
+
+// 💎 ميزات البونص
+bonus.multiplier = 2;      // 🔥 مضاعف ربح ×2
+bonus.wildBoost = true;    // 🌳 Wild أقوى
+bonus.jackpotBoost = true; // 💰 فرصة Jackpot أعلى
 }
 function showBonusIntro(spins){
 
