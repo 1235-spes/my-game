@@ -363,7 +363,19 @@ if (hasWild) {
     multiplier = 2;
   }
 
-  totalWin += selectedBet * symbolData.payouts[match] * multiplier;
+  let bonusMultiplier = 1;
+
+// 💎 أثناء البونص
+if (bonus.active) {
+    bonusMultiplier = bonus.multiplier;
+}
+
+// 🌳 Wild Boost إضافي
+if (bonus.wildBoost && isWildColumn) {
+    bonusMultiplier *= 2;
+}
+
+totalWin += selectedBet * symbolData.payouts[match] * bonusMultiplier;
       }
     }
   }
