@@ -109,17 +109,16 @@ function playBonus(){
 
     bonus.spinsLeft--;
 
-    // 🔥 تأثير زيادة السرعة داخل البونص
-    spinSpeed = 3000;
-
+    // 🔥 انتظر انتهاء spin الحقيقي قبل التالي
     spin();
 
-    // ⏳ تشغيل اللفة التالية
+    // 🔥 تشغيل التالي بعد وقت spin الحقيقي
     setTimeout(() => {
 
         if(bonus.active){
             playBonus();
         }
 
-    }, spinSpeed + 800);
-    }
+    }, spinSpeed + 1000); // وقت أمان بعد spin
+
+}
