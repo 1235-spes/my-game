@@ -123,18 +123,3 @@ function playBonus(){
 
     }, spinSpeed + 800);
     }
-function finishBonus(){
-
-    bonus.active = false;
-
-    // 💰 إظهار ملخص الربح
-    alert(
-        "🎉 انتهى البونص\n" +
-        "💰 إجمالي الربح: " + bonus.totalWin
-    );
-
-    // 🔄 إعادة الوضع الطبيعي
-    bonus.multiplier = 1;
-    bonus.wildBoost = false;
-    bonus.jackpotBoost = false;
-}
