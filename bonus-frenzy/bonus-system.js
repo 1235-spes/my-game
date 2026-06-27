@@ -74,9 +74,7 @@ bonus.wildBoost = true;
 bonus.jackpotBoost = true;
 
     playBonusIntro();
-    setTimeout(() => {
-    playBonus();
-}, 3000);
+    
     
 function showBonusIntro(spins){
 
