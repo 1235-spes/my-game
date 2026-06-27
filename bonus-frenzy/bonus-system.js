@@ -64,6 +64,6 @@ function buyBonus(spins, cost){
     bonus.totalWin = 0;
     bonus.cost = cost;
 
-    alert("🎁 تم شراء Bonus\nعدد اللفات : " + spins);
+    playBonusIntro();
 
 }
