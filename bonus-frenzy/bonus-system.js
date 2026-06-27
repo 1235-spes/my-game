@@ -1,54 +1,49 @@
+// ===============================
+// BONUS SYSTEM
+// ===============================
 
-// =========================
-// BONUS ENGINE
-// =========================
+const bonusBtn = document.getElementById("bonusBtn");
+const bonusMenu = document.getElementById("bonusMenu");
 
-let bonus = {
-
+const bonus = {
     active: false,
-
     totalSpins: 0,
-
     spinsLeft: 0,
-
     totalWin: 0,
-
     cost: 0
-
 };
 
-// بدء البونص
-function startBonus(spins, cost){
+// فتح وإغلاق القائمة
+bonusBtn.addEventListener("click", () => {
+    bonusMenu.classList.toggle("hidden");
+});
 
-    if(bonus.active) return;
+// أزرار شراء البونص
+bonusMenu.querySelectorAll("button").forEach(btn => {
 
-    bonus.active = true;
+    btn.addEventListener("click", () => {
 
-    bonus.totalSpins = spins;
+        const cost = Number(btn.dataset.cost);
+        const spins = Number(btn.dataset.spins);
 
-    bonus.spinsLeft = spins;
+        buyBonus(spins, cost);
 
-    bonus.totalWin = 0;
+    });
 
-    bonus.cost = cost;
+});
 
-    console.log("BONUS STARTED");
-
-}
-// =========================
 // شراء البونص
-// =========================
-
 function buyBonus(spins, cost){
 
-    if(isSpinning) return;
+    bonusMenu.classList.add("hidden");
+
+    if(isSpinning){
+        return;
+    }
 
     if(balance < cost){
-
-        alert("رصيدك غير كافٍ");
-
+        alert("الرصيد غير كافٍ");
         return;
-
     }
 
     // خصم الرصيد
@@ -62,11 +57,13 @@ function buyBonus(spins, cost){
         balance: balance
     });
 
-    // تشغيل نظام البونص
-    startBonus(spins, cost);
+    // تشغيل البونص
+    bonus.active = true;
+    bonus.totalSpins = spins;
+    bonus.spinsLeft = spins;
+    bonus.totalWin = 0;
+    bonus.cost = cost;
 
-    updateBonusUI();
-
-    playBonusIntro();
+    alert("🎁 تم شراء Bonus\nعدد اللفات : " + spins);
 
 }
