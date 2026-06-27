@@ -65,6 +65,9 @@ function buyBonus(spins, cost){
     bonus.cost = cost;
 
     playBonusIntro();
+    setTimeout(() => {
+    playBonus();
+}, 3000);
 }
 function showBonusIntro(spins){
 
@@ -90,6 +93,8 @@ function playBonus(){
 
     if(!bonus.active) return;
 
+    if(isSpinning) return;
+
     if(bonus.spinsLeft <= 0){
         finishBonus();
         return;
@@ -97,13 +102,16 @@ function playBonus(){
 
     bonus.spinsLeft--;
 
-    // 🔥 تشغيل نفس Spin الأساسي
-    document.getElementById("spin").click();
+    // 🔥 انتظر انتهاء spin الحقيقي قبل التالي
+    spin();
+
+    // 🔥 تشغيل التالي بعد وقت spin الحقيقي
+    setTimeout(() => {
+
+        if(bonus.active){
+            playBonus();
+        }
+
+    }, spinSpeed + 1000); // وقت أمان بعد spin
+
 }
-function finishBonus(){
-
-    bonus.active = false;
-
-    alert("🎉 انتهى البونص");
-
-       }
