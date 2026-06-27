@@ -575,3 +575,8 @@ if (speedBtn && speedMenu) {
   });
 
   }
+function isBonusActive(){
+
+    return bonus.active;
+
+}
