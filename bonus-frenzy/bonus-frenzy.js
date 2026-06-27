@@ -77,6 +77,16 @@ document.getElementById("reel3"),
 document.getElementById("reel4"),
 document.getElementById("reel5")
 ];
+const canvas = document.getElementById("paylineCanvas");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas(){
+  canvas.width = document.querySelector(".reels").offsetWidth;
+  canvas.height = document.querySelector(".reels").offsetHeight;
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
 function spinReel(reel, delay, onStop) {
 
   let speed = 30;
@@ -359,6 +369,7 @@ function checkWin() {
   }
 
   if (match >= 3) {
+    drawPayline(p);
     // نفس حساب الربح الحالي
   }
   }
@@ -609,4 +620,35 @@ if (speedBtn && speedMenu) {
     });
   });
 
+}
+function drawPayline(lineIndex){
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const line = PAYLINES[lineIndex];
+
+  const reelWidth = canvas.width / COLS;
+  const reelHeight = canvas.height / ROWS;
+
+  ctx.beginPath();
+  ctx.strokeStyle = "gold";
+  ctx.lineWidth = 4;
+  ctx.shadowColor = "yellow";
+  ctx.shadowBlur = 15;
+
+  for(let col = 0; col < COLS; col++){
+
+    const row = line[col];
+
+    const x = col * reelWidth + reelWidth / 2;
+    const y = row * reelHeight + reelHeight / 2;
+
+    if(col === 0){
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+    }
+  }
+
+  ctx.stroke();
 }
