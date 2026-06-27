@@ -1,5 +1,5 @@
 function playBonusIntro(){
 
-    console.log("BONUS INTRO");
+    console.log("Bonus Intro");
 
 }
