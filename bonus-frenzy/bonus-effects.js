@@ -1,19 +1,24 @@
-function playBonusIntro(){
+function applyBonusWild(symbols, col){
 
-    const intro = document.getElementById("bonusIntro");
+  // ❌ ممنوع في أول وآخر بكرة
+  if(col === 0 || col === COLS - 1) return;
 
-    const text = document.getElementById("bonusSpinsText");
+  let wildsAdded = 0;
 
-    text.innerText = bonus.totalSpins + " FREE SPINS";
+  for(let i = 0; i < symbols.length; i++){
 
-    intro.classList.remove("hidden");
+    if(wildsAdded >= bonus.wildCount) break;
 
-    setTimeout(()=>{
+    if(Math.random() < 0.25){ // 25% chance
 
-        intro.classList.add("hidden");
+      symbols[i] = {
+        img: "شجرةرة.jpg",
+        payouts: {}
+      };
 
-        playBonus();
+      wildsAdded++;
+    }
+  }
 
-    },3000);
-
+  return symbols;
 }
