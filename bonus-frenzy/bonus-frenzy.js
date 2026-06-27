@@ -254,7 +254,9 @@ function generateFinalResult() {
           symbol = getRandomSymbol();
         } while (symbol.img === "شجرةرة.jpg");
       }
-
+if(bonus.active){
+  column = applyBonusWild(column, col);
+}
       column.push(symbol);
     }
 
