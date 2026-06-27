@@ -1,13 +1,13 @@
-function updateBonusUI(){
+function showBonusIntro(spins){
 
-    alert(
+  const overlay = document.getElementById("bonusIntro");
+  const text = document.getElementById("bonusSpinsText");
 
-        "🎁 Bonus Started\n\n" +
+  overlay.classList.remove("hidden");
 
-        "Free Spins : " +
+  text.innerText = spins + " FREE SPINS";
 
-        bonus.spinsLeft
-
-    );
-
+  setTimeout(() => {
+    overlay.classList.add("hidden");
+  }, 3000);
 }
