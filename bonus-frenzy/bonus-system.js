@@ -46,22 +46,25 @@ function buyBonus(spins, cost){
         return;
     }
 
-    // 💰 خصم الرصيد
+    // خصم الرصيد
     balance -= cost;
+
     document.getElementById("balance").innerText = balance;
 
     firebase.database()
     .ref("users/" + currentUser)
-    .update({ balance });
+    .update({
+        balance: balance
+    });
 
-    // 🎁 إعداد البونص
+    // تشغيل البونص
     bonus.active = true;
     bonus.totalSpins = spins;
     bonus.spinsLeft = spins;
     bonus.totalWin = 0;
+    bonus.cost = cost;
 
-    // 🌑 شاشة سوداء + BONUS
-    showBonusIntro(spins);
+    playBonusIntro();
 }
 function showBonusIntro(spins){
 
