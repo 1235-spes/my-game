@@ -4,10 +4,11 @@ let balance = 0;
 let finalResult = [];
 let spinSpeed = 4000;
 let isSpinning = false;
-const ROWS = 4;
-const COLS = 5;
 let bonusMode = false;
 let bonusSpinsLeft = 0;
+const ROWS = 4;
+const COLS = 5;
+
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -431,14 +432,24 @@ if (match >= 3) {
     .ref("users/" + currentUser)
     .update({ balance });
 }
-if(bonusMode){
+// ===== استمرار اللفات المجانية =====
+if (bonusMode) {
 
-setTimeout(()=>{
+    freeSpins--;
 
-playBonusSpin();
+    if (freeSpins > 0) {
 
-},1200);
+        setTimeout(() => {
+            spin();
+        }, 1200);
 
+    } else {
+
+        bonusMode = false;
+
+        alert("انتهت اللفات المجانية");
+
+    }
 }
 let fakeJP;
 
@@ -659,4 +670,26 @@ bonusSpinsLeft = 0;
 
 alert("انتهى Bonus");
 
+}
+function buyBonus() {
+
+  const cost = selectedBet * 100;
+
+  if (balance < cost) {
+    alert("الرصيد غير كاف");
+    return;
+  }
+
+  balance -= cost;
+
+  firebase.database().ref("users/" + currentUser).update({
+    balance: balance
+  });
+
+  document.getElementById("balance").innerText = balance;
+
+  bonusMode = true;
+  freeSpins = 10;
+
+  spin();
 }
