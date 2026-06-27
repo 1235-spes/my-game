@@ -6,6 +6,8 @@ let spinSpeed = 4000;
 let isSpinning = false;
 const ROWS = 4;
 const COLS = 5;
+let bonusMode = false;
+let bonusSpinsLeft = 0;
 const spinSound = new Audio("../sounds/spin.mp3");
 spinSound.loop = true;
 spinSound.volume = 0.4;
@@ -429,6 +431,15 @@ if (match >= 3) {
     .ref("users/" + currentUser)
     .update({ balance });
 }
+if(bonusMode){
+
+setTimeout(()=>{
+
+playBonusSpin();
+
+},1200);
+
+}
 let fakeJP;
 
 function initFakeJP() {
@@ -583,3 +594,69 @@ bonusBtn.addEventListener("click", () => {
 bonusMenu.classList.toggle("hidden");
 
 });
+bonusMenu.querySelectorAll("button").forEach(btn => {
+
+btn.addEventListener("click", () => {
+
+const cost = Number(btn.dataset.cost);
+const spins = Number(btn.dataset.spins);
+
+bonusMenu.classList.add("hidden");
+
+// الرصيد غير كافٍ
+if(balance < cost){
+
+alert("رصيدك غير كافٍ لشراء البونص");
+
+return;
+
+}
+
+// خصم الرصيد
+balance -= cost;
+
+document.getElementById("balance").innerText = balance;
+
+// تحديث Firebase
+firebase.database()
+.ref("users/" + currentUser)
+.update({
+balance: balance
+});
+
+// تشغيل وضع البونص
+bonusMode = true;
+
+bonusSpinsLeft = spins;
+
+alert("تم شراء Bonus عدد " + spins + " لفات");
+
+playBonusSpin();
+
+});
+
+});
+function playBonusSpin(){
+
+if(bonusSpinsLeft <= 0){
+
+finishBonus();
+
+return;
+
+}
+
+bonusSpinsLeft--;
+
+spin();
+
+}
+function finishBonus(){
+
+bonusMode = false;
+
+bonusSpinsLeft = 0;
+
+alert("انتهى Bonus");
+
+}
