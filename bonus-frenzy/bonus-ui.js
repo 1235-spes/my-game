@@ -1,9 +1,12 @@
-
 function updateBonusUI(){
 
-    console.log(
+    alert(
 
-        "Free Spins : " + bonus.spinsLeft
+        "🎁 Bonus Started\n\n" +
+
+        "Free Spins : " +
+
+        bonus.spinsLeft
 
     );
 
