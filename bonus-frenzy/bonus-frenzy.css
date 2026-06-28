@@ -619,6 +619,9 @@ opacity:1;
 }
 
 }
+.reels {
+  position: relative;
+}
 #paylineCanvas {
   position: absolute;
   top: 0;
