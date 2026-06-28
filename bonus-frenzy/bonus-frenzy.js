@@ -585,9 +585,11 @@ function drawPayline(lineIndex){
 
   ctx.beginPath();
   ctx.strokeStyle = "gold";
-  ctx.lineWidth = 5;
+  ctx.lineWidth = 3;
+ctx.lineCap = "round";
+ctx.lineJoin = "round";
   ctx.shadowColor = "yellow";
-  ctx.shadowBlur = 20;
+  ctx.shadowBlur = 8;
 
   for(let col = 0; col < COLS; col++){
 
