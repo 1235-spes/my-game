@@ -351,7 +351,20 @@ function checkWin() {
     let symbols = [];
 
     for (let col = 0; col < COLS; col++) {
-      symbols.push(finalResult[col][line[col]]);
+
+  const current = finalResult[col][line[col]];
+
+  const columnHasWild = finalResult[col].some(
+    s => s.img === "شجرةرة.jpg"
+  );
+
+  // 🌳 Wild = أي رمز في العمود يصبح قابل للمطابقة
+  if (columnHasWild) {
+    symbols.push({ img: "WILD" });
+  } else {
+    symbols.push(current);
+  }
+
     }
     let base = symbols[0];
     let match = 1;
@@ -366,8 +379,11 @@ function checkWin() {
         continue;
       }
 
-      if (symbols[i].img === base.img) {
-        match++;
+      if (
+  symbols[i].img === base.img ||
+  symbols[i].img === "WILD" ||
+  base.img === "WILD"
+)mg       match++;
       } else {
         break;
       }
