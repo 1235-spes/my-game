@@ -634,3 +634,11 @@ opacity:1;
     z-index:1000;
     pointer-events:none;
 }
+.reel{
+    position:relative;
+    z-index:2;
+}
+
+#paylineCanvas{
+    z-index:5;
+}
