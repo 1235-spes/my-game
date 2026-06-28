@@ -577,19 +577,23 @@ function drawPayline(lineIndex){
 
   const line = PAYLINES[lineIndex];
 
-  const reelWidth = canvas.width / COLS;
-  const reelHeight = canvas.height / ROWS;
+  const reel = document.querySelector(".reel");
+  const reelRect = reel.getBoundingClientRect();
+
+  const reelWidth = reelRect.width;
+  const reelHeight = reelRect.height / ROWS;
 
   ctx.beginPath();
   ctx.strokeStyle = "gold";
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 5;
   ctx.shadowColor = "yellow";
-  ctx.shadowBlur = 15;
+  ctx.shadowBlur = 20;
 
   for(let col = 0; col < COLS; col++){
 
     const row = line[col];
 
+    // 🔥 مركز كل رمز
     const x = col * reelWidth + reelWidth / 2;
     const y = row * reelHeight + reelHeight / 2;
 
