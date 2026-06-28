@@ -136,7 +136,7 @@ fake-jackpot {
   align-items: center;
   gap: 10px; /* 👈 المسافة بينهم */
 }
-}
+
 .bet-menu {
   position: absolute;
   bottom: 60px;
@@ -218,7 +218,7 @@ fake-jackpot {
   }
 
 /* العمود الذي يحتوي wild */
-wild-column {
+.wild-column {
   background: rgba(255, 215, 0, 0.15);
   box-shadow: 0 0 25px gold;
 }
