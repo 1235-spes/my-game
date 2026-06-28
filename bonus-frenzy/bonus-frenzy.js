@@ -367,7 +367,20 @@ function checkWin() {
     let symbols = [];
 
     for (let col = 0; col < COLS; col++) {
-      symbols.push(finalResult[col][line[col]]);
+      let current = finalResult[col][line[col]];
+
+// إذا كان العمود يحتوي على Wild اعتبر الرمز Wild
+const columnHasWild = finalResult[col].some(
+    s => s.img === "شجرةرة.jpg"
+);
+
+if (columnHasWild) {
+    current = SYMBOLS.find(
+        s => s.img === "شجرةرة.jpg"
+    );
+}
+
+symbols.push(current);
     }
 
     let base = symbols[0];
