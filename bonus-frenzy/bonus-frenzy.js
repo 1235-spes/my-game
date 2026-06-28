@@ -591,18 +591,24 @@ ctx.lineJoin = "round";
   ctx.shadowColor = "yellow";
   ctx.shadowBlur = 8;
 
-  for(let col = 0; col < COLS; col++){
+  for (let col = 0; col < COLS; col++) {
 
     const row = line[col];
 
-    // 🔥 مركز كل رمز
-    const x = col * reelWidth + reelWidth / 2;
-    const y = row * reelHeight + reelHeight / 2;
+    const img = reels[col]
+        .querySelector(".reel-strip")
+        .children[row];
 
-    if(col === 0){
-      ctx.moveTo(x, y);
+    const imgRect = img.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+
+    const x = imgRect.left + imgRect.width / 2 - canvasRect.left;
+    const y = imgRect.top + imgRect.height / 2 - canvasRect.top;
+
+    if (col === 0) {
+        ctx.moveTo(x, y);
     } else {
-      ctx.lineTo(x, y);
+        ctx.lineTo(x, y);
     }
   }
 
