@@ -285,9 +285,8 @@ for (let col = 0; col < COLS; col++) {
         }
 
     }
-
 }
-
+}
 function highlightWins(winningImg) {
 
   const images = document.querySelectorAll(".reel-strip img");
