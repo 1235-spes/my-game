@@ -571,46 +571,50 @@ if (speedBtn && speedMenu) {
   });
 
 }
-function drawPayline(lineIndex){
+function drawPayline(lineIndex) {
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  const line = PAYLINES[lineIndex];
+    const line = PAYLINES[lineIndex];
 
-  const reel = document.querySelector(".reel");
-  const reelRect = reel.getBoundingClientRect();
+    const reelsContainer = document.querySelector(".reels");
+    const containerRect = reelsContainer.getBoundingClientRect();
 
-  const reelWidth = reelRect.width;
-  const reelHeight = reelRect.height / ROWS;
+    ctx.beginPath();
+    ctx.strokeStyle = "#FFD700";
+    ctx.lineWidth = 5;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.shadowColor = "#FFD700";
+    ctx.shadowBlur = 18;
 
-  ctx.beginPath();
-  ctx.strokeStyle = "gold";
-  ctx.lineWidth = 3;
-ctx.lineCap = "round";
-ctx.lineJoin = "round";
-  ctx.shadowColor = "yellow";
-  ctx.shadowBlur = 8;
+    for (let col = 0; col < COLS; col++) {
 
-  for (let col = 0; col < COLS; col++) {
+        const row = line[col];
 
-    const row = line[col];
+        const img =
+            reels[col]
+            .querySelector(".reel-strip")
+            .children[row];
 
-    const img = reels[col]
-        .querySelector(".reel-strip")
-        .children[row];
+        const rect = img.getBoundingClientRect();
 
-    const imgRect = img.getBoundingClientRect();
-    const canvasRect = canvas.getBoundingClientRect();
+        const x =
+            rect.left
+            - containerRect.left
+            + rect.width / 2;
 
-    const x = imgRect.left + imgRect.width / 2 - canvasRect.left;
-    const y = imgRect.top + imgRect.height / 2 - canvasRect.top;
+        const y =
+            rect.top
+            - containerRect.top
+            + rect.height / 2;
 
-    if (col === 0) {
-        ctx.moveTo(x, y);
-    } else {
-        ctx.lineTo(x, y);
+        if (col === 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
     }
-  }
 
-  ctx.stroke();
+    ctx.stroke();
 }
