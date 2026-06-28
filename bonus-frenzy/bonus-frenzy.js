@@ -245,6 +245,7 @@ if (colIndex === reels.length - 1) {
 }
 
 
+
 function generateFinalResult() {
   finalResult = [];
 
@@ -270,22 +271,6 @@ function generateFinalResult() {
 
     finalResult.push(column);
   }
-for (let col = 0; col < COLS; col++) {
-
-    let hasWild = finalResult[col].some(
-        s => s.img === "شجرةرة.jpg"
-    );
-
-    if (hasWild) {
-
-        for (let row = 0; row < ROWS; row++) {
-            finalResult[col][row] = SYMBOLS.find(
-                s => s.img === "شجرةرة.jpg"
-            );
-        }
-
-    }
-}
 }
 function highlightWins(winningImg) {
 
