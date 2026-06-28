@@ -383,9 +383,10 @@ function checkWin() {
   symbols[i].img === base.img ||
   symbols[i].img === "WILD" ||
   base.img === "WILD"
-)mg       match++;
-      } else {
-        break;
+) {
+  match++;
+} else {
+  break;
       }
     }
 
