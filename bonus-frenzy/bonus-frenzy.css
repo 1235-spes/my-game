@@ -137,10 +137,9 @@ fake-jackpot {
   max-width: 480px;
 
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
 
-  gap: 10px;
   padding: 0 15px;
   z-index: 9999;
 }
@@ -668,4 +667,10 @@ opacity:1;
 #autoSpinBtn,
 #bonusBtn {
   order: 3;
+}
+.controls-left,
+.controls-right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
