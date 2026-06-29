@@ -654,20 +654,7 @@ opacity:1;
     z-index:5;
   }
 
-#spin {
-  flex: 0;
-  width: 95px;
-  height: 95px;
-  margin: 0 10px;
-}
-#betToggle,
-#speedBtn {
-  order: 1;
-}
-#autoSpinBtn,
-#bonusBtn {
-  order: 3;
-}
+
 .controls-left,
 .controls-right {
   display: flex;
