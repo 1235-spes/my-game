@@ -143,9 +143,7 @@ fake-jackpot {
   padding: 0 15px;
   z-index: 9999;
 }
-.controls button {
-  flex: 1;
-}
+
 .bet-menu {
   position: absolute;
   bottom: 60px;
