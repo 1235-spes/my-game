@@ -650,17 +650,17 @@ opacity:1;
 #paylineCanvas{
     z-index:5;
   }
-#spin {
-  order: 0;
-  margin: 0 auto;
-  position: relative;
-}
+
 
 #betToggle,
 #speedBtn {
   order: 1;
 }
-
+#spin {
+  order: 0;
+  margin: 0 auto;
+  position: relative;
+}
 #autoSpinBtn,
 #bonusBtn {
   order: 3;
