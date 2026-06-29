@@ -137,11 +137,15 @@ fake-jackpot {
   max-width: 480px;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
 
+  gap: 10px;
   padding: 0 15px;
   z-index: 9999;
+}
+.controls button {
+  flex: 1;
 }
 .bet-menu {
   position: absolute;
@@ -651,15 +655,15 @@ opacity:1;
     z-index:5;
   }
 
-
+#spin {
+  flex: 0;
+  width: 95px;
+  height: 95px;
+  margin: 0 10px;
+}
 #betToggle,
 #speedBtn {
   order: 1;
-}
-#spin {
-  order: 0;
-  margin: 0 auto;
-  position: relative;
 }
 #autoSpinBtn,
 #bonusBtn {
