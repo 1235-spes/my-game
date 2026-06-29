@@ -245,6 +245,7 @@ if (colIndex === reels.length - 1) {
 }
 
 
+
 function generateFinalResult() {
   finalResult = [];
 
@@ -271,7 +272,6 @@ function generateFinalResult() {
     finalResult.push(column);
   }
 }
-
 function highlightWins(winningImg) {
 
   const images = document.querySelectorAll(".reel-strip img");
@@ -351,9 +351,21 @@ function checkWin() {
     let symbols = [];
 
     for (let col = 0; col < COLS; col++) {
-      symbols.push(finalResult[col][line[col]]);
-    }
 
+  const current = finalResult[col][line[col]];
+
+  const columnHasWild = finalResult[col].some(
+    s => s.img === "شجرةرة.jpg"
+  );
+
+  // 🌳 Wild = أي رمز في العمود يصبح قابل للمطابقة
+  if (columnHasWild) {
+    symbols.push({ img: "WILD" });
+  } else {
+    symbols.push(current);
+  }
+
+    }
     let base = symbols[0];
     let match = 1;
     let hasWild = false;
@@ -367,10 +379,14 @@ function checkWin() {
         continue;
       }
 
-      if (symbols[i].img === base.img) {
-        match++;
-      } else {
-        break;
+      if (
+  symbols[i].img === base.img ||
+  symbols[i].img === "WILD" ||
+  base.img === "WILD"
+) {
+  match++;
+} else {
+  break;
       }
     }
 
