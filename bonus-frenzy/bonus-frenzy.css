@@ -128,12 +128,21 @@ fake-jackpot {
   font-weight: bold;
 }
 .controls {
-  position: relative;
-    display: flex;
-  justify-content: center;
+  position: fixed;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 100%;
+  max-width: 480px;
+
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px; /* 👈 المسافة بينهم */
-}
+
+  padding: 0 20px;
+
+  z-index: 9999;
 }
 .bet-menu {
   position: absolute;
@@ -642,3 +651,23 @@ opacity:1;
 #paylineCanvas{
     z-index:5;
   }
+#spin {
+  order: 2;
+  margin: 0 auto;
+}
+
+#betToggle {
+  order: 1;
+}
+
+#speedBtn {
+  order: 3;
+}
+
+#autoSpinBtn {
+  order: 4;
+}
+
+#bonusBtn {
+  order: 5;
+}
