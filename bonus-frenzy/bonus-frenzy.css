@@ -678,3 +678,53 @@ opacity:1;
   gap: 8px;
   align-items: center;
 }
+/* ===== لوحة المعلومات ===== */
+
+.status-panel{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+
+    margin-top:18px;
+    margin-bottom:25px;
+}
+
+.status-box{
+
+    width:120px;
+
+    background:rgba(0,0,0,.45);
+
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,215,0,.35);
+
+    border-radius:16px;
+
+    padding:10px;
+
+    box-shadow:0 0 12px rgba(255,215,0,.15);
+
+}
+
+.status-title{
+
+    color:#d5b35d;
+
+    font-size:13px;
+
+    margin-bottom:6px;
+
+    letter-spacing:1px;
+
+}
+
+.status-value{
+
+    color:white;
+
+    font-size:24px;
+
+    font-weight:bold;
+
+}
