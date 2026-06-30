@@ -55,9 +55,24 @@
   </div>
 
     </div>
-    <div class="win-info">
-  الربح: <span id="winAmount">0</span>
-</div>
+    <div class="status-panel">
+
+    <div class="status-box">
+        <div class="status-title">BALANCE</div>
+        <div class="status-value" id="balance">0</div>
+    </div>
+
+    <div class="status-box">
+        <div class="status-title">BET</div>
+        <div class="status-value" id="bet">300</div>
+    </div>
+
+    <div class="status-box">
+        <div class="status-title">WIN</div>
+        <div class="status-value" id="winAmount">0</div>
+    </div>
+
+    </div>
 <!-- ===== CONTROLS ===== -->
 <div class="controls">
 
@@ -148,17 +163,7 @@
 </div>
 
       
-    <div class="bottom-hud">
 
-  <div class="hud-item">
-    💰 الرصيد: <span id="balance">0</span>
-  </div>
-
-  <div class="hud-item">
-    🎯 الرهان: <span id="bet">300</span>
-  </div>
-
-    </div>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
