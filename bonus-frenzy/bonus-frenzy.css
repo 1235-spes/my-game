@@ -80,7 +80,8 @@ box-shadow:
 0 0 35px rgba(255,215,0,.55);
 
 transition:.25s;
-
+margin-left:8px;
+margin-right:8px;
 }
 #spin:hover{
 
@@ -155,27 +156,35 @@ fake-jackpot {
   font-weight: bold;
 }
 .controls{
-    position: fixed;
-    bottom:135px;
-    left: 50%;
-    transform: translateX(-50%);
 
-    width: 100%;
-    max-width: 480px;
+    position:fixed;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
+    bottom:115px;
 
-    z-index: 9999;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:100%;
+    max-width:480px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:4px;
+
+    z-index:9999;
+
 }
 
 .left-controls,
 .right-controls{
     display:flex;
     flex-direction:row;
-    gap:6px;
+    gap:8px;
 }
 .left-controls button,
 .right-controls button{
