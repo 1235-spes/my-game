@@ -62,8 +62,35 @@ object-fit: cover;
 
 #spin {
 margin-top: 10px;
-}
 
+
+width:140px;
+height:140px;
+
+border-radius:50%;
+
+margin:0 4px;
+
+background:rgba(255,215,0,.15);
+
+border:3px solid gold;
+
+box-shadow:
+0 0 18px gold,
+0 0 35px rgba(255,215,0,.55);
+
+transition:.25s;
+
+}
+#spin:hover{
+
+transform:scale(1.05);
+
+box-shadow:
+0 0 30px gold,
+0 0 55px orange;
+
+}
 .info {
 margin-top: 10px;
 font-size: 16px;
