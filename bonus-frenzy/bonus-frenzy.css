@@ -98,52 +98,7 @@ font-size: 16px;
 color: gold;
 }
 
-fake-jackpot {
-  text-align: center;
-  color: gold;
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-.jackpot-top {
-  text-align: center;
-  color: gold;
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 8px;
 
-  /* 💥 اللمعة الذهبية */
-  text-shadow: 
-    0 0 5px gold,
-    0 0 10px gold,
-    0 0 20px orange,
-    0 0 30px gold;
-
-  animation: goldGlow 1.5s infinite alternate;
-}
-
-/* ✨ حركة اللمعة */
-@keyframes goldGlow {
-  0% {
-    text-shadow: 
-      0 0 5px gold,
-      0 0 10px gold,
-      0 0 20px orange;
-  }
-
-  100% {
-    text-shadow: 
-      0 0 10px yellow,
-      0 0 25px gold,
-      0 0 40px orange;
-  }
-}
-
-/* تنظيم الصفوف */
-.jackpot-top div {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  }
 
   
 .bet-toggle {
@@ -790,3 +745,82 @@ opacity:1;
     font-weight:bold;
 
 }
+.jackpot-bar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:6px;
+
+margin:10px auto;
+
+padding:10px;
+
+background:rgba(0,0,0,.55);
+
+backdrop-filter:blur(12px);
+
+border:2px solid rgba(255,215,0,.35);
+
+border-radius:18px;
+
+}
+
+.jackpot-item{
+
+flex:1;
+
+text-align:center;
+
+}
+
+.jp-name{
+
+font-size:13px;
+
+font-weight:bold;
+
+letter-spacing:1px;
+
+}
+
+.jp-value{
+
+margin-top:4px;
+
+font-size:16px;
+
+font-weight:bold;
+
+}
+
+.grand .jp-name,
+.grand .jp-value{
+
+color:#FFD700;
+
+}
+
+.major .jp-name,
+.major .jp-value{
+
+color:#5EFF58;
+
+}
+
+.minor .jp-name,
+.minor .jp-value{
+
+color:#FF4D4D;
+
+}
+
+.mini .jp-name,
+.mini .jp-value{
+
+color:#C86BFF;
+
+  }
