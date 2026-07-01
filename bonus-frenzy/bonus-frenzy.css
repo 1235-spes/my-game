@@ -129,7 +129,7 @@ fake-jackpot {
 }
 .controls{
     position: fixed;
-    bottom: 105px;
+    bottom:135px;
     left: 50%;
     transform: translateX(-50%);
 
@@ -152,11 +152,37 @@ fake-jackpot {
 }
 .left-controls button,
 .right-controls button{
+
     width:68px;
     height:68px;
+
     border-radius:18px;
+
+    background: rgba(15,15,15,.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border:2px solid rgba(255,215,0,.65);
+
+    color:#FFD700;
+    font-size:26px;
+
+    box-shadow:
+        inset 0 0 12px rgba(255,215,0,.12),
+        0 0 12px rgba(255,215,0,.18);
+
+    transition:.25s;
 }
 
+.left-controls button:hover,
+.right-controls button:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:
+        0 0 18px gold,
+        inset 0 0 15px rgba(255,215,0,.25);
+}
 #spin{
     width:120px;
     height:120px;
