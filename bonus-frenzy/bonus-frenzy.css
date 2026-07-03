@@ -135,7 +135,7 @@ color: gold;
 
     position:fixed;
 
-    bottom:115px;
+    bottom:10px;
 
     left:50%;
 
@@ -146,11 +146,12 @@ color: gold;
 
     display:flex;
 
-    justify-content:center;
+    justify-content:space-between;
 
     align-items:center;
 
-    gap:4px;
+  padding: 0 15px;
+  
 
     z-index:9999;
 
@@ -845,3 +846,21 @@ color:#FF4D4D;
 color:#C86BFF;
 
   }
+.bottom-hud {
+  position: fixed;
+  bottom: 90px; /* نخليه فوق الأزرار */
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 8px;
+
+  font-size: 14px; /* أصغر شوي */
+  font-weight: bold;
+
+  color: gold;
+  z-index: 9999;
+}
