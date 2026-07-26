@@ -1,497 +1,90 @@
-<!DOCTYPE html>  <html lang="ar" dir="rtl">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>Chanci Admin</title>  <style>  
-.stats{  
-display:grid;  
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));  
-gap:15px;  
-margin-bottom:20px;  
-}  
-  
-.stat-card{  
-background:#181818;  
-padding:20px;  
-border-radius:15px;  
-border:1px solid rgba(255,215,0,.15);  
-text-align:center;  
-}  
-  
-.stat-title{  
-color:#aaa;  
-margin-bottom:10px;  
-}  
-  
-.stat-value{  
-font-size:28px;  
-font-weight:bold;  
-color:#FFD700;  
-}  
-*{  
-margin:0;  
-padding:0;  
-box-sizing:border-box;  
-font-family:Arial,sans-serif;  
-}  
-  
-body{  
-background:#0d0d0d;  
-color:white;  
-min-height:100vh;  
-}  
-  
-.header{  
-background:#181818;  
-padding:20px;  
-text-align:center;  
-font-size:28px;  
-font-weight:bold;  
-color:#FFD700;  
-border-bottom:1px solid rgba(255,215,0,.2);  
-}  
-  
-.container{  
-max-width:1200px;  
-margin:auto;  
-padding:20px;  
-}  
-  
-.create-user{  
-background:#181818;  
-padding:20px;  
-border-radius:15px;  
-margin-bottom:20px;  
-border:1px solid rgba(255,215,0,.15);  
-}  
-  
-.create-user h2{  
-margin-bottom:15px;  
-color:#FFD700;  
-}  
-  
-.input{  
-width:100%;  
-padding:12px;  
-margin-bottom:10px;  
-background:#252525;  
-border:none;  
-border-radius:10px;  
-color:white;  
-}  
-  
-.btn{  
-padding:12px 18px;  
-border:none;  
-border-radius:10px;  
-cursor:pointer;  
-font-weight:bold;  
-}  
-  
-.btn-create{  
-background:#FFD700;  
-color:#000;  
-}  
-  
-.logout-btn{  
-background:#ff4444;  
-color:white;  
-margin-top:10px;  
-}  
-  
-.users-grid{  
-display:grid;  
-grid-template-columns:repeat(auto-fill,minmax(320px,1fr));  
-gap:15px;  
-}  
-  
-.user-card{  
-background:#181818;  
-padding:15px;  
-border-radius:15px;  
-border:1px solid rgba(255,215,0,.15);  
-}  
-  
-.user-name{  
-font-size:22px;  
-font-weight:bold;  
-color:#FFD700;  
-margin-bottom:10px;  
-}  
-  
-.user-info{  
-margin-bottom:8px;  
-color:#ddd;  
-}  
-  
-.amount-input{  
-width:100%;  
-padding:10px;  
-background:#252525;  
-border:none;  
-border-radius:10px;  
-color:white;  
-margin-top:10px;  
-margin-bottom:10px;  
-}  
-  
-.actions{  
-display:flex;  
-gap:10px;  
-}  
-  
-.add-btn{  
-flex:1;  
-background:#00c853;  
-color:white;  
-}  
-  
-.remove-btn{  
-flex:1;  
-background:#ff5252;  
-color:white;  
-}  
-  
-.status{  
-margin-top:15px;  
-color:#FFD700; 
-text-align:center;  
-}  
-  
-</style> <link rel="stylesheet" href="admin.css">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chanci-App | تسجيل الدخول</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{min-height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#050505,#111,#1a1a1a);padding:20px;}
+.login-box{width:100%;max-width:450px;background:#141414;border:1px solid rgba(255,215,0,.25);border-radius:20px;padding:30px;box-shadow:0 0 30px rgba(255,215,0,.15);}
+.logo{text-align:center;font-size:42px;font-weight:900;color:#FFD700;margin-bottom:10px;text-shadow:0 0 10px rgba(255,215,0,.6);}
+.subtitle{text-align:center;color:#ccc;margin-bottom:25px;}
+input{width:100%;padding:14px;margin-bottom:15px;border:none;outline:none;border-radius:12px;background:#242424;color:#fff;font-size:15px;}
+input:focus{box-shadow:0 0 10px rgba(255,215,0,.4);}
+button{width:100%;padding:14px;border:none;border-radius:12px;background:#FFD700;color:#000;font-weight:bold;font-size:16px;cursor:pointer;transition:.3s;}
+button:hover{transform:translateY(-2px);box-shadow:0 0 15px rgba(255,215,0,.4);}
+.status{margin-top:15px;text-align:center;color:#ffcc00;font-size:14px;}
+</style>
 </head>
-<body>   <div class="header">  
-لوحة تحكم Chanci  
-</div>  <div class="container">  <div class="create-user">  <h2>إنشاء مستخدم جديد</h2>  <input  
-class="input"  
-type="text"  
-id="newUser"  
-placeholder="اسم المستخدم">
+<body>
 
-<input  
-class="input"  
-type="password"  
-id="newPass"  
-placeholder="كلمة المرور">
+<div class="login-box">
+  <div class="logo">CHANCI APP</div>
+  <div class="subtitle">قم بتسجيل الدخول للمتابعة</div>
+  <input type="text" id="username" placeholder="اسم المستخدم">
+  <input type="password" id="password" placeholder="كلمة المرور">
+  <button onclick="login()">تسجيل الدخول</button>
+  <div class="status" id="status"></div>
+</div>
 
-<input  
-class="input"  
-type="number"  
-id="newBalance"  
-placeholder="الرصيد الابتدائي"  
-value="0">
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-<button  
-class="btn btn-create"  
-onclick="createUser()">
-إنشاء المستخدم
-</button>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
+  authDomain: "chanci-app.firebaseapp.com",
+  databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",
+  projectId: "chanci-app",
+  storageBucket: "chanci-app.firebasestorage.app",
+  messagingSenderId: "18416485348",
+  appId: "1:18416485348:web:918a393569acb47a7b3df1",
+  measurementId: "G-S8ZCNJBFQ8"
+};
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
 
-<button  
-class="btn logout-btn"  
-onclick="logout()">
-تسجيل خروج
-</button>
+const currentUser = localStorage.getItem("currentUser");
+if(currentUser){
+  window.location.href = currentUser === "doktor" ? "admin.html" : "dashboard.html";
+}
 
-<div  
-class="status"  
-id="status">  
-</div>  </div>  <div class="stats">  <div class="stat-card">  
-<div class="stat-title">عدد المستخدمين</div>  
-<div class="stat-value" id="totalUsers">0</div>  
-</div>  <div class="stat-card">  
-<div class="stat-title">إجمالي الأرصدة</div>  
-<div class="stat-value" id="totalBalance">0</div>  
-</div>  <div class="stat-card">  
-<div class="stat-title">إجمالي النقاط</div>  
-<div class="stat-value" id="totalPoints">0</div>  
-</div>  </div>  <div  
-class="users-grid"  
-id="usersList">  
-</div>  </div>  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>  <script>  
-  
-const firebaseConfig = {  
-apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",  
-authDomain: "chanci-app.firebaseapp.com",  
-databaseURL: "https://chanci-app-default-rtdb.firebaseio.com",  
-projectId: "chanci-app",  
-storageBucket: "chanci-app.firebasestorage.app",  
-messagingSenderId: "18416485348",  
-appId: "1:18416485348:web:918a393569acb47a7b3df1",  
-measurementId: "G-S8ZCNJBFQ8"  
-};  
-  
-firebase.initializeApp(firebaseConfig);  
-  
-const db = firebase.database();  
-  
-const currentUser =  
-localStorage.getItem("currentUser");  
-  
-if(currentUser !== "doktor"){  
-window.location.href = "index.html";  
-}function logout(){  
-  
-localStorage.removeItem("currentUser");  
-  
-window.location.href =  
-"index.html";  
-  
-}  
-  
-function createUser(){  
-  
-const username =  
-document.getElementById("newUser")  
-.value.trim();  
-  
-const password =  
-document.getElementById("newPass")  
-.value.trim();  
-  
-const balance =  
-Number(  
-document.getElementById("newBalance")  
-.value || 0  
-);  
-  
-const status =  
-document.getElementById("status");  
-  
-if(username === "" || password === ""){  
-  
-status.innerHTML =  
-"أدخل اسم المستخدم وكلمة المرور";  
-  
-return;  
-  
-}  
-  
-db.ref("users/" + username)  
-.set({  
-  
-password: password,  
-balance: balance,  
-earnings: 0,  
-points: 0,  
-wins: 0,  
-spentSinceLastBox: 0,  
-boxAvailable: false  
-  
-})  
-  
-.then(()=>{  
-  
-status.innerHTML =  
-"تم إنشاء المستخدم بنجاح";  
-  
-document.getElementById("newUser").value="";  
-document.getElementById("newPass").value="";  
-document.getElementById("newBalance").value="0";  
-  
-})  
-  
-.catch(error=>{  
-  
-status.innerHTML =  
-"حدث خطأ"; 
-  
-console.error(error);  
-  
-});  
-  
-}  
-  
-function loadUsers(){  
-  
-db.ref("users").on("value",snapshot=>{  
-  
-const users = snapshot.val();  
-  
-if(!users) return;  
-  
-let html = "";  
-  
-let totalUsers = 0;  
-let totalBalance = 0;  
-let totalPoints = 0;  
-  
-Object.keys(users).forEach(username=>{  
-  
-const user = users[username];  
-  
-if(username === "doktor") return;  
-  
-totalUsers++;  
-  
-totalBalance += Number(user.balance || 0);  
-  
-totalPoints += Number(user.points || 0);  
-  
-html += `  
-  
-<div class="user-card">  
-  
-<div class="user-name">  
-${username}  
-</div>  
-  
-<div class="user-info">  
-الرصيد: ${user.balance || 0}  
-</div>  
-  
-<div class="user-info">  
-النقاط: ${user.points || 0}  
-</div>  
-  
-<div class="user-info">  
-الأرباح: ${user.earnings || 0}  
-</div>  
-  
-<div class="user-info">  
-مرات الفوز: ${user.wins || 0}  
-</div>  
-  
-<input  
-type="number"  
-class="amount-input"  
-id="amount-${username}"  
-placeholder="اكتب المبلغ">  
-  
-<div class="actions">  
-  
-<button  
-class="btn add-btn"  
-onclick="addBalance('${username}')">  
-  
-إضافة رصيد  
-  
-</button>  
-  
-<button  
-class="btn remove-btn"  
-onclick="removeBalance('${username}')">  
-  
-خصم رصيد  
-  
-</button>  
-  
-</div>  
-  
-</div>  
-  
-`;  
-  
-});  
-  
-document.getElementById("usersList")  
-.innerHTML = html;  
-  document.getElementById("totalUsers").innerText =
-totalUsers;
+function login(){
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const status = document.getElementById("status");
 
-document.getElementById("totalBalance").innerText =
-totalBalance.toFixed(2);
+  if(username === "" || password === ""){
+    status.innerHTML = "يرجى إدخال اسم المستخدم وكلمة المرور";
+    return;
+  }
 
-document.getElementById("totalPoints").innerText =
-totalPoints;
-});  
-  
-}function addBalance(username){  
-  
-const amount = Number(  
-document.getElementById(  
-"amount-" + username  
-).value || 0  
-);  
-  
-if(amount <= 0){  
-alert("أدخل مبلغ صحيح");  
-return;  
-}  
-  
-const userRef =  
-db.ref("users/" + username);  
-  
-userRef.get().then(snapshot=>{  
-  
-const user = snapshot.val();  
-  
-const currentBalance =  
-Number(user.balance || 0);  
-  
-const newBalance =  
-currentBalance + amount;  
-  
-userRef.update({  
-balance: newBalance  
-});  
-  
-db.ref(  
-"users/" +  
-username +  
-"/transactions"  
-)  
-.push({  
-type:"إضافة رصيد",  
-amount:amount,  
-status:"مكتمل",  
-date:new Date().toLocaleString("ar")  
-});  
-  
-});  
-  
-}  
-  
-function removeBalance(username){  
-  
-const amount = Number(  
-document.getElementById(  
-"amount-" + username  
-).value || 0  
-);  
-  
-if(amount <= 0){  
-alert("أدخل مبلغ صحيح");  
-return;  
-}  
-  
-const userRef =  
-db.ref("users/" + username);  
-  
-userRef.get().then(snapshot=>{  
-  
-const user = snapshot.val();  
-  
-const currentBalance =  
-Number(user.balance || 0);  
-  
-const newBalance =  
-Math.max(  
-0,  
-currentBalance - amount  
-);  
-  
-userRef.update({  
-balance:newBalance  
-});  
-  
-db.ref(  
-"users/" +  
-username +  
-"/transactions"  
-)  
-.push({  
-type:"خصم رصيد",  
-amount:amount,  
-status:"مكتمل",  
-date:new Date().toLocaleString("ar")  
-});  
-  
-});  
-  
-}  
-  
-loadUsers();  
-  
-</script> <script src="admin.js"></script> </body>  
-</html>  
+  status.innerHTML = "جاري تسجيل الدخول...";
+
+  db.ref("users/" + username).get().then(snapshot=>{
+    if(!snapshot.exists()){
+      status.innerHTML = "اسم المستخدم غير موجود";
+      return;
+    }
+    const user = snapshot.val();
+    if(String(user.password) === String(password)){
+      localStorage.setItem("currentUser", username);
+      status.innerHTML = "تم تسجيل الدخول بنجاح";
+      setTimeout(()=>{
+        window.location.href = username === "doktor" ? "admin.html" : "dashboard.html";
+      },500);
+    } else {
+      status.innerHTML = "كلمة المرور غير صحيحة";
+    }
+  }).catch(error=>{
+    status.innerHTML = "حدث خطأ أثناء تسجيل الدخول";
+    console.error(error);
+  });
+}
+</script>
+</body>
+</html>
