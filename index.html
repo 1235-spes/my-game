@@ -65,50 +65,26 @@ function login(){
 
   status.innerHTML = "جاري تسجيل الدخول...";
 
-  // 🟣 NEW: فحص subAdmin أولاً
-  db.ref("subAdmins/" + username).get().then(sa=>{
-    if(sa.exists()){
-      const data = sa.val();
-
-      if(String(data.password) === String(password)){
-
-        localStorage.setItem("currentUser", username);
-        localStorage.setItem("role", "subAdmin");
-
-        status.innerHTML = "تم تسجيل الدخول (Sub Admin)";
-
-        setTimeout(()=>{
-          window.location.href = "subadmin.html";
-        },500);
-
-        return;
-      }
+  db.ref("users/" + username).get().then(snapshot=>{
+    if(!snapshot.exists()){
+      status.innerHTML = "اسم المستخدم غير موجود";
+      return;
     }
-
-    // 🟢 users (كودك نفسه بدون تغيير)
-    db.ref("users/" + username).get().then(snapshot=>{
-      if(!snapshot.exists()){
-        status.innerHTML = "اسم المستخدم غير موجود";
-        return;
-      }
-      const user = snapshot.val();
-      if(String(user.password) === String(password)){
-        localStorage.setItem("currentUser", username);
-        status.innerHTML = "تم تسجيل الدخول بنجاح";
-        setTimeout(()=>{
-          window.location.href = username === "doktor" ? "admin.html" : "dashboard.html";
-        },500);
-      } else {
-        status.innerHTML = "كلمة المرور غير صحيحة";
-      }
-    }).catch(error=>{
-      status.innerHTML = "حدث خطأ أثناء تسجيل الدخول";
-      console.error(error);
-    });
-
+    const user = snapshot.val();
+    if(String(user.password) === String(password)){
+      localStorage.setItem("currentUser", username);
+      status.innerHTML = "تم تسجيل الدخول بنجاح";
+      setTimeout(()=>{
+        window.location.href = username === "doktor" ? "admin.html" : "dashboard.html";
+      },500);
+    } else {
+      status.innerHTML = "كلمة المرور غير صحيحة";
+    }
+  }).catch(error=>{
+    status.innerHTML = "حدث خطأ أثناء تسجيل الدخول";
+    console.error(error);
   });
-    }
-  
+}
 </script>
 </body>
 </html>
