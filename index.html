@@ -3,36 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chanci-App | تسجيل الدخول</title>
+<title>Chanci-App | لوحة التحكم</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
-body{min-height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#050505,#111,#1a1a1a);padding:20px;}
-.login-box{width:100%;max-width:450px;background:#141414;border:1px solid rgba(255,215,0,.25);border-radius:20px;padding:30px;box-shadow:0 0 30px rgba(255,215,0,.15);}
-.logo{text-align:center;font-size:42px;font-weight:900;color:#FFD700;margin-bottom:10px;text-shadow:0 0 10px rgba(255,215,0,.6);}
-.subtitle{text-align:center;color:#ccc;margin-bottom:25px;}
-input{width:100%;padding:14px;margin-bottom:15px;border:none;outline:none;border-radius:12px;background:#242424;color:#fff;font-size:15px;}
-input:focus{box-shadow:0 0 10px rgba(255,215,0,.4);}
-button{width:100%;padding:14px;border:none;border-radius:12px;background:#FFD700;color:#000;font-weight:bold;font-size:16px;cursor:pointer;transition:.3s;}
-button:hover{transform:translateY(-2px);box-shadow:0 0 15px rgba(255,215,0,.4);}
-.status{margin-top:15px;text-align:center;color:#ffcc00;font-size:14px;}
+body {margin:0; font-family:Arial; background:#0a0a0a; color:#fff;}
+.container {max-width:600px; margin:auto; padding:20px;}
+.logo {text-align:center; font-size:36px; color:gold; margin-bottom:20px;}
+.admin-box input, .admin-box button {width:100%; padding:12px; margin:10px 0; border-radius:8px; border:none;}
+.admin-box input {background:#2c2c2c; color:#fff;}
+.admin-box button {background:gold; color:#000; font-weight:bold; cursor:pointer;}
+.user-card {background:#1c1c1c; padding:15px; border-radius:12px; margin-bottom:10px; box-shadow:0 0 10px rgba(255,215,0,0.3);}
+.logout-btn{background:red; color:#fff; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; margin-top:10px; width:100%;}
 </style>
 </head>
 <body>
+<div class="container admin-box">
+  <div class="logo">لوحة التحكم - doktor</div>
+  <h3>إنشاء مستخدم جديد</h3>
+  <input type="text" id="newUser" placeholder="اسم المستخدم">
+  <input type="password" id="newPass" placeholder="كلمة المرور">
+  <input type="number" id="newBalance" placeholder="الرصيد الابتدائي" value="0">
+  <button onclick="createUser()">إنشاء المستخدم</button>
 
-<div class="login-box">
-  <div class="logo">CHANCI APP</div>
-  <div class="subtitle">قم بتسجيل الدخول للمتابعة</div>
-  <input type="text" id="username" placeholder="اسم المستخدم">
-  <input type="password" id="password" placeholder="كلمة المرور">
-  <button onclick="login()">تسجيل الدخول</button>
-  <div class="status" id="status"></div>
+  <div class="user-list" id="userList"></div>
+  <button class="logout-btn" onclick="adminLogout()">تسجيل خروج</button>
 </div>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyBsx_iEGWKEDlEQe6B2rz4yqKAhGdz1uas",
@@ -41,65 +38,44 @@ const firebaseConfig = {
   projectId: "chanci-app",
   storageBucket: "chanci-app.firebasestorage.app",
   messagingSenderId: "18416485348",
-  appId: "1:18416485348:web:918a393569acb47a7b3df1",
-  measurementId: "G-S8ZCNJBFQ8"
+  appId: "1:18416485348:web:12176965505080897b3df1",
+  measurementId: "G-6YXX3SS61D"
 };
-if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-const currentUser = localStorage.getItem("currentUser");
-if(currentUser){
-  window.location.href = currentUser === "doktor" ? "admin.html" : "dashboard.html";
-}
+function createUser(){
+  const username = document.getElementById('newUser').value.trim();
+  const password = document.getElementById('newPass').value.trim();
+  const balance = Number(document.getElementById('newBalance').value);
 
-<script>
-function login(){
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const status = document.getElementById("status");
-
-  if(username === "" || password === ""){
-    status.innerHTML = "يرجى إدخال اسم المستخدم وكلمة المرور";
-    return;
+  if(username && password){
+    db.ref('users/'+username).set({password,password, balance, earnings:0});
+    alert("تم إنشاء المستخدم "+username);
+    loadUsers();
   }
-
-  status.innerHTML = "جاري تسجيل الدخول...";
-
-  db.ref("users/" + username).once("value")
-    .then(snapshot => {
-
-      if(!snapshot.exists()){
-        status.innerHTML = "اسم المستخدم غير موجود";
-        return;
-      }
-
-      const user = snapshot.val();
-
-      if(String(user.password) === String(password)){
-
-        localStorage.setItem("currentUser", username);
-
-        status.innerHTML = "تم تسجيل الدخول بنجاح";
-
-        setTimeout(() => {
-          if(username === "doktor"){
-            window.location.href = "admin.html";
-          }else{
-            window.location.href = "dashboard.html";
-          }
-        }, 500);
-
-      }else{
-        status.innerHTML = "كلمة المرور غير صحيحة";
-      }
-
-    })
-    .catch(error => {
-      console.error("Firebase Error:", error);
-      status.innerHTML = "حدث خطأ أثناء الاتصال بقاعدة البيانات";
-    });
 }
+
+function loadUsers(){
+  db.ref('users').get().then(snapshot=>{
+    const userList = document.getElementById('userList');
+    userList.innerHTML = "";
+    if(snapshot.exists()){
+      Object.keys(snapshot.val()).forEach(u=>{
+        const div = document.createElement('div');
+        div.className="user-card";
+        div.innerHTML="<strong>"+u+"</strong> | الرصيد: "+snapshot.val()[u].balance+" | الأرباح: "+snapshot.val()[u].earnings;
+        userList.appendChild(div);
+      });
+    }
+  });
+}
+
+function adminLogout(){ localStorage.removeItem('currentUser'); window.location.href='index.html'; }
+
+const currentUser = localStorage.getItem('currentUser');
+if(currentUser !== "doktor") window.location.href='index.html';
+loadUsers();
 </script>
 </body>
 </html>
