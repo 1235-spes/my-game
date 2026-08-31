@@ -81,9 +81,10 @@ function login(){
       status.innerHTML = "كلمة المرور غير صحيحة";
     }
   }).catch(error=>{
-    status.innerHTML = "حدث خطأ أثناء تسجيل الدخول";
-    console.error(error);
-  });
+    console.error("Firebase Login Error:", error);
+
+    status.innerHTML = "خطأ: " + error.message;
+});
 }
 </script>
 </body>
