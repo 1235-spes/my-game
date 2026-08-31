@@ -53,6 +53,7 @@ if(currentUser){
   window.location.href = currentUser === "doktor" ? "admin.html" : "dashboard.html";
 }
 
+<script>
 function login(){
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -65,26 +66,39 @@ function login(){
 
   status.innerHTML = "جاري تسجيل الدخول...";
 
-  db.ref("users/" + username).get().then(snapshot=>{
-    if(!snapshot.exists()){
-      status.innerHTML = "اسم المستخدم غير موجود";
-      return;
-    }
-    const user = snapshot.val();
-    if(String(user.password) === String(password)){
-      localStorage.setItem("currentUser", username);
-      status.innerHTML = "تم تسجيل الدخول بنجاح";
-      setTimeout(()=>{
-        window.location.href = username === "doktor" ? "admin.html" : "dashboard.html";
-      },500);
-    } else {
-      status.innerHTML = "كلمة المرور غير صحيحة";
-    }
-  }).catch(error=>{
-    console.error("Firebase Login Error:", error);
+  db.ref("users/" + username).once("value")
+    .then(snapshot => {
 
-    status.innerHTML = "خطأ: " + error.message;
-});
+      if(!snapshot.exists()){
+        status.innerHTML = "اسم المستخدم غير موجود";
+        return;
+      }
+
+      const user = snapshot.val();
+
+      if(String(user.password) === String(password)){
+
+        localStorage.setItem("currentUser", username);
+
+        status.innerHTML = "تم تسجيل الدخول بنجاح";
+
+        setTimeout(() => {
+          if(username === "doktor"){
+            window.location.href = "admin.html";
+          }else{
+            window.location.href = "dashboard.html";
+          }
+        }, 500);
+
+      }else{
+        status.innerHTML = "كلمة المرور غير صحيحة";
+      }
+
+    })
+    .catch(error => {
+      console.error("Firebase Error:", error);
+      status.innerHTML = "حدث خطأ أثناء الاتصال بقاعدة البيانات";
+    });
 }
 </script>
 </body>
